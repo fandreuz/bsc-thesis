@@ -2,10 +2,13 @@
 tags: [tesi]
 title: Dovier
 created: '2020-07-26T07:12:00.794Z'
-modified: '2020-07-26T08:20:36.094Z'
+modified: '2020-07-27T17:50:06.175Z'
 ---
 
 # Dovier
+
+## Rappresentazione di insiemi con grafi
+Possiamo identificare la relazione $a \to b$ come $b \in/\subset a$. Quindi un ciclo rappresenta un insieme che contiene se stesso.
 
 ## Accessible pointed graph (APG)
 E' un grafo direzionato $G$ con un nodo $v$ distinto ($<G,v>$) tale che tutto $G$ è raggiungibile da $v$.
@@ -46,3 +49,17 @@ La bisimulazione che induce una partizione stabile non ha apparentemente alcun l
 ## Massima bisimulazione $\iff$ Coarsest stable partition problem
 1. Suppongo di avere la massima bisimulazione. Questa induce una partizione stabile su $N$. Suppongo che non sia la coarsest. Allora posso trovarne una più coarsest. Ma questa induce una bisimulazione in cui più elementi sono in relazione. Quindi la bisimulazione iniziale non è massima.
 2. Suppongo di avere la coarsest stable partition. Questa induce una bisimulazione. Suppongo che non sia massima. Allora posso trovarne una massima, che induce una partizione più coarsest, perchè più elementi sono in relazione secondo la bisimulazione massima. Allora la partizione non è la coarsest.
+
+## Rango
+$$rank(u) = \begin{cases}
+0 \qquad \text{se } u \text{ è una foglia}\\
+1 + \max(rank(v) : (u,v))
+\end{cases}$$
+
+## Proposizione 4.2
+### $u \equiv v \implies rank(u) = rank(v)$ (dove $\equiv$ è la bisimulazione massima)
+### Dimostrazione
+Per induzione su $rank(u)$:
++ Se $u$ è una foglia, e $u \equiv v$, allora se p.a. $\exists c : v \to c$ (e quindi se $v$ non fosse una foglia) $\implies \exists d : u \to d \implies u$ non è una foglia. Ma questo è chiaramente assurdo, allora anche $v$ è una foglia $\implies rank(v) = rank(u) = 0$.
++ Suppongo che la proposizione sia vera per $rank(u) = n - 1$. Suppongo che $u \equiv v \land rank(u) = n$. Per la definizione di $rank$ tra i nodi $n \in N : u \to n$ deve esisterne uno tale che $rank(u) = n - 1$. Per definizione di bisimulazione, $(u \to n \land u \equiv v) \implies \exists m : (v \to m \land n \equiv m) \implies rank(m) = rank(n) = n - 1$.
+Suppongo p.a. che $\exists x : v \to x \land rank(x) = w > n - 1$. In questo caso assurdo $rank(v) = w + 1 \neq n$, e quindi la proposizione non sarebbe verificata. Ma in questo caso, per definizione di bisimulazione, dovrebbe esistere un nodo $y : u \to y \land x \equiv y$. Ma per definizione di $rank$ deve valere $rank(y) \leq n - 1$, e per la simmetria di $\equiv$ deve valere $n - 1 \geq rank(y) = rank(x) = w > n - 1$, che è assurdo.
