@@ -2,7 +2,7 @@
 tags: [tesi]
 title: Dovier
 created: '2020-07-26T07:12:00.794Z'
-modified: '2020-07-27T17:50:06.175Z'
+modified: '2020-08-03T13:28:34.151Z'
 ---
 
 # Dovier
@@ -15,6 +15,13 @@ E' un grafo direzionato $G$ con un nodo $v$ distinto ($<G,v>$) tale che tutto $G
 
 ## Bisimulazione tra APG
 Diremo che due APG $<G_1, v_1>,<G_2, v_2>$ sono in bisimulazione se $\exists b : b$ è una bisimulazione tra $G_1, G_2$ e $v_1 b v_2$. 
+
+## Due APG rappresentano lo stesso hyperset $\iff$ sono bisimili
+La definizione di bisimulazione per due APG può essere letta come una relazione di (bi-)similitudine tra nodi che "si comportano allo stesso modo". Cioè, diremo che due grafi $G_1 = (N_1, V_1), G_2 = (N_2, V_2)$ sono bisimili secondo $b$ se
+1. $\forall u_1, v_1 \in N_1, u_2 \in N_2, (u_1 \to v_1 \land u_1 b u_2) \implies \exists v_2 : (u_2 \to v_2, v_1 b v_2)$
+2. Viceversa
+
+Allora i nodi che intervengono si "comportano allo stesso modo": quando $u_1 \to v_1$ (leggi: $v_1 \subset u_1$), se $u_1 b u_2$ (leggi: $u_1, u_2$ sono bisimili, rappresentano lo stesso insieme all'interno della gerarchia di insiemi rappresentata dai grafi $G_1, G_2$) allora anche $v_1 b v_2$, perchè rappresentano lo stesso insieme, ed essendo una diversa rappresentazione dello stesso insieme devono comportarsi allo stesso modo (cioè sono bisimili). Inoltre essendo che la gerarchia $u_1 \to v_1 \equiv v_1 \subset u_1$ è la stessa gerarchia di insiemi in entrambi i grafi, si deve avere anche che $u_2 \to v_2 \equiv v_2 \subset u_2$.
 
 ## Bisimulazione massima su APG
 Dato un APG $<G,v>$ esiste sempre la bisimulazione massima, e questa è una relazione di equivalenza sull'insieme dei nodi di $G$. La bisimulazione massima è l'unione di tutte le bisimulazioni.
@@ -63,3 +70,11 @@ Per induzione su $rank(u)$:
 + Se $u$ è una foglia, e $u \equiv v$, allora se p.a. $\exists c : v \to c$ (e quindi se $v$ non fosse una foglia) $\implies \exists d : u \to d \implies u$ non è una foglia. Ma questo è chiaramente assurdo, allora anche $v$ è una foglia $\implies rank(v) = rank(u) = 0$.
 + Suppongo che la proposizione sia vera per $rank(u) = n - 1$. Suppongo che $u \equiv v \land rank(u) = n$. Per la definizione di $rank$ tra i nodi $n \in N : u \to n$ deve esisterne uno tale che $rank(u) = n - 1$. Per definizione di bisimulazione, $(u \to n \land u \equiv v) \implies \exists m : (v \to m \land n \equiv m) \implies rank(m) = rank(n) = n - 1$.
 Suppongo p.a. che $\exists x : v \to x \land rank(x) = w > n - 1$. In questo caso assurdo $rank(v) = w + 1 \neq n$, e quindi la proposizione non sarebbe verificata. Ma in questo caso, per definizione di bisimulazione, dovrebbe esistere un nodo $y : u \to y \land x \equiv y$. Ma per definizione di $rank$ deve valere $rank(y) \leq n - 1$, e per la simmetria di $\equiv$ deve valere $n - 1 \geq rank(y) = rank(x) = w > n - 1$, che è assurdo.
+
+## Lemma 4.4a
+### $u \not\equiv v$ e $rank(u) = rank(v) \implies u,v$ finiscono in blocchi diversi all'iterazione $i$-esima del ciclo in (5)
+### Dimostrazione
+Per induzione su $i$
+1. Tutti i nodi di rango 0/1 sono bisimili.
+2. Suppongo di avere due nodi $u,v$ con $rank(u) = rank(v) = n, u \not\equiv v \implies$ ad esempio $\exists u' : u \to u'$ ma $\forall v' : v \to v'$ si ha $u' \equiv v'$.
+Ma per l'ipotesi induttiva $\forall v' \,\,u', v'$ sono stati inseriti in blocchi differenti da un'iterazione precedente, e quando le classi di rango superiore (tra cui quella di rango n) sono state "splittate" rispetto alle due classi in cui sono stati messi $u',v'$ i nodi $u,v$ finiscono in classi necessariamente diverse, perchè $v \to v'$, ma per nessun nodo $u''$ nella stessa classe in cui finisce $v'$ si può dire che $u \to u''$.
