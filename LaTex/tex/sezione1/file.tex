@@ -55,7 +55,7 @@ Per definire formalmente il concetto di grafo è necessario introdurre la defini
 \end{example}
 \subsection{Bisimulazione}
 \begin{definition}
-    Siano $G_1 = (N_1, E_1), G_2 = (N_2, E_2)$ due grafi. Diremo che $G_1, G_2$ sono bisimili rispetto alla relazione binaria $b$ su $N_1, N_2$ se $\forall u \in N_1, v \in N_2$ valgono congiuntamente le seguenti condizioni
+    Siano $G_1 = (N_1, E_1), G_2 = (N_2, E_2)$ due grafi. Diremo che $G_1, G_2$ sono bisimili \cite{dovier} rispetto alla relazione binaria $b$ su $N_1, N_2$ se $\forall u \in N_1, v \in N_2$ valgono congiuntamente le seguenti condizioni
     \begin{itemize}
         \item $\forall u' \in N_1 : u \to u', u \,b\, v \implies \,\exists v' \in N_2 : (u' \,b\, v' \land v \to v')$
         \item $\forall v' \in N_2 : v \to v', u \,b\, v \implies \,\exists u' \in N_1 : (u' \,b\, v' \land u \to u')$

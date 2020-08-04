@@ -3,6 +3,8 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{cite}
+\usepackage{hyperref}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta}
 
@@ -15,4 +17,9 @@
 \captionsetup[figure]{name=Figura}
 \begin{document}
 \include{./tex/sezione1/file}
+
+\renewcommand\refname{Bibliografia}
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
 \end{document}
