@@ -2,7 +2,7 @@
 # Readme
 
 ## Articoli letti/che sto leggendo
-+ Hopcroft, J. E. "An n\log nnlogn nlogn algorithm for minimizing states in a finite automaton." Theory of Machines and Computations (1971): 189-176.
++ Hopcroft, J. E. "An nlogn algorithm for minimizing states in a finite automaton." Theory of Machines and Computations (1971): 189-176.
 + Paige, Robert, and Robert E. Tarjan. “Three Partition Refinement Algorithms.” SIAM Journal on Computing, vol. 16, no. 6, Dec. 1987, pp. 973–89. DOI.org (Crossref), doi:10.1137/0216062.
 + Dovier, Agostino, et al. An Efficient Algorithm for Computing Bisimulation Equivalence. 2004.
 
