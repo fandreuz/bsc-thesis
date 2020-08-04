@@ -2,7 +2,7 @@
 tags: [tesi]
 title: Definizioni
 created: '2020-07-21T06:36:50.829Z'
-modified: '2020-07-22T16:47:07.577Z'
+modified: '2020-08-04T09:19:59.718Z'
 ---
 
 # Definizioni
@@ -62,4 +62,4 @@ Un grafo è "strongly connected" se per ogni coppia di nodi a,b esiste un percor
 ### Well-Founded part
 Sia $G(N, \to)$ un grafo. Sia $G(a)$ l'insieme di tutti i nodi raggiungibili partendo dal nodo a.
 Allora 
-$$\begin{gathered} WF(G) = \{a \in N : G(a) \text{ non contiene cicli} \} \end{gathered}$$.
+$$WF(G) = \{a \in N : G(a) \text{ non contiene cicli} \}$$
