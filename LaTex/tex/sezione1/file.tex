@@ -65,8 +65,8 @@ Per introdurre risultati che verranno presentati in seguito risulta utile defini
 \begin{definition}
     Sia $G = (N, \to)$ un grafo, e $b$ una relazione binaria su $N$. Diremo che $b$ è una bisimulazione su $G$ se $\forall u,v \in N$ valgono congiuntamente le seguenti condizioni
     \begin{itemize}
-        \item $\forall u' \in N : u \to u', u \,b\, v \implies \,\exists v' \in N_2 : (u' \,b\, v' \land v \to v')$
-        \item $\forall v' \in N : v \to v', u \,b\, v \implies \,\exists u' \in N_1 : (u' \,b\, v' \land u \to u')$
+        \item $\forall u' \in N : u \to u', u \,b\, v \implies \,\exists v' \in N : (u' \,b\, v' \land v \to v')$
+        \item $\forall v' \in N : v \to v', u \,b\, v \implies \,\exists u' \in N : (u' \,b\, v' \land u \to u')$
     \end{itemize}
 \end{definition}
 \begin{proposition}
