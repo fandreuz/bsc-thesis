@@ -2,7 +2,7 @@
 tags: [tesi]
 title: Dovier
 created: '2020-07-26T07:12:00.794Z'
-modified: '2020-08-03T13:28:34.151Z'
+modified: '2020-08-04T12:40:40.078Z'
 ---
 
 # Dovier
@@ -78,3 +78,51 @@ Per induzione su $i$
 1. Tutti i nodi di rango 0/1 sono bisimili.
 2. Suppongo di avere due nodi $u,v$ con $rank(u) = rank(v) = n, u \not\equiv v \implies$ ad esempio $\exists u' : u \to u'$ ma $\forall v' : v \to v'$ si ha $u' \equiv v'$.
 Ma per l'ipotesi induttiva $\forall v' \,\,u', v'$ sono stati inseriti in blocchi differenti da un'iterazione precedente, e quando le classi di rango superiore (tra cui quella di rango n) sono state "splittate" rispetto alle due classi in cui sono stati messi $u',v'$ i nodi $u,v$ finiscono in classi necessariamente diverse, perchè $v \to v'$, ma per nessun nodo $u''$ nella stessa classe in cui finisce $v'$ si può dire che $u \to u''$.
+
+## Rango (non ben fondato)
+$n \in LF(G)$ significa "$n$ è una foglia di $G$".
+$$rank(n) = \begin{cases}
+0 \qquad n \in LF(G)\\
+-\infty \qquad n \not\in LF(G) \land C(n) \in LF(G^{SCC})\\
+\max \begin{cases}
+1 + rank(m) : C(n) \to C(m) \land m \in WF(G)\\
+rank(m) : C(n) \to C(m) \land m \not\in WF(G)
+\end{cases}
+\end{cases}$$
+
+$rank(n)$ sarà $-\infty$ quando da $n$ posso raggiungere qualsiasi nodo in $C(n)$ (che dovrà contenere altri nodi oltre ad $n$, altrimenti $n$ è una foglia) ma non posso uscire da $C(n)$. Questo significa che tutti i nodi in $C(n)$ avranno $rank -\infty$. 
+
+## Osservazione 5.4a
+Sia $m : rank(m) = h > 0$. Allora $\exists a : rank(a) = h - 1, a \in WF(G), m \to_{transitivo} a$.
+
+### Dimostrazione
+Se un $a \in WF(G) : m \to_{transitivo} a$ non esistesse (per il momento non considero il rango), $rank(m)$ non potrebbe essere $h > 0$, infatti tutte le "transizioni" passanti per nodi $\not\in WF(G)$ non aumentano il rango di $m$. Allora $\exists a : a \in WF(G), m \to_{transitivo} a$.
+Chiaramente per il primo $a$ con questa proprietà deve valere $rank(a) = h - 1$.
+
+## Proposizione 5.4
+1. $m \equiv \Omega \iff rank(m) = -\infty$
+2. $m \equiv n \implies rank(m) = rank(n)$
+
+$\Omega$ denota l'insieme che contiene solamente se stesso $x = \{x\}$.
+
+### Dimostrazione (solo punto 2)
+1. Se $m,n \in WF(G)$. Allora la tesi segue dalla proposizione 4.4.
+2. Se $m \in WF(G), n \not\in WF(G)$, allora non può essere $m \equiv n$ (è evidente che non possono rappresentare lo stesso insieme)
+3. Se $m,n \not\in WF(G)$
+    1. Se $rank(m) = -\infty$, sapendo che $m \equiv n$, anche $n$ rappresenta $\Omega$, quindi (per il punto 1) $rank(n) = -\infty$ 
+    2. Se $rank(m) \neq -\infty$, allora $rank(m) = h > 0$. Sia $a \in WF(G) : m \to_{transitivo} a, rank(a) = h - 1$ (esiste per l'osservazione 5.4a). Per definizione di bisimulazione deve esistere un $b : n \to_{transitivo} b, a \equiv b \implies b \in WF(G)\implies rank(b) = rank(a) = h - 1 \implies rank(n) \geq rank(m)$.
+    Lo stesso ragionamento può essere fatto specularmente. 
+
+## Definizione
+$E \upharpoonright A = E \cap (A \times A)$
+
+## Proposizione 5.5a
+Se $rank(m) = i \geq 0$, allora $m \equiv n \iff$ all'iterazione $i$-esima dopo 7.a $\exists X \in D_i : m,n \in X$.
+
+### Dimostrazione
+Per induzione su $i$:
+1. Se $i = 0$, poichè tutte le foglie vengono messe nello stesso blocco $B_0$ della partizione iniziale. Dopo lo step 6 la partizione $B_0$ è invariata, essendo tutti i nodi in $B_0$ delle foglie. PTA non modifica $B_0$, ed essendo che tutte le foglie sono bisimili la tesi è dimostrata.
+2. Se $i > 0$
+    + ($\implies$) $m \equiv n \implies \forall m' : rank(m') \leq i - 1, m \to m' \,\,\exists n' : n \to n' \land m' \equiv n'$. Per l'ipotesi induttiva tutte queste coppie $m', n'$ sono finite nello stesso blocco $X$. Allora ogni volta che ho splittato in 7.c $m,n$ sono sempre finiti nello stesso blocco, ad ogni splittamento. Non ho mai splittato rispetto ad un nodo $k : rank(k) = i, m \to k$, quindi è garantito che all'inizio dell'iterazione $i$-esima $n,m$ sono ancora nello stesso blocco. Per la correttezza di PTA sono ancora nella stessa partizione dopo 7.a
+    + ($\impliedby$) Se $i > 0, m,n \in X$ dopo 7.a, considero un nodo $m' : rank(n') = i - 1, m \to m'$. Poichè $m,n$ si trovano nello stesso blocco sono "sopravvissuti insieme" a tutti gli split per nodi di rango $0, ..., i-1$. Allora durante lo split rispetto al blocco $X_2$ a cui appartiene $m'$ deve esserci stato (prima del collapse) un $n' \in X_2 : n \to n'$. Ma per l'ipotesi induttiva se $m', n'$ appartengono allo stesso blocco dopo 7.a (prima dello split alla fine dell'iterazione $(i-1)$-esima) allora $m' \equiv n'$. Inoltre, poichè PTA viene eseguito sul sotto-grafo costituito dai nodi di rango $i$, e poichè $m,n$ restano nello stesso blocco dopo PTA, la sotto-partizione che viene consegnata da PTA è costituita da blocchi di nodi bisimili rispetto agli altri nodi di rango $i$ (cioè bisimili considerando il grafo "ristretto" o "isolato"). Questo significa che $m \equiv_i n$ (nel grafo ristretto), cioè se $\exists m' : m \to m', rank(m') = i \implies \exists n' : (n \to n' \land m' \equiv n'$).
+    Queste due considerazioni congiunte forniscono la dimostrazione dell'enunciato.
