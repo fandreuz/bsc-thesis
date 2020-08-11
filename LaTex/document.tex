@@ -5,20 +5,40 @@
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{subcaption}
 \usepackage{tikz}
+\usepackage{caption}
+\usepackage[nottoc]{tocbibind}
+
 \usetikzlibrary{arrows.meta}
 
+\captionsetup[figure]{name=Figura}
+
 \theoremstyle{definition}
-\newtheorem{definition}{Definizione}[subsection]
-\newtheorem{example}{Esempio}[subsection]
+\newtheorem{definition}{Definizione}[section]
+\newtheorem{example}{Esempio}[section]
+\newtheorem{observation}{Osservazione}[section]
 
 \theoremstyle{plain}
-\newtheorem{proposition}{Proposizione}[subsection]
-\newtheorem{corollary}{Corollario}[subsection]
+\newtheorem{proposition}{Proposizione}[section]
+\newtheorem{theorem}{Teorema}[section]
+\newtheorem{corollary}{Corollario}[section]
 
-\usepackage{caption}
-\captionsetup[figure]{name=Figura}
+\newcommand{\notimplies}{\mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
+
+\newenvironment{proof2}
+{
+  \begin{proof}[Dimostrazione]
+}
+{\end{proof}}
+
 \begin{document}
+
+\renewcommand\contentsname{Indice}
+\tableofcontents
+\addtocontents{toc}{~\hfill\textbf{Pagina}\par}
+
 \include{./tex/sezione1/file}
 
 \renewcommand\refname{Bibliografia}
