@@ -1,16 +1,22 @@
-\section{Problemi considerati}
-\subsection{Alcune definizioni fondamentali della teoria dei grafi}
+\section{\replaced[id=ac]{Nozioni di Base}{Problemi considerati}}
+
+\comment[id=ac]{usa \underline{sempre} 
+\texttt{\textbackslash{}emph} al posto di 
+\texttt{\textbackslash{}textit}.}
+
+\subsection{\replaced[id=ac]{Relazioni Binarie}{Alcune definizioni fondamentali della teoria dei grafi}}
 Riportiamo la definizione di \textit{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \textit{grafo}, che sarà fondamentale all'interno di questo elaborato.
 \begin{definition}
     Chiameremo \textit{relazione binaria} su $A,B$ qualsiasi sottoinsieme del prodotto cartesiano $A \times B$.\\
     Chiameremo \textit{relazione binaria} su $A$ qualsiasi sottoinsieme del prodotto cartesiano $A \times A$.\\
-    Diremo che $u,v$ sono \textit{in relazione} rispetto a $b$ se $(u,v) \in b$. In questo caso useremo la notazione $u b v$.
+	Diremo che $u,v$ sono \textit{in relazione} rispetto a $b$ se $(u,v) \in b$\comment[id=ac]{Usa $R$ per rappresentare una relazione al posto di $b$}. In questo caso \replaced[id=ac]{potremo usare}{useremo} la notazione $u b v$.
 \end{definition}
+\comment[id=ac]{Prima di parlare delle chiusure, darei le definizioni delle proprietà riflessiva, simmetrica, e transitiva di una relazioni e farei degli esempi.}
 Ad una relazione binaria su un insieme è possibile associare relazioni binarie che la contengono, le cosiddette \textit{chiusure}.
 Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme di coppie costruito con un criterio differente a seconda del tipo di chiusura.\\
 Quest'ultimo insieme fornisce la proprietà che caratterizza la chiusura (riflessività, simmetria, transitività).
 \begin{definition}
-    Sia $b$ una relazione binaria su $N$.
+	Sia $b$ una relazione binaria su $N$\comment[id=ac]{Continua a usare $A$ al posto di $N$}.
     Diamo le seguenti definizioni
     \begin{itemize}
         \item \textit{Chiusura riflessiva}: $b_r = b \cup \{(x,x) \,\, \forall x \in N\}$
@@ -18,20 +24,28 @@ Quest'ultimo insieme fornisce la proprietà che caratterizza la chiusura (rifles
         \item \textit{Chiusura transitiva}: $b_t = b \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in b \land (y,z) \in b\}$
     \end{itemize}
 \end{definition}
+\comment[id=ac]{Metti qualche esempio}
+
+\subsection{\added[id=ac]{Grafi}}
 Con queste premesse possiamo definire un \textit{grafo} come segue:
 \begin{definition}
-    Sia $N \neq \emptyset$. Sia $\to$ una relazione binaria su $N$.\\
-    Chiameremo \textit{grafo} la coppia $G = (N, \to)$.\\
+    Sia $N \neq \emptyset$\comment[id=ac]{Usa \underline{sempre} $V$ al posto di $N$}. Sia $\to$ una relazione binaria su $N$.\\
+    Chiameremo \replaced[id=ac]{\emph{grafo diretto} o \emph{orientato}}{\textit{grafo}} la coppia $G = (N, \to)$.\\
     In questo caso
     \begin{itemize}
-        \item $N$ è l'insieme dei nodi;
-        \item $\to$ è la relazione di raggiungibilità: $a \to b \,\,(a,b \in N)$ significa "nel grafo $G$ esiste un arco dal nodo $a$ al nodo $b$".
+        \item $N$ è l'insieme dei \replaced[id=ac]{\emph{nodi} o \emph{vertici}}{nodi};
+        \item $\to$ è la relazione di raggiungibilità: $a \to b \,\,(a,b \in N)$ significa \replaced[id=ac]{``}{"}nel grafo $G$ esiste un arco dal nodo $a$ al nodo $b$\replaced[id=ac]{''}{"}.
     \end{itemize}
-    Diremo che $G$ è un \textit{grafo direzionato} se $u \to v \notimplies v \to u$ (cioè se $\to$ non è una relazione binaria simmetrica). Altrimenti diremo che $G$ è un \textit{grafo non direzionato}.
+\deleted[id=ac,comment={Visto che tratti sempre i grafi diretti, eviterei di entrare in questa discussione}]{Diremo che $G$ è un 
+\textit{grafo direzionato} se 
+%$u \to v \notimplies v \to u$ 
+(cioè se $\to$ non è una relazione binaria simmetrica). 
+Altrimenti diremo che $G$ è un \textit{grafo non direzionato}.}
 \end{definition}
 \begin{observation}
+\deleted[id=ac]{
     Il grafo $G'$ rappresentato dalla coppia $(N, \to')$, dove $\to'$ è la chiusura simmetrica della relazione di raggiungibilità $\to$ di un grafo direzionato,
-    è un grafo non direzionato.
+    è un grafo non direzionato.}
 \end{observation}
 \begin{example}
     \begin{figure}[t]
@@ -54,25 +68,25 @@ Con queste premesse possiamo definire un \textit{grafo} come segue:
                 \path [->] (C) edge node {} (E);
             \end{scope}
             \end{tikzpicture}
-        \caption{}
+        \caption{\comment[id=ac]{Scrivi qualcosa}}
         \label{fig:graph}
     \end{figure}
     Il grafo di Figura \ref*{fig:graph} è descritto dalla coppia
     \begin{itemize}
-        \item $N = \{A,B,C,D,E\}$
+        \item $N = \{A,B,C,D,E\}$\comment[id=ac]{Usa \underline{sempre} le lettere minuscole per indicare i nodi di un grafo}
         \item $\to \,\,= \{(A,B), (A,D), (B,C), (D,C), (C,E), (D,E)\}$
     \end{itemize}
 \end{example}
 Un grafo è quindi un insieme di elementi (i \textit{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \textit{archi} o \textit{rami}).\\
-E' naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di "luoghi" ed un insieme di "percorsi" che consentono di viaggiare
-da un luogo ad un altro.\\
+\replaced[id=ac]{\`E}{E'} naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di \replaced[id=ac]{nodi}{"luoghi"} ed un insieme di \replaced[id=ac]{\emph{cammini}}{"percorsi"} che consentono di \replaced[id=ac]{spostarsi}{viaggiare}
+da un \replaced[id=ac]{nodo}{luogo} ad un altro.\\
 La seguente definizione sorge in modo spontaneo da questo punto di vista:
 \begin{definition}
-    Sia $G = (N, \to)$ un grafo. Siano $u,v \in N$. Diremo che \textit{$v$ è raggiungibile da $u$}, o in alternativa \textit{esiste un cammino da $u$ a $v$}, o ancora $u \to_t v$ (la $t$ in pedice è letta come \textit{transitivo}), se
+    Sia $G = (N, \to)$ un grafo. Siano $u,v \in N$. Diremo che \textit{$v$ è raggiungibile da $u$}, o in alternativa \textit{esiste un cammino\comment[id=ac]{non hai mai detto cosa è un cammino} da $u$ a $v$}, o ancora $u \to_t v$ (la $t$ in pedice è letta come \textit{transitivo}), se
     $\exists$ una sequenza $x_n \subset N$ finita di lunghezza $K : x_K = v, x_0 = u, x_n \to x_{n+1}$.
 \end{definition}
-L'esistenza di un cammino tra nodi fornisce un criterio immediato per suddividere un grafo in più pezzi. Riportiamo questo criterio come formulato in \cite{gentilini}:
-\begin{definition}
+L'esistenza di un cammino tra nodi fornisce un criterio immediato per \replaced[id=ac]{partizionare ogni grafo}{suddividere un grafo in più pezzi}. Riportiamo questo criterio come formulato in~\cite{gentilini}\comment[id=ac]{Qui citerei ``DEPTH-FIRST SEARCH AND LINEAR GRAPH ALGORITHMS'' di Tarjan o ``Introduction to Algorithms'' di Cormen, etc.}:
+\begin{definition}\comment[id=ac]{Prima di definire il grafo delle componenti connesse, definisci le componenti fortemente connesse e fai degli esempi}
     Sia $G = (N, \to)$ un grafo. Chiameremo \textit{grafo delle componenti fortemente connesse (CFC) di} $G$ il grafo $G^{CFC} = (N^{CFC}, \to^{CFC})$ se
     \begin{itemize}
         \item $N^{CFC} = \{C : C = \{m \in N : \forall n \in C, m \to_t n\}\}$
@@ -92,7 +106,7 @@ Segue immediatamente la seguente proprietà:
 \begin{example}
     \begin{figure}[t]
         \centering
-        \begin{subfigure}{.49\textwidth}
+        \begin{subfigure}{.45\textwidth}
           \centering
           \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
@@ -123,9 +137,10 @@ Segue immediatamente la seguente proprietà:
                 \path [->] (B) edge node {} (H);
             \end{scope}
             \end{tikzpicture}
-          \caption{}
+          \caption{\comment[id=ac]{Scrivi qualcosa}}
         \end{subfigure}
-        \begin{subfigure}{.49\textwidth}
+        \hfill
+        \begin{subfigure}{.45\textwidth}
           \centering
           \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
@@ -143,22 +158,25 @@ Segue immediatamente la seguente proprietà:
 
             \end{scope}
             \end{tikzpicture}
-          \caption{}
+          \caption{\comment[id=ac]{Scrivi qualcosa}}
         \end{subfigure}
-        \caption{}
+        \caption{\comment[id=ac]{Scrivi qualcosa}}
         \label{fig:graph_cfc}
     \end{figure}
 
     La figura \ref*{fig:graph_cfc}.a rappresenta un grafo generico, la figura \ref*{fig:graph_cfc}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
 
-\subsection{Applicazione dei grafi alla teoria degli insiemi}
+\subsection{\replaced[id=ac]{Rappresentare gli insiemi tramite i grafi}{Applicazione dei grafi alla teoria degli insiemi}}
 \label{sec:graphs_sets}
-Per motivi che risulteranno chiari in seguito risulta conveniente fornire un'interpretazione insiemistica della nozione di grafo vista sopra.
+
+\comment[id=ac]{Qui andrebbero introdotte le nozioni di insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato 
+prima di usare i grafi per rappresentare gli insiemi}
+\replaced[id=ac]{In taluni casi,}{Per motivi che risulteranno chiari in seguito} risulta conveniente fornire un'\replaced[id=ac]{in\-ter\-pre\-ta\-zio\-ne}{interpretazione} insiemistica della nozione di grafo vista sopra.
 \begin{definition}
-    Sia $G = (N, \to)$ un grafo direzionato. Sia $u \in N : \forall v \in N, u \to_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(N, \to, u)$ si dice \textit{accessible pointed graph}, o \textit{APG}.
+    Sia $G = (N, \to)$ un grafo \replaced[id=ac]{orientato}{direzionato}. Sia $u \in N : \forall v \in N, u \to_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(N, \to, u)$ si dice \textit{accessible pointed graph}, o \textit{APG}.
 \end{definition}
-Se si associano la relazione di raggiungibilità $\to$ e la relazione di appartenenza $\in$, e se si interpreta ogni nodo come un insieme, ad ogni APG è possibile associare un unico insieme. Tuttavia ad ogni insieme si può associare più di un APG \cite{dovier}.
+Se si associano la relazione di raggiungibilità $\to$ e la relazione di appartenenza $\in$, e se si interpreta ogni nodo come un insieme, ad ogni APG è possibile associare un unico insieme \comment[id=ac]{Questo è quello che, normalmente, viene definito AFA (assioma di anti-fondatezza) vedi Forti, Honsell 81 o Aczel 88)}. Tuttavia ad ogni insieme si può associare più di un APG \cite{dovier}\comment[id=ac]{Cita Forti, Honsell 81 o Aczel 88}.
 \begin{example}
     \begin{figure}[t]
         \centering
@@ -233,7 +251,7 @@ Se si associano la relazione di raggiungibilità $\to$ e la relazione di apparte
 \end{example}
 
 \subsection{Bisimulazione}
-\begin{definition}
+\begin{definition}\comment[id=ac]{Prima di definire la bisimilarità, definisci cosa è una relazione di bisimulazione. Poi puoi dire che due oggetti in relazione tramite una bisimulazione sono bisimili senza usare una definitizione.}
     Siano $G_1 = (N_1, E_1), G_2 = (N_2, E_2)$ due grafi. Diremo che $G_1, G_2$ sono \textit{bisimili} (come in \cite{dovier}) rispetto alla relazione binaria $b$ su $N_1, N_2$ se $\forall u \in N_1, v \in N_2$ valgono congiuntamente le seguenti condizioni
     \begin{itemize}
         \item $\forall u' \in N_1 : u \to u', u b v \implies \,\exists v' \in N_2 : (u' b v' \land v \to v')$
@@ -253,6 +271,10 @@ Per introdurre i risultati che verranno presentati in seguito risulta utile defi
         \item $\forall v' \in N : v \to v', u b v \implies \,\exists u' \in N : (u' b v' \land u \to u')$
     \end{itemize}
 \end{definition}
+
+\comment[id=ac]{Mostra degli esempi di bisimulazioni e tra queste alcune che non siano riflessive, 
+simmetriche e transistive}
+
 Proponiamo ora un risultato che consentirà di considerare più generali di quanto sembrino in apparenza alcuni risultati presentati nel seguito del lavoro.
 \begin{theorem}
     Sia $b$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.

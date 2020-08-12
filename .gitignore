@@ -5,6 +5,7 @@
 *.lof
 *.log
 *.lot
+*.loc
 *.fls
 *.out
 *.toc
