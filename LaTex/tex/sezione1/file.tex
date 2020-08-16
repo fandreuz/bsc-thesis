@@ -1,107 +1,142 @@
-\section{\replaced[id=ac]{Nozioni di Base}{Problemi considerati}}
+\section{Nozioni di Base}
 
-\comment[id=ac]{usa \underline{sempre} 
-\texttt{\textbackslash{}emph} al posto di 
-\texttt{\textbackslash{}textit}.}
-
-\subsection{\replaced[id=ac]{Relazioni Binarie}{Alcune definizioni fondamentali della teoria dei grafi}}
-Riportiamo la definizione di \textit{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \textit{grafo}, che sarà fondamentale all'interno di questo elaborato.
+\subsection{Relazioni Binarie}
+Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato.
 \begin{definition}
-    Chiameremo \textit{relazione binaria} su $A,B$ qualsiasi sottoinsieme del prodotto cartesiano $A \times B$.\\
-    Chiameremo \textit{relazione binaria} su $A$ qualsiasi sottoinsieme del prodotto cartesiano $A \times A$.\\
-	Diremo che $u,v$ sono \textit{in relazione} rispetto a $b$ se $(u,v) \in b$\comment[id=ac]{Usa $R$ per rappresentare una relazione al posto di $b$}. In questo caso \replaced[id=ac]{potremo usare}{useremo} la notazione $u b v$.
+    Chiameremo \emph{relazione binaria} su $A,B$ qualsiasi sottoinsieme del prodotto cartesiano $A \times B$.\\
+    Chiameremo \emph{relazione binaria} su $A$ qualsiasi sottoinsieme del prodotto cartesiano $A \times A$.\\
+	Diremo che $u,v$ sono \emph{in relazione} rispetto a $R$ se $(u,v) \in R$. In questo caso potremo usare la notazione $u R v$.
 \end{definition}
-\comment[id=ac]{Prima di parlare delle chiusure, darei le definizioni delle proprietà riflessiva, simmetrica, e transitiva di una relazioni e farei degli esempi.}
-Ad una relazione binaria su un insieme è possibile associare relazioni binarie che la contengono, le cosiddette \textit{chiusure}.
-Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme di coppie costruito con un criterio differente a seconda del tipo di chiusura.\\
-Quest'ultimo insieme fornisce la proprietà che caratterizza la chiusura (riflessività, simmetria, transitività).
+Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella definizione seguente:
 \begin{definition}
-	Sia $b$ una relazione binaria su $N$\comment[id=ac]{Continua a usare $A$ al posto di $N$}.
+    Sia $R$ una relazione binaria su $A$. Diremo che $R$ è
+    \begin{itemize}
+        \item \emph{riflessiva} se $\forall x \in A, x R x$;
+        \item \emph{simmetrica} se $x R y \implies y R x \,\,(x,y \in A)$
+        \item \emph{transitiva} se $(x R y \land y R z) \implies x R z \,\,(x,y,z \in A)$
+    \end{itemize}
+\end{definition}
+\begin{example}
+    La relazione $\leq$ sui naturali è riflessiva e transitiva, ma non simmetrica.\\
+    La relazione $=$ ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
+\end{example}
+\begin{definition}
+    Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}.\\
+    Una relazione di equivalenza divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutti gli elementi sono in relazione.
+\end{definition}
+A partire da una relazione binaria $R$ possiamo costruire relazioni binarie che contengono $R$, e che mostrano una o più delle proprietà presentate sopra, le cosiddette \emph{chiusure}.
+Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme di coppie costruito con un criterio differente a seconda del tipo di chiusura, che fornisce la proprietà desiderata.
+\begin{definition}
+	Sia $R$ una relazione binaria su $A$.
     Diamo le seguenti definizioni
     \begin{itemize}
-        \item \textit{Chiusura riflessiva}: $b_r = b \cup \{(x,x) \,\, \forall x \in N\}$
-        \item \textit{Chiusura simmetrica}: $b_s = b \cup \{(y,x) \,\, \forall x,y : (x,y) \in b\}$
-        \item \textit{Chiusura transitiva}: $b_t = b \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in b \land (y,z) \in b\}$
+        \item \emph{Chiusura riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
+        \item \emph{Chiusura simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
+        \item \emph{Chiusura transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
     \end{itemize}
 \end{definition}
-\comment[id=ac]{Metti qualche esempio}
+\begin{example}
+    La chiusura riflessiva della relazione $<$ (minore stretto) è la relazione $\leq$.\\
+    La chiusura transitiva della relazione $a R b \iff $``$a$ è più piccolo di $b$'' è la relazione $<$.
+\end{example}
 
-\subsection{\added[id=ac]{Grafi}}
-Con queste premesse possiamo definire un \textit{grafo} come segue:
+\subsection{Grafi}
+Con queste premesse possiamo definire un \emph{grafo} come segue:
 \begin{definition}
-    Sia $N \neq \emptyset$\comment[id=ac]{Usa \underline{sempre} $V$ al posto di $N$}. Sia $\to$ una relazione binaria su $N$.\\
-    Chiameremo \replaced[id=ac]{\emph{grafo diretto} o \emph{orientato}}{\textit{grafo}} la coppia $G = (N, \to)$.\\
+    Sia $V$ un insieme finito non vuoto. Sia $\to$ una relazione binaria su $V$.\\
+    Chiameremo \emph{grafo diretto} o \emph{grafo orientato} la coppia $G = (V, \to)$.\\
     In questo caso
     \begin{itemize}
-        \item $N$ è l'insieme dei \replaced[id=ac]{\emph{nodi} o \emph{vertici}}{nodi};
-        \item $\to$ è la relazione di raggiungibilità: $a \to b \,\,(a,b \in N)$ significa \replaced[id=ac]{``}{"}nel grafo $G$ esiste un arco dal nodo $a$ al nodo $b$\replaced[id=ac]{''}{"}.
+        \item $V$ è l'insieme dei \emph{nodi} o \emph{vertici};
+        \item $\to$ è la relazione di raggiungibilità: $a \to b \,\,(a,b \in V)$ significa ``nel grafo $G$ esiste un arco dal nodo $a$ al nodo $b$''.
     \end{itemize}
-\deleted[id=ac,comment={Visto che tratti sempre i grafi diretti, eviterei di entrare in questa discussione}]{Diremo che $G$ è un 
-\textit{grafo direzionato} se 
-%$u \to v \notimplies v \to u$ 
-(cioè se $\to$ non è una relazione binaria simmetrica). 
-Altrimenti diremo che $G$ è un \textit{grafo non direzionato}.}
 \end{definition}
-\begin{observation}
-\deleted[id=ac]{
-    Il grafo $G'$ rappresentato dalla coppia $(N, \to')$, dove $\to'$ è la chiusura simmetrica della relazione di raggiungibilità $\to$ di un grafo direzionato,
-    è un grafo non direzionato.}
-\end{observation}
 \begin{example}
-    \begin{figure}[t]
+    \begin{figure}[b]
         \centering
         \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
-                \node (A) at (0,0) {A};
-                \node (B) at (0,3) {B};
-                \node (C) at (2.5,4) {C};
-                \node (D) at (2.5,1) {D};
-                \node (E) at (5,3) {E} ;
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+                \node (c) at (2.5,4) {c};
+                \node (d) at (2.5,1) {d};
+                \node (e) at (5,3) {e};
             \end{scope}
 
             \begin{scope}
-                \path [->] (A) edge node {} (B);
-                \path [->] (B) edge node {} (C);
-                \path [->] (A) edge node {} (D);
-                \path [->] (D) edge node {} (C);
-                \path [->] (D) edge node {} (E);
-                \path [->] (C) edge node {} (E);
+                \path [->] (a) edge node {} (b);
+                \path [->] (b) edge node {} (c);
+                \path [->] (a) edge node {} (d);
+                \path [->] (d) edge node {} (c);
+                \path [->] (d) edge node {} (e);
+                \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{\comment[id=ac]{Scrivi qualcosa}}
+        \caption{Rappresentazione grafica di un grafo}
         \label{fig:graph}
     \end{figure}
     Il grafo di Figura \ref*{fig:graph} è descritto dalla coppia
     \begin{itemize}
-        \item $N = \{A,B,C,D,E\}$\comment[id=ac]{Usa \underline{sempre} le lettere minuscole per indicare i nodi di un grafo}
-        \item $\to \,\,= \{(A,B), (A,D), (B,C), (D,C), (C,E), (D,E)\}$
+        \item $N = \{a,b,c,d,e\}$
+        \item $\to \,\,= \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
     \end{itemize}
 \end{example}
-Un grafo è quindi un insieme di elementi (i \textit{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \textit{archi} o \textit{rami}).\\
-\replaced[id=ac]{\`E}{E'} naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di \replaced[id=ac]{nodi}{"luoghi"} ed un insieme di \replaced[id=ac]{\emph{cammini}}{"percorsi"} che consentono di \replaced[id=ac]{spostarsi}{viaggiare}
-da un \replaced[id=ac]{nodo}{luogo} ad un altro.\\
+Nel seguito utilizzeremo ampiamente la seguente terminologia:
+\begin{definition}
+    Sia $G = (V,\to)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u \to v$. Diremo che $u$ è parente di $v$ e che $v$ è figlio di $u$ se $u \to v$.
+\end{definition}
+Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}).\\
+\accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro.\\
 La seguente definizione sorge in modo spontaneo da questo punto di vista:
 \begin{definition}
-    Sia $G = (N, \to)$ un grafo. Siano $u,v \in N$. Diremo che \textit{$v$ è raggiungibile da $u$}, o in alternativa \textit{esiste un cammino\comment[id=ac]{non hai mai detto cosa è un cammino} da $u$ a $v$}, o ancora $u \to_t v$ (la $t$ in pedice è letta come \textit{transitivo}), se
-    $\exists$ una sequenza $x_n \subset N$ finita di lunghezza $K : x_K = v, x_0 = u, x_n \to x_{n+1}$.
+    Sia $G = (V, \to)$ un grafo. Siano $u,v \in V$. Diremo che $v$ \emph{è raggiungibile da} $u$, o in alternativa \emph{esiste un cammino da} $u$ \emph{a} $v$, o ancora $u \to_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se
+    $\exists x_n \subset V$ (una sequenza finita di nodi) di lunghezza $K : x_K = v, x_0 = u, x_n \to x_{n+1}$.
 \end{definition}
-L'esistenza di un cammino tra nodi fornisce un criterio immediato per \replaced[id=ac]{partizionare ogni grafo}{suddividere un grafo in più pezzi}. Riportiamo questo criterio come formulato in~\cite{gentilini}\comment[id=ac]{Qui citerei ``DEPTH-FIRST SEARCH AND LINEAR GRAPH ALGORITHMS'' di Tarjan o ``Introduction to Algorithms'' di Cormen, etc.}:
-\begin{definition}\comment[id=ac]{Prima di definire il grafo delle componenti connesse, definisci le componenti fortemente connesse e fai degli esempi}
-    Sia $G = (N, \to)$ un grafo. Chiameremo \textit{grafo delle componenti fortemente connesse (CFC) di} $G$ il grafo $G^{CFC} = (N^{CFC}, \to^{CFC})$ se
+L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
+\begin{definition}
+    Diremo che un grafo $(V,\to)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 \to_t v_2$.\\
+    Le \emph{componenti fortemente connesse} (\emph{CFC}) di un grafo $(V,\to)$ sono le classi di equivalenza della relazione $\to_t$ \cite[Appendice B]{clrs}. In altre parole, i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
+\end{definition}
+\begin{example}
+    \begin{figure}[b]
+        \centering
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a)[fill=yellow] at (0,0) {a};
+                \node (b)[fill=yellow] at (0,3) {b};
+                \node (c)[fill=yellow] at (2.5,4) {c};
+                \node (d)[fill=yellow] at (2.5,1) {d};
+                \node (e)[fill=red] at (5,3) {e};
+            \end{scope}
+
+            \begin{scope}
+                \path [->] (a) edge node {} (b);
+                \path [->] (b) edge node {} (c);
+                \path [->] (d) edge node {} (a);
+                \path [->] (c) edge node {} (d);
+                \path [->] (d) edge node {} (e);
+                \path [->] (c) edge node {} (e);
+            \end{scope}
+            \end{tikzpicture}
+        \caption{CFC di un grafo}
+        \label{fig:graph_cfc_1}
+    \end{figure}
+    Nel grafo di Figura \ref*{fig:graph_cfc_1} le CFC sono state evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
+\end{example}
+Il partizionamento in CFC è definito come segue:
+\begin{definition}
+    Sia $G = (V, \to)$ un grafo. Chiameremo \emph{grafo delle componenti fortemente connesse (CFC) di} $G$ il grafo $G^{CFC} = (V^{CFC}, \to^{CFC})$ con
     \begin{itemize}
-        \item $N^{CFC} = \{C : C = \{m \in N : \forall n \in C, m \to_t n\}\}$
-        \item $\to^{CFC} = \{(A,B) \in N^{CFC} \times N^{CFC} : A \neq B, \exists m \in A, n \in B : m \to n\}$
+        \item $V^{CFC} = \{C : \,$``$C$ è una classe di equivalenza per $\to_t$ su $V$''$\}$
+        \item $\to^{CFC} = \{(A,B) \in V^{CFC} \times V^{CFC} : A \neq B, \exists m \in A, n \in B : m \to n\}$
     \end{itemize}
 \end{definition}
-Segue immediatamente la seguente proprietà:
+Riportiamo la seguente proprietà immediata:
 \begin{proposition}
     Sia $G^{CFC}$ il grafo delle CFC di un grafo $G$ generico. Allora $G^{CFC}$ è aciclico.
 \end{proposition}
 \begin{proof2}
-    Suppongo per assurdo che in $G^{CFC}$ esista un ciclo, quindi è possibile partendo da un $A \in N^{CFC}$ ritornare ad $A$ seguendo un cammino che passa per un numero
-    finito di nodi di $N^{CFC}$, che raggruppiamo nell'insieme $X \subset N^{CFC}$, con $A \not\in X$. Ma allora qualsiasi nodo
-    $n \in N : (\exists B \in N^{CFC} \land n \in B \land B \in X)$ è raggiungibile da qualsiasi nodo di $A$. Quindi tutti i nodi inclusi nel ciclo devono appartenere alla
-    stessa componente, ma questa deduzione è in contrasto con l'ipotesi.
+    Suppongo per assurdo che in $G^{CFC}$ esista un ciclo. Allora tutti i nodi di $V^{CFC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa CFC, ma questo è assurdo.
 \end{proof2}
 \begin{example}
     \begin{figure}[t]
@@ -137,7 +172,7 @@ Segue immediatamente la seguente proprietà:
                 \path [->] (B) edge node {} (H);
             \end{scope}
             \end{tikzpicture}
-          \caption{\comment[id=ac]{Scrivi qualcosa}}
+          \caption{Un grafo}
         \end{subfigure}
         \hfill
         \begin{subfigure}{.45\textwidth}
@@ -158,27 +193,48 @@ Segue immediatamente la seguente proprietà:
 
             \end{scope}
             \end{tikzpicture}
-          \caption{\comment[id=ac]{Scrivi qualcosa}}
+          \caption{Grafo delle CFC}
         \end{subfigure}
-        \caption{\comment[id=ac]{Scrivi qualcosa}}
-        \label{fig:graph_cfc}
+        \caption{Un grafo ed il corrispondente grafo delle CFC}
+        \label{fig:graph_cfc_2}
     \end{figure}
-
-    La figura \ref*{fig:graph_cfc}.a rappresenta un grafo generico, la figura \ref*{fig:graph_cfc}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
+    La Figura \ref*{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref*{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
 
-\subsection{\replaced[id=ac]{Rappresentare gli insiemi tramite i grafi}{Applicazione dei grafi alla teoria degli insiemi}}
-\label{sec:graphs_sets}
-
-\comment[id=ac]{Qui andrebbero introdotte le nozioni di insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato 
-prima di usare i grafi per rappresentare gli insiemi}
-\replaced[id=ac]{In taluni casi,}{Per motivi che risulteranno chiari in seguito} risulta conveniente fornire un'\replaced[id=ac]{in\-ter\-pre\-ta\-zio\-ne}{interpretazione} insiemistica della nozione di grafo vista sopra.
+\subsection{Cenni di teoria degli insiemi}
+In generale ammettiamo che un insieme possa contenere altri insiemi. Questa concessione diventa problematica nel caso in cui tra i membri di un insieme $A$ risulti lo stesso insieme $A$, o un insieme contenente l'insieme $A$. Diamo quindi la seguente definizione:
 \begin{definition}
-    Sia $G = (N, \to)$ un grafo \replaced[id=ac]{orientato}{direzionato}. Sia $u \in N : \forall v \in N, u \to_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(N, \to, u)$ si dice \textit{accessible pointed graph}, o \textit{APG}.
+    Diremo che un insieme $A$ è \emph{ben-fondato} se $\forall B \in A : $ ``B è un insieme'' si ha $A \not\subset B$. Altrimenti diremo che $A$ è \emph{non-ben-fondato}.
 \end{definition}
-Se si associano la relazione di raggiungibilità $\to$ e la relazione di appartenenza $\in$, e se si interpreta ogni nodo come un insieme, ad ogni APG è possibile associare un unico insieme \comment[id=ac]{Questo è quello che, normalmente, viene definito AFA (assioma di anti-fondatezza) vedi Forti, Honsell 81 o Aczel 88)}. Tuttavia ad ogni insieme si può associare più di un APG \cite{dovier}\comment[id=ac]{Cita Forti, Honsell 81 o Aczel 88}.
 \begin{example}
-    \begin{figure}[t]
+    L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
+\end{example}
+% TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
+
+\subsection{Rappresentazione di insiemi tramite grafi}
+\label{sec:graphs_sets}
+In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto una nozione fondamentale:
+\begin{definition}
+    Sia $G = (V, \to)$ un grafo orientato. Sia $u \in V : \forall v \in V, u \to_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(V, \to, u)$ si dice \emph{accessible pointed graph}, o \emph{APG}.
+\end{definition}
+Per pervenire allo scopo di rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
+\begin{definition}
+    Chiameremo \emph{decorazione} di un APG l'assegnazione di un insieme ad ogni suo nodo.
+\end{definition}
+Associando la relazione di raggiungibilità $\to$ alla relazione di appartenenza $\in$ abbiamo tutto il necessario per la rappresentazione di insiemi:
+\begin{definition}
+    Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia di un APG $(G,v)$ con una decorazione in cui a $v$ è associato $A$.
+\end{definition}
+Ad un APG aciclico è possibile associare un'unica decorazione. Questo risultato tuttavia non può essere dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo in \cite{aczel} viene dato il seguente assioma:
+\begin{axiom}[AFA, Anti-Foundation-Axiom]
+    Ogni APG possiede un'unica decorazione.
+\end{axiom}
+L'assioma AFA ha un'ovvia conseguenza:
+\begin{corollary}
+    Ogni APG è immagine di un unico insieme.
+\end{corollary}
+\begin{example}
+    \begin{figure}[b]
         \centering
         \begin{subfigure}{.25\textwidth}
           \centering
@@ -194,7 +250,8 @@ Se si associano la relazione di raggiungibilità $\to$ e la relazione di apparte
                 \path [->] (A) edge node {} (C);
             \end{scope}
             \end{tikzpicture}
-          \caption{}
+          \captionsetup{labelformat=empty}
+          \caption{$\{\emptyset\}$}
         \end{subfigure}
         \begin{subfigure}{.15\textwidth}
             \centering
@@ -208,7 +265,8 @@ Se si associano la relazione di raggiungibilità $\to$ e la relazione di apparte
                   \path [->] (A) edge node {} (B);
               \end{scope}
               \end{tikzpicture}
-            \caption{}
+            \captionsetup{labelformat=empty}
+            \caption{$\{\emptyset\}$}
           \end{subfigure}
         \begin{subfigure}{.15\textwidth}
           \centering
@@ -221,7 +279,8 @@ Se si associano la relazione di raggiungibilità $\to$ e la relazione di apparte
                 \path [->] (A) edge [loop above] node {} (A);
             \end{scope}
             \end{tikzpicture}
-          \caption{}
+          \captionsetup{labelformat=empty}
+          \caption{$A = \{A\}$}
         \end{subfigure}
         \begin{subfigure}{.25\textwidth}
             \centering
@@ -238,44 +297,38 @@ Se si associano la relazione di raggiungibilità $\to$ e la relazione di apparte
                   \path [->] (A) edge node {} (C);
               \end{scope}
               \end{tikzpicture}
-            \caption{}
+            \captionsetup{labelformat=empty}
+            \caption{$\{\emptyset, \{\emptyset\}\}$}
           \end{subfigure}
 
-        \caption{}
+        \caption{Rappresentazione di insiemi tramite grafi}
         \label{fig:graph_set}
     \end{figure}
 
-    Il grafo in figura \ref*{fig:graph_set}.a e quello in \ref*{fig:graph_set}.b rappresentano l'insieme $A = \{\emptyset\}$.
-    Il grafo in figura \ref*{fig:graph_set}.c rappresenta l'insieme $A = \{A\}$.
-    Il grafo in figura \ref*{fig:graph_set}.d rappresenta l'insieme $A = \{\emptyset, \{\emptyset\}\}$
+    In Figura \ref*{fig:graph_set} sono rappresentati alcuni insiemi sotto forma di APG.
 \end{example}
 
 \subsection{Bisimulazione}
-\begin{definition}\comment[id=ac]{Prima di definire la bisimilarità, definisci cosa è una relazione di bisimulazione. Poi puoi dire che due oggetti in relazione tramite una bisimulazione sono bisimili senza usare una definitizione.}
-    Siano $G_1 = (N_1, E_1), G_2 = (N_2, E_2)$ due grafi. Diremo che $G_1, G_2$ sono \textit{bisimili} (come in \cite{dovier}) rispetto alla relazione binaria $b$ su $N_1, N_2$ se $\forall u \in N_1, v \in N_2$ valgono congiuntamente le seguenti condizioni
-    \begin{itemize}
-        \item $\forall u' \in N_1 : u \to u', u b v \implies \,\exists v' \in N_2 : (u' b v' \land v \to v')$
-        \item $\forall v' \in N_2 : v \to v', u b v \implies \,\exists u' \in N_1 : (u' b v' \land u \to u')$
-    \end{itemize}
-\end{definition}
-Se per una determinata coppia di grafi esiste almeno una bisimulazione che li lega, possiamo dedurre che i nodi dei due grafi mostrano un comportamento simile.
-Questo concetto verrà chiarito in seguito, per ora forniamo solamente la seguente definizione:
 \begin{definition}
-    Siano $G_1 = (N_1, E_1, v_1), G_2 = (N_2, E_2, v_2)$ due APG. Diremo che sono \textit{bisimili} se $\exists$ una bisimulazione $b$ su $G_1, G_2 : v_1 b v_2$.
-\end{definition}
-Per introdurre i risultati che verranno presentati in seguito risulta utile definire la bisimulazione su un unico grafo:
-\begin{definition}
-    Sia $G = (N, \to)$ un grafo, e $b$ una relazione binaria su $N$. Diremo che $b$ è una \textit{bisimulazione} se $\forall u,v \in N$ valgono congiuntamente le seguenti condizioni
+    Siano $G_1 = (V_1,\to_1), G_2 = (V_2,\to_2)$ due grafi. Diremo che una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
-        \item $\forall u' \in N : u \to u', u b v \implies \,\exists v' \in N : (u' b v' \land v \to v')$
-        \item $\forall v' \in N : v \to v', u b v \implies \,\exists u' \in N : (u' b v' \land u \to u')$
+        \item $a R b, a \to_1 a' \implies \exists b' \in V_2 : (a' R b' \land b \to_2 b')$
+        \item $a R b, b \to_2 b' \implies \exists a' \in V_1 : (a' R b' \land a \to_1 a')$
     \end{itemize}
+    Possiamo definire in modo analogo una bisimulazione su un unico grafo $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
-
-\comment[id=ac]{Mostra degli esempi di bisimulazioni e tra queste alcune che non siano riflessive, 
-simmetriche e transistive}
-
-Proponiamo ora un risultato che consentirà di considerare più generali di quanto sembrino in apparenza alcuni risultati presentati nel seguito del lavoro.
+Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che verrà sfruttata ampiamente nel seguito
+\begin{definition}
+    Siano $G_1 = (V_1,\to_1), G_2 = (V_2,\to_2)$ due grafi. Diremo che sono \emph{bisimili} se $\exists R: V_1 \times V_2 : R$ è una bisimulazione su $G_1, G_2$.\\
+    Diremo che due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 R v_2$ per almeno una bisimulazione su $G_1, G_2$.
+\end{definition}
+\begin{observation}
+    Una bisimulazione può non essere riflessiva, simmetrica, nè transitiva.
+\end{observation}
+\begin{example}
+    La relazione $a R b \iff$ ``$a,b$ sono lo stesso nodo'' su un grafo qualsiasi è una bisimulazione riflessiva, simmetrica e transitiva.
+\end{example}
+Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante di una qualsiasi sua chiusura:
 \begin{theorem}
     Sia $b$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
@@ -312,7 +365,7 @@ Da questa proposizione si deduce il seguente corollario, che risulta dall'applic
     Ad ogni bisimulazione $b$ è possibile associare una bisimulazione $\widetilde{b} : b \subset \widetilde{b} \,\,\land\,\, \widetilde{b}$ è una relazione di equivalenza.
     \label{cor:bisimulation_eqrel}
 \end{corollary}
-Concludiamo la parte relativa ai risultati generali sulla bisimulazione con la seguente proposizione, che sarà utile in seguito
+Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la seguente proposizione, che sarà utile nel seguito:
 \begin{proposition}
     Siano $b_1, b_2$ due bisimulazioni su $G_1, G_2$. Allora $b = b_1 \cup b_2$ è ancora una bisimulazione.
     \label{obs:bisimulation_union}
@@ -323,9 +376,9 @@ Concludiamo la parte relativa ai risultati generali sulla bisimulazione con la s
 
 \subsubsection{Bisimulazione massima}
 \label{sec:bisi_max}
-Definiamo ora il concetto di \textit{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato.
+Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato.
 \begin{definition}
-    Diremo che una bisimulazione $b_M$ su $G_1, G_2$ è \textit{massima} se $\forall b : "b$ è una bisimulazione su $G_1, G_2$" si ha $u b v \implies u b_M v \,\,\,\forall a \in N_1, b \in N_2$.
+    Diremo che una bisimulazione $b_M$ su $G_1, G_2$ è \emph{massima} se $\forall b : "b$ è una bisimulazione su $G_1, G_2$" si ha $u b v \implies u b_M v \,\,\,\forall a \in N_1, b \in N_2$.
 \end{definition}
 Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche in modo molto semplice:
 \begin{proposition}
@@ -342,7 +395,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
     \end{enumerate}
 \end{proof2}
-Naturalmente il concetto di \textit{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
+Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
 ora dimostriamo il seguente risultato:
 \begin{theorem}
     Sia $G$ un grafo (finito). Allora $\exists b_M$ la bisimulazione massima su $G$.
@@ -365,12 +418,12 @@ Tenendo conto di quanto affermato nella sezione \ref*{sec:graphs_sets}, il Teore
 relazione di uguaglianza tra insiemi quando questi sono rappresentati da degli APG \cite{dovier}.\\
 Dopo questa considerazone, risulta naturale definire il seguente concetto:
 \begin{definition}
-    Sia $b$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_b = (N_b, \to_b)$ come in \cite{gentilini}, che chiameremo \textit{contrazione rispetto alla bisimulazione} $b$ \textit{di} $G$:
+    Sia $b$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_b = (N_b, \to_b)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $b$ \emph{di} $G$:
     \begin{itemize}
         \item $N_b = \{A = \{m \in N : \forall n \in A, m b n\}\}$
         \item $[m]_b \to_b [n]_b \iff \exists c \in [n]_b : m \to c$
     \end{itemize}
-    Risulta conveniente definire la \textit{classe del nodo} $a$ rispetto alla bisimulazione $b$, con la notazione $[a]_b$ come il nodo di $N_b$ a cui appartiene il nodo $a$.
+    Risulta conveniente definire la \emph{classe del nodo} $a$ rispetto alla bisimulazione $b$, con la notazione $[a]_b$ come il nodo di $N_b$ a cui appartiene il nodo $a$.
     \label{def:bisi_contraction}
 \end{definition}
 La Definizione \ref*{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
@@ -393,11 +446,11 @@ La Proposizione \ref*{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta
 \end{corollary}
 Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizzare la rappresentazione di insiemi, considerando che è sufficiente una bisimulazione sulla rappresentazione iniziale per ottenere una rappresentazione equivalente. Definiamo una relazione d'ordine sulle rappresentazioni:
 \begin{definition}
-    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \textit{minore} della rappresentazione equivalente $(G_b, v_b)$ se $\#N_a < \#N_b$.\\
-    Diremo che una rappresentazione è \textit{minima} se non esiste un'altra rappresentazione minore.
+    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $\#N_a < \#N_b$.\\
+    Diremo che una rappresentazione è \emph{minima} se non esiste un'altra rappresentazione minore.
 \end{definition}
 \begin{observation}
-    La \textit{contrazione per bisimulazione} di un grafo ha sempre un numero di nodi minore o uguale di quello del grafo iniziale.
+    La \emph{contrazione per bisimulazione} di un grafo ha sempre un numero di nodi minore o uguale di quello del grafo iniziale.
 \end{observation}
 Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco la bisimulazione prescelta per minimizzare la rappresentazione di un dato insieme:
 \begin{theorem}
