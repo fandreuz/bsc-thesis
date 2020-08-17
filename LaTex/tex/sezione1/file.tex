@@ -212,19 +212,22 @@ Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un a
 
 \subsection{Insiemi}
 \subsubsection{Cenni di teoria degli insiemi}
-In generale ammettiamo che un insieme possa contenere altri insiemi. Questa concessione diventa problematica nel caso in cui tra i membri di un insieme $A$ risulti lo stesso insieme $A$, o un insieme contenente l'insieme $A$. Diamo quindi la seguente definizione:
+In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiemi ZFC, ad eccezione dell'Assioma di Fondazione. Formuliamo innanzitutto i seguenti Assiomi:
+\begin{axiom}[di estensionalità]
+    Due insiemi sono uguali $\iff$ contengono gli stessi elementi.
+\end{axiom}
+\begin{axiom}[di fondazione]
+    Ogni insieme non vuoto contiene un elemento disgiunto dall'insieme stesso.
+    \label{axi:foundation}
+\end{axiom}
+Del primo faremo un uso esplicito nel seguito. Il secondo è evidentemente non valido nell'ambito trattato in questo elaborato. Introduciamo la seguente definizione:
 \begin{definition}
     Diremo che un insieme è \emph{ben-fondato} se non contiene se stesso. Altrimenti diremo che è \emph{non-ben-fondato}.
 \end{definition}
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
 \end{example}
-Gli insiemi non-ben-fondati non rientrano all'interno della teoria degli insiemi ZFC, in quanto non rispettano il seguente Assioma:
-\begin{axiom}[di fondazione]
-    Ogni insieme non vuoto contiene un elemento disgiunto dall'insieme stesso.
-    \label{axi:foundation}
-\end{axiom}
-Un'implicazione equivalente dell'Assioma \ref*{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica l'impossibilità per un insieme di contenere sé stesso. E' chiaro che questo contrasta con la definizione stessa di insieme non-ben-fondato.\\
+Una formulazione equivalente dell'Assioma \ref*{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica la non-esistenza, in ZFC, di insiemi non-ben-fondati.\\
 Rinunciando all'Assioma \ref*{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati, tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nel seguito.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
@@ -328,28 +331,9 @@ L'assioma AFA ha un'ovvia conseguenza:
     \end{figure}
     In Figura \ref*{fig:graph_set} sono rappresentati alcuni insiemi sotto forma di APG.
 \end{example}
-In \cite{aczel} viene fornita una formulazione alternativa dell'assioma AFA, data dalla congiunzione dei seguenti assiomi:
-\begin{axiom}(AFA1)
-    Ogni grafo ha almeno una decorazione.
-\end{axiom}
-\begin{axiom}(AFA2)
-    Ogni grafo ha al più una decorazione.
-\end{axiom}
-Chiaramente le due formulazioni sono equivalenti. Consideriamo adesso la seguente relazione binaria su insiemi:
-\begin{gather*}
-    a \equiv b \iff \text{``esiste un APG che è immagine di entrambi''}
-\end{gather*}
-\begin{proposition}
-    AFA2 e $(a \equiv b \implies a = b)$ sono equivalenti.
-\end{proposition}
-\begin{proof2}
-    Supponendo valido AFA2, la decorazione di un APG (immagine di $a,b$) è unica. Quindi $a,b$ devono necessariamente essere lo stesso insieme.\\
-    Supponendo $(a \equiv b \implies a = b)$, se per assurdo esistesse un APG avente più di una decorazione, i due insiemi $X,Y$ rappresentati rispettivamente dalle coppie (APG, ``Decorazione \#1''), (APG, ``Decorazione \#2'') dovrebbero essere in realtà lo stesso insieme.
-    Ma dall'ipotesi assurda si osserva che, nell'assegnare ad ogni nodo dell'APG un insieme, ad almeno un nodo è stato assegnato un insieme diverso nella prima e nella seconda decorazione. Questo significa che $X \neq Y$, che è assurdo.
-\end{proof2}
-La formulazione alternativa di AFA sarà utile nel seguito, in quanto consente di collegare il concetto di \emph{bisimulazione} con la teoria degli insiemi.
 
 \subsection{Bisimulazione}
+\subsubsection{Definizione e risultati generali}
 \begin{definition}
     Siano $G_1 = (V_1,\to_1), G_2 = (V_2,\to_2)$ due grafi. Diremo che una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
@@ -449,17 +433,36 @@ ora dimostriamo il seguente risultato:
 \end{proof2}
 
 \subsubsection{Interpretazione insiemistica della bisimulazione}
-Il seguente teorema è la prova che la bisimulazione può essere utilizzata per verificare l'uguaglianza tra insiemi rappresentati da due APG differenti:
+Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
 \begin{theorem}
     Due APG sono bisimili $\iff$ rappresentano lo stesso insieme.
     \label{theo:bisi_iff_eqsets}
 \end{theorem}
+Innanzitutto dimostriamo il seguente Lemma:
+\begin{lemma}
+    Siano $A = (V_A, \to_A, a), B = (V_B, \to_B, b)$ due APG con decorazione che rappresentano lo stesso insieme (poichè per AFA la decorazione di ogni APG è unica non la indichiamo in alcun modo).
+    Allora la relazione binaria $\equiv$ su $V_A \times V_B$ definita come
+    \begin{gather*}
+        a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
+    \end{gather*}
+    è una bisimulazione su $A,B$.
+\end{lemma}
 \begin{proof2}
-    Da dimostrare...
+    Dimostriamo innanzitutto che $\equiv$ è una bisimulazione sui grafi $G_A = (V_A, \to_A), G_B = (V_B, \to_B)$. Chiaramente se $a \equiv b, a \to a'$ si ha che
+    \begin{itemize}
+        \item $a' \in a$ (associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata)
+        \item $a,b$ rappresentano lo stesso insieme
+    \end{itemize}
+    Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b \to b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+    La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si considera per ipotesi che $A,B$ rappresentano lo stesso insieme.
+\end{proof2}
+\begin{proof2}(del Teorema \ref*{theo:bisi_iff_eqsets})
+    L'implicazione ($\notimplies$) è una conseguenza diretta del Lemma appena dimostrato.\\
+    $\implies$ ?
 \end{proof2}
 Tenendo conto di quanto affermato nella sezione \ref*{sec:graphs_sets}, il Teorema \ref*{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
 relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
-Dopo questa considerazone, risulta naturale definire il seguente concetto:
+Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
     Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_R = (VR, \to_R)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $R$ \emph{di} $G$:
     \begin{itemize}
