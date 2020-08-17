@@ -214,11 +214,12 @@ Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un a
 \subsubsection{Cenni di teoria degli insiemi}
 In generale ammettiamo che un insieme possa contenere altri insiemi. Questa concessione diventa problematica nel caso in cui tra i membri di un insieme $A$ risulti lo stesso insieme $A$, o un insieme contenente l'insieme $A$. Diamo quindi la seguente definizione:
 \begin{definition}
-    Diremo che un insieme $A$ è \emph{ben-fondato} se $\forall B \in A : $ ``B è un insieme'' si ha $A \not\subset B$. Altrimenti diremo che $A$ è \emph{non-ben-fondato}.
+    Diremo che un insieme è \emph{ben-fondato} se non contiene se stesso. Altrimenti diremo che è \emph{non-ben-fondato}.
 \end{definition}
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
 \end{example}
+
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
 \subsubsection{Rappresentazione di insiemi tramite grafi}
@@ -227,11 +228,11 @@ In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemis
 \begin{definition}
     Sia $G = (V, \to)$ un grafo orientato. Sia $u \in V : \forall v \in V, u \to_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(V, \to, u)$ si dice \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
-Per pervenire allo scopo di rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
+Per rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
     Chiameremo \emph{decorazione} di un APG l'assegnazione di un insieme ad ogni suo nodo.
 \end{definition}
-Associando la relazione di raggiungibilità $\to$ alla relazione di appartenenza $\in$ abbiamo tutto il necessario per la rappresentazione di insiemi:
+Associando la relazione di raggiungibilità $\to$ alla relazione di appartenenza $\in$ disponiamo di tutto il necessario per la rappresentazione di insiemi:
 \begin{definition}
     Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia composta da un APG $(G,v)$ e da una decorazione, in cui a $v$ è associato $A$.
 \end{definition}
