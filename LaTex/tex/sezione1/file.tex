@@ -93,9 +93,13 @@ La seguente definizione sorge in modo spontaneo da questo punto di vista:
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
-    Diremo che un grafo $(V,\to)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 \to_t v_2$.\\
-    Le \emph{componenti fortemente connesse} (\emph{CFC}) di un grafo $(V,\to)$ sono le classi di equivalenza della relazione $\to_t$ \cite[Appendice B]{clrs}. In altre parole, i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
+    Diremo che un grafo $(V,\to)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 \to_t v_2$.
 \end{definition}
+In generale un grafo non è fortemente connesso. Tuttavia possiamo individuare facilmente i sottografi massimali fortemente connessi.
+\begin{definition}
+    Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo $(V,\to)$ sono le classi di equivalenza della relazione $\to_t$ \cite[Appendice B]{clrs}.
+\end{definition}
+In altre parole, i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
 \begin{example}
     \begin{figure}[b]
         \centering
@@ -117,28 +121,28 @@ L'esistenza di un cammino tra nodi fornisce un criterio immediato per partiziona
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{CFC di un grafo}
+        \caption{SCC di un grafo}
         \label{fig:graph_cfc_1}
     \end{figure}
-    Nel grafo di Figura \ref*{fig:graph_cfc_1} le CFC sono state evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
+    Nel grafo di Figura \ref*{fig:graph_cfc_1} le SCC sono evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
 \end{example}
-Il partizionamento in CFC è definito come segue:
+Dato un grafo, possiamo definire il partizionamento dei nodi in SCC come segue:
 \begin{definition}
-    Sia $G = (V, \to)$ un grafo. Chiameremo \emph{grafo delle componenti fortemente connesse (CFC) di} $G$ il grafo $G^{CFC} = (V^{CFC}, \to^{CFC})$ con
+    Sia $G = (V, \to)$ un grafo. Definiamo il grafo $G^{SCC} = (V^{SCC}, \to^{SCC})$ delle componenti fortemente connesse:
     \begin{itemize}
-        \item $V^{CFC} = \{C : \,$``$C$ è una classe di equivalenza per $\to_t$ su $V$''$\}$
-        \item $\to^{CFC} = \{(A,B) \in V^{CFC} \times V^{CFC} : A \neq B, \exists m \in A, n \in B : m \to n\}$
+        \item $V^{SCC} = \{C : \,$``$C$ è una classe di equivalenza per $\to_t$ su $V$''$\}$
+        \item $\to^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} : A \neq B, \exists m \in A, n \in B : m \to n\}$
     \end{itemize}
 \end{definition}
 Riportiamo la seguente proprietà immediata:
 \begin{proposition}
-    Sia $G^{CFC}$ il grafo delle CFC di un grafo $G$ generico. Allora $G^{CFC}$ è aciclico.
+    Sia $G^{SCC}$ il grafo delle SCC di un grafo $G$ generico. Allora $G^{SCC}$ è aciclico.
 \end{proposition}
 \begin{proof2}
-    Suppongo per assurdo che in $G^{CFC}$ esista un ciclo. Allora tutti i nodi di $V^{CFC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa CFC, ma questo è assurdo.
+    Suppongo per assurdo che in $G^{SCC}$ esista un ciclo. Allora tutti i nodi di $V^{SCC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
 \end{proof2}
 \begin{example}
-    \begin{figure}[t]
+    \begin{figure}[b]
         \centering
         \begin{subfigure}{.45\textwidth}
           \centering
@@ -192,9 +196,9 @@ Riportiamo la seguente proprietà immediata:
 
             \end{scope}
             \end{tikzpicture}
-          \caption{Grafo delle CFC}
+          \caption{Corrispondente grafo delle SCC}
         \end{subfigure}
-        \caption{Un grafo ed il corrispondente grafo delle CFC}
+        \caption{Un grafo ed il corrispondente grafo delle SCC}
         \label{fig:graph_cfc_2}
     \end{figure}
     La Figura \ref*{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref*{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
