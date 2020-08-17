@@ -201,7 +201,8 @@ Riportiamo la seguente proprietà immediata:
     La Figura \ref*{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref*{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
 
-\subsection{Cenni di teoria degli insiemi}
+\subsection{Insiemi}
+\subsubsection{Cenni di teoria degli insiemi}
 In generale ammettiamo che un insieme possa contenere altri insiemi. Questa concessione diventa problematica nel caso in cui tra i membri di un insieme $A$ risulti lo stesso insieme $A$, o un insieme contenente l'insieme $A$. Diamo quindi la seguente definizione:
 \begin{definition}
     Diremo che un insieme $A$ è \emph{ben-fondato} se $\forall B \in A : $ ``B è un insieme'' si ha $A \not\subset B$. Altrimenti diremo che $A$ è \emph{non-ben-fondato}.
@@ -211,7 +212,7 @@ In generale ammettiamo che un insieme possa contenere altri insiemi. Questa conc
 \end{example}
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
-\subsection{Rappresentazione di insiemi tramite grafi}
+\subsubsection{Rappresentazione di insiemi tramite grafi}
 \label{sec:graphs_sets}
 In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto una nozione fondamentale:
 \begin{definition}
@@ -304,9 +305,27 @@ L'assioma AFA ha un'ovvia conseguenza:
         \caption{Rappresentazione di insiemi tramite grafi}
         \label{fig:graph_set}
     \end{figure}
-
     In Figura \ref*{fig:graph_set} sono rappresentati alcuni insiemi sotto forma di APG.
 \end{example}
+In \cite{aczel} viene fornita una formulazione alternativa dell'assioma AFA, data dalla congiunzione dei seguenti assiomi:
+\begin{axiom}(AFA1)
+    Ogni grafo ha almeno una decorazione.
+\end{axiom}
+\begin{axiom}(AFA2)
+    Ogni grafo ha al più una decorazione.
+\end{axiom}
+Chiaramente le due formulazioni sono equivalenti. Consideriamo adesso la seguente relazione binaria su insiemi:
+\begin{gather*}
+    a \equiv b \iff \text{``esiste un APG che è immagine di entrambi''}
+\end{gather*}
+\begin{proposition}
+    AFA2 e $(a \equiv b \implies a = b)$ sono equivalenti.
+\end{proposition}
+\begin{proof2}
+    Supponendo valido AFA2, la decorazione di un APG (immagine di $a,b$) è unica. Quindi $a,b$ devono necessariamente essere lo stesso insieme.\\
+    Supponendo $(a \equiv b \implies a = b)$, se per assurdo esistesse un APG avente più di una decorazione, i due insiemi rappresentati dalle coppie (APG, ``Decorazione \#1''), (APG, ``Decorazione \#2'') sono uguali.
+\end{proof2}
+La formulazione alternativa di AFA sarà utile nel seguito, in quanto consente di collegare il concetto di \emph{bisimulazione} con la teoria degli insiemi.
 
 \subsection{Bisimulazione}
 \begin{definition}
