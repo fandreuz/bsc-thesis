@@ -47,7 +47,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
     In questo caso
     \begin{itemize}
         \item $V$ è l'insieme dei \emph{nodi} o \emph{vertici};
-        \item $\to$ è la relazione binaria che mette in relazione alcuni dei nodi di $G$
+        \item $\to$ è una relazione binaria che mette in relazione alcuni dei nodi di $G$
     \end{itemize}
 \end{definition}
 \begin{example}
@@ -82,7 +82,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
 \end{example}
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,\to)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u \to v$. Diremo che $u$ è parente di $v$ e che $v$ è figlio di $u$ se $u \to v$.
+    Sia $G = (V,\to)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u \to v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $u \to v$. Chiaramente ogni nodo può avere più parenti e più figli.
 \end{definition}
 Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}).\\
 \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro.\\
