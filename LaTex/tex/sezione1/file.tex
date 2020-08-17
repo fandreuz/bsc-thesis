@@ -233,7 +233,7 @@ Per pervenire allo scopo di rappresentare un insieme tramite un grafo è necessa
 \end{definition}
 Associando la relazione di raggiungibilità $\to$ alla relazione di appartenenza $\in$ abbiamo tutto il necessario per la rappresentazione di insiemi:
 \begin{definition}
-    Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia di un APG $(G,v)$ con una decorazione in cui a $v$ è associato $A$.
+    Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia composta da un APG $(G,v)$ e da una decorazione, in cui a $v$ è associato $A$.
 \end{definition}
 Ad un APG aciclico è possibile associare un'unica decorazione. Questo risultato tuttavia non può essere dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo in \cite{aczel} viene dato il seguente assioma:
 \begin{axiom}[AFA, Anti-Foundation-Axiom]
@@ -244,7 +244,7 @@ L'assioma AFA ha un'ovvia conseguenza:
     Ogni APG è immagine di un unico insieme.
 \end{corollary}
 \begin{example}
-    \begin{figure}[b]
+    \begin{figure}[t]
         \centering
         \begin{subfigure}{.25\textwidth}
           \centering
@@ -332,7 +332,8 @@ Chiaramente le due formulazioni sono equivalenti. Consideriamo adesso la seguent
 \end{proposition}
 \begin{proof2}
     Supponendo valido AFA2, la decorazione di un APG (immagine di $a,b$) è unica. Quindi $a,b$ devono necessariamente essere lo stesso insieme.\\
-    Supponendo $(a \equiv b \implies a = b)$, se per assurdo esistesse un APG avente più di una decorazione, i due insiemi rappresentati dalle coppie (APG, ``Decorazione \#1''), (APG, ``Decorazione \#2'') sono uguali.
+    Supponendo $(a \equiv b \implies a = b)$, se per assurdo esistesse un APG avente più di una decorazione, i due insiemi $X,Y$ rappresentati rispettivamente dalle coppie (APG, ``Decorazione \#1''), (APG, ``Decorazione \#2'') dovrebbero essere in realtà lo stesso insieme.
+    Ma dall'ipotesi assurda si osserva che, nell'assegnare ad ogni nodo dell'APG un insieme, ad almeno un nodo è stato assegnato un insieme diverso nella prima e nella seconda decorazione. Questo significa che $X \neq Y$, che è assurdo.
 \end{proof2}
 La formulazione alternativa di AFA sarà utile nel seguito, in quanto consente di collegare il concetto di \emph{bisimulazione} con la teoria degli insiemi.
 
