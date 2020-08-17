@@ -81,7 +81,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
     \end{figure}
     Il grafo di Figura \ref*{fig:graph} è descritto dalla coppia
     \begin{itemize}
-        \item $N = \{a,b,c,d,e\}$
+        \item $V = \{a,b,c,d,e\}$
         \item $\to \,\,= \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
     \end{itemize}
 \end{example}
@@ -359,55 +359,55 @@ Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che ver
 \end{example}
 Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante di una qualsiasi sua chiusura:
 \begin{theorem}
-    Sia $b$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
+    Sia $R$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
-    Consideriamo separatamente le tre relazioni $b_r, b_s, b_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
+    Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
     \begin{itemize}
-        \item[$b_r$] Per definizione $b \subset b_r$, quindi è sufficiente dimostrare che $b_r$ è una bisimulazione quando gli argomenti $u,v \in N$ non sono distinti.\\
-        Sia $u \in N$. Chiaramente per definizione di $b_r$ si ha $u b_r u$. Se $\exists u' \in N : u \to u'$ allora (sempre per definizione di $b_r$) si ha $u' b_r u'$.
-        \item[$b_s$] Per definizione $b \subset b_s$, quindi è sufficiente dimostrare che $b_s$ è una bisimulazione quando per gli argomenti $u,v \in N$ si ha $u b v$ ma non $v b u$.\\
-        Sia $(u,v) \in N \times N$. Allora
+        \item[$R_r$] Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
+        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V: u \to u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
+        \item[$R_s$] Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per gli argomenti $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
+        Sia $(u,v) \in V\times V$. Allora
         \begin{center}
-            $u b_s v \implies u b v \lor v b u$
+            $u R_s v \implies u R v \lor v R u$
         \end{center}
-        Suppongo ad esempio che $v b u$.
+        Suppongo ad esempio che $v R u$.
         \begin{align*}
-            &\implies \forall v' \in N : (v \to v') \,\,\exists u' \in N : (u \to u' \land v' bu')\\
-            &\implies u' b_s v'
+            &\implies \forall v' \in V: (v \to v') \,\,\exists u' \in V: (u \to u' \land v' R u')\\
+            &\implies u' R_s v'
         \end{align*}
         e
         \begin{align*}
-            &\implies \forall u' \in N : (u \to u') \,\,\exists v' \in N : (v \to v' \land v' bu')\\
-            &\implies u' b_s v'
+            &\implies \forall u' \in V: (u \to u') \,\,\exists v' \in V: (v \to v' \land v' R u')\\
+            &\implies u' R_s v'
         \end{align*}
         cioè sono dimostrate le due condizioni caratteristiche della bisimulazione.\\
-        La dimostrazione è analoga se $u b v$.
-        \item[$b_t$] Per definizione $b \subset b_t$, quindi è sufficiente dimostrare che $b_t$ è una bisimulazione quando per gli argomenti $u,v,z \in N$ si ha $u b v$, $v b z$ ma non $u b z$.\\
-        Sia $(u,v,z) \in N \times N \times N$ con questa proprietà. Allora $\forall u' \in N : u \to u' \implies \exists v' \in N : v \to v' \land u' b v'$. Inoltre $\exists z' : z \to z' \land v' b z'$.\\
-        Riordinando si ha $u' b v', v' b z'$. Allora per definizione di $b_t, \, u' b_t z'$.\\
+        La dimostrazione è analoga se $u R v$.
+        \item[$R_t$] Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
+        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora $\forall u' \in V: u \to u' \implies \exists v' \in V: v \to v' \land u' R v'$. Inoltre $\exists z' : z \to z' \land v' R z'$.\\
+        Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
 \end{proof2}
 Da questa proposizione si deduce il seguente corollario, che risulta dall'applicazione iterativa delle tre chiusure viste in precedenza:
 \begin{corollary}
-    Ad ogni bisimulazione $b$ è possibile associare una bisimulazione $\widetilde{b} : b \subset \widetilde{b} \,\,\land\,\, \widetilde{b}$ è una relazione di equivalenza.
+    Ad ogni bisimulazione $R$ è possibile associare una bisimulazione $\widetilde{R} : R \subset \widetilde{R} \,\,\land\,\, \widetilde{R}$ è una relazione di equivalenza.
     \label{cor:bisimulation_eqrel}
 \end{corollary}
 Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la seguente proposizione, che sarà utile nel seguito:
 \begin{proposition}
-    Siano $b_1, b_2$ due bisimulazioni su $G_1, G_2$. Allora $b = b_1 \cup b_2$ è ancora una bisimulazione.
+    Siano $R_1, R_2$ due bisimulazioni su $G_1, G_2$. Allora $R = R_1 \cup R_2$ è ancora una bisimulazione.
     \label{obs:bisimulation_union}
 \end{proposition}
 \begin{proof2}
-    Siano $u,v : u b v$. Sia $u' : u \to u'$. Allora deve essere $u b_1 v \lor u b_2 v$. Ma quindi $\exists v' : (v \to v' \land u' b_{1|2} v')$.
+    Siano $u,v : u R v$. Sia $u' : u \to u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' : (v \to v' \land u' R_{1|2} v')$.
 \end{proof2}
 
 \subsubsection{Bisimulazione massima}
 \label{sec:bisi_max}
-Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato.
+Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
 \begin{definition}
-    Diremo che una bisimulazione $b_M$ su $G_1, G_2$ è \emph{massima} se $\forall b : "b$ è una bisimulazione su $G_1, G_2$" si ha $u b v \implies u b_M v \,\,\,\forall a \in N_1, b \in N_2$.
+    Diremo che una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se $\forall R : "R$ è una bisimulazione su $G_1, G_2$" si ha $u R v \implies u R_M v$.
 \end{definition}
 Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche in modo molto semplice:
 \begin{proposition}
@@ -420,14 +420,14 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
 \begin{proof2}
     Le proprietà seguono banalmente dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}.
     \begin{enumerate}
-        \item Suppongo per assurdo che esistano due bisimulazioni massime $b_{M_1}, b_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
+        \item Suppongo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
     \end{enumerate}
 \end{proof2}
 Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
 ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo (finito). Allora $\exists b_M$ la bisimulazione massima su $G$.
+    Sia $G$ un grafo (finito). Allora $\exists R_M$ la bisimulazione massima su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
@@ -444,53 +444,53 @@ Il seguente teorema è la prova che la bisimulazione può essere utilizzata per 
     Da dimostrare...
 \end{proof2}
 Tenendo conto di quanto affermato nella sezione \ref*{sec:graphs_sets}, il Teorema \ref*{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
-relazione di uguaglianza tra insiemi quando questi sono rappresentati da degli APG \cite{dovier}.\\
+relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
 Dopo questa considerazone, risulta naturale definire il seguente concetto:
 \begin{definition}
-    Sia $b$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_b = (N_b, \to_b)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $b$ \emph{di} $G$:
+    Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_R = (VR, \to_R)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $R$ \emph{di} $G$:
     \begin{itemize}
-        \item $N_b = \{A = \{m \in N : \forall n \in A, m b n\}\}$
-        \item $[m]_b \to_b [n]_b \iff \exists c \in [n]_b : m \to c$
+        \item $VR = \{A = \{m \in V: \forall n \in A, m R n\}\}$
+        \item $[m]_R \to_R [n]_R \iff \exists c \in [n]_R : m \to c$
     \end{itemize}
-    Risulta conveniente definire la \emph{classe del nodo} $a$ rispetto alla bisimulazione $b$, con la notazione $[a]_b$ come il nodo di $N_b$ a cui appartiene il nodo $a$.
+    Si definisce \emph{classe del nodo} $a$ rispetto alla bisimulazione $R$, con la notazione $[a]_R$, il nodo di $VR$ in cui viene inserito il nodo $a$.
     \label{def:bisi_contraction}
 \end{definition}
 La Definizione \ref*{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
-    Sia $G$ un grafo, e sia $G_b$ come nella Definizione \ref*{def:bisi_contraction}, per una bisimulazione $b$ qualsiasi. Allora $G, G_b$ sono bisimili.
+    Sia $G$ un grafo, e sia $G_R$ come nella Definizione \ref*{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
-    Sia $\equiv \,\,\subset N \times N_b$ la relazione binaria definita come segue:
+    Sia $\equiv \,\,\subset V\times VR$ la relazione binaria definita come segue:
     \begin{gather*}
-        m \equiv M \iff M = [m]_b
+        m \equiv M \iff M = [m]_R
     \end{gather*}
-    Vogliamo dimostrare che tale relazione è una bisimulazione su i grafi $G, G_b$.\\
-    Supponiamo che $x \equiv X$, e che $x \to y$ per qualche $y \in N$. Chiamiamo $Y \coloneqq [y]_b$. Allora, per la Definizione \ref*{def:bisi_contraction}, si ha $X \to Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X \to Y$ per qualche $Y \in N_b$. Sempre per la Definizione \ref*{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x \to y)$.
+    Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
+    Supponiamo che $x \equiv X$, e che $x \to y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref*{def:bisi_contraction}, si ha $X \to Y$. Inoltre vale banalmente $y \equiv Y$.\\
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X \to Y$ per qualche $Y \in VR$. Sempre per la Definizione \ref*{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x \to y)$.
 \end{proof2}
 La Proposizione \ref*{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente per il Teorema \ref*{theo:bisi_iff_eqsets}:
 \begin{corollary}
-    Sia $b$ una bisimulazione che sia anche una relazione di equivalenza. Allora l'APG $(G, v)$ e l'APG $(G_b, [v]_b)$ rappresentano lo stesso insieme.
+    Sia $R$ una bisimulazione che sia anche una relazione di equivalenza. Allora l'APG $(G, v)$ e l'APG $(G_R, [v]_R)$ rappresentano lo stesso insieme.
 \end{corollary}
 Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizzare la rappresentazione di insiemi, considerando che è sufficiente una bisimulazione sulla rappresentazione iniziale per ottenere una rappresentazione equivalente. Definiamo una relazione d'ordine sulle rappresentazioni:
 \begin{definition}
-    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $\#N_a < \#N_b$.\\
-    Diremo che una rappresentazione è \emph{minima} se non esiste un'altra rappresentazione minore.
+    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
+    Diremo che una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
 \end{definition}
 \begin{observation}
-    La \emph{contrazione per bisimulazione} di un grafo ha sempre un numero di nodi minore o uguale di quello del grafo iniziale.
+    La \emph{contrazione per bisimulazione} è sempre minore (o eventualmente uguale) di quella iniziale.
 \end{observation}
 Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco la bisimulazione prescelta per minimizzare la rappresentazione di un dato insieme:
 \begin{theorem}
-    Sia $(G,v)$ un APG rappresentante un insieme. Sia $b_M$ la bisimulazione massima su $(G,v)$. Allora la contrazione per bisimulazione indotta da $b_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
+    Sia $(G,v)$ un APG rappresentante un insieme. Sia $R_M$ la bisimulazione massima su $(G,v)$. Allora la contrazione per bisimulazione indotta da $R_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
 \end{theorem}
 \begin{proof2}
-    Suppongo per assurdo che esista una bisimulazione $b_N$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $b_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $b_N$ e non secondo $b_M$. Chiaramente questa deduzione è in contrasto con il fatto che $b_M$ è la bisimulazione massima.\\\\
-    Suppongo per assurdo che, dopo la contrazione indotta da $b_M$, sia possibile trovare una nuova bisimulazione $b_O$ su $(G_{b_M}, [v]_{b_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{b_M}, [v]_{b_M})$. Chiaramente $b_O \subset N_{b_M} \times N_{b_M}$.\\
-    Definisco una nuova bisimulazione $b_{\widetilde{M}} \subset N \times N$ tale che
+    Suppongo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la bisimulazione massima.\\
+    Suppongo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
+    Definisco una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
     \begin{gather*}
-        x b_{\widetilde{M}} y \iff (x b_M y \lor [x]_{b_M} b_O [y]_{b_M})
+        x R_{\widetilde{M}} y \iff (x R_M y \lor [x]_{R_M} R_O [y]_{R_M})
     \end{gather*}
-    Per definizione di bisimulazione massima bisogna avere $b_{\widetilde{M}} \subset b_M$, quindi non è possibile che la contrazione indotta da $b_O$ sia una rappresentazione minore di quella indotta da $b_M$.
+    Per definizione di bisimulazione massima bisogna avere $R_{\widetilde{M}} \subset R_M$, quindi non è possibile che la contrazione indotta da $R_O$ sia una rappresentazione minore di quella indotta da $R_M$.
 \end{proof2}
