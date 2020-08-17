@@ -22,17 +22,17 @@ Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella
 \end{example}
 \begin{definition}
     Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}.\\
-    Una relazione di equivalenza divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutti gli elementi sono in relazione.
+    Una relazione di equivalenza divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutte le coppie di elementi sono in relazione.
 \end{definition}
 A partire da una relazione binaria $R$ possiamo costruire relazioni binarie che contengono $R$, e che mostrano una o più delle proprietà presentate sopra, le cosiddette \emph{chiusure}.
 Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme di coppie costruito con un criterio differente a seconda del tipo di chiusura, che fornisce la proprietà desiderata.
 \begin{definition}
 	Sia $R$ una relazione binaria su $A$.
-    Diamo le seguenti definizioni
+    Definiamo le seguenti chiusure:
     \begin{itemize}
-        \item \emph{Chiusura riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
-        \item \emph{Chiusura simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
-        \item \emph{Chiusura transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
+        \item \emph{riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
+        \item \emph{simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
+        \item \emph{transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
     \end{itemize}
 \end{definition}
 \begin{example}
@@ -48,7 +48,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
     In questo caso
     \begin{itemize}
         \item $V$ è l'insieme dei \emph{nodi} o \emph{vertici};
-        \item $\to$ è la relazione di raggiungibilità: $a \to b \,\,(a,b \in V)$ significa ``nel grafo $G$ esiste un arco dal nodo $a$ al nodo $b$''.
+        \item $\to$ è la relazione binaria che mette in relazione alcuni dei nodi di $G$
     \end{itemize}
 \end{definition}
 \begin{example}
