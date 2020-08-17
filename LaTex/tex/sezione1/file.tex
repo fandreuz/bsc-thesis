@@ -219,6 +219,13 @@ In generale ammettiamo che un insieme possa contenere altri insiemi. Questa conc
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
 \end{example}
+Gli insiemi non-ben-fondati non rientrano all'interno della teoria degli insiemi ZFC, in quanto non rispettano il seguente Assioma:
+\begin{axiom}[di fondazione]
+    Ogni insieme non vuoto contiene un elemento disgiunto dall'insieme stesso.
+    \label{axi:foundation}
+\end{axiom}
+Un'implicazione equivalente dell'Assioma \ref*{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica l'impossibilità per un insieme di contenere sé stesso. E' chiaro che questo contrasta con la definizione stessa di insieme non-ben-fondato.\\
+Rinunciando all'Assioma \ref*{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati, tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nel seguito.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
@@ -236,7 +243,11 @@ Associando la relazione di raggiungibilità $\to$ alla relazione di appartenenza
 \begin{definition}
     Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia composta da un APG $(G,v)$ e da una decorazione, in cui a $v$ è associato $A$.
 \end{definition}
-Ad un APG aciclico è possibile associare un'unica decorazione. Questo risultato tuttavia non può essere dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo in \cite{aczel} viene dato il seguente assioma:
+Vale la seguente proposizione, dimostrata in \cite{aczel}:
+\begin{proposition}
+    Ad un APG aciclico è possibile associare un'unica decorazione.
+\end{proposition}
+Questo risultato non è stato dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo viene presentato il seguente assioma, di cui si è discusso poco sopra:
 \begin{axiom}[AFA, Anti-Foundation-Axiom]
     Ogni APG possiede un'unica decorazione.
 \end{axiom}
@@ -245,7 +256,7 @@ L'assioma AFA ha un'ovvia conseguenza:
     Ogni APG è immagine di un unico insieme.
 \end{corollary}
 \begin{example}
-    \begin{figure}[t]
+    \begin{figure}[b]
         \centering
         \begin{subfigure}{.25\textwidth}
           \centering
