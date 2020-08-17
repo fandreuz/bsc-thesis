@@ -38,6 +38,11 @@ Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme
 \begin{example}
     La chiusura riflessiva della relazione $<$ (minore stretto) è la relazione $\leq$.
 \end{example}
+Nel seguito utilizzeremo la seguente notazione:
+\begin{definition}
+    Sia $A$ un insieme. Denoteremo con $|A|$ la \emph{cardinalità} di $A$, cioè il numero dei suoi elementi.\\
+    Analogamente, data una relazione binaria $R$, denoteremo con $|R|$ il numero delle coppie messe in relazione da $R$.
+\end{definition}
 
 \subsection{Grafi}
 Con queste premesse possiamo definire un \emph{grafo} come segue:
@@ -203,6 +208,7 @@ Riportiamo la seguente proprietà immediata:
     \end{figure}
     La Figura \ref*{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref*{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
+Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |\to|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
 
 \subsection{Insiemi}
 \subsubsection{Cenni di teoria degli insiemi}
