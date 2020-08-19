@@ -435,30 +435,55 @@ ora dimostriamo il seguente risultato:
 \subsubsection{Interpretazione insiemistica della bisimulazione}
 Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
 \begin{theorem}
-    Due APG sono bisimili $\iff$ rappresentano lo stesso insieme.
+    Due APG rappresentano lo stesso insieme $\iff$ sono bisimili.
     \label{theo:bisi_iff_eqsets}
 \end{theorem}
-Innanzitutto dimostriamo il seguente Lemma:
-\begin{lemma}
-    Siano $A = (V_A, \to_A, a), B = (V_B, \to_B, b)$ due APG con decorazione che rappresentano lo stesso insieme (poichè per AFA la decorazione di ogni APG è unica non la indichiamo in alcun modo).
-    Allora la relazione binaria $\equiv$ su $V_A \times V_B$ definita come
-    \begin{gather*}
-        a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
-    \end{gather*}
-    è una bisimulazione su $A,B$.
-\end{lemma}
 \begin{proof2}
-    Dimostriamo innanzitutto che $\equiv$ è una bisimulazione sui grafi $G_A = (V_A, \to_A), G_B = (V_B, \to_B)$. Chiaramente se $a \equiv b, a \to a'$ si ha che
-    \begin{itemize}
-        \item $a' \in a$ (associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata)
-        \item $a,b$ rappresentano lo stesso insieme
-    \end{itemize}
-    Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b \to b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
-    La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si considera per ipotesi che $A,B$ rappresentano lo stesso insieme.
-\end{proof2}
-\begin{proof2}(del Teorema \ref*{theo:bisi_iff_eqsets})
-    L'implicazione ($\impliedby$) è una conseguenza diretta del Lemma appena dimostrato.\\
-    $\implies$ ?
+    Dimostriamo separatamente le due implicazioni:
+    \begin{enumerate}
+        \item[$\implies$] Dimostriamo innanzitutto che la relazione binaria $\equiv$ su $V_A, V_B$ definita come
+              \begin{gather*}
+                  a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
+              \end{gather*}
+              è una bisimulazione sui grafi $G_A = (V_A, \to_A), G_B = (V_B, \to_B)$.\\
+              Chiaramente se $a \equiv b, a \to a'$ si ha:
+              \begin{itemize}
+                  \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata;
+                  \item $a,b$ rappresentano lo stesso insieme.
+              \end{itemize}
+              Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b \to b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+              La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si assume per ipotesi che $A,B$ rappresentino lo stesso insieme.
+        \item[$\impliedby$] Sia $R$ una bisimulazione su $A,B$. Consideriamo la decorazione $d_A$ (l'unica) di $A$. Vogliamo estrapolarne una decorazione per $B$. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
+              Definiamo l' applicazione $d$, che ad ogni nodo di $B$ associa un insieme:
+              \begin{gather*}
+                  d(v) = d_A(u), \text{con $u$ nodo di $A$} : u R v
+              \end{gather*}
+              \begin{observation}
+                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A : u R v$ perchè si suppone che i due APG siano bisimili.
+              \end{observation}
+              Dimostriamo che $d$ è una decorazione di $B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $B$ l'insieme $d(v)$ contiene tutti e soli gli
+              insiemi $d(v') \,\,\forall v'$ nodo di $B : v \to v'$.
+              \begin{itemize}
+                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d(v)$. Poichè la decorazione di $A$ è ben definita,
+                        il nodo $u$ di $A : u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u \to u' \implies \exists v' : v \to v', u' R v'$.
+                        Cioè $d(v') = X$. Dunque il nodo mancante è stato identificato.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' : v \to v', d(v') = Y$ con $Y \notin d(v)$. Ma
+                        allora, sempre considerando $u$ il nodo di $A : u R v$, dovrebbe esistere un $u' : u \to u', u' R v'$, cioè $d_A(u') = d(v') = Y$.
+                        Ma allora $Y \in d_A(u) = d(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
+              \end{itemize}
+              E' possibile che ci siano due nodi di $a_1, a_2$ di $A$ ed un nodo $b$ di $B$ per cui vale $a_1 R b \land a_2 R b$. In questo caso la decorazione definita è ambigua.
+              Per questo motivo correggiamo la formulazione di $d$ come segue:
+              \begin{gather*}
+                d(v) = X \text{, con $X$ l'insieme associato al nodo $u$ di $A$} : u R v, \\
+                \text{con $u$ preso casualmente tra i nodi di $A$ bisimili a $v$.}
+              \end{gather*}
+              Per AFA esiste un'unica decorazione di $b$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $B$:
+              \begin{itemize}
+                  \item $\exists ! u$ nodo di $A$ : $u R v$;
+                  \item $\forall u$ nodo di $A$ : $u R v$, la decorazione di $A$ associa a tutti gli $u$ lo stesso insieme.
+              \end{itemize}
+              Dunque l'ambiguità è risolta.
+    \end{enumerate}
 \end{proof2}
 Tenendo conto di quanto affermato nella sezione \ref*{sec:graphs_sets}, il Teorema \ref*{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
 relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
