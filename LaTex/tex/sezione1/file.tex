@@ -441,7 +441,7 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
 \begin{proof2}
     Dimostriamo separatamente le due implicazioni:
     \begin{enumerate}
-        \item[$\implies$] Dimostriamo innanzitutto che la relazione binaria $\equiv$ su $V_A, V_B$ definita come
+        \item[$(\implies)$] Osserviamo innanzitutto che la relazione binaria $\equiv$ su $V_A, V_B$ definita come segue:
               \begin{gather*}
                   a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
               \end{gather*}
@@ -453,14 +453,14 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
               \end{itemize}
               Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b \to b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
               La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si assume per ipotesi che $A,B$ rappresentino lo stesso insieme.
-        \item[$\impliedby$] Sia $R$ una bisimulazione su $A,B$. Consideriamo la decorazione $d_A$ (l'unica) di $A$. Vogliamo estrapolarne una decorazione per $B$. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
+        \item[$(\impliedby)$] Sia $R$ una bisimulazione su $A,B$. Consideriamo la decorazione $d_A$ (l'unica) di $A$. Vogliamo estrapolarne una decorazione per $B$. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
               Definiamo l' applicazione $d$, che ad ogni nodo di $B$ associa un insieme:
               \begin{gather*}
                   d(v) = d_A(u), \text{con $u$ nodo di $A$} : u R v
               \end{gather*}
-              \begin{observation}
+              \begin{nonobservation}
                   Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A : u R v$ perchè si suppone che i due APG siano bisimili.
-              \end{observation}
+              \end{nonobservation}
               Dimostriamo che $d$ è una decorazione di $B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $B$ l'insieme $d(v)$ contiene tutti e soli gli
               insiemi $d(v') \,\,\forall v'$ nodo di $B : v \to v'$.
               \begin{itemize}
