@@ -548,11 +548,9 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
 
 \subsection{RSCP}
 In questa sezione introduciamo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition} (\emph{partizione ``più rozza'' stabile rispetto ad una relazione}).
-Evidenzieremo poi il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato da molti algoritmi in quanto
-la formulazione di RSCP lo rende un problema approcciabile più facilmente dal punto di vista algoritmico di quanto lo sia quello della determinazione della
-bisimulazione massima.
-
-\subsubsection{Definizione e risultati generali}
+Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato da molti algoritmi in quanto
+la formulazione di RSCP lo rende un problema più facilmente approcciabile dal punto di vista algoritmico di quanto lo sia quello della determinazione della
+bisimulazione massima.\\
 Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
 \begin{definition}
     Sia $A$ un insieme finito. Sia $X$ un insieme contenente $n$ elementi, per ognuno dei quali si ha $X_i \subseteq A$. Diremo che $X$ è una \emph{partizione}
@@ -605,58 +603,7 @@ Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In q
     minimizza il numero di blocchi.
 \end{definition}
 
-\subsection{Legame tra bisimulazione e RSCP}
-In questa sezione dimostreremo l'equivalenza tra il problema della determinazione della bisimulazione massima ed il problema della determinazione della RSCP.
-\subsubsection{Bisimulazione su grafi partizionati}
-Per presentare il legame tra RSCP e bisimulazione è necessario fornire prima alcune definizioni:
-\begin{definition}
-    Sia $G = (V,\to)$. Sia $\Sigma$ una partizione di $V$. Chiameremo \emph{grafo etichettato} la terna $(V,\to,\Sigma)$.\\
-    Per $a \in V$, useremo la notazione $[a]_\Sigma$ per identificare il blocco di $\Sigma$ a cui appartiene il nodo $a$.
-\end{definition}
-Un grafo etichettato non è altro che un grafo in cui i nodi sono suddivisi preventivamente in classi. In questo modo è possibile associare un significato ad alcuni nodi del grafo.
-\begin{example}
-    \label{exa:friends}
-    Sia $V = \{a,b,c,d,e,f\}$, e sia \,$\to$ la chiusura simmetrica della relazione binaria su $V$ rappresentata dall'insieme $\{(a,c),(c,d),(c,c),(e,f),(a,d)\}$. Questo grafo rappresenta un gruppo di sei bambini,
-    e le relazioni di amicizia che intercorrono all'interno del gruppo.\\
-    Sia inoltre $\Sigma = \{(a,b,f),(c,d,e)\}$, un partizionamento che rispecchia la divisione in classi operata dalla scuola frequentata dai bambini. In Figura \ref*{fig:friends} è riportata una rappresentazione grafica della situazione.
-
-    \begin{figure}[t]
-        \centering
-        \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw}]
-                \node (a)[fill=yellow] at (0,0) {a};
-                \node (b)[fill=yellow] at (0,3) {b};
-                \node (c)[fill=red] at (2.5,4) {c};
-                \node (d)[fill=red] at (2.5,1) {d};
-                \node (e)[fill=red] at (5,3) {e};
-                \node (f)[fill=yellow] at (5,0) {f};
-            \end{scope}
-
-            \begin{scope}
-                \path [<->] (a) edge node {} (c);
-                \path [<->] (c) edge node {} (d);
-                \path [<->] (e) edge node {} (f);
-                \path [<->] (a) edge node {} (d);
-            \end{scope}
-            \end{tikzpicture}
-        \caption{Rappresentazione del grafo dell'Esempio \ref*{exa:friends}}
-        \label{fig:friends}
-    \end{figure}
-\end{example}
-La definizione seguente costituisce una specializzazione del concetto già visto di bisimulazione, nel caso di un grafo etichettato:
-\begin{definition}
-    Sia $G = (V,\to,\Sigma)$ un grafo etichettato. Diremo che una relazione binaria $R$ su $V$ è una bisimulazione su $G$ se valgono congiuntamente le seguenti condizioni:
-    \begin{itemize}
-        \item $R$ è una bisimulazione sul grafo non etichettato $(V,\to)$;
-        \item $a R b \implies [a]_\Sigma = [b]_\Sigma$.
-    \end{itemize}
-\end{definition}
-E' evidente che l'introduzione di una partizione nel grafo riduce il numero di bisimulazioni sullo stesso. Questa osservazione è illustrata nell'esempio seguente.
-\begin{example}
-    Con riferimento all'Esempio \ref*{exa:friends}, la relazione $\to$ è una bisimulazione sul grafo $(V,\to)$, ma non sul grafo $(V,\to,\Sigma)$.
-\end{example}
-
-\subsubsection{Equivalenza tra RSCP e bisimulazione massima}
+\subsection{Equivalenza tra RSCP e bisimulazione massima}
 Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{gentilini}:
 \begin{proposition}
     Sia $G = (V,\to)$. Sia $X$ una partizione di $V$ stabile rispetto a $\to$. Allora la relazione binaria $R$ su $V$ definita come:
