@@ -151,7 +151,7 @@ Riportiamo la seguente proprietà immediata:
     Sia $G^{SCC}$ il grafo delle SCC di un grafo $G$ generico. Allora $G^{SCC}$ è aciclico.
 \end{proposition}
 \begin{proof2}
-    Suppongo per assurdo che in $G^{SCC}$ esista un ciclo. Allora tutti i nodi di $V^{SCC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
+    Supponiamo per assurdo che in $G^{SCC}$ esista un ciclo. Allora tutti i nodi di $V^{SCC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
 \end{proof2}
 \begin{example}
     \begin{figure}[b]
@@ -378,7 +378,7 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
         \begin{center}
             $u R_s v \implies u R v \lor v R u$
         \end{center}
-        Suppongo ad esempio che $v R u$.
+        Supponiamo ad esempio che $v R u$.
         \begin{align*}
             &\implies \forall v' \in V: (v \to v') \,\,\exists u' \in V: (u \to u' \land v' R u')\\
             &\implies u' R_s v'
@@ -431,7 +431,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
 \begin{proof2}
     Le proprietà seguono banalmente dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}.
     \begin{enumerate}
-        \item Suppongo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
+        \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
     \end{enumerate}
 \end{proof2}
@@ -541,8 +541,8 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
     Sia $(G,v)$ un APG rappresentante un insieme. Sia $R_M$ la bisimulazione massima su $(G,v)$. Allora la contrazione per bisimulazione indotta da $R_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
 \end{theorem}
 \begin{proof2}
-    Suppongo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la bisimulazione massima.\\
-    Suppongo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
+    Supponiamo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la bisimulazione massima.\\
+    Supponiamo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
     Definisco una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
     \begin{gather*}
         x R_{\widetilde{M}} y \iff (x R_M y \lor [x]_{R_M} R_O [y]_{R_M})
@@ -640,9 +640,9 @@ Cioè una bisimulazione induce un partizionamento stabile rispetto a $\to$ dei n
     Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($\to$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($\to$).
     \begin{itemize}
         \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref*{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref*{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $\to$.\\
-              Suppongo per assurdo che $X$ non sia RSCP($\to$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $\to$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref*{prop:part_induce_bisi} da
+              Supponiamo per assurdo che $X$ non sia RSCP($\to$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $\to$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref*{prop:part_induce_bisi} da
               $\widetilde{X}$ è possibile ricavare una bisimulazione $\widetilde{R}$ su $G$. Ma quindi $|\widetilde{R}| > |R|$, che è assurdo.
-        \item Sia $X$ la RSCP($\to$) di V. Suppongo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref*{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
+        \item Sia $X$ la RSCP($\to$) di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref*{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
               sia massima. Ma da questa si può ricavare, come nella Proposizione \ref*{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $\to$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
     \end{itemize}
     Quindi l'equivalenza è dimostrata.
