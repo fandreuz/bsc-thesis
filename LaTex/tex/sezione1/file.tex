@@ -571,7 +571,7 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     \label{exa:set_partition}
 \end{example}
 \begin{definition}
-    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ è \emph{più fine} rispetto a $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ \emph{rifinisce} $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
 \end{definition}
 \begin{example}
     Nell'esempio precedente la partizione $X_2$ è più fine della partizione $X_1$, ed entrambe sono più fini della partizione banale $\widetilde{A}$.
@@ -589,8 +589,7 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
 \end{itemize}
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
-    Sia $A$ un insieme. Sia $R$ una relazione. Diremo che una partizione $X$ è la RCSP di $A$ rispetto ad $R$ se, di tutte le partizioni di $A$ stabili rispetto
-    ad $R$, è quella contenente il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
 \end{definition}
 \begin{example}
     Sia $A$ come nell'Esempio \ref*{exa:set_partition}. Sia $R$ la relazione definita come segue:
@@ -600,9 +599,16 @@ Con queste premesse possiamo definire il problema della determinazione della RCS
     Le partizioni $X_1,X_2$ non sono stabili. La partizione $X_5 = \{\{1,3\},\{5\},\{2,4\}\}$ è stabile, ma non è la RSCP di $A$ rispetto ad $R$. La partizione
     $X_6 = \{\{1,3,5\},\{2,4\}\}$ è la RSCP.
 \end{example}
+Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In questo modo la RSCP ottenuta rispetta le restrizioni poste a priori sull'impossibilità di alcuni elementi di trovarsi nello stesso blocco.
+\begin{definition}
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$, e sia $\Sigma$ una partizione iniziale di $A$. Chiameremo RSCP($R,\Sigma$) la partizione di $A$ che, tra le partizioni di $A$ stabili rispetto ad $R$ che rifiniscono $\Sigma$,
+    minimizza il numero di blocchi.
+\end{definition}
 
-\subsubsection{Legame con la bisimulazione}
-Per presentare il legame tra RSCP e bisimulazione diamo innanzitutto la seguente definizione (come in \cite{gentilini}):
+\subsection{Legame tra bisimulazione e RSCP}
+In questa sezione dimostreremo l'equivalenza tra il problema della determinazione della bisimulazione massima ed il problema della determinazione della RSCP.
+\subsubsection{Bisimulazione su grafi partizionati}
+Per presentare il legame tra RSCP e bisimulazione è necessario fornire prima alcune definizioni:
 \begin{definition}
     Sia $G = (V,\to)$. Sia $\Sigma$ una partizione di $V$. Chiameremo \emph{grafo etichettato} la terna $(V,\to,\Sigma)$.\\
     Per $a \in V$, useremo la notazione $[a]_\Sigma$ per identificare il blocco di $\Sigma$ a cui appartiene il nodo $a$.
@@ -614,7 +620,7 @@ Un grafo etichettato non è altro che un grafo in cui i nodi sono suddivisi prev
     e le relazioni di amicizia che intercorrono all'interno del gruppo.\\
     Sia inoltre $\Sigma = \{(a,b,f),(c,d,e)\}$, un partizionamento che rispecchia la divisione in classi operata dalla scuola frequentata dai bambini. In Figura \ref*{fig:friends} è riportata una rappresentazione grafica della situazione.
 
-    \begin{figure}[b]
+    \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
@@ -649,3 +655,27 @@ E' evidente che l'introduzione di una partizione nel grafo riduce il numero di b
 \begin{example}
     Con riferimento all'Esempio \ref*{exa:friends}, la relazione $\to$ è una bisimulazione sul grafo $(V,\to)$, ma non sul grafo $(V,\to,\Sigma)$.
 \end{example}
+
+\subsubsection{Equivalenza tra RSCP e bisimulazione massima}
+Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{gentilini}:
+\begin{proposition}
+    Sia $G = (V,\to)$. Sia $X$ una partizione di $V$ stabile rispetto a $\to$. Allora la relazione binaria $R$ su $V$ definita come:
+    \begin{gather*}
+        a R b \iff [a]_X = [b]_X
+    \end{gather*}
+    è una bisimulazione su $G$.
+\end{proposition}
+\begin{proof2}
+    Siano $a,b \in G : a R b$, e sia $a' : a \to a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq \to^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X : b \to b'$.\\
+    L'altra condizione caratteristica della bisimulazione si dimostra in modo speculare.
+\end{proof2}
+In altre parole, una qualsiasi partizione stabile rispetto a $\to$ induce su un grafo una bisimulazione che può essere ricavata in modo banale.\\
+Dimostriamo un altro risultato, che in un certo senso è l'opposto di quello appena presentato:
+\begin{proposition}
+    Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Allora la partizione i cui blocchi sono le classi di equivalenza di $R$ è stabile rispetto a $\to$.
+\end{proposition}
+\begin{proof2}
+    Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 : x_1 \,\,\cap \to^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
+    Gli elementi $a$ di $A$ sono i nodi in $x_1 : \nexists b \in x_2 : a \to b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
+    Sia $x \in x_1 - A$, ed $y \in x_2 : x \to y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' : a \to a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
+\end{proof2}
