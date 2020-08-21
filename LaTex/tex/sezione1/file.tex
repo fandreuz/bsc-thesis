@@ -562,9 +562,19 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     \end{gather*}
     Inoltre diremo che gli insiemi $X_i$ sono i \emph{blocchi} della partizione $X$.
 \end{definition}
+\begin{observation}
+    Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
+\end{observation}
+\begin{example}
+    Sia $A = \{1,2,3,4,5\}$. Sono partizioni di A gli insiemi $X_1 = \{\{1,4,5\},\{2,3\}\}, X_2 = \{\{1,5\},\{4\},\{2\},\{3\}\}$ ma non $X_3 = \{\{1,2,3\},\{4\}\}$,
+    nè $X_4 = \{\{1,2,3\},\{3,4,5\}\}$.
+\end{example}
 \begin{definition}
     Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ è \emph{più fine} rispetto a $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
 \end{definition}
+\begin{example}
+    Nell'esempio precedente la partizione $X_2$ è più fine della partizione $X_1$, ed entrambe sono più fini della partizione banale $\widetilde{A}$.
+\end{example}
 In molti casi è interessante studiare il paritzionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni. Una della restrizioni più
 interessanti dal punto di vista pratico è la seguente:
 \begin{definition}
