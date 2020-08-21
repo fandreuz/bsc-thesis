@@ -333,6 +333,8 @@ L'assioma AFA ha un'ovvia conseguenza:
 \end{example}
 
 \subsection{Bisimulazione}
+In questa sezione introdurremo la definizione di bisimulazione ed alcune proprietà immediate. In seguito esamineremo la relazione tra la teoria degli insiemi e
+la bisimulazione.
 \subsubsection{Definizione e risultati generali}
 \begin{definition}
     Siano $G_1 = (V_1,\to_1), G_2 = (V_2,\to_2)$ due grafi. Diremo che una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
@@ -536,3 +538,34 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
     \end{gather*}
     Per definizione di bisimulazione massima bisogna avere $R_{\widetilde{M}} \subset R_M$, quindi non è possibile che la contrazione indotta da $R_O$ sia una rappresentazione minore di quella indotta da $R_M$.
 \end{proof2}
+
+\subsection{RSCP}
+In questa sezione introduciamo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition} (\emph{partizione ``più rozza'' stabile rispetto ad una relazione}).
+Evidenzieremo poi il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato da molti algoritmi in quanto
+la formulazione di RSCP lo rende un problema approcciabile più facilmente dal punto di vista algoritmico di quanto lo sia quello della determinazione della
+bisimulazione massima.
+
+\subsubsection{Definizione e risultati generali}
+Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
+\begin{definition}
+    Sia $A$ un insieme finito. Sia $X$ un insieme contenente $n$ elementi, per ognuno dei quali si ha $X_i \subseteq A$. Diremo che $X$ è una \emph{partizione}
+    di $A$ se:
+    \begin{gather*}
+        \bigcup_{i = 1}^n X_i = A \qquad \land \qquad X_i \cap X_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \forall i
+    \end{gather*}
+    Inoltre diremo che gli insiemi $X_i$ sono i \emph{blocchi} della partizione $X$.
+\end{definition}
+\begin{definition}
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ è \emph{più fine} rispetto a $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
+\end{definition}
+In molti casi è interessante studiare il paritzionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni. Una della restrizioni più
+interessanti dal punto di vista pratico è la seguente:
+\begin{definition}
+    Sia $A$ un insieme, ed $R$ una relazione binaria su $A$. Sia $X$ una partizione su $A$. Diremo che $X$ è \emph{stabile} rispetto ad $R$ se $\forall x_i, x_j \in X$ (distinti)
+    vale $x_i \subseteq R^{-1}(x_j) \lor x_i \cap R^{-1}(x_j) = \emptyset$.
+\end{definition}
+In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
+\begin{itemize}
+    \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
+    \item Nessuno degli elementi del primo blocco è in relazione con qualche elemento del secondo blocco.
+\end{itemize}
