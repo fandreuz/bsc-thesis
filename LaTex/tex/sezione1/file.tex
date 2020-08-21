@@ -38,7 +38,14 @@ Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme
 \begin{example}
     La chiusura riflessiva della relazione $<$ (minore stretto) è la relazione $\leq$.
 \end{example}
-Nel seguito utilizzeremo la seguente notazione:
+Nel seguito sarà fondamentale la definizione seguente:
+\begin{definition}
+    Sia $R$ una relazione binaria su $A \times B$. Chiameremo \emph{relazione inversa} di $R$ (indicata con $R^{-1}(\cdot)$) la funzione su $B$ definita come
+    $R^{-1}(y) = \{x \in A : x R y\}$. Inoltre denoteremo con $R(\cdot)$ la funzione su $A$ definita come $R(x) = \{y \in B : x R y\}$.
+\end{definition}
+Useremo frequentemente la notazione $R^{-1}(X)$ o $R(X)$ dove $X$ è un insieme. In questo caso l'insieme risultante è dato dall'unione di tutti gli insiemi $R(x)$
+o $R^{-1}(x)$, per ogni $x \in X$.\\
+Introduciamo la seguente notazione:
 \begin{definition}
     Sia $A$ un insieme. Denoteremo con $|A|$ la \emph{cardinalità} di $A$, cioè il numero dei suoi elementi.\\
     Analogamente, data una relazione binaria $R$, denoteremo con $|R|$ il numero delle coppie messe in relazione da $R$.
@@ -569,3 +576,8 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
     \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
     \item Nessuno degli elementi del primo blocco è in relazione con qualche elemento del secondo blocco.
 \end{itemize}
+Con queste premesse possiamo definire il problema della determinazione della RCSP:
+\begin{definition}
+    Sia $A$ un insieme. Sia $R$ una relazione. Diremo che una partizione $X$ è la RCSP di $A$ rispetto ad $R$ se, di tutte le partizioni di $A$ stabili rispetto
+    ad $R$, è quella contenente il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+\end{definition}
