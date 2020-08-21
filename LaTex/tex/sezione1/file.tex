@@ -552,17 +552,17 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
 
 \subsection{RSCP}
 In questa sezione introduciamo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition} (\emph{partizione ``più rozza'' stabile rispetto ad una relazione}).
-Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato da molti algoritmi in quanto
-la formulazione di RSCP lo rende un problema più facilmente approcciabile dal punto di vista algoritmico di quanto lo sia quello della determinazione della
+Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato dagli algoritmi
+che tratteremo nel seguito in quanto la formulazione di RSCP lo rende un problema più facilmente approcciabile dal punto di vista algoritmico di quanto lo sia quello della determinazione della
 bisimulazione massima.\\
 Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
 \begin{definition}
     Sia $A$ un insieme finito. Sia $X$ un insieme contenente $n$ elementi, per ognuno dei quali si ha $X_i \subseteq A$. Diremo che $X$ è una \emph{partizione}
     di $A$ se:
     \begin{gather*}
-        \bigcup_{i = 1}^n X_i = A \qquad \land \qquad X_i \cap X_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \forall i
+        \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
     \end{gather*}
-    Inoltre diremo che gli insiemi $X_i$ sono i \emph{blocchi} della partizione $X$.
+    Inoltre diremo che gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$.
 \end{definition}
 \begin{observation}
     Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
@@ -576,9 +576,9 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ \emph{rifinisce} $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
 \end{definition}
 \begin{example}
-    Nell'esempio precedente la partizione $X_2$ è più fine della partizione $X_1$, ed entrambe sono più fini della partizione banale $\widetilde{A}$.
+    Nell'esempio precedente la partizione $X_2$ rifinisce la partizione $X_1$, ed entrambe rifiniscono la partizione banale $\widetilde{A}$.
 \end{example}
-In molti casi è interessante studiare il paritzionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni. Una della restrizioni più
+In molti casi è interessante studiare il partizionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni. Una della restrizioni più
 interessanti dal punto di vista pratico è la seguente:
 \begin{definition}
     Sia $A$ un insieme, ed $R$ una relazione binaria su $A$. Sia $X$ una partizione su $A$. Diremo che $X$ è \emph{stabile} rispetto ad $R$ se $\forall x_i, x_j \in X$
