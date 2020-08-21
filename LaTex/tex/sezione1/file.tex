@@ -416,6 +416,9 @@ Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo ch
 \begin{definition}
     Diremo che una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se $\forall R : "R$ è una bisimulazione su $G_1, G_2$" si ha $u R v \implies u R_M v$.
 \end{definition}
+\begin{observation}
+    Sia $R_M$ la bisimulazione massima su un grafo $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| > |R|$.
+\end{observation}
 Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche in modo molto semplice:
 \begin{proposition}
     Valgono le seguenti proprietà:
@@ -423,6 +426,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
         \item La bisimulazione massima su due grafi $G_1,G_2$ è unica
         \item La bisimulazione massima è una relazione di equivalenza
     \end{enumerate}
+    \label{prop:bisi_max_equi}
 \end{proposition}
 \begin{proof2}
     Le proprietà seguono banalmente dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}.
@@ -587,7 +591,7 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
 \end{itemize}
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) di $A$ la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
 \end{definition}
 \begin{example}
     Sia $A$ come nell'Esempio \ref*{exa:set_partition}. Sia $R$ la relazione definita come segue:
@@ -599,7 +603,7 @@ Con queste premesse possiamo definire il problema della determinazione della RCS
 \end{example}
 Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In questo modo la RSCP ottenuta rispetta le restrizioni poste a priori sull'impossibilità di alcuni elementi di trovarsi nello stesso blocco.
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$, e sia $\Sigma$ una partizione iniziale di $A$. Chiameremo RSCP($R,\Sigma$) la partizione di $A$ che, tra le partizioni di $A$ stabili rispetto ad $R$ che rifiniscono $\Sigma$,
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$, e sia $\Sigma$ una partizione iniziale di $A$. Chiameremo RSCP($R,\Sigma$) di $A$ la partizione di $A$ che, tra le partizioni di $A$ stabili rispetto ad $R$ che rifiniscono $\Sigma$,
     minimizza il numero di blocchi.
 \end{definition}
 
@@ -611,6 +615,7 @@ Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{g
         a R b \iff [a]_X = [b]_X
     \end{gather*}
     è una bisimulazione su $G$.
+    \label{prop:part_induce_bisi}
 \end{proposition}
 \begin{proof2}
     Siano $a,b \in G : a R b$, e sia $a' : a \to a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq \to^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X : b \to b'$.\\
@@ -620,9 +625,25 @@ In altre parole, una qualsiasi partizione stabile rispetto a $\to$ induce su un 
 Dimostriamo un altro risultato, che in un certo senso è l'opposto di quello appena presentato:
 \begin{proposition}
     Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Allora la partizione i cui blocchi sono le classi di equivalenza di $R$ è stabile rispetto a $\to$.
+    \label{prop:bisi_induce_part}
 \end{proposition}
 \begin{proof2}
     Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 : x_1 \,\,\cap \to^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
     Gli elementi $a$ di $A$ sono i nodi in $x_1 : \nexists b \in x_2 : a \to b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
     Sia $x \in x_1 - A$, ed $y \in x_2 : x \to y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' : a \to a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
+\end{proof2}
+Cioè una bisimulazione induce un partizionamento stabile rispetto a $\to$ dei nodi del grafo. Vale il seguente corollario:
+\begin{corollary}
+    Determinare la bisimulazione massima su un grafo $G = (V,\to)$ e trovare RSCP($\to$) di $V$ sono problemi equivalenti.
+\end{corollary}
+\begin{proof2}
+    Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($\to$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($\to$).
+    \begin{itemize}
+        \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref*{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref*{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $\to$.\\
+              Suppongo per assurdo che $X$ non sia RSCP($\to$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $\to$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref*{prop:part_induce_bisi} da
+              $\widetilde{X}$ è possibile ricavare una bisimulazione $\widetilde{R}$ su $G$. Ma quindi $|\widetilde{R}| > |R|$, che è assurdo.
+        \item Sia $X$ la RSCP($\to$) di V. Suppongo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref*{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
+              sia massima. Ma da questa si può ricavare, come nella Proposizione \ref*{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $\to$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
+    \end{itemize}
+    Quindi l'equivalenza è dimostrata.
 \end{proof2}
