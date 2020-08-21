@@ -600,3 +600,52 @@ Con queste premesse possiamo definire il problema della determinazione della RCS
     Le partizioni $X_1,X_2$ non sono stabili. La partizione $X_5 = \{\{1,3\},\{5\},\{2,4\}\}$ è stabile, ma non è la RSCP di $A$ rispetto ad $R$. La partizione
     $X_6 = \{\{1,3,5\},\{2,4\}\}$ è la RSCP.
 \end{example}
+
+\subsubsection{Legame con la bisimulazione}
+Per presentare il legame tra RSCP e bisimulazione diamo innanzitutto la seguente definizione (come in \cite{gentilini}):
+\begin{definition}
+    Sia $G = (V,\to)$. Sia $\Sigma$ una partizione di $V$. Chiameremo \emph{grafo etichettato} la terna $(V,\to,\Sigma)$.\\
+    Per $a \in V$, useremo la notazione $[a]_\Sigma$ per identificare il blocco di $\Sigma$ a cui appartiene il nodo $a$.
+\end{definition}
+Un grafo etichettato non è altro che un grafo in cui i nodi sono suddivisi preventivamente in classi. In questo modo è possibile associare un significato ad alcuni nodi del grafo.
+\begin{example}
+    \label{exa:friends}
+    Sia $V = \{a,b,c,d,e,f\}$, e sia \,$\to$ la chiusura simmetrica della relazione binaria su $V$ rappresentata dall'insieme $\{(a,c),(c,d),(c,c),(e,f),(a,d)\}$. Questo grafo rappresenta un gruppo di sei bambini,
+    e le relazioni di amicizia che intercorrono all'interno del gruppo.\\
+    Sia inoltre $\Sigma = \{(a,b,f),(c,d,e)\}$, un partizionamento che rispecchia la divisione in classi operata dalla scuola frequentata dai bambini. In Figura \ref*{fig:friends} è riportata una rappresentazione grafica della situazione.
+
+    \begin{figure}[b]
+        \centering
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a)[fill=yellow] at (0,0) {a};
+                \node (b)[fill=yellow] at (0,3) {b};
+                \node (c)[fill=red] at (2.5,4) {c};
+                \node (d)[fill=red] at (2.5,1) {d};
+                \node (e)[fill=red] at (5,3) {e};
+                \node (f)[fill=yellow] at (5,0) {f};
+            \end{scope}
+
+            \begin{scope}
+                \path [<->] (a) edge node {} (c);
+                \path [<->] (c) edge node {} (d);
+                \path [<->] (e) edge node {} (f);
+                \path [<->] (a) edge node {} (d);
+            \end{scope}
+            \end{tikzpicture}
+        \caption{Rappresentazione del grafo dell'Esempio \ref*{exa:friends}}
+        \label{fig:friends}
+    \end{figure}
+\end{example}
+La definizione seguente costituisce una specializzazione del concetto già visto di bisimulazione, nel caso di un grafo etichettato:
+\begin{definition}
+    Sia $G = (V,\to,\Sigma)$ un grafo etichettato. Diremo che una relazione binaria $R$ su $V$ è una bisimulazione su $G$ se valgono congiuntamente le seguenti condizioni:
+    \begin{itemize}
+        \item $R$ è una bisimulazione sul grafo non etichettato $(V,\to)$;
+        \item $a R b \implies [a]_\Sigma = [b]_\Sigma$.
+    \end{itemize}
+\end{definition}
+E' evidente che l'introduzione di una partizione nel grafo riduce il numero di bisimulazioni sullo stesso. Questa osservazione è illustrata nell'esempio seguente.
+\begin{example}
+    Con riferimento all'Esempio \ref*{exa:friends}, la relazione $\to$ è una bisimulazione sul grafo $(V,\to)$, ma non sul grafo $(V,\to,\Sigma)$.
+\end{example}
