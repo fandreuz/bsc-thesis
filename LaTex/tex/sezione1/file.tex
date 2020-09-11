@@ -423,13 +423,13 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
 \begin{proposition}
     Valgono le seguenti proprietà:
     \begin{enumerate}
-        \item La bisimulazione massima su due grafi $G_1,G_2$ è unica
-        \item La bisimulazione massima è una relazione di equivalenza
+        \item La bisimulazione massima su due grafi $G_1,G_2$ è unica;
+        \item La bisimulazione massima è una relazione di equivalenza.
     \end{enumerate}
     \label{prop:bisi_max_equi}
 \end{proposition}
 \begin{proof2}
-    Le proprietà seguono banalmente dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}.
+    Le proprietà seguono dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}:
     \begin{enumerate}
         \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
