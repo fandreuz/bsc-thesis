@@ -8,17 +8,22 @@
 \usepackage{mathtools}
 \usepackage{subcaption}
 \usepackage{tikz}
+\usepackage{float}
 \usepackage{caption}
 \usepackage[nottoc]{tocbibind}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
 \usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
 
 \newcommand{\accente}{\`E }
 
 \definechangesauthor[name=Alberto Casagrande, color=red]{ac}
 
+\usetikzlibrary{arrows,automata}
 \usetikzlibrary{arrows.meta}
 
 \captionsetup[figure]{name=Figura}
+\captionsetup[table]{name=Tabella}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definizione}[section]
@@ -48,6 +53,7 @@
 \addtocontents{toc}{~\hfill\textbf{Pagina}\par}
 
 \include{./tex/sezione1/file}
+\include{./tex/sezione2/file}
 
 \renewcommand\refname{Bibliografia}
 \bibliographystyle{plain}

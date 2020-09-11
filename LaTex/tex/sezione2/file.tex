@@ -1,0 +1,93 @@
+\section{Algoritmi risolutivi}
+In questa sezione esamineremo alcuni algoritmi risolutivi proposti per la risoluzione del problema della determinazione della massima bisimulazione su un grafo. Come risulterà evidente nel seguito viene sfruttata ampiamente l'equivalenza tra bisimulazione massima e RCSP dimostrata nella sezione precedente.
+
+\subsection{Algoritmo di Hopcroft}
+Esaminiamo innanzitutto l'algoritmo risolutivo per una versione semplificata del problema della determinazione della bisimulazione massima, ovvero la minimizzazione di un'automa a stati finiti, presentato in \cite{hopcroft} nel 1971. Sebbene questa soluzione non sia generale, ha fornito alcuni spunti fondamentali per l'ideazione di algoritmi risolutivi più completi, che verranno presentati nel seguito del lavoro.
+
+\subsubsection{Alcune nozioni fondamentali}
+Innanzitutto definiamo il concetto di \emph{automa}, chiaramente centrale nella descrizione del problema:
+\begin{definition}
+    Consideriamo i seguenti oggetti:
+    \begin{itemize}
+        \item Un insieme finito $I$ detto \emph{insieme degli ingressi};
+        \item Un insieme finito $S$ detto \emph{insieme degli stati}, ad ogni stato è associata un'unica uscita;
+        \item Un insieme finito $F \subseteq S$ detto \emph{insieme degli stati finali};
+        \item Una funzione $\delta: S \times I \to S$ detta \emph{funzione di trasferimento}.
+    \end{itemize}
+    Chiameremo $A = (S,I,\delta,F)$ \emph{automa}. Useremo la notazione $Out(x)$ per indicare l'output corrispondente allo stato $x$.
+\end{definition}
+Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga rappresenta uno stato, ogni colonna un ingresso, ed ogni cella contiene il nuovo stato del sistema quando, nel momento in cui il sistema si trova nello stato corrispondente alla riga, si inserisce l'ingresso corrispondente alla colonna.In alternativa possiamo utilizzare una rappresentazione grafica, in cui ogni stato è descritto da un cerchio contenente il nome dello stato, e le transizioni tra stati sono descritte da frecce, sulle quali viene specificato l'ingresso che ha innescato la transizione.\\
+\begin{example}
+    Nella Tabella \ref*{fig:tab_automata} è rappresentato un'automa che cambia stato ($A \to B$, $B \to C$) solamente se l'ingresso è ``1'', e lo stato non è ``$C$''. In qualsiasi altro caso lo stato non cambia.
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{ c | c c }
+            \hline
+            & 0 & 1\\
+            \hline
+            a[0] & a & b \\
+            b[0] & b & c \\
+            c[1] & c & c \\
+            \hline
+          \end{tabular}
+        \caption{Rappresentazione tabellare di un'automa}
+        \label{fig:tab_automata}
+    \end{table}
+    \label{exa:automata_tab}
+\end{example}
+\begin{example}
+    Nella Figura \ref*{fig:automata} è rappresentato lo stesso automa dell'Esempio \ref*{exa:automata_tab}.
+    \begin{figure}[hb]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
+            scale = 1,transform shape]
+
+            \node[state] (a) {$a[0]$};
+            \node[state] (b) [right of=a] {$b[0]$};
+            \node[state] (c) [right of=b] {$c[1]$};
+
+            \path (a) edge              node {$1$} (b)
+                  (b) edge              node {$1$} (c)
+                  (a) edge [loop above]             node {$0$} (a)
+                  (b) edge [loop above]             node {$0$} (b)
+                  (c) edge [loop above]              node {$0/1$} (c);
+        \end{tikzpicture}
+        \caption{Rappresentazione grafica di un'automa}
+        \label{fig:automata}
+    \end{figure}
+\end{example}
+In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente, questi stati reagiscono allo stesso modo all'ingresso degli stessi input. Diamo un esempio di questa situazione:
+\begin{example}
+    \begin{figure}[b]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
+            scale = 1,transform shape]
+
+            \node[state] (a) {$a[0]$};
+            \node[state] (b) [right of=a] {$b[1]$};
+            \node[state] (c) [right of=b] {$c[1]$};
+
+            \path (a) edge              node {$1$} (b)
+                  (b) edge [bend right]             node {$1$} (c)
+                  (c) edge [bend right]             node {$1$} (b)
+                  (a) edge [loop above]             node {$0$} (a)
+                  (b) edge [loop above]             node {$0$} (b)
+                  (c) edge [loop above]             node {$0$} (c);
+        \end{tikzpicture}
+        \caption{Automa contenente stati equivalenti}
+        \label{fig:automata_eq}
+    \end{figure}
+    Consideriamo gli stati dell'automa rappresentato graficamente nella Figura \ref*{fig:automata_eq}. Supponiamo di accorpare gli stati $B,C$ in un unico stato, che chiamiamo $B'$. Se ci interessiamo solamente alla sequenza di output ed all'eventuale raggiungimento di uno stato finale, il nuovo automa risulta indistinguibile dal primo.
+\end{example}
+Proponiamo una definizione formale di equivalenza tra stati. E' possibile fornirne altre equivalenti; in questo lavoro usiamo quella proposta in \cite{hopcroft}:
+\begin{definition}
+    Sia $I^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : S \times I^*$ la funzione di transizione ``iterata''. Diremo che due stati $x,y$ sono equivalenti (con la notazione $x \sim y$) se e soltanto se valgono congiuntamente le seguenti condizioni:
+    \begin{enumerate}
+        \item $Out(x) = Out(y)$;
+        \item $\forall \widetilde{i} \in I^*,\,\, \delta^*(x,\widetilde{i}) \in F \iff \delta^*(y,\widetilde{i}) \in F$.
+    \end{enumerate}
+\end{definition}
+\accente evidente che individuare gli stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti.
+\begin{observation}
+    La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
+\end{observation}
