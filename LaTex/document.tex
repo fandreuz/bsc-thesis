@@ -13,6 +13,7 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
+\usepackage[linesnumbered,ruled,lined,boxed,vlined]{algorithm2e}
 \usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
 
 \newcommand{\accente}{\`E }
@@ -24,6 +25,10 @@
 
 \captionsetup[figure]{name=Figura}
 \captionsetup[table]{name=Tabella}
+\renewcommand{\algorithmcfname}{Algoritmo}
+\renewcommand\labelitemi{--}
+
+\SetArgSty{textnormal}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definizione}[section]
