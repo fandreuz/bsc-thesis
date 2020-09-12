@@ -177,4 +177,7 @@ Consideriamo la complessità dell'algoritmo:
     \item Il ciclo nella Riga \ref*{alg:hop_banale_for_ns} viene eseguito $O(|S|)$ volte;
     \item Il contenuto del ciclo nella Riga \ref*{alg:hop_banale_for_ns} ha complessità $O(|S|)$ (con gli opportuni accorgimenti).
 \end{itemize}
-Quindi la complessità dell'algoritmo è $\Theta|I|(O(|S|^2 + O(|S|) * O(|S|))) = \Theta(I)O(|S|^2)$. Se consideriamo costante il numero di ingressi, la complessità diventa $O(|S|^2)$.
+Quindi la complessità dell'algoritmo è \begin{gather*}
+    \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
+\end{gather*}
+Se consideriamo costante il numero di ingressi: $O(|S|^2)$.
