@@ -1,4 +1,5 @@
 \section{Nozioni di Base}
+\label{sec:base}
 
 \subsection{Relazioni Binarie}
 Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato.
@@ -558,12 +559,12 @@ che tratteremo nel seguito in quanto la formulazione di RSCP lo rende un problem
 bisimulazione massima.\\
 Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
 \begin{definition}
-    Sia $A$ un insieme finito. Sia $X$ un insieme contenente $n$ elementi, per ognuno dei quali si ha $X_i \subseteq A$. Diremo che $X$ è una \emph{partizione}
+    Sia $A$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq A \,\,\,\forall i \in \{1,\dots,n\}$. Diremo che $X$ è una \emph{partizione}
     di $A$ se:
     \begin{gather*}
         \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
     \end{gather*}
-    Inoltre diremo che gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$.
+    Inoltre diremo che gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ useremo la notazione $[a]_X = x_i$.
 \end{definition}
 \begin{observation}
     Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
