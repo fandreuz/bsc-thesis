@@ -56,7 +56,7 @@ Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga r
         \label{fig:automata}
     \end{figure}
 \end{example}
-In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente, questi stati reagiscono allo stesso modo all'ingresso degli stessi input. Diamo un esempio di questa situazione:
+In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente, il sistema si comporta in modo simile quando riceve in input un ingresso qualsiasi, e si trova in uno degli stati presi in esame. Diamo un esempio di questa situazione:
 \begin{example}
     \begin{figure}[b]
         \centering
@@ -79,20 +79,20 @@ In alcuni automi è possibile individuare stati che ``si comportano in modo simi
     \end{figure}
     Consideriamo gli stati dell'automa rappresentato graficamente nella Figura \ref*{fig:automata_eq}. Supponiamo di accorpare gli stati $B,C$ in un unico stato, che chiamiamo $B'$. Se ci interessiamo solamente alla sequenza di output ed all'eventuale raggiungimento di uno stato finale, il nuovo automa risulta indistinguibile dal primo.
 \end{example}
-Proponiamo la definizione formale di equivalenza tra stati che viene utilizzata in \cite{hopcroft}. Nel seguito ne dedurremo un'altra, che consente di stabilire un parallelo con gli argomenti trattati nella Sezione precedente.
+Proponiamo la definizione formale di equivalenza tra stati che viene utilizzata in \cite{hopcroft}. Nel seguito ne dedurremo un'altra, che consente di stabilire un parallelo con gli argomenti trattati nella Sezione \ref*{sec:base}.
 \begin{definition}
     \label{def:equivalent_states}
-    Sia $I^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : S \times I^*$ la funzione di transizione ``iterata''. Diremo che due stati $x,y$ sono equivalenti (con la notazione $x \sim y$) se e soltanto se valgono congiuntamente le seguenti condizioni:
+    Sia $I^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : S \times I^*$ la funzione di transizione ``iterata''. Diremo che due stati $x,y$ sono equivalenti (con la notazione ``$x \sim y$'') se e soltanto se valgono congiuntamente le seguenti condizioni:
     \begin{enumerate}
         \item $Out(x) = Out(y)$;
-        \item $\forall \widetilde{i} \in I^*,\,\, \delta^*(x,\widetilde{i}) \in F \iff \delta^*(y,\widetilde{i}) \in F$.
+        \item $\forall i^* \in I^*,\,\, \delta^*(x,i^*) \in F \iff \delta^*(y,i^*) \in F$.
     \end{enumerate}
 \end{definition}
 \accente evidente che individuare gli stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti. In questo lavoro non illustreremo cosa comporta questa definizione, e perchè è importante che per qualsiasi stringa di lunghezza finita si giunga ad uno stato finale partendo da due stati supposti equivalenti.
 \begin{observation}
     La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
 \end{observation}
-La seguente osservazione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref*{sec:rscp}.
+La seguente osservazione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref*{sec:rscp}:
 \begin{observation}
     \label{obs:equivalent_states}
     Due stati $x,y$ sono equivalenti nel senso della definizione \ref*{def:equivalent_states} se e solo se
@@ -106,7 +106,7 @@ La seguente osservazione sarà utile per formulare il problema con la terminolog
     \begin{gather*}
         \exists i^* \in I^* : \delta^*(\delta(x,i),i^*) = \delta^*(x,ii^*) \in F, \,\, \delta^*(\delta(y,i),i^*) = \delta^*(y,ii^*) \notin F
     \end{gather*}
-    Quindi, per l'esistenza della string $ii^*$ si ha $x \not\sim y$. La dimostrazione è speculare se $\exists i^* \in I^* : \delta^*(x,ii^*) \notin F, \delta^*(y,ii^*) \in F$.\\
+    Quindi, per l'esistenza della stringa $ii^*$ si ha $x \not\sim y$. La dimostrazione è speculare se $\exists i^* \in I^* : \delta^*(x,ii^*) \notin F, \delta^*(y,ii^*) \in F$.\\
     Ora supponiamo che valga la (1). E' chiaro che $\forall i^* \in I^*, \forall i \in I$ si ha che
     \begin{gather*}
         \delta^*(x,ii^*) \sim \delta^*(y,ii^*)
@@ -120,7 +120,7 @@ La seguente osservazione sarà utile per formulare il problema con la terminolog
     Supponiamo che $x \sim y$. Sia $x \to x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y \to y'$. Allora, per l'Osservazione \ref*{obs:equivalent_states}, $x' \sim y'$.\\
     Chiaramente lo stesso argomento vale in modo speculare.
 \end{proof2}
-Osserviamo che nella definizione di ``$\to$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta(x)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
+Osserviamo che nella definizione di ``$\to$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
 Possiamo definire la \emph{minimizzazione per stati equivalenti} di un'automa a stati finiti:
 \begin{definition}\label{def:minim_eq_states}
     Sia $A = (S,I,\delta,F)$ un'automa. Chiameremo \emph{minimizzazione per stati equivalenti} l'automa $A = (\widetilde{S}, I, \widetilde{\delta}, \widetilde{F})$ dove
@@ -130,22 +130,49 @@ Possiamo definire la \emph{minimizzazione per stati equivalenti} di un'automa a 
         \item $\widetilde{F} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $F$'';
     \end{itemize}
 \end{definition}
-Concludiamo l'esposizione delle nozioni preliminari con la seguente osservazione:
-\begin{observation}
+Prima di concludere l'esposizione delle nozioni preliminari è necessario dimostrare un risultato interessante che lega il problema della minimizzazzione di un'automa a stati finiti con quanto è stato presentato nella sezione \ref*{sec:rscp}. A questo scopo dimostriamo i seguenti lemmi, che consentono di dimostrare tale legame in modo agevole:
+\begin{lemma}
+    \label{lem:part_stab_stesso_blocco}
+    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Allora $\forall (x,y) \in S \times S$ tali che $[x]_{\widehat{S}} = [y]_{\widehat{S}}$ si ha che $\forall i^* \in I^*$
+    \begin{gather*}
+        [\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}
+    \end{gather*}
+\end{lemma}
+\begin{proof2}
+    Procediamo per induzione su $i^*$. Inizialmente i due stati si trovano nello stesso blocco. Ora supponiamo che dopo l'inserimento dell' $(n-1)$-esimo simbolo di $i^*$ i due stati $x_{n-1}, y_{n-1}$ in cui si trova l'automa appartengano ancora allo stesso blocco. La partizione è stabile rispetto alla funzione $\delta_i$, dove $i$ è l' $n$-esimo simbolo di $i^*$, quindi tutto il blocco $[x_{n-1}]_{\widehat{S}} = [y_{n-1}]_{\widehat{S}}\,\,$ è contenuto all'interno dell'insieme $\delta_i^{-1}([\delta_i(x_{n-1})]_{\widehat{S}}) = \delta_i^{-1}([x_n]_{\widehat{S}})$. Quindi $\delta_i(y_{n-1}) \in \delta_i^{-1}([x_n]_{\widehat{S}})$, e dunque si ha anche $[x_n]_{\widehat{S}} = [y_n]_{\widehat{S}}$.
+\end{proof2}
+\begin{lemma}
+    \label{lem:part_stab_equiv}
+    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Supponiamo inoltre che per $\widehat{S}$ valga la segente condizione:
+    \begin{gather*}
+        \forall (x,f) \in S \times F, \quad [x]_{\widetilde{S}} = [f]_{\widetilde{S}} \iff x \in F
+    \end{gather*}
+    Allora $\forall X \in \widehat{S}, \,\,\forall (x,y) \in X \times X$ si ha $x \sim y$.
+\end{lemma}
+\begin{proof2}
+    Supponiamo per assurdo che in un blocco $X \in \widehat{S}$ esistano due stati $x,y$ non equivalenti. Allora deve esistere una stringa $i^* \in I^*$ tale che, ad esempio, $\delta^*(x,i^*) \in F \land \delta^*(y,i^*) \not\in F$. Ma per il Lemma \ref*{lem:part_stab_stesso_blocco} $[\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}$. Chiaramente questo è assurdo per la (1), quindi non possono esistere nello stesso blocco due stati non equivalenti.
+\end{proof2}
+Possiamo dimostrare il seguente risultato:
+\begin{theorem}
     Sia $A$ un'automa a stati finiti. La minimizzazione per stati equivalenti dell'automa è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alle funzioni $\delta_i : S \to S, \forall i \in I$.
-\end{observation}
+\end{theorem}
 \begin{proof2}
     Dimostriamo che la minimizzazione proposta nella Definizione \ref*{def:minim_eq_states} è una partizione stabile rispetto alle funzioni $\delta_i$. Supponiamo per assurdo che $\exists i \in I : \widetilde{S}$ non è stabile rispetto a $\delta_i$. Quindi $\exists S_1, S_2 \in S :$
     \begin{gather*}
         S_1 \not\subseteq \delta_i^{-1}(S_2) \,\, \land \,\, S_1 \,\cap \,\delta_i^{-1}(S_2) \neq \emptyset
     \end{gather*}
     La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref*{obs:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
-    Resta da dimostrare che la partizione proposta $\widetilde{S}$ è la più grossolana stabile rispetto alle funzioni $\delta_i : S \to S, \forall i \in I$... % TODO: dimostra
+    Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S \to S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
+    \begin{gather*}
+        S_1 \cap X \neq \emptyset \,\,\land\,\, S_2 \cap X \neq \emptyset
+    \end{gather*}
+    Ma questo è chiaramente in contrasto con il Lemma \ref*{lem:part_stab_equiv} per come è stato costruita la partizione $\widetilde{S}$, in quanto esistono coppie di stati $(x,y) \in X \times X$ per cui vale $x \in S_1, y \in S_2$, cioè $x \not\sim y$.
 \end{proof2}
 
 \subsubsection{L'algoritmo}
 Innanzitutto, con i risultati della sezione precedente, possiamo progettare il seguente algoritmo banale:\\
 \begin{algorithm}[H]
+    \label{alg:hop_banale}
     \SetAlgoLined
     \KwData{$S,I,\delta$}
     \tcp*[h]{Partizione iniziale contenente un unico blocco}
@@ -178,6 +205,6 @@ Consideriamo la complessità dell'algoritmo:
     \item Il contenuto del ciclo nella Riga \ref*{alg:hop_banale_for_ns} ha complessità $O(|S|)$ (con gli opportuni accorgimenti).
 \end{itemize}
 Quindi la complessità dell'algoritmo è \begin{gather*}
-    \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
+    T_{alg_{\ref*{alg:hop_banale}}}(|S|,|I|) = \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
 \end{gather*}
-Se consideriamo costante il numero di ingressi: $O(|S|^2)$.
+Se consideriamo costante il numero di ingressi: $T_{alg_{\ref*{alg:hop_banale}}}(|S|) = O(|S|^2)$.
