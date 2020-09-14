@@ -87,7 +87,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
         \caption{Rappresentazione grafica di un grafo}
         \label{fig:graph}
     \end{figure}
-    Il grafo di Figura \ref*{fig:graph} è descritto dalla coppia
+    Il grafo di Figura \ref{fig:graph} è descritto dalla coppia
     \begin{itemize}
         \item $V = \{a,b,c,d,e\}$
         \item $\to \,\,= \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
@@ -137,7 +137,7 @@ In altre parole, i nodi contenuti in una stessa componente fortemente connessa s
         \caption{SCC di un grafo}
         \label{fig:graph_cfc_1}
     \end{figure}
-    Nel grafo di Figura \ref*{fig:graph_cfc_1} le SCC sono evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
+    Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
 \end{example}
 Dato un grafo, possiamo definire il partizionamento dei nodi in SCC come segue:
 \begin{definition}
@@ -214,7 +214,7 @@ Riportiamo la seguente proprietà immediata:
         \caption{Un grafo ed il corrispondente grafo delle SCC}
         \label{fig:graph_cfc_2}
     \end{figure}
-    La Figura \ref*{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref*{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
+    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
 Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |\to|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
 
@@ -235,8 +235,8 @@ Del primo faremo un uso esplicito nel seguito. Il secondo è evidentemente non v
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
 \end{example}
-Una formulazione equivalente dell'Assioma \ref*{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica la non-esistenza, in ZFC, di insiemi non-ben-fondati.\\
-Rinunciando all'Assioma \ref*{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati, tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nel seguito.
+Una formulazione equivalente dell'Assioma \ref{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica la non-esistenza, in ZFC, di insiemi non-ben-fondati.\\
+Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati, tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nel seguito.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
@@ -337,7 +337,7 @@ L'assioma AFA ha un'ovvia conseguenza:
         \caption{Rappresentazione di insiemi tramite grafi}
         \label{fig:graph_set}
     \end{figure}
-    In Figura \ref*{fig:graph_set} sono rappresentati alcuni insiemi sotto forma di APG.
+    In Figura \ref{fig:graph_set} sono rappresentati alcuni insiemi sotto forma di APG.
 \end{example}
 
 \subsection{Bisimulazione}
@@ -430,7 +430,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
     \label{prop:bisi_max_equi}
 \end{proposition}
 \begin{proof2}
-    Le proprietà seguono dal Corollario \ref*{cor:bisimulation_eqrel} e dall'Osservazione \ref*{obs:bisimulation_union}:
+    Le proprietà seguono dal Corollario \ref{cor:bisimulation_eqrel} e dall'Osservazione \ref{obs:bisimulation_union}:
     \begin{enumerate}
         \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
@@ -499,7 +499,7 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
               Dunque l'ambiguità è risolta.
     \end{enumerate}
 \end{proof2}
-Tenendo conto di quanto affermato nella sezione \ref*{sec:graphs_sets}, il Teorema \ref*{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
+Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
 relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
 Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
@@ -511,9 +511,9 @@ Dopo questa considerazone possiamo dare la seguente definizione:
     Si definisce \emph{classe del nodo} $a$ rispetto alla bisimulazione $R$, con la notazione $[a]_R$, il nodo di $VR$ in cui viene inserito il nodo $a$.
     \label{def:bisi_contraction}
 \end{definition}
-La Definizione \ref*{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
+La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
-    Sia $G$ un grafo, e sia $G_R$ come nella Definizione \ref*{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
+    Sia $G$ un grafo, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
@@ -522,10 +522,10 @@ La Definizione \ref*{def:bisi_contraction} è di fondamentale importanza per la 
         m \equiv M \iff M = [m]_R
     \end{gather*}
     Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
-    Supponiamo che $x \equiv X$, e che $x \to y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref*{def:bisi_contraction}, si ha $X \to Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X \to Y$ per qualche $Y \in VR$. Sempre per la Definizione \ref*{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x \to y)$.
+    Supponiamo che $x \equiv X$, e che $x \to y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X \to Y$. Inoltre vale banalmente $y \equiv Y$.\\
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X \to Y$ per qualche $Y \in VR$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x \to y)$.
 \end{proof2}
-La Proposizione \ref*{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente per il Teorema \ref*{theo:bisi_iff_eqsets}:
+La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente per il Teorema \ref{theo:bisi_iff_eqsets}:
 \begin{corollary}
     Sia $R$ una bisimulazione che sia anche una relazione di equivalenza. Allora l'APG $(G, v)$ e l'APG $(G_R, [v]_R)$ rappresentano lo stesso insieme.
 \end{corollary}
@@ -596,7 +596,7 @@ Con queste premesse possiamo definire il problema della determinazione della RCS
     Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) di $A$ la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
 \end{definition}
 \begin{example}
-    Sia $A$ come nell'Esempio \ref*{exa:set_partition}. Sia $R$ la relazione definita come segue:
+    Sia $A$ come nell'Esempio \ref{exa:set_partition}. Sia $R$ la relazione definita come segue:
     \begin{gather*}
         a R b \iff \text{``} a,b \text{ sono entrambi pari, oppure sono entrambi dispari''}
     \end{gather*}
@@ -641,11 +641,11 @@ Cioè una bisimulazione induce un partizionamento stabile rispetto a $\to$ dei n
 \begin{proof2}
     Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($\to$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($\to$).
     \begin{itemize}
-        \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref*{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref*{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $\to$.\\
-              Supponiamo per assurdo che $X$ non sia RSCP($\to$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $\to$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref*{prop:part_induce_bisi} da
+        \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $\to$.\\
+              Supponiamo per assurdo che $X$ non sia RSCP($\to$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $\to$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref{prop:part_induce_bisi} da
               $\widetilde{X}$ è possibile ricavare una bisimulazione $\widetilde{R}$ su $G$. Ma quindi $|\widetilde{R}| > |R|$, che è assurdo.
-        \item Sia $X$ la RSCP($\to$) di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref*{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
-              sia massima. Ma da questa si può ricavare, come nella Proposizione \ref*{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $\to$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
+        \item Sia $X$ la RSCP($\to$) di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
+              sia massima. Ma da questa si può ricavare, come nella Proposizione \ref{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $\to$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
     \end{itemize}
     Quindi l'equivalenza è dimostrata.
 \end{proof2}
