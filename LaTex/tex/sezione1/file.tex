@@ -580,8 +580,7 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
 \begin{example}
     Nell'esempio precedente la partizione $X_2$ rifinisce la partizione $X_1$, ed entrambe rifiniscono la partizione banale $\widetilde{A}$.
 \end{example}
-In molti casi è interessante studiare il partizionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni. Una della restrizioni più
-interessanti dal punto di vista pratico è la seguente:
+In molti casi è interessante studiare il partizionamento di un insieme quando i blocchi sono sottoposti a particolari restrizioni:
 \begin{definition}
     Sia $A$ un insieme, ed $R$ una relazione binaria su $A$. Sia $X$ una partizione su $A$. Diremo che $X$ è \emph{stabile} rispetto ad $R$ se $\forall x_i, x_j \in X$
     vale $x_i \subseteq R^{-1}(x_j) \lor x_i \cap R^{-1}(x_j) = \emptyset$.
@@ -608,6 +607,28 @@ Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In q
     Sia $A$ un insieme, sia $R$ una relazione binaria su $A$, e sia $\Sigma$ una partizione iniziale di $A$. Chiameremo RSCP($R,\Sigma$) di $A$ la partizione di $A$ che, tra le partizioni di $A$ stabili rispetto ad $R$ che rifiniscono $\Sigma$,
     minimizza il numero di blocchi.
 \end{definition}
+La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
+\begin{definition}
+    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. Diremo che $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
+    \begin{gather*}
+        \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
+    \end{gather*}
+    In tal caso definiamo la seguente funzione:
+    \begin{gather*}
+        \text{Split}(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \quad \forall S_x \in \widetilde{S}\} - \{\emptyset\}
+    \end{gather*}
+\end{definition}
+Valgono le seguenti osservazioni sulla funzione appena introdotta:
+\begin{observation}
+    Se $A$ non è uno \emph{splitter} di $\widetilde{S}$ si ha $\widetilde{S} = $ Split$(A,\widetilde{S})$.
+\end{observation}
+\begin{observation}
+    \label{obs:split_eredita}
+    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A$, Split$(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``Split'' preserva la stabilità.
+\end{observation}
+\begin{proof2}
+    Osservando che ``Split'' può solamente dividere i blocchi, e non mescolarli, la dimostrazione è banale.
+\end{proof2}
 
 \subsection{Equivalenza tra RSCP e bisimulazione massima}
 Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{gentilini}:
