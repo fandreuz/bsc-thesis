@@ -241,6 +241,7 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
             }
         }
         \While{$\exists i \in I : L(i) \neq \emptyset$}{
+            \label{alg:hop_ciclo_infinito}
             Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
             \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
             \ForAll{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{
@@ -292,3 +293,26 @@ In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si
 Dal punto di vista computazionale è chiaramente più conveniente usare come \emph{splitter} l'insieme tra $B$ e $Q - B$ avente cardinalità minore. La strategia di Hopcroft (``\emph{process the smaller half}'', come viene sintetizzata in \cite{paigetarjan}) consiste infatti nella selezione degli \emph{splitter} secondo il criterio della cardinalità, a differenza di quanto avviene nell'Algoritmo \ref{alg:hop_banale}.\\
 Dalla Riga \ref{alg:hop_split} alla Riga \ref{alg:hop_aggiorna_dopo_split} viene operato lo ``Split''. Nel ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono aggiornate le strutture dati relative ai nuovi blocchi creati. Osserviamo che ad ogni iterazione del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono creati due nuovi blocchi, anche se il numero di blocchi aumenta soltanto di 1, perchè viene anche ``smembrato'' un blocco già esistente. Di questi due blocchi se ne sceglie uno da usare come \emph{splitter}, seguendo il criterio illustrato sopra.\\
 Queste operazioni vengono ripetute finchè in $L(i)$ per qualche $i$ resta un blocco da usare come \emph{splitter}.
+\\\\
+Analizziamo la correttezza dell'algoritmo. Trascurando la parte iniziale, ad ogni iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito} viene prima rimosso un elemento in $L(i)$, e solamente in seguito ad una rifinitura della partizione ne viene inserito un altro. Poichè non è possibile rifinire all'infinito, l'algoritmo termina.\\
+Il seguente Teorema dimostra la validità del risultato:
+\begin{theorem}
+    \label{teo:hop_corretto}
+    Sia $A = (S,I,\delta,F)$ un'automa. Sia $\widetilde{S}$ la partizione risultante dall'applicazione dell'Algoritmo \ref{alg:hop}. Siano $x,y \in S$. Allora
+    \begin{gather*}
+        x \sim y \iff [x]_{\widetilde{S}} = [y]_{\widetilde{S}}
+    \end{gather*}
+\end{theorem}
+\begin{proof2}
+    Dimostriamo innanzitutto che $[x]_{\widetilde{S}} \neq [y]_{\widetilde{S}} \implies x \not\sim y$. Procediamo per induzione:
+    \begin{itemize}
+        \item La relazione vale prima del ciclo \ref{alg:hop_ciclo_infinito}, infatti stati finali e non finali non possono essere equivalenti;
+        \item Supponiamo che sia vero prima di una certa iterazione. Supponiamo che gli stati $x,y$ finiscano in partizioni diverse nelle Righe tra \ref{alg:hop_split} e \ref{alg:hop_aggiorna_dopo_split}. Questo significa che $[\delta(x,i)]_{\widetilde{S}_n} \neq [\delta(y,i)]_{\widetilde{S}_n}$, dove $\widetilde{S}_n$ è la partizione costruita dall'algoritmo fino all'iterazione considerata. Ma allora, per l'ipotesi induttiva, $\delta(x,i) \not\sim \delta(y,i)$, e quindi $x,y$ non sono equivalenti (per l'Osservazione \ref{obs:equivalent_states}).
+    \end{itemize}
+    Questo ragionamento è valido perchè il fatto che due stati si trovino in partizioni differenti dopo una certa iterazione implica che si troveranno in partizioni differenti anche al termine del procedimento.\\
+    Dimostriamo ora che $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \implies x \sim y$. Supponiamo per assurdo che per due stati $x,y$ si abbia $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \land x \not\sim y$. Allora, ad esempio, $\exists i^* \in I^* : \delta^*(x,i^*) \in F, \delta^*(y,i^*) \not\in F$. Ma poichè inizialmente poniamo stati inziali e finali in partizioni diverse, deve valere chiaramente $[\delta^*(x,i^*)]_{\widetilde{S}} \neq [\delta^*(y,i^*)]_{\widetilde{S}}$, e quindi procedendo a ritroso sui simboli di $i^*$ si ha
+    \begin{gather*}
+        [\delta^*(x,i^*_n)]_{\widetilde{S}} \neq [\delta^*(y,i^*)_n]_{\widetilde{S}} \implies [\delta^*(x,i^*_{n-1})]_{\widetilde{S}} \neq [\delta^*(y,i^*)_{n-1}]_{\widetilde{S}}
+    \end{gather*}
+    Per cui si ha chiaramente $[x]_{\widetilde{S}} = [\delta^*(x,i^*_0)]_{\widetilde{S}} \neq [\delta^*(y,i^*)_0]_{\widetilde{S}} = [y]_{\widetilde{S}}$.
+\end{proof2}
