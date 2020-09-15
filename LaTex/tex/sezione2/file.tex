@@ -214,16 +214,16 @@ Se consideriamo costante il numero di ingressi: $T_{alg_{\ref{alg:hop_banale}}}(
 \subsubsection{L'algoritmo di Hopcroft}
 Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso migliora la procedura presentata nella sezione precedente, in quanto ha complessità \emph{loglineare}. Forniremo un commento allo pseudocodice, in modo da spiegare il procedimento in modo dettagliato. In seguito analizzeremo formalmente l'algoritmo, proporremo e commenteremo la dimostrazione della correttezza e della complessità.\\
 \begin{algorithm}[H]
+    \thispagestyle{empty}
     \label{alg:hop}
     \KwData{$S,I,\delta,F$}
     \caption{Algoritmo di Hopcroft}
     \Begin{
-        \tcp*[h]{Inizializziamo $\delta^{-1}$}\\
         \ForAll{$(s,i) \in S \times I$}{
             $\delta^{-1}(s,i) \coloneqq \{t : \delta(t,i) = s\}$\;\label{alg:hop_deltainverso}
         }
         $B(1) \coloneqq F, B(2) \coloneqq S - F$\;
-        \tcc*[h]{Per ogni ingresso $i$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}\\
+        \tcc*[h]{$\forall i \in I$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}\\
         \ForAll{$j \in \{1,2\}$}{
             \ForAll{$i \in I$}{
                 $i(j) = \{s : s \in B(j) \land \delta^{-1}(s,i) \neq \emptyset\}$\;\label{alg:hop_stati_delta_nonvuoto}
@@ -244,10 +244,10 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
             Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
             \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
             \ForAll{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{
-                $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;
+                $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
                 $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
                 $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
-                \ForAll{$a \in I$}{
+                \ForAll{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
                     $a(m) = \{s : s \in B(m) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
                     $a(k+1) \coloneqq \{s : s \in B(k+1) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
                     \eIf{$|a(m)| \leq |a(k+1)|$}{
@@ -258,33 +258,15 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
                 }
                 $k = k + 1$\;
             }
-    }}
+        }
+    }
+    \thispagestyle{empty}
 \end{algorithm}
-Nella Riga \ref{alg:hop_deltainverso} definiamo $\delta^{-1}$, una funzione (che nella pratica può essere un array bidimensionale, supponendo numerati univocamente gli stati e gli ingressi) che consente l'accesso in tempo costante all'insieme degli stati che portano in un determinato stato dopo un determinato ingresso. Come si può osservare questo sarà fondamentale nel seguito del procedimento.\\
+Nella Riga \ref{alg:hop_deltainverso} definiamo $\delta^{-1}$, una funzione (che nella pratica può essere un array bidimensionale, supponendo numerati univocamente gli stati e gli ingressi) che consente l'accesso in tempo costante all'insieme degli stati che conducono ad un determinato stato conseguentemente ad un determinato ingresso.\\
 Inizialmente la partizione contiene due blocchi: gli stati finali e quelli non finali. Di conseguenza le rifiniture successive della partizione manterranno sempre separati stati finali e non finali.\\
-Per evitare accessi inutili (che incrementerebbero i termini costanti dell'algoritmo, con conseguente peggioramento del tempo di esecuzione su input piccoli) nella Riga \ref{alg:hop_stati_delta_nonvuoto} definiamo $i(j)$ per $i \in I, j \in \{1,2\}$ (nella pratica può essere un array bidimensionale) come l'insieme degli stati $s$ nel blocco $B(j)$ per cui esiste qualche stato $t$ tale che $\delta(t,i) = s$.\\
-All'interno del ciclo della Riga \ref{alg:hop_splitters} definiamo gli insiemi $L(i)\,\, \forall i \in I$, che contengono gli indici dei blocchi che verranno usati come \emph{splitter} nel seguito del procedimento. Vale la seguente definizione:
-\begin{definition}
-    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. Diremo che $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
-    \begin{gather*}
-        \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
-    \end{gather*}
-    In tal caso definiamo la seguente funzione:
-    \begin{gather*}
-        \text{Split}(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \quad \forall S_x \in \widetilde{S}\} - \{\emptyset\}
-    \end{gather*}
-\end{definition}
-Valgono le seguenti osservazioni sulla funzione appena introdotta:
-\begin{observation}
-    Se $A$ non è uno \emph{splitter} di $\widetilde{S}$ si ha $\widetilde{S} = $ Split$(A,\widetilde{S})$.
-\end{observation}
-\begin{observation}
-    \label{obs:split_eredita}
-    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A$, Split$(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``Split'' preserva la stabilità.
-\end{observation}
-\begin{proof2}
-    Osservando che ``Split'' può solamente dividere i blocchi, e non mescolarli, la dimostrazione è banale.
-\end{proof2}
+Per evitare accessi inutili (che incrementerebbero i termini costanti dell'algoritmo) nella Riga \ref{alg:hop_stati_delta_nonvuoto} definiamo $i(j)$ per $i \in I, j \in \{1,2\}$ (nella pratica può essere un array bidimensionale) come l'insieme degli stati $s$ nel blocco $B(j)$ per cui esiste qualche stato $t$ tale che $\delta(t,i) = s$.\\
+All'interno del ciclo della Riga \ref{alg:hop_splitters} definiamo gli insiemi $L(i)\,\, \forall i \in I$, che contengono gli indici dei blocchi che verranno usati come \emph{splitter} nel seguito del procedimento. Osserviamo che all'interno di questo insieme vengono inseriti gli indici dei blocchi per cui la cardinalità di ``$i(\cdot)$'' è minima. Come dimosteremo nel seguito, questa tecnica
+
 In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si applica l'algoritmo di Hopcroft, è possibile scegliere gli \emph{splitter} in modo vantaggioso, allo scopo di ridurre il carico di lavoro e dunque la complessità. Riportiamo e commentiamo la dimostrazione:
 \begin{observation}
     Sia $S$ un insieme finito. Sia $f : S \to S$ una funzione (cioè $\forall s \in S\,\, |f({s})| = 1$). Sia $\widetilde{S}$ una partizione di $S$. Sia $Q$ l'unione di alcuni blocchi di $\widetilde{S}$, e sia $B$ un blocco di $\widetilde{S}$, con $B \subseteq Q$. Supponiamo $\widetilde{S}$ stabile rispetto a $Q$. Allora
@@ -306,3 +288,7 @@ In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si
     Se $S_x \subseteq f^{-1}(B)$ chiaramente $S_x \,\,\cap \subseteq f^{-1}(Q-B) = \emptyset$. Se $S_x \cap f^{-1}(Q) = \emptyset$, allora $S_x \cap f^{-1}(Q-B) = \emptyset$. Se $S_x \cap f^{-1}(B) = \emptyset \land S_x \subseteq f^{-1}(Q)$ bisogna avere $S_x \subseteq f^{-1}(Q-B)$.\\
     Osserviamo che queste deduzioni valgono solamente se $f$ è una funzione.
 \end{proof2}
+
+Osservando che dal punto di vista computazionale è chiaramente più conveniente usare come \emph{splitter} l'insieme tra $B$ e $Q - B$ avente cardinalità minore, la strategia di Hopcroft (``\emph{process the smaller half}'', come viene sintetizzata in \cite{paigetarjan}) consiste nella selezione degli \emph{splitter} secondo il criterio della cardinalità, a differenza di quanto avveniva nell'Algoritmo \ref{alg:hop_banale}.\\
+Dalla Riga \ref{alg:hop_split} alla Riga \ref{alg:hop_aggiorna_dopo_split} viene operato lo ``Split''. Nel ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono aggiornate le strutture dati relative ai nuovi blocchi creati. Osserviamo che ad ogni iterazione del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono creati due nuovi blocchi, anche se il numero di blocchi aumenta soltanto di 1, perchè viene anche ``smembrato'' un blocco già esistente. Di questi due blocchi se ne sceglie uno da usare come \emph{splitter}, seguendo il criterio illustrato sopra.\\
+Queste operazioni vengono ripetute finchè in $L(i)$ per qualche $i$ resta un blocco da usare come \emph{splitter}.
