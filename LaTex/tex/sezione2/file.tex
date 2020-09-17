@@ -244,7 +244,7 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
             \label{alg:hop_ciclo_infinito}
             Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
             \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
-            \ForAll{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{
+            \ForAll{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
                 $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
                 $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
                 $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
@@ -334,7 +334,7 @@ Consideriamo ora un ingresso $i \in I$ fissato per una determinata iterazione $n
 \begin{gather*}
     \widetilde{S}_n = \{S_1,\dots,S_m\}, \quad L(i) = \{i_1,\dots,i_r\}, \quad  \{i_{r+1},\dots,i_m\} = \{1,\dots,m\} - L(i)
 \end{gather*}
-Osserviamo che, se all'inizio dell'iterazione viene selezionato l'indice $x \in L(i)$, la complessità dell'iterazione è $O(|i(x)|)$, cioè il tempo impiegato durante l'esecuzione è maggiorato da $k|i(x)|$, dove $k$ è una costante di propozionalità. (spiega)\\
+Osserviamo che, se all'inizio dell'iterazione viene selezionato l'indice $x \in L(i)$, la complessità dell'iterazione è $O(|i(x)|)$, cioè il tempo impiegato durante l'esecuzione è maggiorato da $k|i(x)|$, dove $k$ è una costante di propozionalità. Questo avviene perchè il ciclo della Riga \ref{alg:hop_ciclo_blocchi_preimmagine} è in realtà un ciclo che itera sugli stati $s\in i(x)$, e per ognuno estrae (in tempo costante) $\delta^{-1}(s,i)$.\\
 Vogliamo dimostrare che il contributo al tempo di esecuzione di tutte le iterazioni del ciclo in cui si seleziona l'ingresso $i$ considerato sopra, dalla $n$-esima fino alla terminazione dell'algoritmo, è maggiorato dalla seguente espressione:
 \begin{gather*}
     T = k\left(\sum_{j = 1}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
@@ -344,7 +344,7 @@ All'inizio di ogni iterazione viene estratto un ingresso $a$. Si presentano due 
 \begin{itemize}
     \item $a \neq i$: poichè $T$ prende in considerazione solamente il tempo impiegato dalle iterazioni in cui viene selezionato $i$, questa iterazione è esclusa dalla stima. Ciononostante l'iterazione può modificare i blocchi della partizione, e dobbiamo quindi verificare che $T' \leq T$:
     \begin{itemize}
-        \item Se viene modificato un blocco $B(x)$ con $x \in L(i)$, nella stima dobbiamo sostituire un elemento del tipo $b \log_2 b$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 (b-c)$. Per l'osservazione \ref{obs:log} si ha $T' < T$;
+        \item Se viene modificato un blocco $B(x)$ con $x \in L(i)$, nella stima dobbiamo sostituire un elemento maggiorabile con $b \log_2 b$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 (b-c)$. Per l'osservazione \ref{obs:log} si ha $T' < T$;
         \item Se invece $x \not\in L(i)$, in $T'$ dobbiamo sostituire un elemento del tipo $b \log_2 \frac{b}{2}$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 \frac{b-c}{2}$ (supponendo che $c \leq b - c$, in caso contrario la dimostrazione è simile). Infatti il blocco avente cardinalità $b-c$ fa parte, alla fine dell'iterazione, dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$, ed al termine del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} si ha $c \in L(i)$. Chiaramente si ha $c \leq \frac{b}{2}$, e quindi
         \begin{align*}
             c \log_2 c + (b-c) \log_2 \frac{b-c}{2} &\leq c \log_2 \frac{b}{2} + (b-c) \log_2 \frac{b}{2}\\
