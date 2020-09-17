@@ -368,7 +368,7 @@ Prima della prima iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito}, 
 \begin{gather*}
     T_i = k\left(|S-F|\log_2|S-F| + |F|\log_2\frac{|F|}{2}\right)
 \end{gather*}
-che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora la complessità dell'algoritmo è data dalla somma della complessità delle righe precedenti ($\Theta(|I||S|)$) alla \ref{alg:hop_ciclo_infinito} e $|I| * O(|S|\log|S|)$, cioè $|I||S|\log|S|$. Considerando costante la cardinalità di $I$:
+che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora la complessità dell'algoritmo è data dalla somma della complessità delle righe precedenti alla \ref{alg:hop_ciclo_infinito}, ovvero $\Theta(|I||S|)$, e $|I| * O(|S|\log|S|)$, cioè $|I||S|\log|S|$. Considerando costante la cardinalità di $I$:
 \begin{gather*}
     T_{alg} = O(|S|\log|S|).
 \end{gather*}
