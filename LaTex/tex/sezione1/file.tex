@@ -114,15 +114,15 @@ In generale un grafo non è fortemente connesso. Tuttavia possiamo individuare f
 \end{definition}
 In altre parole, i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
 \begin{example}
-    \begin{figure}[b]
+    \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
-                \node (a)[fill=yellow] at (0,0) {a};
-                \node (b)[fill=yellow] at (0,3) {b};
-                \node (c)[fill=yellow] at (2.5,4) {c};
-                \node (d)[fill=yellow] at (2.5,1) {d};
-                \node (e)[fill=red] at (5,3) {e};
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+                \node (c) at (2.5,4) {c};
+                \node (d) at (2.5,1) {d};
+                \node (e)[diamond] at (5,3) {e};
             \end{scope}
 
             \begin{scope}
@@ -137,7 +137,7 @@ In altre parole, i nodi contenuti in una stessa componente fortemente connessa s
         \caption{SCC di un grafo}
         \label{fig:graph_cfc_1}
     \end{figure}
-    Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono evidenziate con colori diversi: $\{a,b,c,d\}, \{e\}$.
+    Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
 \end{example}
 Dato un grafo, possiamo definire il partizionamento dei nodi in SCC come segue:
 \begin{definition}
