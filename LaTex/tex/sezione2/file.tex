@@ -375,6 +375,20 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
 
 \subsection{L'algoritmo di Paige-Tarjan (PTA)}
 L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione.\\
-Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(mn)$, dove $m$ è il numero di coppie di nodi messe in relazione (ovvero la cardinalità di ``$\to$'') ed $n$ è il numero di nodi. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(m\log n)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
+Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(mn)$, dove $m$ è il numero di coppie messe in relazione dalla relazione binaria $R$ (cioè $|R|$) ed $n$ è la cardinalità dell'insieme $A$ da partizionare. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(m\log n)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
 
-\subsubsection{Risultati preliminari}
+\subsubsection{L'algoritmo naive}
+Presentiamo lo pseudocodice per l'algoritmo \emph{naive}:\\
+\begin{algorithm}[H]
+    \label{alg:hop}
+    \KwData{$A,R,S$}
+    \caption{Algoritmo di Hopcroft}
+    \Begin{
+        $\widetilde{S} \coloneqq S$\;
+        \While{$\widetilde{S}$ non è stabile rispetto a $R$}{
+            Sia $Q$ l'unione di uno o più blocchi di $\widetilde{S}$ che sia uno \emph{splitter} di $\widetilde{S}$\;
+            $\widetilde{S} =$ Split$(Q,\widetilde{S})$\;
+        }
+        \Return{$\widetilde{S}$}\;
+    }
+\end{algorithm}
