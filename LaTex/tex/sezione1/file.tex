@@ -567,6 +567,7 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     Inoltre diremo che gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ useremo la notazione $[a]_X = x_i$.
 \end{definition}
 \begin{observation}
+    \label{obs:part_banale}
     Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
 \end{observation}
 \begin{example}
@@ -611,11 +612,9 @@ Vale la seguente osservazione banale:
 
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo RSCP($R,S$) di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo RSCP($R,S$) di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
+    Useremo la notazione ``RSCP$(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
-\begin{observation}
-    Se la partizione iniziale $S$ è la partizione banale $S = \{A\}$, RSCP($R,S$) è banalmente $S$, in quanto $A = R^{-1}(A)$.
-\end{observation}
 \begin{example}
     Sia $A$ come nell'Esempio \ref{exa:set_partition}, e sia $R$ come nell'Esempio \ref{exa:set_partition_stable}. TROVA ESEMPIO
 \end{example}
