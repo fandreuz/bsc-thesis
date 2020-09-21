@@ -570,8 +570,7 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
 \end{observation}
 \begin{example}
-    Sia $A = \{1,2,3,4,5\}$. Sono partizioni di A gli insiemi $X_1 = \{\{1,4,5\},\{2,3\}\}, X_2 = \{\{1,5\},\{4\},\{2\},\{3\}\}$ ma non $X_3 = \{\{1,2,3\},\{4\}\}$,
-    nè $X_4 = \{\{1,2,3\},\{3,4,5\}\}$.
+    TROVA ESEMPIO
     \label{exa:set_partition}
 \end{example}
 \begin{definition}
@@ -585,6 +584,10 @@ Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in qu
     Sia $A$ un insieme, ed $R$ una relazione binaria su $A$. Sia $X$ una partizione su $A$, e sia $S \subseteq A$. Diremo che $X$ è stabile rispetto alla coppia $(S,A)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(S) \lor x_i \cap R^{-1}(S) = \emptyset$.\\
     Inoltre diremo che $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a qualsiasi coppia formata da $R$ e da un blocco di $X$.
 \end{definition}
+\begin{example}
+    \label{exa:set_partition_stable}
+    Sia $A$ come nell'Esempio \ref{exa:set_partition}. TROVA ESEMPIO
+\end{example}
 In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
 \begin{itemize}
     \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
@@ -608,21 +611,14 @@ Vale la seguente osservazione banale:
 
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) di $A$ la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo RSCP($R,S$) di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
 \end{definition}
+\begin{observation}
+    Se la partizione iniziale $S$ è la partizione banale $S = \{A\}$, RSCP($R,S$) è banalmente $S$, in quanto $A = R^{-1}(A)$.
+\end{observation}
 \begin{example}
-    Sia $A$ come nell'Esempio \ref{exa:set_partition}. Sia $R$ la relazione definita come segue:
-    \begin{gather*}
-        a R b \iff \text{``} a,b \text{ sono entrambi pari, oppure sono entrambi dispari''}
-    \end{gather*}
-    Le partizioni $X_1,X_2$ non sono stabili. La partizione $X_5 = \{\{1,3\},\{5\},\{2,4\}\}$ è stabile, ma non è la RSCP di $A$ rispetto ad $R$. La partizione
-    $X_6 = \{\{1,3,5\},\{2,4\}\}$ è la RSCP.
+    Sia $A$ come nell'Esempio \ref{exa:set_partition}, e sia $R$ come nell'Esempio \ref{exa:set_partition_stable}. TROVA ESEMPIO
 \end{example}
-Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In questo modo la RSCP ottenuta rispetta le restrizioni poste a priori sull'impossibilità di alcuni elementi di trovarsi nello stesso blocco.
-\begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$, e sia $\Sigma$ una partizione iniziale di $A$. Chiameremo RSCP($R,\Sigma$) di $A$ la partizione di $A$ che, tra le partizioni di $A$ stabili rispetto ad $R$ che rifiniscono $\Sigma$,
-    minimizza il numero di blocchi.
-\end{definition}
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
     \label{def:funz_split}
