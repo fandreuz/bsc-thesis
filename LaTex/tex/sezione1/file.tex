@@ -590,6 +590,15 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
     \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
     \item Nessuno degli elementi del primo blocco è in relazione con qualche elemento del secondo blocco.
 \end{itemize}
+Vale la seguente osservazione banale:
+\begin{observation}
+    Sia $P$ una partizione qualsiasi di un insieme $U$, e siano $S,T \subseteq U$. Sia $f: U \to U$. Supponiamo $P$ stabile rispetto alle coppie $(f,S),(f,T)$. Allora:
+    \begin{enumerate}
+        \item Qualsiasi rifinitura di $P$ resta stabile rispetto alla coppia $(f,S)$;
+        \item $P$ è stabile rispetto alla coppia $(f,S \cup T)$.
+    \end{enumerate}
+\end{observation}
+
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
     Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Chiameremo RSCP($R$) di $A$ la partizione di $A$ che, di tutte le partizioni di $A$ stabili rispetto ad $R$, contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
@@ -609,6 +618,7 @@ Solitamente si usa definire la RSCP in funzione di una partizione iniziale. In q
 \end{definition}
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
+    \label{def:funz_split}
     Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. Diremo che $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
     \begin{gather*}
         \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
