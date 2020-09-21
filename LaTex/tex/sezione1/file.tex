@@ -646,6 +646,22 @@ Valgono le seguenti osservazioni sulla funzione appena introdotta:
 \begin{proof2}
     Osservando che ``Split'' può solamente dividere i blocchi, e non mescolarli, la dimostrazione è banale.
 \end{proof2}
+Proponiamo inoltre il seguenti risultato sulla funzione ``Split'', che useremo nel seguito:
+\begin{theorem}
+    \label{theo:split_properties}
+    Consideriamo la funzione ``Split'' proposta nella Definizione \ref{def:funz_split}:
+    \begin{enumerate}
+        \item La funzione è monotona rispetto al secondo argomento, cioè se $\widetilde{S}$ è una rifinitura di $S$, allora Split$(A,\widetilde{S})$ rifinisce Split$(A,S)$;
+        \item La funzione è commutativa rispetto al primo argomento: Split$(A,$ Split$(B,S)) =$ Split$(B,$ Split$(A,S))$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof2}
+    Dimostriamo separatamente gli enunciati:
+    \begin{enumerate}
+        \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S : x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
+        \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
+    \end{enumerate}
+\end{proof2}
 
 \subsection{Equivalenza tra RSCP e bisimulazione massima}
 Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{gentilini}:
