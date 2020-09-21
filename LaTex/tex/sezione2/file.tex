@@ -386,7 +386,7 @@ Presentiamo lo pseudocodice per l'algoritmo \emph{naive}:\\
     \Begin{
         $\widetilde{S} \coloneqq S$\;
         \While{$\widetilde{S}$ non è stabile rispetto a $R$}{
-            Sia $Q$ l'unione di uno o più blocchi di $\widetilde{S}$ che sia uno \emph{splitter} di $\widetilde{S}$\;
+            $Q \coloneqq \bigcup_{j = 1}^n \widetilde{S}_{i_j},\quad$ con $\widetilde{S}_{i_j} \in \widetilde{S}$ per $j \in \{1,\dots,n\}$\;
             $\widetilde{S} =$ Split$(Q,\widetilde{S})$\;
         }
         \Return{$\widetilde{S}$}\;
