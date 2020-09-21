@@ -592,12 +592,19 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
 \end{itemize}
 Vale la seguente osservazione banale:
 \begin{observation}
-    Sia $P$ una partizione qualsiasi di un insieme $U$, e siano $S,T \subseteq U$. Sia $f: U \to U$. Supponiamo $P$ stabile rispetto alle coppie $(f,S),(f,T)$. Allora:
+    Sia $X$ una partizione qualsiasi di un insieme $U$, e siano $S,T \subseteq U$. Sia $R$ una relazione binaria su $U$. Supponiamo $X$ stabile rispetto alle coppie $(R,S),(R,T)$. Allora:
     \begin{enumerate}
         \item Qualsiasi rifinitura di $P$ resta stabile rispetto alla coppia $(f,S)$;
         \item $P$ è stabile rispetto alla coppia $(f,S \cup T)$.
     \end{enumerate}
 \end{observation}
+\begin{proof2}
+    Dimostriamo separatamente i due enunciati:
+    \begin{enumerate}
+        \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(S) \lor x \cap R^{-1}(S) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
+        \item Sia $x \in X$. Chiaramente vale $R^{-1}(S),R^{-1}(T) \subseteq R^{-1}(S \cup T)$. Allora, se almeno uno tra $R^{-1}(S),R^{-1}(T)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(S \cup T)$, altrimenti $x \cap R^{-1}(S \cup T)$ dovrà chiaramente essere vuoto.
+    \end{enumerate}
+\end{proof2}
 
 Con queste premesse possiamo definire il problema della determinazione della RCSP:
 \begin{definition}
