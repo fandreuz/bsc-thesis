@@ -374,7 +374,7 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
 \end{gather*}
 
 \subsection{L'algoritmo di Paige-Tarjan (PTA)}
-L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione. Migliora l'algoritmo $O(mn)$ proposto da Kanellakis e Smolka nel 1983 (non trattato in questo lavoro), dove $m$ è il numero di coppie di nodi messe in relazione (ovvero la cardinalità di ``$\to$'') ed $n$ è il numero di nodi.
+L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione.\\
+Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(mn)$, dove $m$ è il numero di coppie di nodi messe in relazione (ovvero la cardinalità di ``$\to$'') ed $n$ è il numero di nodi. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(m\log n)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
 
 \subsubsection{Risultati preliminari}
-
