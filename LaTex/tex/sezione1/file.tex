@@ -88,12 +88,12 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
     Il grafo di Figura \ref{fig:graph} è descritto dalla coppia
     \begin{itemize}
         \item $V = \{a,b,c,d,e\}$
-        \item $E \,\,= \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
+        \item $E = \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
     \end{itemize}
 \end{example}
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $u E v$. Chiaramente ogni nodo può avere più parenti e più figli.
+    Sia $G = (V,E)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
 \end{definition}
 Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}).\\
 \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro.\\
