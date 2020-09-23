@@ -247,9 +247,9 @@ In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemis
 \end{definition}
 Per rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
-    Chiameremo \emph{decorazione} di un APG l'assegnazione di un insieme ad ogni suo nodo.
+    Chiameremo \emph{decorazione} di un APG l'assegnazione di un insieme ad ogni suo nodo. In tal caso associamo la relazione ``$\in$'' alla relazione di raggiungibilità ``$E$'', ovvero $aEb \iff b \in a$.
 \end{definition}
-Associando la relazione di raggiungibilità $E$ alla relazione di appartenenza $\in$ disponiamo di tutto il necessario per la rappresentazione di insiemi:
+Possiamo ora dare la seguente definizione:
 \begin{definition}
     Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia composta da un APG $(G,v)$ e da una decorazione, in cui a $v$ è associato $A$.
 \end{definition}
@@ -257,7 +257,7 @@ Vale la seguente proposizione, dimostrata in \cite{aczel}:
 \begin{proposition}
     Ad un APG aciclico è possibile associare un'unica decorazione.
 \end{proposition}
-Questo risultato non è stato dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo viene presentato il seguente assioma, di cui si è discusso poco sopra:
+Questo risultato non è stato dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo proponiamo il seguente assioma:
 \begin{axiom}[AFA, Anti-Foundation-Axiom]
     Ogni APG possiede un'unica decorazione.
 \end{axiom}
