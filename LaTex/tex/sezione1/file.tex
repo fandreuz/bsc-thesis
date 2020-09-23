@@ -2,53 +2,53 @@
 \label{sec:base}
 
 \subsection{Relazioni Binarie}
-Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato.
+Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato:
 \begin{definition}
     Chiameremo \emph{relazione binaria} su $A,B$ qualsiasi sottoinsieme del prodotto cartesiano $A \times B$.\\
     Chiameremo \emph{relazione binaria} su $A$ qualsiasi sottoinsieme del prodotto cartesiano $A \times A$.\\
-	Diremo che $u,v$ sono \emph{in relazione} rispetto a $R$ se $(u,v) \in R$. In questo caso potremo usare la notazione $u R v$.
+	Diremo che $R$ mette \emph{in relazione} $u,v$ se $(u,v) \in R$. In questo caso potremo usare la notazione $u R v$.
+\end{definition}
+\begin{definition}
+    Chiameremo \emph{insieme immagine} di un elemento di $A$ l'insieme definito come $R(x) = \{y \in B : x R y\}$.
 \end{definition}
 Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella definizione seguente:
 \begin{definition}
     Sia $R$ una relazione binaria su $A$. Diremo che $R$ è
     \begin{itemize}
-        \item \emph{riflessiva} se $\forall x \in A, x R x$;
-        \item \emph{simmetrica} se $x R y \implies y R x \,\,(x,y \in A)$
-        \item \emph{transitiva} se $(x R y \land y R z) \implies x R z \,\,(x,y,z \in A)$
+        \item \emph{Riflessiva} se $\forall x \in A, x R x$;
+        \item \emph{Simmetrica} se $x R y \implies y R x \,\,(x,y \in A)$
+        \item \emph{Transitiva} se $(x R y \land y R z) \implies x R z \,\,(x,y,z \in A)$
     \end{itemize}
 \end{definition}
 \begin{example}
-    La relazione $\leq$ sui naturali è riflessiva e transitiva, ma non simmetrica.\\
-    La relazione $=$ ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
+    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica.\\
+    La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
 \end{example}
 \begin{definition}
     Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}.\\
     Una relazione di equivalenza divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutte le coppie di elementi sono in relazione.
 \end{definition}
-A partire da una relazione binaria $R$ possiamo costruire relazioni binarie che contengono $R$, e che mostrano una o più delle proprietà presentate sopra, le cosiddette \emph{chiusure}.
-Ogni chiusura è costituita dall'unione della relazione iniziale e di un insieme di coppie costruito con un criterio differente a seconda del tipo di chiusura, che fornisce la proprietà desiderata.
+In alcune situazioni risulta conveniente definire la più piccola relazione che dispone di una certa proprietà, e che contiene una relazione binaria $R$. Chiameremo una relazione costruita in questo modo ``\emph{chiusura}'':
 \begin{definition}
 	Sia $R$ una relazione binaria su $A$.
     Definiamo le seguenti chiusure:
     \begin{itemize}
-        \item \emph{riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
-        \item \emph{simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
-        \item \emph{transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
+        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
+        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
+        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
     \end{itemize}
 \end{definition}
 \begin{example}
-    La chiusura riflessiva della relazione $<$ (minore stretto) è la relazione $\leq$.
+    La chiusura riflessiva della relazione ``$<$'' (minore stretto) è la relazione ``$\leq$''.
 \end{example}
 Nel seguito sarà fondamentale la definizione seguente:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A \times B$. Chiameremo \emph{relazione inversa} di $R$ (indicata con $R^{-1}(\cdot)$) la funzione su $B$ definita come
-    $R^{-1}(y) = \{x \in A : x R y\}$. Inoltre denoteremo con $R(\cdot)$ la funzione su $A$ definita come $R(x) = \{y \in B : x R y\}$.
+    Sia $R$ una relazione binaria su $A \times B$. Chiameremo \emph{relazione inversa} di $R$ o \emph{contro-immagine} di un elemento di $B$ l'insieme definito come $R^{-1}(y) = \{x \in A : x R y\}$.
 \end{definition}
-Useremo frequentemente la notazione $R^{-1}(X)$ o $R(X)$ dove $X$ è un insieme. In questo caso l'insieme risultante è dato dall'unione di tutti gli insiemi $R(x)$
-o $R^{-1}(x)$, per ogni $x \in X$.\\
+Useremo frequentemente la notazione ``$R^{-1}(X)$'' o ``$R(X)$'' dove $X$ è un insieme. In questo caso l'insieme risultante è dato dall'unione di tutti gli insiemi $R(x)$ o $R^{-1}(x)$, per ogni $x \in X$.\\
 Introduciamo la seguente notazione:
 \begin{definition}
-    Sia $A$ un insieme. Denoteremo con $|A|$ la \emph{cardinalità} di $A$, cioè il numero dei suoi elementi.\\
+    Sia $A$ un insieme. Denoteremo con ``$|A|$'' la \emph{cardinalità} di $A$, cioè il numero dei suoi elementi.\\
     Analogamente, data una relazione binaria $R$, denoteremo con $|R|$ il numero delle coppie messe in relazione da $R$.
 \end{definition}
 
