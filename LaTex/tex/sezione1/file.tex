@@ -552,14 +552,10 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
 
 \subsection{Relational stable coarsest partition}
 \label{sec:rscp}
-In questa sezione introduciamo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition} (\emph{partizione ``più rozza'' stabile rispetto ad una relazione}).
-Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, che viene sfruttato dagli algoritmi
-che tratteremo nel seguito in quanto la formulazione di RSCP lo rende un problema più facilmente approcciabile dal punto di vista algoritmico di quanto lo sia quello della determinazione della
-bisimulazione massima.\\
+In questa sezione introdurremo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition}. Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima. Questo legame viene sfruttato dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.\\
 Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
 \begin{definition}
-    Sia $A$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq A \,\,\,\forall i \in \{1,\dots,n\}$. Diremo che $X$ è una \emph{partizione}
-    di $A$ se:
+    Sia $S$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. Diremo che $X$ è una \emph{partizione} di $S$ se:
     \begin{gather*}
         \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
     \end{gather*}
@@ -567,26 +563,26 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
 \end{definition}
 \begin{observation}
     \label{obs:part_banale}
-    Ogni insieme $A$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{A}$.
+    Ogni insieme $S$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{S}$.
 \end{observation}
 \begin{example}
     TROVA ESEMPIO
     \label{exa:set_partition}
 \end{example}
 \begin{definition}
-    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ \emph{rifinisce} $X_1$ se $\forall x_1 \in X_1, \,\,\forall x_2 \in X_2$ si ha $x_2 \subseteq x_1$.
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 : x_2 \subseteq x_1$.
 \end{definition}
 \begin{example}
-    Nell'esempio precedente la partizione $X_2$ rifinisce la partizione $X_1$, ed entrambe rifiniscono la partizione banale $\widetilde{A}$.
+    TROVA ESEMPIO
 \end{example}
 Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in questo lavoro quando si impone la seguente condizione sui blocchi:
 \begin{definition}
-    Sia $A$ un insieme, ed $R$ una relazione binaria su $A$. Sia $X$ una partizione su $A$, e sia $S \subseteq A$. Diremo che $X$ è stabile rispetto alla coppia $(S,A)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(S) \lor x_i \cap R^{-1}(S) = \emptyset$.\\
-    Inoltre diremo che $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a qualsiasi coppia formata da $R$ e da un blocco di $X$.
+    Sia $S$ un insieme, ed $R$ una relazione binaria su $S$. Sia $X$ una partizione su $S$, e sia $B \subseteq A$. Diremo che $X$ è stabile rispetto alla coppia $(B,R)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(B) \lor x_i \cap R^{-1}(B) = \emptyset$.\\
+    Inoltre diremo che la partizione $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a $(x,R) \,\,\forall x \in X$.
 \end{definition}
 \begin{example}
     \label{exa:set_partition_stable}
-    Sia $A$ come nell'Esempio \ref{exa:set_partition}. TROVA ESEMPIO
+    TROVA ESEMPIO
 \end{example}
 In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
 \begin{itemize}
@@ -609,13 +605,13 @@ Vale la seguente osservazione banale:
     \end{enumerate}
 \end{proof2}
 
-Con queste premesse possiamo definire il problema della determinazione della RCSP:
+Con queste premesse possiamo definire il problema della determinazione della RSCP:
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo RSCP($R,S$) di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
+    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo ``RSCP($S,R$)'' di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
     Useremo la notazione ``RSCP$(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
 \begin{example}
-    Sia $A$ come nell'Esempio \ref{exa:set_partition}, e sia $R$ come nell'Esempio \ref{exa:set_partition_stable}. TROVA ESEMPIO
+    TROVA ESEMPIO
 \end{example}
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
@@ -624,7 +620,7 @@ La seguente definizione ha grande importanza pratica per il problema della deter
     \begin{gather*}
         \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
     \end{gather*}
-    In tal caso definiamo la seguente funzione:
+    ovvero se la partizione non è stabile rispetto ad $A$. In tal caso definiamo la seguente funzione:
     \begin{gather*}
         \text{Split}(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \quad \forall S_x \in \widetilde{S}\} - \{\emptyset\}
     \end{gather*}
@@ -640,7 +636,7 @@ Valgono le seguenti osservazioni sulla funzione appena introdotta:
 \begin{proof2}
     Osservando che ``Split'' può solamente dividere i blocchi, e non mescolarli, la dimostrazione è banale.
 \end{proof2}
-Proponiamo il seguente risultato sulla funzione ``Split'', che useremo nel seguito:
+Dimostriamo il seguente risultato che useremo nel seguito:
 \begin{theorem}
     \label{theo:split_properties}
     Consideriamo la funzione ``Split'' proposta nella Definizione \ref{def:funz_split}:
