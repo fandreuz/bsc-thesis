@@ -12,13 +12,13 @@ Innanzitutto definiamo il concetto di \emph{automa}, chiaramente centrale nella 
         \item Un insieme finito $I$ detto \emph{insieme degli ingressi};
         \item Un insieme finito $S$ detto \emph{insieme degli stati}, ad ogni stato è associata un'unica uscita;
         \item Un insieme finito $F \subseteq S$ detto \emph{insieme degli stati finali};
-        \item Una funzione $\delta: S \times I \to S$ detta \emph{funzione di trasferimento}.
+        \item Una funzione $\delta: S \times I E S$ detta \emph{funzione di trasferimento}.
     \end{itemize}
     Chiameremo $A = (S,I,\delta,F)$ \emph{automa}. Useremo la notazione $Out(x)$ per indicare l'output corrispondente allo stato $x$.
 \end{definition}
 Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga rappresenta uno stato, ogni colonna un ingresso, ed ogni cella contiene il nuovo stato del sistema quando, nel momento in cui il sistema si trova nello stato corrispondente alla riga, si inserisce l'ingresso corrispondente alla colonna.In alternativa possiamo utilizzare una rappresentazione grafica, in cui ogni stato è descritto da un cerchio contenente il nome dello stato, e le transizioni tra stati sono descritte da frecce, sulle quali viene specificato l'ingresso che ha innescato la transizione.\\
 \begin{example}
-    Nella Tabella \ref{fig:tab_automata} è rappresentato un'automa che cambia stato ($A \to B$, $B \to C$) solamente se l'ingresso è ``1'', e lo stato non è ``$C$''. In qualsiasi altro caso lo stato non cambia.
+    Nella Tabella \ref{fig:tab_automata} è rappresentato un'automa che cambia stato ($A E B$, $B E C$) solamente se l'ingresso è ``1'', e lo stato non è ``$C$''. In qualsiasi altro caso lo stato non cambia.
     \begin{table}[ht]
         \centering
         \begin{tabular}{ c | c c }
@@ -114,19 +114,19 @@ La seguente osservazione sarà utile per formulare il problema con la terminolog
     e quindi $x \sim y$.
 \end{proof2}
 \begin{observation}
-    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{obs:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle \to \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
+    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{obs:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
 \end{observation}
 \begin{proof2}
-    Supponiamo che $x \sim y$. Sia $x \to x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y \to y'$. Allora, per l'Osservazione \ref{obs:equivalent_states}, $x' \sim y'$.\\
+    Supponiamo che $x \sim y$. Sia $x E x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y E y'$. Allora, per l'Osservazione \ref{obs:equivalent_states}, $x' \sim y'$.\\
     Chiaramente lo stesso argomento vale in modo speculare.
 \end{proof2}
-Osserviamo che nella definizione di ``$\to$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
+Osserviamo che nella definizione di ``$E$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
 Possiamo definire la \emph{minimizzazione per stati equivalenti} di un'automa a stati finiti:
 \begin{definition}\label{def:minim_eq_states}
     Sia $A = (S,I,\delta,F)$ un'automa. Chiameremo \emph{minimizzazione per stati equivalenti} l'automa $A = (\widetilde{S}, I, \widetilde{\delta}, \widetilde{F})$ dove
     \begin{itemize}
         \item $\widetilde{S} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $S$'';
-        \item $\widetilde{\delta} : (\widetilde{S} \times I) \to \widetilde{S}, \quad \delta(i, x) = y \implies \widetilde{\delta}(i,\widetilde{x}) = \widetilde{y}$, dove $x,y \in S, i \in I$, e $\widetilde{x}, \widetilde{y} \in \widetilde{S}$ sono rispettivamente le classi di equivalenza di ``$\sim$'' a cui appartengono $x,y$;
+        \item $\widetilde{\delta} : (\widetilde{S} \times I) E \widetilde{S}, \quad \delta(i, x) = y \implies \widetilde{\delta}(i,\widetilde{x}) = \widetilde{y}$, dove $x,y \in S, i \in I$, e $\widetilde{x}, \widetilde{y} \in \widetilde{S}$ sono rispettivamente le classi di equivalenza di ``$\sim$'' a cui appartengono $x,y$;
         \item $\widetilde{F} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $F$'';
     \end{itemize}
 \end{definition}
@@ -155,7 +155,7 @@ Prima di concludere l'esposizione delle nozioni preliminari è necessario dimost
 Possiamo dimostrare il seguente risultato:
 \begin{theorem}
     \label{theo:auto_mini_rscp}
-    Sia $A$ un'automa a stati finiti. Supponiamo che in tale automa ad uno stato finale ed uno non finale non possa essere assegnato un output identico. La minimizzazione per stati equivalenti proposta nella Definizione \ref{def:minim_eq_states} è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alle funzioni $\delta_i : S \to S, \forall i \in I$.
+    Sia $A$ un'automa a stati finiti. Supponiamo che in tale automa ad uno stato finale ed uno non finale non possa essere assegnato un output identico. La minimizzazione per stati equivalenti proposta nella Definizione \ref{def:minim_eq_states} è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$.
 \end{theorem}
 \begin{proof2}
     Dimostriamo che la minimizzazione proposta nella Definizione \ref{def:minim_eq_states} è una partizione stabile rispetto alle funzioni $\delta_i$. Supponiamo per assurdo che $\exists i \in I : \widetilde{S}$ non è stabile rispetto a $\delta_i$. Quindi $\exists S_1, S_2 \in S :$
@@ -163,7 +163,7 @@ Possiamo dimostrare il seguente risultato:
         S_1 \not\subseteq \delta_i^{-1}(S_2) \,\, \land \,\, S_1 \,\cap \,\delta_i^{-1}(S_2) \neq \emptyset
     \end{gather*}
     La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{obs:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
-    Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S \to S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
+    Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
     \begin{gather*}
         S_1 \cap X \neq \emptyset \,\,\land\,\, S_2 \cap X \neq \emptyset
     \end{gather*}
@@ -270,7 +270,7 @@ All'interno del ciclo della Riga \ref{alg:hop_splitters} definiamo gli insiemi $
 
 In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si applica l'algoritmo di Hopcroft, è possibile scegliere gli \emph{splitter} in modo vantaggioso, allo scopo di ridurre il carico di lavoro e dunque la complessità. Riportiamo e commentiamo la dimostrazione:
 \begin{observation}
-    Sia $S$ un insieme finito. Sia $f : S \to S$ una funzione (cioè $\forall s \in S\,\, |f({s})| = 1$). Sia $\widetilde{S}$ una partizione di $S$. Sia $Q$ l'unione di alcuni blocchi di $\widetilde{S}$, e sia $B$ un blocco di $\widetilde{S}$, con $B \subseteq Q$. Supponiamo $\widetilde{S}$ stabile rispetto a $Q$. Allora
+    Sia $S$ un insieme finito. Sia $f : S E S$ una funzione (cioè $\forall s \in S\,\, |f({s})| = 1$). Sia $\widetilde{S}$ una partizione di $S$. Sia $Q$ l'unione di alcuni blocchi di $\widetilde{S}$, e sia $B$ un blocco di $\widetilde{S}$, con $B \subseteq Q$. Supponiamo $\widetilde{S}$ stabile rispetto a $Q$. Allora
     \begin{center}
         Split$(B,\widetilde{S})$ = Split$(Q - B, $Split$(B,\widetilde{S}))$
     \end{center}
