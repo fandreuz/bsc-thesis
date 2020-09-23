@@ -62,7 +62,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
     \end{itemize}
 \end{definition}
 \begin{example}
-    \begin{figure}[b]
+    \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
@@ -95,22 +95,19 @@ Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
     Sia $G = (V,E)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
 \end{definition}
-Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}).\\
-\accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro.\\
-La seguente definizione sorge in modo spontaneo da questo punto di vista:
+Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo. Siano $u,v \in V$. Diremo che $v$ \emph{è raggiungibile da} $u$, o in alternativa \emph{esiste un cammino da} $u$ \emph{a} $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se
-    $\exists x_n \subset V$ (una sequenza finita di nodi) di lunghezza $K : x_K = v, x_0 = u, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo. Siano $u,v \in V$. Diremo che $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se esiste una sequenza finita di nodi $x_n$ di lunghezza $K : x_0 = u, x_K = v, x_n E x_{n+1}$.
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
     Diremo che un grafo $(V,E)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 E_t v_2$.
 \end{definition}
-In generale un grafo non è fortemente connesso. Tuttavia possiamo individuare facilmente i sottografi massimali fortemente connessi.
+Possiamo individuare facilmente i sottografi massimali fortemente connessi:
 \begin{definition}
     Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo $(V,E)$ sono le classi di equivalenza della relazione $E_t$ \cite[Appendice B]{clrs}.
 \end{definition}
-In altre parole, i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
+Conseguenza di questa definizione è che i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
 \begin{example}
     \begin{figure}[t]
         \centering
