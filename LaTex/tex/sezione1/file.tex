@@ -215,7 +215,7 @@ Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un a
 
 \subsection{Insiemi}
 \subsubsection{Cenni di teoria degli insiemi}
-In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiemi ZFC, ad eccezione dell'Assioma di Fondazione. Formuliamo innanzitutto i seguenti Assiomi:
+In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiemi ZFC, ad eccezione dell'Assioma di Fondazione. Formuliamo innanzitutto i seguenti assiomi:
 \begin{axiom}[di estensionalità]
     Due insiemi sono uguali $\iff$ contengono gli stessi elementi.
 \end{axiom}
@@ -223,15 +223,19 @@ In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiem
     Ogni insieme non vuoto contiene un elemento disgiunto dall'insieme stesso.
     \label{axi:foundation}
 \end{axiom}
-Del primo faremo un uso esplicito nel seguito. Il secondo è evidentemente non valido nell'ambito trattato in questo elaborato. Introduciamo la seguente definizione:
+Del primo faremo un uso esplicito nel seguito. Il secondo, per motivi che saranno evidenti nella sezione seguente, risulta limitante nell'ambito trattato in questo elaborato. Introduciamo la seguente definizione:
 \begin{definition}
     Diremo che un insieme è \emph{ben-fondato} se non contiene se stesso. Altrimenti diremo che è \emph{non-ben-fondato}.
 \end{definition}
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
 \end{example}
-Una formulazione equivalente dell'Assioma \ref{axi:foundation} è la seguente: ``$\forall A$ la relazione $\in$ è ben-fondata su $A$'' \cite[Chapter III.4]{kunen}, che implica la non-esistenza, in ZFC, di insiemi non-ben-fondati.\\
-Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati, tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nel seguito.
+Riportiamo una formulazione equivalente dell'Assioma \ref{axi:foundation}:
+\begin{axiom*}[\ref{axi:foundation} bis]
+    $\forall A$ la relazione ``$\in$'' è ben-fondata su $A$ \cite[Chapter III.4]{kunen}
+\end{axiom*}
+Da questa questa formulazione risulta evidente l'impossibilità, in ZFC, di costruire insiemi non-ben-fondati.\\
+Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati; tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nella sezione seguente.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
