@@ -25,8 +25,7 @@ Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella
     La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
 \end{example}
 \begin{definition}
-    Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}.\\
-    Una relazione di equivalenza divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutte le coppie di elementi sono in relazione.
+    Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}. Questo genere di relazioni divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutte le coppie di elementi sono in relazione. Data una relazione di equivalenza $R$ su un insieme $A$, useremo la notazione ``$[a]_R, a \in A$'' per indicare la classe di equivalenza a cui appartiene $a$.
 \end{definition}
 In alcune situazioni risulta conveniente definire la più piccola relazione che dispone di una certa proprietà, e che contiene una relazione binaria $R$. Chiameremo una relazione costruita in questo modo ``\emph{chiusura}'':
 \begin{definition}
@@ -351,9 +350,9 @@ la bisimulazione.
     \end{itemize}
     Possiamo definire in modo analogo una bisimulazione su un unico grafo $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
-Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che verrà sfruttata ampiamente nel seguito
+Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che verrà sfruttata ampiamente nel seguito:
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Diremo che sono \emph{bisimili} se $\exists R: V_1 \times V_2 : R$ è una bisimulazione su $G_1, G_2$.\\
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Diremo che sono \emph{bisimili} se esiste una bisimulazione su $G_1, G_2$.\\
     Diremo che due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 R v_2$ per almeno una bisimulazione su $G_1, G_2$.
 \end{definition}
 \begin{observation}
@@ -364,17 +363,17 @@ Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che ver
     La relazione $R = \emptyset$ è una bisimulazione su un grafo qualsiasi, ma non è riflessiva.\\
     La relazione $R = \{(a,a),(b,b),(c,c),(d,d),(a,b),(b,c),(c,d)\}$ sul grafo $G = (\{a,b,c,d\}, \{(a,b),(b,c),(c,d),(d,d)\})$ è una bisimulazione, ed è solamente riflessiva.
 \end{example}
-Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante di una qualsiasi sua chiusura:
+Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante delle chiusure:
 \begin{theorem}
     Sia $R$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
     Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
     \begin{itemize}
-        \item[$R_r$] Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
+        \item $R_r$: Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
         Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V: u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
-        \item[$R_s$] Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per gli argomenti $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
-        Sia $(u,v) \in V\times V$. Allora
+        \item $R_s$: Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
+        Sia $(u,v) \in V\times V$. Allora:
         \begin{center}
             $u R_s v \implies u R v \lor v R u$
         \end{center}
@@ -390,13 +389,13 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
         \end{align*}
         cioè sono dimostrate le due condizioni caratteristiche della bisimulazione.\\
         La dimostrazione è analoga se $u R v$.
-        \item[$R_t$] Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
+        \item $R_t$: Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
         Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora $\forall u' \in V: u E u' \implies \exists v' \in V: v E v' \land u' R v'$. Inoltre $\exists z' : z E z' \land v' R z'$.\\
         Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
 \end{proof2}
-Da questa proposizione si deduce il seguente corollario, che risulta dall'applicazione iterativa delle tre chiusure viste in precedenza:
+Da questa proposizione si deduce il seguente corollario, che risulta dall'applicazione iterata delle tre chiusure viste in precedenza:
 \begin{corollary}
     Ad ogni bisimulazione $R$ è possibile associare una bisimulazione $\widetilde{R} : R \subset \widetilde{R} \,\,\land\,\, \widetilde{R}$ è una relazione di equivalenza.
     \label{cor:bisimulation_eqrel}
@@ -414,10 +413,10 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
 \label{sec:bisi_max}
 Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
 \begin{definition}
-    Diremo che una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se $\forall R : "R$ è una bisimulazione su $G_1, G_2$" si ha $u R v \implies u R_M v$.
+    Diremo che una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2$ si ha $u R v \implies u R_M v$.
 \end{definition}
 \begin{observation}
-    Sia $R_M$ la bisimulazione massima su un grafo $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| > |R|$.
+    Sia $R_M$ la bisimulazione massima su un grafo $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
 \end{observation}
 Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche in modo molto semplice:
 \begin{proposition}
@@ -432,13 +431,13 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
     Le proprietà seguono dal Corollario \ref{cor:bisimulation_eqrel} e dall'Osservazione \ref{obs:bisimulation_union}:
     \begin{enumerate}
         \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
-        \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che sarebbe "più massima" ed anche una relazione di equivalenza.
+        \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale, e sarebbe per costruzione una relazione di equivalenza.
     \end{enumerate}
 \end{proof2}
 Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
 ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo (finito). Allora $\exists R_M$ la bisimulazione massima su $G$.
+    Sia $G$ un grafo finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
@@ -500,15 +499,16 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
 \end{proof2}
 Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
 relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
+
 Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
-    Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_R = (VR, E_R)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $R$ \emph{di} $G$:
-    \begin{itemize}
-        \item $VR = \{A = \{m \in V: \forall n \in A, m R n\}\}$
-        \item $[m]_R E_R [n]_R \iff \exists c \in [n]_R : m E c$
-    \end{itemize}
-    Si definisce \emph{classe del nodo} $a$ rispetto alla bisimulazione $R$, con la notazione $[a]_R$, il nodo di $VR$ in cui viene inserito il nodo $a$.
     \label{def:bisi_contraction}
+    Sia $R$ una bisimulazione su $G = (V,E)$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_R = (V_R, E_R)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $R$ \emph{di} $G$:
+    \begin{itemize}
+        \item $V_R = \{[m]_R, m \in V\}$;
+        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R : b E c$.
+    \end{itemize}
+    Chiameremo \emph{classe} del nodo $a$ rispetto alla bisimulazione $R$, con la notazione $[a]_R$, il nodo di $V_R$ in cui viene inserito il nodo $a$.
 \end{definition}
 La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
@@ -516,15 +516,15 @@ La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la s
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
-    Sia $\equiv \,\,\subset V\times VR$ la relazione binaria definita come segue:
+    Sia ``$\equiv$'' la relazione binaria su $V\times V_R$ definita come segue:
     \begin{gather*}
         m \equiv M \iff M = [m]_R
     \end{gather*}
     Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
-    Supponiamo che $x \equiv X$, e che $x E y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X E Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E Y$ per qualche $Y \in VR$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x E y)$.
+    Supponiamo che $x \equiv X$, e che $x E y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X E_R Y$. Inoltre vale banalmente $y \equiv Y$.\\
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x E y)$.
 \end{proof2}
-La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente per il Teorema \ref{theo:bisi_iff_eqsets}:
+La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente dal Teorema \ref{theo:bisi_iff_eqsets}:
 \begin{corollary}
     Sia $R$ una bisimulazione che sia anche una relazione di equivalenza. Allora l'APG $(G, v)$ e l'APG $(G_R, [v]_R)$ rappresentano lo stesso insieme.
 \end{corollary}
