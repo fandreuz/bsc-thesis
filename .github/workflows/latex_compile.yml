@@ -9,4 +9,5 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: LaTex/document.tex
+          root_file: document.tex
+	  working_directory: ./LaTex
