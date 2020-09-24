@@ -59,8 +59,10 @@
 \tableofcontents
 \addtocontents{toc}{~\hfill\textbf{Pagina}\par}
 
-\include{./tex/sezione1/file}
-\include{./tex/sezione2/file}
+\newpage
+\input{./tex/sezione1/file}
+\newpage
+\input{./tex/sezione2/file}
 
 \renewcommand\refname{Bibliografia}
 \bibliographystyle{plain}
