@@ -11,7 +11,23 @@ on:
 name: Upload Release Asset
 
 jobs:
-  build:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: document.tex
+          working_directory: ./LaTex
+      - uses: actions/checkout@v2
+      - run: mkdir -p ./LaTex
+      - uses: actions/upload-artifact@v2
+        with:
+          name: andreuzzi-bisimulazione.pdf
+          path: ./LaTex/document.pdf
+  build_release:
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
