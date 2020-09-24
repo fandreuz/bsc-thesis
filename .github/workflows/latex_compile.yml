@@ -15,4 +15,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: andreuzzi-bisimulazione
-          path: document.pdf
+          path: '~/LaTex/document.pdf'
