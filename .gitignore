@@ -1,3 +1,6 @@
+## pdf are now provided by GitHub actions
+*.pdf
+
 *__latexindent_temp.tex
 
 ## Core latex/pdflatex auxiliary files:
