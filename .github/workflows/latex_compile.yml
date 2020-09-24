@@ -10,9 +10,8 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: document.tex
-          working_directory: ./LaTex
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: andreuzzi-bisimulazione
-          path: '~/LaTex/document.pdf'
+          path: document.pdf
