@@ -61,7 +61,6 @@ In alcuni automi è possibile individuare stati che ``si comportano in modo simi
         \centering
         \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
             scale = 1,transform shape]
-
             \node[state] (a) {$a[0]$};
             \node[state] (b) [right of=a] {$b[1]$};
             \node[state] (c) [right of=b] {$c[1]$};
@@ -315,6 +314,7 @@ Il seguente Teorema dimostra la validità del risultato:
     \end{gather*}
     Per cui si ha chiaramente $[x]_{\widetilde{S}} = [\delta^*(x,i^*_0)]_{\widetilde{S}} \neq [\delta^*(y,i^*)_0]_{\widetilde{S}} = [y]_{\widetilde{S}}$.
 \end{proof2}
+
 Discutiamo ora la complessità dell'algoritmo. In questo paragrafo non tratteremo i dettagli dell'implementazione, facilmente reperibili in \cite{hopcroft}, e ci concentreremo unicamente sul contributo del procedimento.\\
 Per costruire $\delta^{-1}$ è sufficiente valutare una sola volta ogni stato per ogni ingresso, quindi l'operazione è $\Theta(|S||I|)$. La costruzione delle due partizioni iniziali è $\Theta(|S|)$. La costruzione di $L(i) \,\,\forall i \in I$ è chiaramente $\Theta(|I|)$. Di conseguenza la complessità delle istruzioni precedenti alla Riga \ref{alg:hop_ciclo_infinito} è $\Theta(|S||I|)$.\\
 Prima di procedere, consideriamo la seguente Osservazione:
@@ -329,40 +329,53 @@ Prima di procedere, consideriamo la seguente Osservazione:
 \begin{proof2}
     L'osservazione si dimostra con un semplice studio di funzione.
 \end{proof2}
-Consideriamo ora un ingresso $i \in I$ fissato per una determinata iterazione $n$ del ciclo della Riga \ref{alg:hop_ciclo_infinito} per cui si abbia la seguente configurazione:
-\begin{gather*}
-    \widetilde{S}_n = \{S_1,\dots,S_m\}, \quad L(i) = \{i_1,\dots,i_r\}, \quad  \{i_{r+1},\dots,i_m\} = \{1,\dots,m\} - L(i)
-\end{gather*}
-Osserviamo che, se all'inizio dell'iterazione viene selezionato l'indice $x \in L(i)$, la complessità dell'iterazione è $O(|i(x)|)$, cioè il tempo impiegato durante l'esecuzione è maggiorato da $k|i(x)|$, dove $k$ è una costante di propozionalità. Questo avviene perchè il ciclo della Riga \ref{alg:hop_ciclo_blocchi_preimmagine} è in realtà un ciclo che itera sugli stati $s\in i(x)$, e per ognuno estrae (in tempo costante) $\delta^{-1}(s,i)$.\\
-Vogliamo dimostrare che il contributo al tempo di esecuzione di tutte le iterazioni del ciclo in cui si seleziona l'ingresso $i$ considerato sopra, dalla $n$-esima fino alla terminazione dell'algoritmo, è maggiorato dalla seguente espressione:
-\begin{gather*}
-    T = k\left(\sum_{j = 1}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
-\end{gather*}
-Supponiamo che prima dell'iterazione $k$-esima (con $k > n$) la maggiorazione sia valida, e dimostriamo che resta valida al termine dell'iterazione. In altre parole è necessario dimostrare che la somma tra $T'$ ed il tempo impiegato per l'esecuzione dell'iterazione, dove $T'$ è un'espressione analoga a $T$, è minore o uguale di $T$.\\
-All'inizio di ogni iterazione viene estratto un ingresso $a$. Si presentano due casi:
-\begin{itemize}
-    \item $a \neq i$: poichè $T$ prende in considerazione solamente il tempo impiegato dalle iterazioni in cui viene selezionato $i$, questa iterazione è esclusa dalla stima. Ciononostante l'iterazione può modificare i blocchi della partizione, e dobbiamo quindi verificare che $T' \leq T$:
-    \begin{itemize}
-        \item Se viene modificato un blocco $B(x)$ con $x \in L(i)$, nella stima dobbiamo sostituire un elemento maggiorabile con $b \log_2 b$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 (b-c)$. Per l'osservazione \ref{obs:log} si ha $T' < T$;
-        \item Se invece $x \not\in L(i)$, in $T'$ dobbiamo sostituire un elemento del tipo $b \log_2 \frac{b}{2}$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 \frac{b-c}{2}$ (supponendo che $c \leq b - c$, in caso contrario la dimostrazione è simile). Infatti il blocco avente cardinalità $b-c$ fa parte, alla fine dell'iterazione, dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$, ed al termine del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} si ha $c \in L(i)$. Chiaramente si ha $c \leq \frac{b}{2}$, e quindi
-        \begin{align*}
-            c \log_2 c + (b-c) \log_2 \frac{b-c}{2} &\leq c \log_2 \frac{b}{2} + (b-c) \log_2 \frac{b}{2}\\
-            &= (c + b - c) \log_2 \frac{b}{2}\\
-            &= b \log_2 \frac{b}{2}.
-        \end{align*}
-    \end{itemize}
-    \item $a = i$: come abbiamo osservato sopra, il tempo impiegato all'interno dell'iterazione è $O(|i(x)|)$, dove $x$ è l'indice estratto da $L(i)$. Allora
+Il seguente risultato fornisce un \emph{upper-bound} per il contributo al tempo di esecuzione di tutte le iterazioni del ciclo in cui si seleziona l'ingresso $i$ considerato sopra, dalla $n$-esima fino alla terminazione dell'algoritmo:
+\begin{theorem}
+    Sia $i$ un ingresso. Consideriamo l'iterazione $n$-esima del ciclo della Riga \ref{alg:hop_ciclo_infinito} per un $n$ qualsiasi per cui si abbia la seguente configurazione:
     \begin{gather*}
-        T' = k\left(|i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} + \sum_{\substack{j = 1\\i_j \neq x}}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
+        \widetilde{S}_n = \{S_1,\dots,S_m\}, \quad L(i) = \{i_1,\dots,i_r\}, \quad  \{i_{r+1},\dots,i_m\} = \{1,\dots,m\} - L(i)
     \end{gather*}
-    dove consideriamo il tempo impiegato per l'iterazione, ed il fatto che l'indice $x$, al termine dell'iterazione, fa parte dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$. Dimostriamo che $T' \leq T$:
-    \begin{align*}
-        |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\log_2 2\\
-        &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\\
-        &= |i(x)|\log_2 |i(x)|
-    \end{align*}
-    e quindi $T' = T$.
-\end{itemize}
+    Allora il contributo alla complessità dato da tutte le iterazioni in cui si seleziona l'ingresso $i$, dalla $n$-esima fino alla terminazione dell'algoritmo, è maggiorato dalla seguente espressione:
+    \begin{gather*}
+        T_i^n = k\left(\sum_{j = 1}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
+    \end{gather*}
+    in cui i blocchi il cui indice $i_j$ è contenuto in $L(i)$ contribuiscono con $|i(i_j)|\log_2 |i(i_j)|$, mentre i restanti blocchi contribuiscono con $|i(i_k)|\log_2 \frac{|i(i_k)|}{2}$.
+\end{theorem}
+\begin{proof2}
+    Procediamo per induzione ``al contrario''. Chiaramente la maggiorazione è valida alla terminazione dell'algoritmo, ovvero dopo l'ultima iterazione. Ora supponiamo che la maggiorazione sia valida dopo l'iterazione $k$-esima (con $k > n$), e dimostriamo che questo implica la validità della stessa prima dell'iterazione $k$-esima, ovvero al termine dell'iterazione $(k-1)$-esima. In altre parole è necessario dimostrare che la somma tra $T_i^{k-1}$ ed il tempo impiegato per l'esecuzione dell'iterazione $k$-esima è minore o uguale di $T_i^k$. La seguente osservazione consente di quantificare il contributo di una singola iterazione:
+    \begin{observation*}
+        Se all'inizio dell'iterazione viene selezionato l'indice $x \in L(i)$, la complessità dell'iterazione è $O(|i(x)|)$, cioè il tempo impiegato durante l'esecuzione è maggiorato da $k|i(x)|$, dove $k$ è una costante di propozionalità. Possiamo trarre questa conclusione perchè il ciclo della Riga \ref{alg:hop_ciclo_blocchi_preimmagine} è in realtà un ciclo sugli stati $s\in i(x)$, che per ognuno estrae (in tempo costante) $\delta^{-1}(s,i)$.
+    \end{observation*}
+    All'inizio di ogni iterazione viene estratto un ingresso $a$. Si presentano due casi:
+    \begin{itemize}
+        \item $a \neq i$: poichè $T_i^k$ prende in considerazione solamente il tempo impiegato dalle iterazioni in cui viene selezionato $i$, questa iterazione è esclusa dalla stima. Ciononostante l'iterazione può modificare i blocchi della partizione $\widetilde{S}_k$, e dobbiamo quindi verificare che $T_i^{k-1} \leq T_i^k$:
+        \begin{itemize}
+            \item Se viene modificato un blocco $B(x)$ con $x \in L(i)$, nella stima dobbiamo sostituire un elemento maggiorabile con $b \log_2 b$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 (b-c)$. Per l'osservazione \ref{obs:log} si ha $T_i^{k-1} < T_i^k$;
+            \item Se invece $x \not\in L(i)$, in $T_i^{k-1}$ dobbiamo sostituire un elemento del tipo $b \log_2 \frac{b}{2}$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 \frac{b-c}{2}$ (supponendo che $c \leq b - c$, in caso contrario la dimostrazione è simile). Infatti il blocco avente cardinalità $b-c$ fa parte, alla fine dell'iterazione, dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$, ed al termine del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} si ha $c \in L(i)$. Chiaramente si ha $c \leq \frac{b}{2}$, e quindi:
+            \begin{align*}
+                c \log_2 c + (b-c) \log_2 \frac{b-c}{2} &\leq c \log_2 \frac{b}{2} + (b-c) \log_2 \frac{b}{2}\\
+                &= (c + b - c) \log_2 \frac{b}{2}\\
+                &= b \log_2 \frac{b}{2}.
+            \end{align*}
+        \end{itemize}
+        \item $a = i$: come abbiamo osservato sopra, il tempo impiegato all'interno dell'iterazione è $O(|i(x)|)$, dove $x$ è l'indice estratto da $L(i)$. Poichè si ha:
+        \begin{align*}
+            T_i^{k-1} + k|i(x)| = k \Bigg( |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &+ \sum_{\substack{j = 1\\i_j \neq x}}^r |i(i_j)|\log_2|i(i_j)| \\
+            &+ \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\Bigg)
+         \end{align*}
+        dove consideriamo il tempo impiegato per l'iterazione, ed il fatto che l'indice $x$, al termine dell'iterazione, fa parte dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$. Allora:
+        \begin{align*}
+            |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\log_2 2\\
+            &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\\
+            &= |i(x)|\log_2 |i(x)|
+        \end{align*}
+        vale la seguente relazione:
+        \begin{gather*}
+            T_i^{k-1} + k|i(x)| = T_i^k.
+        \end{gather*}
+    \end{itemize}
+    \vspace*{-0.8cm}
+\end{proof2}
 Prima della prima iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito}, per un $i \in I$ fissato, (supponendo $|S-F| \geq |F|$) si ha
 \begin{gather*}
     T_i = k\left(|S-F|\log_2|S-F| + |F|\log_2\frac{|F|}{2}\right)
@@ -372,22 +385,7 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
     T_{alg} = O(|S|\log|S|).
 \end{gather*}
 
-\subsection{L'algoritmo di Paige-Tarjan (PTA)}
+\subsection{L'algoritmo di Paige-Tarjan}
 L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione.\\
-Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(mn)$, dove $m$ è il numero di coppie messe in relazione dalla relazione binaria $R$ (cioè $|R|$) ed $n$ è la cardinalità dell'insieme $A$ da partizionare. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(m\log n)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
+Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(|R||A|)$. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(|R|\log |A|)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
 
-\subsubsection{L'algoritmo naive}
-Presentiamo lo pseudocodice per l'algoritmo \emph{naive}:\\
-\begin{algorithm}[H]
-    \label{alg:pta_naive}
-    \KwData{$A,R,S$}
-    \caption{Algoritmo di Hopcroft}
-    \Begin{
-        $\widetilde{S} \coloneqq S$\;
-        \While{$\widetilde{S}$ non è stabile rispetto a $R$}{
-            $Q \coloneqq \bigcup_{j = 1}^n \widetilde{S}_{i_j},\quad$ con $\widetilde{S}_{i_j} \in \widetilde{S}$ per $j \in \{1,\dots,n\}$\;
-            $\widetilde{S} =$ Split$(Q,\widetilde{S})$\;
-        }
-        \Return{$\widetilde{S}$}\;
-    }
-\end{algorithm}
