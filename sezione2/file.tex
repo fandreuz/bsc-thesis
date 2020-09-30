@@ -86,7 +86,8 @@ Proponiamo la definizione formale di equivalenza tra stati che viene utilizzata 
         \item $\forall i^* \in I^*,\,\, \delta^*(x,i^*) \in F \iff \delta^*(y,i^*) \in F$.
     \end{enumerate}
 \end{definition}
-\accente evidente che individuare gli stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti. In questo lavoro non illustreremo cosa comporta questa definizione, e perchè è importante che per qualsiasi stringa di lunghezza finita si giunga ad uno stato finale partendo da due stati supposti equivalenti.
+\accente evidente che individuare g
+li stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti. In questo lavoro non illustreremo cosa comporta questa definizione, e perchè è importante che per qualsiasi stringa di lunghezza finita si giunga ad uno stato finale partendo da due stati supposti equivalenti.
 \begin{observation}
     La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
 \end{observation}
@@ -363,13 +364,13 @@ Il seguente risultato fornisce un \emph{upper-bound} per il contributo al tempo 
             T_i^{k-1} + k|i(x)| = k \Bigg( |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &+ \sum_{\substack{j = 1\\i_j \neq x}}^r |i(i_j)|\log_2|i(i_j)| \\
             &+ \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\Bigg)
          \end{align*}
-        dove consideriamo il tempo impiegato per l'iterazione, ed il fatto che l'indice $x$, al termine dell'iterazione, fa parte dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$. Allora:
+        dove consideriamo il tempo impiegato per l'iterazione, ed il fatto che l'indice $x$, al termine dell'iterazione, fa parte dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$. Poichè vale:
         \begin{align*}
             |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\log_2 2\\
             &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\\
             &= |i(x)|\log_2 |i(x)|
         \end{align*}
-        vale la seguente relazione:
+        si deduce facilmente la seguente relazione:
         \begin{gather*}
             T_i^{k-1} + k|i(x)| = T_i^k.
         \end{gather*}
