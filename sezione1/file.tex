@@ -394,6 +394,7 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
         Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
+    \vspace*{-0.75cm}
 \end{proof2}
 Da questa proposizione si deduce il seguente corollario, che risulta dall'applicazione iterata delle tre chiusure viste in precedenza:
 \begin{corollary}
@@ -425,6 +426,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
         \item La bisimulazione massima su due grafi $G_1,G_2$ è unica;
         \item La bisimulazione massima è una relazione di equivalenza.
     \end{enumerate}
+    \vspace*{-0.3cm}
     \label{prop:bisi_max_equi}
 \end{proposition}
 \begin{proof2}
@@ -433,6 +435,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
         \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
         \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale, e sarebbe per costruzione una relazione di equivalenza.
     \end{enumerate}
+    \vspace*{-0.7cm}
 \end{proof2}
 Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
 ora dimostriamo il seguente risultato:
@@ -470,9 +473,9 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
               \begin{gather*}
                   d(v) = d_A(u), \text{con $u$ nodo di $A$} : u R v
               \end{gather*}
-              \begin{nonobservation}
+              \begin{observation*}
                   Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A : u R v$ perchè si suppone che i due APG siano bisimili.
-              \end{nonobservation}
+              \end{observation*}
               Dimostriamo che $d$ è una decorazione di $B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $B$ l'insieme $d(v)$ contiene tutti e soli gli
               insiemi $d(v') \,\,\forall v'$ nodo di $B : v E v'$.
               \begin{itemize}
@@ -496,6 +499,7 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
               \end{itemize}
               Dunque l'ambiguità è risolta.
     \end{enumerate}
+    \vspace*{-0.75cm}
 \end{proof2}
 Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
 relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
@@ -603,6 +607,7 @@ Vale la seguente osservazione banale:
         \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(S) \lor x \cap R^{-1}(S) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
         \item Sia $x \in X$. Chiaramente vale $R^{-1}(S),R^{-1}(T) \subseteq R^{-1}(S \cup T)$. Allora, se almeno uno tra $R^{-1}(S),R^{-1}(T)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(S \cup T)$, altrimenti $x \cap R^{-1}(S \cup T)$ dovrà chiaramente essere vuoto.
     \end{enumerate}
+    \vspace*{-0.75cm}
 \end{proof2}
 
 Con queste premesse possiamo definire il problema della determinazione della RSCP:
@@ -651,6 +656,7 @@ Dimostriamo il seguente risultato che useremo nel seguito:
         \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S : x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
         \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
     \end{enumerate}
+    \vspace*{-0.75cm}
 \end{proof2}
 
 \subsection{Equivalenza tra RSCP e bisimulazione massima}
@@ -691,5 +697,5 @@ Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nod
         \item Sia $X$ la RSCP($E$) di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
               sia massima. Ma da questa si può ricavare, come nella Proposizione \ref{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $E$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
     \end{itemize}
-    Quindi l'equivalenza è dimostrata.
+    \vspace*{-0.75cm}
 \end{proof2}
