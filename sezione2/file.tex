@@ -340,7 +340,6 @@ Il seguente risultato fornisce un \emph{upper-bound} per il contributo al tempo 
     \begin{gather*}
         T_i^n = k\left(\sum_{j = 1}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
     \end{gather*}
-    in cui i blocchi il cui indice $i_j$ è contenuto in $L(i)$ contribuiscono con $|i(i_j)|\log_2 |i(i_j)|$, mentre i restanti blocchi contribuiscono con $|i(i_k)|\log_2 \frac{|i(i_k)|}{2}$.
 \end{theorem}
 \begin{proof2}
     Procediamo per induzione ``al contrario''. Chiaramente la maggiorazione è valida alla terminazione dell'algoritmo, ovvero dopo l'ultima iterazione. Ora supponiamo che la maggiorazione sia valida dopo l'iterazione $k$-esima (con $k > n$), e dimostriamo che questo implica la validità della stessa prima dell'iterazione $k$-esima, ovvero al termine dell'iterazione $(k-1)$-esima. In altre parole è necessario dimostrare che la somma tra $T_i^{k-1}$ ed il tempo impiegato per l'esecuzione dell'iterazione $k$-esima è minore o uguale di $T_i^k$. La seguente osservazione consente di quantificare il contributo di una singola iterazione:
