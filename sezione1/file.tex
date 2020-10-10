@@ -82,7 +82,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{Rappresentazione grafica di un grafo}
+        \caption{Rappresentazione grafica di un grafo diretto}
         \label{fig:graph}
     \end{figure}
     Il grafo di Figura \ref{fig:graph} è descritto dalla coppia
@@ -131,7 +131,7 @@ Allora possiamo individuare facilmente i sottografi massimali (cioè la ripartiz
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{SCC di un grafo}
+        \caption{SCC di un grafo diretto}
         \label{fig:graph_cfc_1}
     \end{figure}
     Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
@@ -212,7 +212,7 @@ Riportiamo la seguente proprietà immediata:
         \caption{Un grafo ed il corrispondente grafo delle SCC}
         \label{fig:graph_cfc_2}
     \end{figure}
-    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
+    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo diretto generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
 Dato un grafo diretto generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
 
@@ -248,7 +248,7 @@ In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemis
 \begin{definition}
     Sia $G = (V, E)$ un grafo orientato. Sia $u \in V : \forall v \in V, u E_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
-Per rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
+Per rappresentare un insieme tramite un grafo diretto è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
     La \emph{decorazione} di un APG è l'assegnazione di un insieme ad ogni suo nodo. In tal caso viene associata la relazione ``$\in$'' alla relazione di raggiungibilità ``$E$'', ovvero $aEb \iff b \in a$.
 \end{definition}
@@ -346,12 +346,12 @@ L'assioma AFA ha un'ovvia conseguenza:
 In questa sezione introdurremo la definizione di bisimulazione ed alcune proprietà immediate. In seguito esamineremo la relazione tra la teoria degli insiemi e la bisimulazione.
 \subsubsection{Definizione e risultati generali}
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi diretti. Una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
         \item $a R b, a E_1 a' \implies \exists b' \in V_2 : (a' R b' \land b E_2 b')$
         \item $a R b, b E_2 b' \implies \exists a' \in V_1 : (a' R b' \land a E_1 a')$
     \end{itemize}
-    Analogamente si definisce una bisimulazione su un unico grafo $G$, ponendo $G_1 = G_2 = G$.
+    Analogamente si definisce una bisimulazione su un unico grafo diretto $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
 L'esistenza di una bisimulazione tra due grafi, come vedremo, è estremamente interessante se siamo interessati agli insiemi rappresentati dai grafi considerati:
 \begin{definition}
@@ -368,7 +368,7 @@ L'esistenza di una bisimulazione tra due grafi, come vedremo, è estremamente in
 \end{example}
 Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante delle chiusure:
 \begin{theorem}
-    Sia $R$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
+    Sia $R$ una bisimulazione sul grafo diretto $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
     Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
@@ -420,7 +420,7 @@ Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo ch
     Una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2$ si ha $u R v \implies u R_M v$.
 \end{definition}
 \begin{observation}
-    Sia $R_M$ la bisimulazione massima su un grafo $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
+    Sia $R_M$ la bisimulazione massima su un grafo diretto $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
 \end{observation}
 Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche banali:
 \begin{proposition}
@@ -440,9 +440,9 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
-Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
+Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
+    Sia $G$ un grafo diretto finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
@@ -517,7 +517,7 @@ Dopo questa considerazone possiamo dare la seguente definizione:
 \end{definition}
 La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
-    Sia $G$ un grafo, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
+    Sia $G$ un grafo diretto, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
@@ -677,7 +677,7 @@ Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{g
     Siano $a,b \in G : a R b$, e sia $a' : a E a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq E^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X : b E b'$.\\
     L'altra condizione caratteristica della bisimulazione si dimostra in modo speculare.
 \end{proof2}
-In altre parole, una qualsiasi partizione stabile rispetto a $E$ induce su un grafo una bisimulazione che può essere ricavata in modo banale.\\
+In altre parole, una qualsiasi partizione stabile rispetto a $E$ induce su un grafo diretto una bisimulazione che può essere ricavata in modo banale.\\
 Dimostriamo ora il risultato opposto:
 \begin{proposition}
     Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Allora la partizione i cui blocchi sono le classi di equivalenza di $R$ è stabile rispetto a $E$.
@@ -690,7 +690,7 @@ Dimostriamo ora il risultato opposto:
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
 \begin{corollary}
-    Determinare la bisimulazione massima su un grafo $G = (V,E)$ e trovare RSCP($E$) di $V$ sono problemi equivalenti.
+    Determinare la bisimulazione massima su un grafo diretto $G = (V,E)$ e trovare RSCP($E$) di $V$ sono problemi equivalenti.
 \end{corollary}
 \begin{proof2}
     Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($E$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($E$).
