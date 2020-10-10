@@ -43,7 +43,7 @@ In alcune situazioni risulta conveniente definire la più piccola relazione che 
 \end{example}
 Nel seguito useremo ampiamente la definizione seguente:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A : x R y\}$.\\
+    Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A \mid x R y\}$.\\
     La \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$, dove ``$\mathcal{P}$'' denota l'insieme delle parti, che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
 \end{definition}
 Adottiamo infine la seguente notazione:
@@ -93,11 +93,11 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
 \end{example}
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo diretto. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
+    Sia $G = (V,E)$ un grafo diretto. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V \mid u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
 \end{definition}
 Un grafo diretto è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se esiste una sequenza finita di nodi $x_n$ di lunghezza $K : x_0 = u, x_K = v, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se esiste una sequenza finita di nodi $x_n$ di lunghezza $K \mid x_0 = u, x_K = v, x_n E x_{n+1}$.
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
@@ -140,8 +140,8 @@ Il partizionamento dei nodi in SCC è definito come segue:
 \begin{definition}
     Sia $G = (V, E)$ un grafo diretto. Il grafo $G^{SCC} = (V^{SCC}, E^{SCC})$, dove:
     \begin{itemize}
-        \item $V^{SCC} = \{C : \,C$ è una SCC$\}$;
-        \item $E^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} : A \neq B, \exists m \in A, n \in B : m E n\}$
+        \item $V^{SCC} = \{C \mid \,C$ è una SCC$\}$;
+        \item $E^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} \mid A \neq B, \exists m \in A, n \in B \mid m E n\}$
     \end{itemize}
     è il partizionamento del grafo iniziale in SCC.
 \end{definition}
@@ -246,7 +246,7 @@ Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi ch
 \label{sec:graphs_sets}
 In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto una nozione fondamentale:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V : \forall v \in V, u E_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
+    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V \mid \forall v \in V, u E_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
 Per rappresentare un insieme tramite un grafo diretto è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
@@ -348,8 +348,8 @@ In questa sezione introdurremo la definizione di bisimulazione ed alcune proprie
 \begin{definition}
     Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi diretti. Una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
-        \item $a R b, a E_1 a' \implies \exists b' \in V_2 : (a' R b' \land b E_2 b')$
-        \item $a R b, b E_2 b' \implies \exists a' \in V_1 : (a' R b' \land a E_1 a')$
+        \item $a R b, a E_1 a' \implies \exists b' \in V_2 \mid (a' R b' \land b E_2 b')$
+        \item $a R b, b E_2 b' \implies \exists a' \in V_1 \mid (a' R b' \land a E_1 a')$
     \end{itemize}
     Analogamente si definisce una bisimulazione su un unico grafo diretto $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
@@ -374,7 +374,7 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
     Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
     \begin{itemize}
         \item $R_r$: Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
-        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V: u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
+        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V \mid u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
         \item $R_s$: Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
         Sia $(u,v) \in V\times V$. Allora:
         \begin{center}
@@ -382,18 +382,18 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
         \end{center}
         Supponiamo ad esempio che $v R u$.
         \begin{align*}
-            &\implies \forall v' \in V: (v E v') \,\,\exists u' \in V: (u E u' \land v' R u')\\
+            &\implies \forall v' \in V\mid (v E v') \,\,\exists u' \in V\mid (u E u' \land v' R u')\\
             &\implies u' R_s v'
         \end{align*}
         e
         \begin{align*}
-            &\implies \forall u' \in V: (u E u') \,\,\exists v' \in V: (v E v' \land v' R u')\\
+            &\implies \forall u' \in V\mid (u E u') \,\,\exists v' \in V\mid (v E v' \land v' R u')\\
             &\implies u' R_s v'
         \end{align*}
         cioè sono dimostrate le due condizioni caratteristiche della bisimulazione.\\
         La dimostrazione è analoga se $u R v$.
         \item $R_t$: Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
-        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora $\forall u' \in V: u E u' \implies \exists v' \in V: v E v' \land u' R v'$. Inoltre $\exists z' : z E z' \land v' R z'$.\\
+        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora $\forall u' \in V\mid u E u' \implies \exists v' \in V\mid v E v' \land u' R v'$. Inoltre $\exists z' \mid z E z' \land v' R z'$.\\
         Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
@@ -410,7 +410,7 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
     \label{obs:bisimulation_union}
 \end{proposition}
 \begin{proof2}
-    Siano $u,v : u R v$. Sia $u' : u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' : (v E v' \land u' R_{1|2} v')$.
+    Siano $u,v \mid u R v$. Sia $u' \mid u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' \mid (v E v' \land u' R_{1|2} v')$.
 \end{proof2}
 
 \subsubsection{Bisimulazione massima}
@@ -468,36 +468,36 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
                   \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata;
                   \item $a,b$ rappresentano lo stesso insieme.
               \end{itemize}
-              Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b E b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+              Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b' = a'$, cioè $b E b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
               La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si assume per ipotesi che $A,B$ rappresentino lo stesso insieme.
         \item[$(\impliedby)$] Sia $R$ una bisimulazione su $A,B$. Consideriamo la decorazione $d_A$ (l'unica) di $A$. Vogliamo estrapolarne una decorazione per $B$. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
               Definiamo l' applicazione $d$, che ad ogni nodo di $B$ associa un insieme:
               \begin{gather*}
-                  d(v) = d_A(u), \text{con $u$ nodo di $A$} : u R v
+                  d(v) = d_A(u), \text{con $u$ nodo di $A$} \mid u R v
               \end{gather*}
               \begin{observation*}
-                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A : u R v$ perchè si suppone che i due APG siano bisimili.
+                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A \mid u R v$ perchè si suppone che i due APG siano bisimili.
               \end{observation*}
               Dimostriamo che $d$ è una decorazione di $B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $B$ l'insieme $d(v)$ contiene tutti e soli gli
-              insiemi $d(v') \,\,\forall v'$ nodo di $B : v E v'$.
+              insiemi $d(v') \,\,\forall v'$ nodo di $B \mid v E v'$.
               \begin{itemize}
                   \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d(v)$. Poichè la decorazione di $A$ è ben definita,
-                        il nodo $u$ di $A : u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u E u' \implies \exists v' : v E v', u' R v'$.
+                        il nodo $u$ di $A \mid u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u E u' \implies \exists v' \mid v E v', u' R v'$.
                         Cioè $d(v') = X$. Dunque il nodo mancante è stato identificato.
-                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' : v E v', d(v') = Y$ con $Y \notin d(v)$. Ma
-                        allora, sempre considerando $u$ il nodo di $A : u R v$, dovrebbe esistere un $u' : u E u', u' R v'$, cioè $d_A(u') = d(v') = Y$.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid v E v', d(v') = Y$ con $Y \notin d(v)$. Ma
+                        allora, sempre considerando $u$ il nodo di $A \mid u R v$, dovrebbe esistere un $u' \mid u E u', u' R v'$, cioè $d_A(u') = d(v') = Y$.
                         Ma allora $Y \in d_A(u) = d(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
               \end{itemize}
               E' possibile che ci siano due nodi di $a_1, a_2$ di $A$ ed un nodo $b$ di $B$ per cui vale $a_1 R b \land a_2 R b$. In questo caso la decorazione definita è ambigua.
               Per questo motivo correggiamo la formulazione di $d$ come segue:
               \begin{gather*}
-                d(v) = X \text{, con $X$ l'insieme associato al nodo $u$ di $A$} : u R v, \\
+                d(v) = X \text{, con $X$ l'insieme associato al nodo $u$ di $A$} \mid u R v, \\
                 \text{con $u$ preso casualmente tra i nodi di $A$ bisimili a $v$.}
               \end{gather*}
               Per AFA esiste un'unica decorazione di $b$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $B$:
               \begin{itemize}
-                  \item $\exists ! u$ nodo di $A$ : $u R v$;
-                  \item $\forall u$ nodo di $A$ : $u R v$, la decorazione di $A$ associa a tutti gli $u$ lo stesso insieme.
+                  \item $\exists ! u$ nodo di $A \mid u R v$;
+                  \item $\forall u$ nodo di $A \mid u R v$, la decorazione di $A$ associa a tutti gli $u$ lo stesso insieme.
               \end{itemize}
               Dunque l'ambiguità è risolta.
     \end{enumerate}
@@ -511,7 +511,7 @@ Dopo questa considerazone possiamo dare la seguente definizione:
     Sia $R$ una bisimulazione su $G = (V,E)$, dove $G$ è un grafo diretto. Supponiamo che $R$ sia una relazione di equivalenza. Il grafo, definito a partire dal grafo iniziale, ottenuto con una \emph{contrazione rispetto alla bisimulazione} $R$, è il grafo diretto $G_R = (V_R, E_R)$ come in \cite{gentilini},  \emph{di} $G$:
     \begin{itemize}
         \item $V_R = \{[m]_R, m \in V\}$;
-        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R : b E c$.
+        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R \mid b E c$.
     \end{itemize}
     Si chiama \emph{classe} del nodo $a$ rispetto alla bisimulazione $R$, indicata con la notazione $[a]_R$, il nodo di $V_R$ in cui viene inserito il nodo $a$.
 \end{definition}
@@ -527,7 +527,7 @@ La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la s
     \end{gather*}
     Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
     Supponiamo che $x \equiv X$, e che $x E y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X E_R Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x E y)$.
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y \mid (y \equiv Y \land x E y)$.
 \end{proof2}
 La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente dal Teorema \ref{theo:bisi_iff_eqsets}:
 \begin{corollary}
@@ -575,7 +575,7 @@ Cominciamo con alcune definizioni su cui struttureremo la formulazione del probl
     \label{exa:set_partition}
 \end{example}
 \begin{definition}
-    Siano $X_1,X_2$ due partizioni dello stesso insieme. $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 : x_2 \subseteq x_1$.
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 \mid x_2 \subseteq x_1$.
 \end{definition}
 \begin{example}
     TROVA ESEMPIO
@@ -625,9 +625,9 @@ Con queste premesse possiamo definire il problema della determinazione della RSC
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
     \label{def:funz_split}
-    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S E S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
+    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
     \begin{gather*}
-        \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
+        \exists S_x \in \widetilde{S} \mid \,\, S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
     \end{gather*}
     ovvero se la partizione non è stabile rispetto ad $A$. In tal caso definiamo la seguente funzione:
     \begin{gather*}
@@ -657,7 +657,7 @@ Dimostriamo il seguente risultato che useremo nel seguito:
 \begin{proof2}
     Dimostriamo separatamente gli enunciati:
     \begin{enumerate}
-        \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S : x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
+        \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S \mid x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
         \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
     \end{enumerate}
     \vspace*{-0.75cm}
@@ -674,7 +674,7 @@ Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{g
     \label{prop:part_induce_bisi}
 \end{proposition}
 \begin{proof2}
-    Siano $a,b \in G : a R b$, e sia $a' : a E a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq E^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X : b E b'$.\\
+    Siano $a,b \in G \mid a R b$, e sia $a' \mid a E a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq E^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X \mid b E b'$.\\
     L'altra condizione caratteristica della bisimulazione si dimostra in modo speculare.
 \end{proof2}
 In altre parole, una qualsiasi partizione stabile rispetto a $E$ induce su un grafo diretto una bisimulazione che può essere ricavata in modo banale.\\
@@ -684,9 +684,9 @@ Dimostriamo ora il risultato opposto:
     \label{prop:bisi_induce_part}
 \end{proposition}
 \begin{proof2}
-    Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 : x_1 \,\,\cap E^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
-    Gli elementi $a$ di $A$ sono i nodi in $x_1 : \nexists b \in x_2 : a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
-    Sia $x \in x_1 - A$, ed $y \in x_2 : x E y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' : a E a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
+    Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 \mid x_1 \,\,\cap E^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
+    Gli elementi $a$ di $A$ sono i nodi in $x_1 \mid \nexists b \in x_2 \mid a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
+    Sia $x \in x_1 - A$, ed $y \in x_2 \mid x E y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' \mid a E a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
 \begin{corollary}
