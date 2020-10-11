@@ -21,15 +21,13 @@ Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella
     \end{itemize}
 \end{definition}
 \begin{example}
-    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica.\\
-    La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
+    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica. La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
 \end{example}
 \begin{definition}
-    Una \emph{relazione di equivalenza} su un insieme $A$ è una relazione binaria riflessiva, simmetrica e transitiva. Questo genere di relazione partiziona $A$ in \emph{classi di equivalenza}, ovvero sottoinsiemi disgiunti di $A$ all'interno dei quali tutte le coppie di elementi sono in relazione.\\
-    Data una relazione di equivalenza $R$ su un insieme $A$, si usa la notazione ``$[a]_R$'' per indicare la classe di equivalenza di $R$ a cui appartiene $a$.\\
-    Inoltre si usa la notazione ``$A/R$'', che si legge ``\emph{quoziente} di $A$ rispetto a $R$'', per denotare l'insieme delle classi di equivalenza di $R$ su $A$.
+    Una \emph{relazione di equivalenza} su un insieme $A$ è una relazione binaria riflessiva, simmetrica e transitiva. Si vede facilmente che questo genere di relazione partiziona $A$ in \emph{classi di equivalenza}, ovvero sottoinsiemi disgiunti di $A$ all'interno dei quali tutte le coppie di elementi sono in relazione.
 \end{definition}
-In alcune situazioni risulta conveniente definire la più piccola relazione che dispone di una certa proprietà, e che contiene una relazione binaria $R$. Una relazione costruita in questo modo è una ``\emph{chiusura}'':
+Data una relazione di equivalenza $R$ su un insieme $A$, si usa la notazione ``$[a]_R$'' per indicare la classe di equivalenza di $R$ a cui appartiene $a$. Inoltre si usa la notazione ``$A/R$'', che si legge ``\emph{quoziente} di $A$ rispetto a $R$'', per denotare l'insieme delle classi di equivalenza di $R$ su $A$.\\
+In alcune situazioni risulta conveniente definire la più piccola relazione (cioè quella che mette in relazione il minor numero possibile di coppie) che dispone di una certa proprietà, e che contiene una relazione binaria di partenza. Una relazione costruita in questo modo è una ``\emph{chiusura}'':
 \begin{definition}
 	Sia $R$ una relazione binaria su $A$. Le seguenti relazioni sono chiusure di $R$:
     \begin{itemize}
@@ -44,13 +42,9 @@ In alcune situazioni risulta conveniente definire la più piccola relazione che 
 Nel seguito useremo ampiamente la definizione seguente:
 \begin{definition}
     Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A \mid x R y\}$.\\
-    La \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
+    Più in generale, la \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
 \end{definition}
-Adottiamo infine la seguente notazione:
-\begin{definition}
-    Sia $A$ un insieme. La \emph{cardinalità} di $A$, indicata con ``$|A|$'' è il numero di elementi di $A$.\\
-    Analogamente, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
-\end{definition}
+Adottiamo infine la seguente notazione ``|A|'' per denotare la \emph{cardinalità} di un insieme $A$. Di conseguenza, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
 
 \subsection{Grafi}
 Con queste premesse possiamo definire un \emph{grafo} come segue:
@@ -93,15 +87,15 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
 \end{example}
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo diretto. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V \mid u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
+    Sia $G = (V,E)$ un grafo diretto. Consideriamo un arco $(u,v) \in E$. In questo caso $u$ è la \emph{sorgente} dell'arco, mentre $v$ è la \emph{destinazione}. Se il numero di archi aventi per sorgente un nodo $s$ è zero tale nodo viene chiamato \emph{pozzo} (dall'inglese \emph{sink}).
 \end{definition}
 Un grafo diretto è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E* v$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
-    Diremo che un grafo diretto $(V,E)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 E_t v_2$.
+    Uun grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $v_1 E* v_2$.
 \end{definition}
 Allora possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
 \begin{definition}
@@ -243,7 +237,7 @@ Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi ch
 \label{sec:graphs_sets}
 In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto un concetto fondamentale per il seguito del lavoro:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V \mid \forall v \in V u E_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
+    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V \mid \forall v \in V u E* v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
 Per rappresentare un insieme tramite un grafo diretto è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
@@ -532,8 +526,8 @@ La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta 
 \end{corollary}
 Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizzare la rappresentazione di insiemi, considerando che è sufficiente una bisimulazione sulla rappresentazione iniziale per ottenere una rappresentazione equivalente. Definiamo una relazione d'ordine sulle rappresentazioni:
 \begin{definition}
-    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
-    Diremo che una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
+    La rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
+    Una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
 \end{definition}
 \begin{observation}
     La \emph{contrazione per bisimulazione} è una rappresentazione minore (o eventualmente uguale) di quella iniziale.
