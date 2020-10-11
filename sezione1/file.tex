@@ -4,60 +4,55 @@
 \subsection{Relazioni Binarie}
 Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato:
 \begin{definition}
-    Chiameremo \emph{relazione binaria} su $A,B$ qualsiasi sottoinsieme del prodotto cartesiano $A \times B$.\\
-    Chiameremo \emph{relazione binaria} su $A$ qualsiasi sottoinsieme del prodotto cartesiano $A \times A$.\\
-	Diremo che $R$ mette \emph{in relazione} $u,v$ se $(u,v) \in R$. In questo caso potremo usare la notazione $u R v$.
+    Una \emph{relazione binaria} su $A,B$ è un sottoinsieme del prodotto cartesiano $A \times B$.\\
+    Una \emph{relazione binaria} su $A$ è un sottoinsieme del prodotto cartesiano $A \times A$.\\
+	Se $R$ mette in relazione $u,v$, cioè $(u,v) \in R$, si usa la notazione $u R v$.
 \end{definition}
 \begin{definition}
-    Chiameremo \emph{insieme immagine} di un elemento di $A$ l'insieme definito come $R(x) = \{y \in B : x R y\}$.
+    L' \emph{insieme immagine} di un elemento $x$ dell'insieme $A$ attraverso la relazione $R$ è l'insieme $R(x) = \{y \in B \mid x R y\}$.
 \end{definition}
 Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella definizione seguente:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A$. Diremo che $R$ è
+    Sia $R$ una relazione binaria su $A$. Siano $x,y,z$ qualsiasi appartenenti ad $A$. Allora $R$ è:
     \begin{itemize}
-        \item \emph{Riflessiva} se $\forall x \in A, x R x$;
-        \item \emph{Simmetrica} se $x R y \implies y R x \,\,(x,y \in A)$
-        \item \emph{Transitiva} se $(x R y \land y R z) \implies x R z \,\,(x,y,z \in A)$
+        \item \emph{Riflessiva} se $x R x$;
+        \item \emph{Simmetrica} se $x R y \implies y R x$;
+        \item \emph{Transitiva} se $(x R y \land y R z) \implies x R z$.
     \end{itemize}
 \end{definition}
 \begin{example}
-    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica.\\
-    La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
+    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica. La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
 \end{example}
 \begin{definition}
-    Una relazione binaria riflessiva, simmetrica e transitiva si dice \emph{relazione di equivalenza}. Questo genere di relazioni divide un insieme in \emph{classi di equivalenza} all'interno delle quali tutte le coppie di elementi sono in relazione. Data una relazione di equivalenza $R$ su un insieme $A$, useremo la notazione ``$[a]_R, a \in A$'' per indicare la classe di equivalenza a cui appartiene $a$.
+    Una \emph{relazione di equivalenza} su un insieme $A$ è una relazione binaria riflessiva, simmetrica e transitiva. Si vede facilmente che questo genere di relazione partiziona $A$ in \emph{classi di equivalenza}, ovvero sottoinsiemi disgiunti di $A$ all'interno dei quali tutte le coppie di elementi sono in relazione.
 \end{definition}
-In alcune situazioni risulta conveniente definire la più piccola relazione che dispone di una certa proprietà, e che contiene una relazione binaria $R$. Chiameremo una relazione costruita in questo modo ``\emph{chiusura}'':
+Data una relazione di equivalenza $R$ su un insieme $A$, si usa la notazione ``$[a]_R$'' per indicare la classe di equivalenza di $R$ a cui appartiene $a$. Inoltre si usa la notazione ``$A/R$'', che si legge ``\emph{quoziente} di $A$ rispetto a $R$'', per denotare l'insieme delle classi di equivalenza di $R$ su $A$.\\
+In alcune situazioni risulta conveniente definire la più piccola relazione (cioè quella che mette in relazione il minor numero possibile di coppie) che dispone di una certa proprietà, e che contiene una relazione binaria di partenza. Una relazione costruita in questo modo è una ``\emph{chiusura}'':
 \begin{definition}
-	Sia $R$ una relazione binaria su $A$.
-    Definiamo le seguenti chiusure:
+	Sia $R$ una relazione binaria su $A$. Le seguenti relazioni sono chiusure di $R$:
     \begin{itemize}
-        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \,\, \forall x \in A\}$
-        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \,\, \forall x,y : (x,y) \in R\}$
-        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \,\, \forall x,z : \exists y : (x,y) \in R \land (y,z) \in R\}$
+        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \mid x \in A\}$
+        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \mid x R y\}$
+        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \mid \exists y \in A,\, x R y \land y R z\}$
     \end{itemize}
 \end{definition}
 \begin{example}
     La chiusura riflessiva della relazione ``$<$'' (minore stretto) è la relazione ``$\leq$''.
 \end{example}
-Nel seguito sarà fondamentale la definizione seguente:
+Nel seguito useremo ampiamente la definizione seguente:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A \times B$. Chiameremo \emph{relazione inversa} di $R$ o \emph{contro-immagine} di un elemento di $B$ l'insieme definito come $R^{-1}(y) = \{x \in A : x R y\}$.
+    Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A \mid x R y\}$.\\
+    Più in generale, la \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
 \end{definition}
-Useremo frequentemente la notazione ``$R^{-1}(X)$'' o ``$R(X)$'' dove $X$ è un insieme. In questo caso l'insieme risultante è dato dall'unione di tutti gli insiemi $R(x)$ o $R^{-1}(x)$, per ogni $x \in X$.\\
-Introduciamo la seguente notazione:
-\begin{definition}
-    Sia $A$ un insieme. Denoteremo con ``$|A|$'' la \emph{cardinalità} di $A$, cioè il numero dei suoi elementi.\\
-    Analogamente, data una relazione binaria $R$, denoteremo con $|R|$ il numero delle coppie messe in relazione da $R$.
-\end{definition}
+Adottiamo infine la seguente notazione ``|A|'' per denotare la \emph{cardinalità} di un insieme $A$. Di conseguenza, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
 
 \subsection{Grafi}
 Con queste premesse possiamo definire un \emph{grafo} come segue:
 \begin{definition}
-    Sia $V$ un insieme finito non vuoto. Sia $E$ una relazione binaria su $V$. Chiameremo \emph{grafo diretto} o \emph{grafo orientato} la coppia $G = (V, E)$. Con questa notazione:
+    Sia $V$ un insieme finito non vuoto. Sia $E$ una relazione binaria su $V$. La coppia $G = (V, E)$ è un \emph{grafo diretto} (o \emph{orientato}). Con questa notazione:
     \begin{itemize}
-        \item $V$ è l'insieme dei \emph{nodi} o \emph{vertici};
-        \item $E$ è una relazione binaria che mette in relazione alcuni dei nodi di $G$.
+        \item $V$ è l'insieme dei \emph{nodi} (o \emph{vertici});
+        \item $E$ è una relazione binaria (in generale non simmetrica) che mette in relazione alcuni dei nodi di $G$.
     \end{itemize}
 \end{definition}
 \begin{example}
@@ -81,7 +76,7 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{Rappresentazione grafica di un grafo}
+        \caption{Rappresentazione grafica di un grafo diretto}
         \label{fig:graph}
     \end{figure}
     Il grafo di Figura \ref{fig:graph} è descritto dalla coppia
@@ -92,21 +87,20 @@ Con queste premesse possiamo definire un \emph{grafo} come segue:
 \end{example}
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo. Diremo che un nodo $u \in V$ è una \emph{foglia} se $\nexists v \in V : u E v$. Diremo che $u$ è \emph{parente} di $v$ e che $v$ è \emph{figlio} di $u$ se $uEv$.
+    Sia $G = (V,E)$ un grafo diretto. Consideriamo un arco $(u,v) \in E$. In questo caso $u$ è la \emph{sorgente} dell'arco, mentre $v$ è la \emph{destinazione}. Se il numero di archi aventi per sorgente un nodo $s$ è zero tale nodo viene chiamato \emph{pozzo} (dall'inglese \emph{sink}).
 \end{definition}
-Un grafo è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi} o \emph{rami}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
+Un grafo diretto è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo. Siano $u,v \in V$. Diremo che $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E_t v$ (la $t$ in pedice sta per ``\emph{transitivo}''), se esiste una sequenza finita di nodi $x_n$ di lunghezza $K : x_0 = u, x_K = v, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E* v$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
-    Diremo che un grafo $(V,E)$ è \emph{fortemente connesso} se $\forall v_1, v_2 \in V, v_1 E_t v_2$.
+    Uun grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $v_1 E* v_2$.
 \end{definition}
-Possiamo individuare facilmente i sottografi massimali fortemente connessi:
+Allora possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
 \begin{definition}
-    Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo $(V,E)$ sono le classi di equivalenza della relazione $E_t$ \cite[Appendice B]{clrs}.
+    Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo diretto sono i sottografi che compongono la ripartizione (massimale) del grafo in sottografi fortemente connessi.
 \end{definition}
-Conseguenza di questa definizione è che i nodi contenuti in una stessa componente fortemente connessa sono mutuamente raggiungibili.
 \begin{example}
     \begin{figure}[t]
         \centering
@@ -128,18 +122,19 @@ Conseguenza di questa definizione è che i nodi contenuti in una stessa componen
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{SCC di un grafo}
+        \caption{SCC di un grafo diretto}
         \label{fig:graph_cfc_1}
     \end{figure}
     Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
 \end{example}
-Dato un grafo, possiamo definire il partizionamento dei nodi in SCC come segue:
+Il partizionamento dei nodi in SCC è definito come segue:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo. Definiamo il grafo $G^{SCC} = (V^{SCC}, E^{SCC})$ delle componenti fortemente connesse:
+    Sia $G = (V, E)$ un grafo diretto. Il grafo $G^{SCC} = (V^{SCC}, E^{SCC})$, dove:
     \begin{itemize}
-        \item $V^{SCC} = \{C : \,$``$C$ è una classe di equivalenza per $E_t$ su $V$''$\}$
-        \item $E^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} : A \neq B, \exists m \in A, n \in B : m E n\}$
+        \item $V^{SCC} = \{C \mid \,C$ è una SCC$\}$;
+        \item $E^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} \mid A \neq B, \exists m \in A, n \in B, m E n\}$
     \end{itemize}
+    è il partizionamento del grafo iniziale in SCC.
 \end{definition}
 Riportiamo la seguente proprietà immediata:
 \begin{proposition}
@@ -208,13 +203,13 @@ Riportiamo la seguente proprietà immediata:
         \caption{Un grafo ed il corrispondente grafo delle SCC}
         \label{fig:graph_cfc_2}
     \end{figure}
-    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
+    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo diretto generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
-Dato un grafo generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
+Dato un grafo diretto generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
 
 \subsection{Insiemi}
 \subsubsection{Cenni di teoria degli insiemi}
-In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiemi ZFC, ad eccezione dell'Assioma di Fondazione. Formuliamo innanzitutto i seguenti assiomi:
+In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiemi ZFC, ad eccezione dell'Assioma di Fondazione. Diamo innanzitutto una formulazione degli assiomi che interverranno nel seguito del lavoro:
 \begin{axiom}[di estensionalità]
     Due insiemi sono uguali $\iff$ contengono gli stessi elementi.
 \end{axiom}
@@ -224,7 +219,7 @@ In generale supporremo validi gli assiomi su cui si fonda la teoria degli insiem
 \end{axiom}
 Del primo faremo un uso esplicito nel seguito. Il secondo, per motivi che saranno evidenti nella sezione seguente, risulta limitante nell'ambito trattato in questo elaborato. Introduciamo la seguente definizione:
 \begin{definition}
-    Diremo che un insieme è \emph{ben-fondato} se non contiene se stesso. Altrimenti diremo che è \emph{non-ben-fondato}.
+    Un insieme è \emph{ben-fondato} se non contiene se stesso. Altrimenti è \emph{non-ben-fondato}.
 \end{definition}
 \begin{example}
     L'insieme $\Omega = \{\Omega\}$ è non-ben-fondato. L'insieme $A = \{1,2,3\}$ è ben-fondato.
@@ -234,29 +229,29 @@ Riportiamo una formulazione equivalente dell'Assioma \ref{axi:foundation}:
     $\forall A$ la relazione ``$\in$'' è ben-fondata su $A$ \cite[Chapter III.4]{kunen}
 \end{axiom*}
 Da questa questa formulazione risulta evidente l'impossibilità, in ZFC, di costruire insiemi non-ben-fondati.\\
-Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati; tuttavia questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nella sezione seguente.
+Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati; tuttavia si può verificare che questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nella sezione seguente.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
 
-\subsubsection{Rappresentazione di insiemi tramite grafi}
+\subsubsection{Rappresentazione di insiemi tramite grafi diretti}
 \label{sec:graphs_sets}
-In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto una nozione fondamentale:
+In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto un concetto fondamentale per il seguito del lavoro:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V : \forall v \in V, u E_t v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la terna $(V, E, u)$ si dice \emph{accessible pointed graph}, o \emph{APG}.
+    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V \mid \forall v \in V u E* v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
-Per rappresentare un insieme tramite un grafo è necessario definire un processo denominato \emph{decorazione}:
+Per rappresentare un insieme tramite un grafo diretto è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
-    Chiameremo \emph{decorazione} di un APG l'assegnazione di un insieme ad ogni suo nodo. In tal caso associamo la relazione ``$\in$'' alla relazione di raggiungibilità ``$E$'', ovvero $aEb \iff b \in a$.
+    La \emph{decorazione} di un APG è l'assegnazione di un insieme ad ogni suo nodo. In tal caso viene associata la relazione ``$\in$'' alla relazione di raggiungibilità ``$E$'', ovvero $aEb \iff b \in a$.
 \end{definition}
 Possiamo ora dare la seguente definizione:
 \begin{definition}
-    Chiameremo \emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ la coppia composta da un APG $(G,v)$ e da una decorazione, in cui a $v$ è associato $A$.
+    L'\emph{immagine} (o \emph{picture} in \cite{aczel}) di un insieme $A$ è la coppia composta da un APG $(G,v)$ e da una sua decorazione in cui a $v$ è associato $A$.
 \end{definition}
 Vale la seguente proposizione, dimostrata in \cite{aczel}:
 \begin{proposition}
     Ad un APG aciclico è possibile associare un'unica decorazione.
 \end{proposition}
-Questo risultato non è stato dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo proponiamo il seguente assioma:
+Questo risultato non è stato dimostrato nel caso di un APG contenente almeno un ciclo. Per questo motivo viene introdotto il seguente assioma:
 \begin{axiom}[AFA, Anti-Foundation-Axiom]
     Ogni APG possiede un'unica decorazione.
 \end{axiom}
@@ -303,7 +298,8 @@ L'assioma AFA ha un'ovvia conseguenza:
           \centering
           \begin{tikzpicture}[scale=0.5]
             \begin{scope}[every node/.style={circle,thick,draw}]
-                \node (A) at (0,-1) {A};
+                \node (A) at (0,-0.3) {A};
+                \node[draw=white] (B) at (0,3) {};
             \end{scope}
 
             \begin{scope}
@@ -339,21 +335,20 @@ L'assioma AFA ha un'ovvia conseguenza:
 \end{example}
 
 \subsection{Bisimulazione}
-In questa sezione introdurremo la definizione di bisimulazione ed alcune proprietà immediate. In seguito esamineremo la relazione tra la teoria degli insiemi e
-la bisimulazione.
+In questa sezione introdurremo la definizione di bisimulazione ed alcune proprietà immediate. In seguito esamineremo la relazione tra la teoria degli insiemi e la bisimulazione.
 \subsubsection{Definizione e risultati generali}
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Diremo che una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi diretti. Una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
-        \item $a R b, a E_1 a' \implies \exists b' \in V_2 : (a' R b' \land b E_2 b')$
-        \item $a R b, b E_2 b' \implies \exists a' \in V_1 : (a' R b' \land a E_1 a')$
+        \item $a R b, a E_1 a' \implies \exists b' \in V_2 \mid (a' R b' \land b E_2 b')$
+        \item $a R b, b E_2 b' \implies \exists a' \in V_1 \mid (a' R b' \land a E_1 a')$
     \end{itemize}
-    Possiamo definire in modo analogo una bisimulazione su un unico grafo $G$, ponendo $G_1 = G_2 = G$.
+    Analogamente si definisce una bisimulazione su un unico grafo diretto $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
-Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che verrà sfruttata ampiamente nel seguito:
+L'esistenza di una bisimulazione tra due grafi, come vedremo, è un'informazione rilevante se siamo interessati agli insiemi rappresentati dai grafi considerati:
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Diremo che sono \emph{bisimili} se esiste una bisimulazione su $G_1, G_2$.\\
-    Diremo che due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 R v_2$ per almeno una bisimulazione su $G_1, G_2$.
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Essi sono \emph{bisimili} se esiste una bisimulazione su $G_1, G_2$.\\
+    Due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 R v_2$ per almeno una bisimulazione $R$ su $G_1, G_2$.
 \end{definition}
 \begin{observation}
     Una bisimulazione può non essere riflessiva, simmetrica, nè transitiva.
@@ -365,13 +360,13 @@ Definiamo un'importante caratteristica di una coppia qualsiasi di grafi, che ver
 \end{example}
 Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante delle chiusure:
 \begin{theorem}
-    Sia $R$ una bisimulazione sul grafo $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
+    Sia $R$ una bisimulazione sul grafo diretto $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
     Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
     \begin{itemize}
         \item $R_r$: Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
-        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V: u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
+        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V \mid u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
         \item $R_s$: Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
         Sia $(u,v) \in V\times V$. Allora:
         \begin{center}
@@ -379,18 +374,22 @@ Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante 
         \end{center}
         Supponiamo ad esempio che $v R u$.
         \begin{align*}
-            &\implies \forall v' \in V: (v E v') \,\,\exists u' \in V: (u E u' \land v' R u')\\
+            &\implies \forall v' \in V\mid (v E v') \,\,\exists u' \in V, (u E u' \land v' R u')\\
             &\implies u' R_s v'
         \end{align*}
         e
         \begin{align*}
-            &\implies \forall u' \in V: (u E u') \,\,\exists v' \in V: (v E v' \land v' R u')\\
+            &\implies \forall u' \in V\mid (u E u') \,\,\exists v' \in V, (v E v' \land v' R u')\\
             &\implies u' R_s v'
         \end{align*}
         cioè sono dimostrate le due condizioni caratteristiche della bisimulazione.\\
         La dimostrazione è analoga se $u R v$.
         \item $R_t$: Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
-        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora $\forall u' \in V: u E u' \implies \exists v' \in V: v E v' \land u' R v'$. Inoltre $\exists z' : z E z' \land v' R z'$.\\
+        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora:
+        \begin{gather*}
+            \forall u' \in V\mid u E u' \,\, \exists v' \in V, (v E v' \land u' R v')
+        \end{gather*}
+        Inoltre $\exists z' \mid z E z' \land v' R z'$.\\
         Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
@@ -407,19 +406,19 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
     \label{obs:bisimulation_union}
 \end{proposition}
 \begin{proof2}
-    Siano $u,v : u R v$. Sia $u' : u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' : (v E v' \land u' R_{1|2} v')$.
+    Siano $u,v \mid u R v$. Sia $u' \mid u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' \mid (v E v' \land u' R_{1|2} v')$.
 \end{proof2}
 
 \subsubsection{Bisimulazione massima}
 \label{sec:bisi_max}
 Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
 \begin{definition}
-    Diremo che una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2$ si ha $u R v \implies u R_M v$.
+    Una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2 \,\, u R v \implies u R_M v$.
 \end{definition}
 \begin{observation}
-    Sia $R_M$ la bisimulazione massima su un grafo $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
+    Sia $R_M$ la bisimulazione massima su un grafo diretto $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
 \end{observation}
-Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche in modo molto semplice:
+Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche banali:
 \begin{proposition}
     Valgono le seguenti proprietà:
     \begin{enumerate}
@@ -437,10 +436,9 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
-Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo $G$. Questo caso si rivelerà di grande interesse nel seguito. Per
-ora dimostriamo il seguente risultato:
+Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
+    Sia $G$ un grafo diretto finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
@@ -454,69 +452,63 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
     \label{theo:bisi_iff_eqsets}
 \end{theorem}
 \begin{proof2}
-    Dimostriamo separatamente le due implicazioni:
+    Siano $G_A = (V_A, E_A), G_B = (V_B, E_B)$. Dimostriamo separatamente le due implicazioni:
     \begin{enumerate}
-        \item[$(\implies)$] Osserviamo innanzitutto che la relazione binaria $\equiv$ su $V_A, V_B$ definita come segue:
+        \item[$(\implies)$] Osserviamo innanzitutto che la relazione binaria ``$\equiv$'' su $V_A, V_B$ definita come segue:
               \begin{gather*}
                   a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
               \end{gather*}
-              è una bisimulazione sui grafi $G_A = (V_A, E_A), G_B = (V_B, E_B)$.\\
+              è una bisimulazione sui grafi $G_A, G_B$.\\
               Chiaramente se $a \equiv b, a E a'$ si ha:
               \begin{itemize}
                   \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata;
                   \item $a,b$ rappresentano lo stesso insieme.
               \end{itemize}
-              Quindi per l'Assioma di Estensionalità $\exists b' \in b: b' = a'$, cioè $b E b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
-              La relazione $\equiv$ è una bisimulazione sugli APG $A,B$ quando si assume per ipotesi che $A,B$ rappresentino lo stesso insieme.
-        \item[$(\impliedby)$] Sia $R$ una bisimulazione su $A,B$. Consideriamo la decorazione $d_A$ (l'unica) di $A$. Vogliamo estrapolarne una decorazione per $B$. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
-              Definiamo l' applicazione $d$, che ad ogni nodo di $B$ associa un insieme:
+              Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b' = a'$, cioè $b E b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+              La relazione ``$\equiv$'' è una bisimulazione sugli APG $G_A,G_B$ quando si assume per ipotesi che rappresentino lo stesso insieme.
+        \item[$(\impliedby)$] Sia $R$ una bisimulazione su $G_A,G_B$. Consideriamo la decorazione $d_A$ (l'unica) di $G_A$. Vogliamo estrapolarne una decorazione per $G_B$, e dimostrare che i due grafi con le rispettive decorazioni sono due immagini dello stesso insieme. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
+              Definiamo la decorazione $d_B$ come segue:
               \begin{gather*}
-                  d(v) = d_A(u), \text{con $u$ nodo di $A$} : u R v
+                  d_B(v) = d_A(u), \text{con $u$ nodo di $G_A$} \mid u R v
               \end{gather*}
               \begin{observation*}
-                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $A : u R v$ perchè si suppone che i due APG siano bisimili.
+                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $G_A \mid u R v$ perchè si suppone che i due APG siano bisimili.
               \end{observation*}
-              Dimostriamo che $d$ è una decorazione di $B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $B$ l'insieme $d(v)$ contiene tutti e soli gli
-              insiemi $d(v') \,\,\forall v'$ nodo di $B : v E v'$.
+              Dimostriamo che $d_B$ è una decorazione di $G_B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $G_B$ l'insieme $d_B(v)$ contiene tutti e soli gli insiemi $d_B(v')$ dove $v'$ è figlio di $v$.
               \begin{itemize}
-                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d(v)$. Poichè la decorazione di $A$ è ben definita,
-                        il nodo $u$ di $A : u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u E u' \implies \exists v' : v E v', u' R v'$.
-                        Cioè $d(v') = X$. Dunque il nodo mancante è stato identificato.
-                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' : v E v', d(v') = Y$ con $Y \notin d(v)$. Ma
-                        allora, sempre considerando $u$ il nodo di $A : u R v$, dovrebbe esistere un $u' : u E u', u' R v'$, cioè $d_A(u') = d(v') = Y$.
-                        Ma allora $Y \in d_A(u) = d(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d_B(v)$. Poichè la decorazione di $G_A$ è ben definita,il nodo $u$ di $G_A \mid u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u E u' \implies \exists v' \mid v E v', u' R v'$. Cioè $d_B(v') = X$. Dunque il nodo mancante è stato identificato.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid v E v', d_B(v') = Y$ con $Y \notin d(v)$. Ma allora, sempre considerando $u$ il nodo di $G_A \mid u R v$, dovrebbe esistere un $u' \mid u E u', u' R v'$, cioè $d_A(u') = d_B(v') = Y$.
+                  Ma allora $Y \in d_A(u) = d_B(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
               \end{itemize}
-              E' possibile che ci siano due nodi di $a_1, a_2$ di $A$ ed un nodo $b$ di $B$ per cui vale $a_1 R b \land a_2 R b$. In questo caso la decorazione definita è ambigua.
-              Per questo motivo correggiamo la formulazione di $d$ come segue:
+              E' possibile che ci siano due nodi di $a_1, a_2$ di $G_A$ ed un nodo $b$ di $G_B$ per cui vale $a_1 R b \land a_2 R b$. In questo caso la decorazione definita è ambigua. Per questo motivo correggiamo la formulazione di $d_B$ come segue:
               \begin{gather*}
-                d(v) = X \text{, con $X$ l'insieme associato al nodo $u$ di $A$} : u R v, \\
-                \text{con $u$ preso casualmente tra i nodi di $A$ bisimili a $v$.}
+                d_B(v) = X \text{, dove $X$ è l'insieme associato al nodo $u$ di $A$} \mid u R v, \\
+                \text{con $u$ preso casualmente tra i nodi di $G_A$ bisimili a $v$.}
               \end{gather*}
-              Per AFA esiste un'unica decorazione di $b$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $B$:
+              Per AFA esiste un'unica decorazione di $G_B$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $G_B$:
               \begin{itemize}
-                  \item $\exists ! u$ nodo di $A$ : $u R v$;
-                  \item $\forall u$ nodo di $A$ : $u R v$, la decorazione di $A$ associa a tutti gli $u$ lo stesso insieme.
+                  \item $\exists ! u$ nodo di $G_A \mid u R v$;
+                  \item $\forall u$ nodo di $G_A \mid u R v$, la decorazione di $G_A$ associa a tutti gli $u$ lo stesso insieme.
               \end{itemize}
               Dunque l'ambiguità è risolta.
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
-Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la
-relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
+Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
 
 Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
     \label{def:bisi_contraction}
-    Sia $R$ una bisimulazione su $G = (V,E)$ che sia anche una relazione di equivalenza. Definiamo un nuovo grafo $G_R = (V_R, E_R)$ come in \cite{gentilini}, che chiameremo \emph{contrazione rispetto alla bisimulazione} $R$ \emph{di} $G$:
+    Sia $R$ una bisimulazione su $G = (V,E)$, dove $G$ è un grafo diretto. Supponiamo che $R$ sia una relazione di equivalenza. Il grafo, definito a partire dal grafo iniziale, ottenuto con una \emph{contrazione rispetto alla bisimulazione} $R$, è il grafo diretto $G_R = (V_R, E_R)$ definito come in \cite{gentilini}:
     \begin{itemize}
         \item $V_R = \{[m]_R, m \in V\}$;
-        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R : b E c$.
+        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R \mid b E c$.
     \end{itemize}
-    Chiameremo \emph{classe} del nodo $a$ rispetto alla bisimulazione $R$, con la notazione $[a]_R$, il nodo di $V_R$ in cui viene inserito il nodo $a$.
+    Si chiama \emph{classe} del nodo $a$ rispetto alla bisimulazione $R$, indicata con la notazione $[a]_R$, il nodo di $V_R$ in cui viene inserito il nodo $a$.
 \end{definition}
 La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
-    Sia $G$ un grafo, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
+    Sia $G$ un grafo diretto, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
@@ -526,7 +518,7 @@ La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la s
     \end{gather*}
     Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
     Supponiamo che $x \equiv X$, e che $x E y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X E_R Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y : (y \equiv Y \land x E y)$.
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y \mid (y \equiv Y \land x E y)$.
 \end{proof2}
 La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente dal Teorema \ref{theo:bisi_iff_eqsets}:
 \begin{corollary}
@@ -534,8 +526,8 @@ La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta 
 \end{corollary}
 Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizzare la rappresentazione di insiemi, considerando che è sufficiente una bisimulazione sulla rappresentazione iniziale per ottenere una rappresentazione equivalente. Definiamo una relazione d'ordine sulle rappresentazioni:
 \begin{definition}
-    Diremo che la rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
-    Diremo che una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
+    La rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
+    Una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
 \end{definition}
 \begin{observation}
     La \emph{contrazione per bisimulazione} è una rappresentazione minore (o eventualmente uguale) di quella iniziale.
@@ -547,7 +539,7 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
 \begin{proof2}
     Supponiamo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la bisimulazione massima.\\
     Supponiamo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
-    Definisco una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
+    Definiamo una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
     \begin{gather*}
         x R_{\widetilde{M}} y \iff (x R_M y \lor [x]_{R_M} R_O [y]_{R_M})
     \end{gather*}
@@ -556,37 +548,40 @@ Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco
 
 \subsection{Relational stable coarsest partition}
 \label{sec:rscp}
-In questa sezione introdurremo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition}. Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima. Questo legame viene sfruttato dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.\\
-Cominciamo con alcune definizioni su cui struttureremo la formulazione del problema:
+In questa sezione introdurremo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition}. Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.\\
+Cominciamo con alcune definizioni di base:
 \begin{definition}
-    Sia $S$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. Diremo che $X$ è una \emph{partizione} di $S$ se:
+    Sia $S$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. $X$ è una \emph{partizione} di $S$ se:
     \begin{gather*}
         \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
     \end{gather*}
-    Inoltre diremo che gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ useremo la notazione $[a]_X = x_i$.
+    Inoltre gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ si usa la notazione $[a]_X = x_i$.
 \end{definition}
 \begin{observation}
     \label{obs:part_banale}
-    Ogni insieme $S$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme, che indicheremo con $\widetilde{S}$.
+    Ogni insieme $S$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme.
 \end{observation}
 \begin{example}
-    TROVA ESEMPIO
+    Sia $S \coloneqq \{0,1,2,3,4,5,6\}$. Alcuni possibili partizionamenti sono $\{S\}$ (il partizionamento banale), $S_1 = \{\{0,1,2,3\},\{4,5,6\}\}, S_2 = \{\{0,1\},\{2,3\},\{4,5,6\}\}$.
     \label{exa:set_partition}
 \end{example}
 \begin{definition}
-    Siano $X_1,X_2$ due partizioni dello stesso insieme. Diremo che $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 : x_2 \subseteq x_1$.
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 \mid x_2 \subseteq x_1$.
 \end{definition}
 \begin{example}
-    TROVA ESEMPIO
+    Riprendendo l'Esempio \ref*{exa:set_partition}, la partizione $S_2$ rifinisce $S_1$, che a sua volta rifinisce la partizione banale.
 \end{example}
 Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in questo lavoro quando si impone la seguente condizione sui blocchi:
 \begin{definition}
-    Sia $S$ un insieme, ed $R$ una relazione binaria su $S$. Sia $X$ una partizione su $S$, e sia $B \subseteq A$. Diremo che $X$ è stabile rispetto alla coppia $(B,R)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(B) \lor x_i \cap R^{-1}(B) = \emptyset$.\\
-    Inoltre diremo che la partizione $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a $(x,R) \,\,\forall x \in X$.
+    Sia $S$ un insieme, ed $R$ una relazione binaria su $S$. Sia $X$ una partizione su $S$, e sia $B \subseteq A$.
+    \begin{itemize}
+        \item $X$ è stabile rispetto alla coppia $(B,R)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(B) \lor x_i \cap R^{-1}(B) = \emptyset$;
+        \item La partizione $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a $(x,R) \,\,\forall x \in X$.
+    \end{itemize}
 \end{definition}
 \begin{example}
     \label{exa:set_partition_stable}
-    TROVA ESEMPIO
+    Consideriamo la relazione binaria $R$ su $S$ che mette in relazione le coppie $\{(0,1),(1,0),(2,3),(3,2),(4,5),(5,6),(0,4),(1,5)\}$. $S_2$ è stabile rispetto a $R$, ma lo stesso non vale per $S_1$.
 \end{example}
 In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
 \begin{itemize}
@@ -595,39 +590,39 @@ In altre parole per ogni coppia di blocchi di una partizione stabile si hanno du
 \end{itemize}
 Vale la seguente osservazione banale:
 \begin{observation}
-    Sia $X$ una partizione qualsiasi di un insieme $U$, e siano $S,T \subseteq U$. Sia $R$ una relazione binaria su $U$. Supponiamo $X$ stabile rispetto alle coppie $(R,S),(R,T)$. Allora:
+    Sia $\widetilde{S}$ una partizione qualsiasi di un insieme $S$, e siano $P,Q \subseteq S$. Sia $R$ una relazione binaria su $S$. Supponiamo $\widehat{S}$ stabile rispetto alle coppie $(R,P),(R,Q)$. Allora:
     \begin{enumerate}
-        \item Qualsiasi rifinitura di $P$ resta stabile rispetto alla coppia $(f,S)$;
-        \item $P$ è stabile rispetto alla coppia $(f,S \cup T)$.
+        \item Qualsiasi rifinitura di $\widetilde{S}$ resta stabile rispetto alla coppia $(R,P)$;
+        \item $\widetilde{S}$ è stabile rispetto alla coppia $(f,P \cup Q)$.
     \end{enumerate}
 \end{observation}
 \begin{proof2}
     Dimostriamo separatamente i due enunciati:
     \begin{enumerate}
-        \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(S) \lor x \cap R^{-1}(S) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
-        \item Sia $x \in X$. Chiaramente vale $R^{-1}(S),R^{-1}(T) \subseteq R^{-1}(S \cup T)$. Allora, se almeno uno tra $R^{-1}(S),R^{-1}(T)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(S \cup T)$, altrimenti $x \cap R^{-1}(S \cup T)$ dovrà chiaramente essere vuoto.
+        \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(P) \lor x \cap R^{-1}(P) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
+        \item Sia $x \in S$. Chiaramente vale $R^{-1}(P),R^{-1}(Q) \subseteq R^{-1}(P \cup Q)$. Allora, se almeno uno tra $R^{-1}(P),R^{-1}(Q)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(P \cup Q)$, altrimenti $x \cap R^{-1}(P \cup Q)$ dovrà chiaramente essere vuoto.
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
 
 Con queste premesse possiamo definire il problema della determinazione della RSCP:
 \begin{definition}
-    Sia $A$ un insieme, sia $R$ una relazione binaria su $A$. Sia $S$ una partizione di $A$. Chiameremo ``RSCP($S,R$)'' di $A$ la partizione di $A$ stabile rispetto ad $R$, che rifinisce $S$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
-    Useremo la notazione ``RSCP$(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
+    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\widetilde{S}$ una partizione di $S$. La ``RSCP($\widetilde{S},R$)'' di $S$ è la partizione di $S$ stabile rispetto ad $R$, che rifinisce $\widetilde{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
+    Si usa la notazione ``RSCP$(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
 \begin{example}
-    TROVA ESEMPIO
+    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la RSCP($R$) deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
 \end{example}
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
     \label{def:funz_split}
-    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S E S$, e sia $A \subset S$. Diremo che $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
+    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
     \begin{gather*}
-        \exists S_x \in \widetilde{S} : \qquad S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
+        \exists S_x \in \widetilde{S} \mid \,\, S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
     \end{gather*}
     ovvero se la partizione non è stabile rispetto ad $A$. In tal caso definiamo la seguente funzione:
     \begin{gather*}
-        \text{Split}(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \quad \forall S_x \in \widetilde{S}\} - \{\emptyset\}
+        \text{Split}(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \mid S_x \in \widetilde{S}\} - \{\emptyset\}
     \end{gather*}
 \end{definition}
 Valgono le seguenti osservazioni sulla funzione appena introdotta:
@@ -653,7 +648,7 @@ Dimostriamo il seguente risultato che useremo nel seguito:
 \begin{proof2}
     Dimostriamo separatamente gli enunciati:
     \begin{enumerate}
-        \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S : x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
+        \item I blocchi di Split$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di Split$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S \mid x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
         \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
     \end{enumerate}
     \vspace*{-0.75cm}
@@ -670,23 +665,23 @@ Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{g
     \label{prop:part_induce_bisi}
 \end{proposition}
 \begin{proof2}
-    Siano $a,b \in G : a R b$, e sia $a' : a E a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq E^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X : b E b'$.\\
+    Siano $a,b \in G \mid a R b$, e sia $a' \mid a E a'$. Poichè $X$ è stabile, si ha che $[a]_X \subseteq E^{-1}([a']_X)$. Quindi $\exists b' \in [a']_X \mid b E b'$.\\
     L'altra condizione caratteristica della bisimulazione si dimostra in modo speculare.
 \end{proof2}
-In altre parole, una qualsiasi partizione stabile rispetto a $E$ induce su un grafo una bisimulazione che può essere ricavata in modo banale.\\
+In altre parole, una qualsiasi partizione stabile rispetto a $E$ induce su un grafo diretto una bisimulazione che può essere ricavata in modo banale.\\
 Dimostriamo ora il risultato opposto:
 \begin{proposition}
     Sia $R$ una bisimulazione su $G$ che sia anche una relazione di equivalenza. Allora la partizione i cui blocchi sono le classi di equivalenza di $R$ è stabile rispetto a $E$.
     \label{prop:bisi_induce_part}
 \end{proposition}
 \begin{proof2}
-    Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 : x_1 \,\,\cap E^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
-    Gli elementi $a$ di $A$ sono i nodi in $x_1 : \nexists b \in x_2 : a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
-    Sia $x \in x_1 - A$, ed $y \in x_2 : x E y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' : a E a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
+    Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 \mid x_1 \,\,\cap E^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
+    Gli elementi $a$ di $A$ sono i nodi in $x_1 \mid \nexists b \in x_2 \mid a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
+    Sia $x \in x_1 - A$, ed $y \in x_2 \mid x E y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' \mid a E a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
 \begin{corollary}
-    Determinare la bisimulazione massima su un grafo $G = (V,E)$ e trovare RSCP($E$) di $V$ sono problemi equivalenti.
+    Determinare la bisimulazione massima su un grafo diretto $G = (V,E)$ e trovare RSCP($E$) di $V$ sono problemi equivalenti.
 \end{corollary}
 \begin{proof2}
     Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($E$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($E$).
