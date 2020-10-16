@@ -279,7 +279,7 @@ In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si
     \begin{gather*}
         S_x \subseteq f^{-1}(Q - B) \,\,\lor\,\, S_s \cap f^{-1}(Q-B) = \emptyset
     \end{gather*}
-    Ricordando che $\widetilde{S}$ è stabile rispetto a $Q$, $\widehat{S} \coloneqq$ Split$(B,\widetilde{S})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref*{obs:split_eredita}. Di conseguenza per ogni blocco $S_x \in \widehat{S}$ si ha
+    Ricordando che $\widetilde{S}$ è stabile rispetto a $Q$, $\widehat{S} \coloneqq$ Split$(B,\widetilde{S})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref{obs:split_eredita}. Di conseguenza per ogni blocco $S_x \in \widehat{S}$ si ha
     \begin{gather*}
         S_x \subseteq f^{-1}(B) \lor S_x \cap f^{-1}(B) = \emptyset\\
         \land\\
@@ -386,6 +386,65 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
 \end{gather*}
 
 \subsection{L'algoritmo di Paige-Tarjan}
-L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione.\\
-Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(|R||A|)$. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(|R|\log |A|)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
+In questa sezione, dopo aver trattato il caso specifico risolto dall'algoritmo di Hopcroft, discutiamo l'algoritmo di Paige-Tarjan presentato in \cite{paigetarjan}. Il procedimento ha complessità $O(|R|\log |S|)$ (dati un insieme $S$ ed una relazione $R$), ed è il primo a risolvere il caso generale migliorando la complessità $O(|R||S|)$ manifestata dall'algoritmo di Kanellakis e Smolka, che non adotta particolari accorgimenti per la selezione dei blocchi da usare come \emph{splitter}.
 
+\subsubsection{L'algoritmo}
+Proponiamo e commentiamo innanzitutto lo pseudocodice:\\
+\begin{algorithm}[H]
+    \label{alg:pt}
+    \KwData{$S,R,\widetilde{S}$}
+    \caption{Algoritmo di Paige-Tarjan}
+    \Begin{
+        $\widetilde{S}', \widetilde{S}'' \coloneqq $ SeparaNodiNonIntraprendenti$(S,R,\widetilde{S})$\; \label{alg:pt_nodi_ni}
+        $Q \coloneqq \widetilde{S}', X \coloneqq \{S - \bigcup_{A \in \widetilde{S}''} A\}$\;
+        \While{$Q \neq X$}{
+            Scelgo in modo casuale un blocco $B \in X \mid B \not\in Q$\;
+            Scelgo un blocco $C \in X \mid C \subset B, |C| \leq |B|/2$\;
+            $X = (X - \{B\}) \cup \{C, B-C\}$\;
+            $Q = (Q \,- \{C\}) \,\cup \splitfunc(B-C, \splitfunc(C,Q))$\;
+        }
+        \Return{$Q \cup \widetilde{S}''$}\;
+    }
+    \SetKwProg{Def}{def}{:}{}
+    \Def{\textup{SeparaNodiNonIntraprendenti}$(S,R,\widetilde{S})$}{
+        $I = \emptyset, NI = \emptyset$\;
+        \ForAll{$B \in \widetilde{S}$}{
+            $B' = B \cap R^{-1}(S)$\;
+            $B'' = B - B'$\;
+            $I = I \cup B', NI = NI \cup B''$\;
+        }
+        \Return{$I,NI$}\;
+    }
+\end{algorithm}
+L'algoritmo prende in input un insieme $S$, una relazione binaria $R$ su $S$ ed una partizione iniziale $\widetilde{S}$. La prima operazione (Riga \ref{alg:pt_nodi_ni}) consiste nell'isolare, per mezzo della funzione ``SeparaNodiNonIntraprendenti'', i nodi non \emph{intraprendenti}, cioè che non intraprendono (come primo elemento della relazione) alcun legame tramite $R$ con un altro elemento di $S$. La partizione iniziale $\widetilde{S}$ viene quindi divisa in due sottopartizioni, quella dei blocchi del tipo $B'$ e quella dei blocchi del tipo $B''$. Motiveremo questo processamento preliminare nel seguito.
+
+L'algoritmo procede con la definizione di due partizioni $Q,X$: la prima è la sottopartizione formata dai blocchi \emph{intraprendenti} ricavati da $\widetilde{S}$, mentre la seconda è la partizione banale formata da un unico blocco contenente tutto $S$, escluendo però i nodi non \emph{intraprendenti}, che da questo in punto in poi non saranno più presi in considerazione. Le relazioni invarianti che intercorrono tra queste due partizioni sono fondamentali per la complessità migliorata del procedimento.
+
+Il corpo del procedimento è formato da un ciclo che ripete le seguenti istruzioni finchè le partizioni $Q,X$ non coincidono:
+\begin{enumerate}
+    \item Viene scelto casualmente un blocco $B \in X$ non appartenente a $Q$. Per questo passaggio e per il successivo dimostreremo nel seguito che è sempre possibile trovare blocchi con le caratteristiche cercate;
+    \item Viene scelto casualmente un blocco $C \in Q$ tra quelli contenuti in $B$, e la cui cardinalità sia inferiore a $|B|/2$;
+    \item In $X$ il blocco $B$ viene sostituito da $\{C, B-C\}$;
+    \item In $Q$ il blocco $C$ viene sostituito da \splitfunc$(B-C,$ \splitfunc$(C,Q))$.
+\end{enumerate}
+
+Quando $Q$ e $X$ coincidono, viene restituita la partizione di $S$ formata da $Q$ e dai blocchi del tipo $B''$, cioè la RSCP$(\widetilde{S},R)$.
+
+\subsubsection{Analisi}
+Dimostriamo innanzitutto la validità della seguente invariante:
+\begin{lemma}
+    \label{lem:pt_qx}
+    All'inizio di ogni iterazione del ciclo la partizione $Q$ è stabile rispetto ad ogni blocco di $X$. Inoltre $Q$ rifinisce $X$.
+\end{lemma}
+\begin{proof2}
+    Procediamo per induzione. Naturalmente l'invariante è valida prima della prima iterazione, in quanto $Q$ è composto da tutti e soli gli elementi \emph{intraprendenti}, e quindi per ogni blocco $C \in Q = \widetilde{S}'$ si ha $C \subset R^{-1}(S)$.
+
+    Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi, e dimostriamo che resta valida al termine della stessa. Questo fatto è una conseguenza diretta del modo in cui l'algoritmo modifica $Q,X$: in $X$, infatti, viene sostituito il blocco $B$ con i blocchi $B-C, C$, mentre $Q$ viene modificato da sue applicazioni successive della funzione \splitfunc. E' evidente che $Q$ deve essere stabile rispetto a $B-C, C$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva. Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = B$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due \splitfunc ai blocchi $\{C_1, \dots, C_n\} - C$ è $B-C$, mentre l'unione dei due nuovi blocchi (di cui uno è eventualmente vuoto) generati a partire da $C$ è chiaramente $C$.
+\end{proof2}
+Possiamo ora dedurre in modo diretto il seguente risultato:
+\begin{corollary}
+    L'algoritmo termina.
+\end{corollary}
+\begin{proof2}
+    Ad ogni iterazione il numero di blocchi in $X$ aumenta di una unità. Quindi in $O(|S|)$ iterazioni si avrà $X = \{\{s\} \mid s \in S\}$ (se l'algoritmo non termina prima). Ma per il Lemma \ref{lem:pt_qx} $Q$ rifinisce $X$ prima di ogni iterazione, quindi deve essere necessariamente $Q = \{\{s\} \mid s \in S\} = X$.
+\end{proof2}
