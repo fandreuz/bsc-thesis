@@ -428,7 +428,7 @@ Il corpo del procedimento è formato da un ciclo che ripete le seguenti istruzio
     \item In $Q$ il blocco $C$ viene sostituito da \splitfunc$(B-C,$ \splitfunc$(C,Q))$.
 \end{enumerate}
 
-Quando $Q$ e $X$ coincidono, viene restituita la partizione di $S$ formata da $Q$ e dai blocchi del tipo $B''$, cioè la RSCP$(\widetilde{S},R)$.
+Quando $Q$ e $X$ coincidono, viene restituita la partizione di $S$ formata da $Q$ e dai blocchi del tipo $B''$, cioè la $\rscp(\widetilde{S},R)$.
 
 \subsubsection{Analisi}
 Dimostriamo innanzitutto la validità della seguente invariante:
@@ -443,9 +443,15 @@ Dimostriamo innanzitutto la validità della seguente invariante:
 \end{proof2}
 Possiamo ora dedurre in modo diretto il seguente risultato:
 \begin{corollary}
-    L'algoritmo termina.
+    L'Algoritmo \ref{alg:pt} termina.
 \end{corollary}
 \begin{proof2}
     Ad ogni iterazione il numero di blocchi in $X$ aumenta di una unità. Quindi in $O(|S|)$ iterazioni si avrà $X = \{\{s\} \mid s \in S\}$ (se l'algoritmo non termina prima). Ma per il Lemma \ref{lem:pt_qx} $Q$ rifinisce $X$ prima di ogni iterazione, quindi deve essere necessariamente $Q = \{\{s\} \mid s \in S\} = X$.
 \end{proof2}
-Dimostriamo ora che l'algoritmo fornisce la
+Dimostriamo ora che l'algoritmo è corretto:
+\begin{proposition}
+    L'Algoritmo \ref{alg:pt} fornisce la $\rscp(R,\widetilde{S})$.
+\end{proposition}
+\begin{proof2}
+    Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Ma, poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Se consideriamo il risultato restituito dall'algoritmo, cioè $Q \cup \widetilde{S}''$, è evidente che tale partizione è ancora stabile, visto che $\forall B \in Q, \forall C \in \widetilde{S}'', C \cap R^{-1}(B) = \emptyset, $
+\end{proof2}

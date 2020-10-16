@@ -608,11 +608,11 @@ Vale la seguente osservazione banale:
 
 Con queste premesse possiamo definire il problema della determinazione della RSCP:
 \begin{definition}
-    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\widetilde{S}$ una partizione di $S$. La ``RSCP($\widetilde{S},R$)'' di $S$ è la partizione di $S$ stabile rispetto ad $R$, che rifinisce $\widetilde{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
-    Si usa la notazione ``RSCP$(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
+    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\widetilde{S}$ una partizione di $S$. La $\rscp(\widetilde{S},R)$ di $S$ è la partizione di $S$ stabile rispetto ad $R$, che rifinisce $\widetilde{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
+    Si usa la notazione ``$\rscp(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
 \begin{example}
-    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la RSCP($R$) deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
+    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\rscp(R)$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
 \end{example}
 
 \subsubsection{Insiemi \emph{splitter}, e la funzione Split}
@@ -684,15 +684,15 @@ Dimostriamo ora il risultato opposto:
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
 \begin{corollary}
-    Determinare la bisimulazione massima su un grafo diretto $G = (V,E)$ e trovare RSCP($E$) di $V$ sono problemi equivalenti.
+    Determinare la bisimulazione massima su un grafo diretto $G = (V,E)$ e trovare $\rscp(E)$ di $V$ sono problemi equivalenti.
 \end{corollary}
 \begin{proof2}
-    Dimostriamo separatamente che la bisimulazione ricavata dalla RSCP($E$) è massima, e che la partizione ricavata dalla bisimulazione massima è la RSCP($E$).
+    Dimostriamo separatamente che la bisimulazione ricavata dalla $\rscp(E)$ è massima, e che la partizione ricavata dalla bisimulazione massima è la $\rscp(E)$.
     \begin{itemize}
         \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $E$.\\
-              Supponiamo per assurdo che $X$ non sia RSCP($E$) di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $E$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref{prop:part_induce_bisi} da
+              Supponiamo per assurdo che $X$ non sia $\rscp(E)$ di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $E$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref{prop:part_induce_bisi} da
               $\widetilde{X}$ è possibile ricavare una bisimulazione $\widetilde{R}$ su $G$. Ma quindi $|\widetilde{R}| > |R|$, che è assurdo.
-        \item Sia $X$ la RSCP($E$) di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
+        \item Sia $X$ la $\rscp(E)$ di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che
               sia massima. Ma da questa si può ricavare, come nella Proposizione \ref{prop:bisi_induce_part}, una partizione $\widetilde{X}$ stabile rispetto a $E$ per cui vale $|\widetilde{X}| \leq |X|$. Ma questo è assurdo.
     \end{itemize}
     \vspace*{-0.75cm}
