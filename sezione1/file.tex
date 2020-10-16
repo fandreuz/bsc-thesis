@@ -615,7 +615,7 @@ Con queste premesse possiamo definire il problema della determinazione della RSC
     Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la RSCP($R$) deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
 \end{example}
 
-\subsubsection{Insiemi \emph{splitter}, e la funzione \splitfunc}
+\subsubsection{Insiemi \emph{splitter}, e la funzione Split}
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
     \label{def:funz_split}
@@ -634,15 +634,15 @@ Valgono le seguenti osservazioni sulla funzione appena introdotta:
 \end{observation}
 \begin{observation}
     \label{obs:split_eredita}
-    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``\splitfunc'' preserva la stabilità.
+    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``Split'' preserva la stabilità.
 \end{observation}
 \begin{proof2}
-    ``\splitfunc'' può solamente dividere i blocchi, e non mescolarli.
+    ``Split'' può solamente dividere i blocchi, e non mescolarli.
 \end{proof2}
 Dimostriamo il seguente risultato che useremo nel seguito:
 \begin{theorem}
     \label{theo:split_properties}
-    Consideriamo la funzione ``\splitfunc'' proposta nella Definizione \ref{def:funz_split}:
+    Consideriamo la funzione ``Split'' proposta nella Definizione \ref{def:funz_split}:
     \begin{enumerate}
         \item La funzione è monotona rispetto al secondo argomento, cioè se $\widetilde{S}$ è una rifinitura di $S$, allora $\splitfunc(A,\widetilde{S})$ rifinisce $\splitfunc(A,S)$;
         \item La funzione è commutativa rispetto al primo argomento: \splitfunc$(A,\splitfunc(B,S)) = \splitfunc(B, \splitfunc(A,S))$.

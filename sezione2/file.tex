@@ -439,7 +439,7 @@ Dimostriamo innanzitutto la validità della seguente invariante:
 \begin{proof2}
     Procediamo per induzione. Naturalmente l'invariante è valida prima della prima iterazione, in quanto $Q$ è composto da tutti e soli gli elementi \emph{intraprendenti}, e quindi per ogni blocco $C \in Q = \widetilde{S}'$ si ha $C \subset R^{-1}(S)$.
 
-    Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi, e dimostriamo che resta valida al termine della stessa. Questo fatto è una conseguenza diretta del modo in cui l'algoritmo modifica $Q,X$: in $X$, infatti, viene sostituito il blocco $B$ con i blocchi $B-C, C$, mentre $Q$ viene modificato da sue applicazioni successive della funzione \splitfunc. E' evidente che $Q$ deve essere stabile rispetto a $B-C, C$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva. Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = B$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due \splitfunc ai blocchi $\{C_1, \dots, C_n\} - C$ è $B-C$, mentre l'unione dei due nuovi blocchi (di cui uno è eventualmente vuoto) generati a partire da $C$ è chiaramente $C$.
+    Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi, e dimostriamo che resta valida al termine della stessa. Questo fatto è una conseguenza diretta del modo in cui l'algoritmo modifica $Q,X$: in $X$, infatti, viene sostituito il blocco $B$ con i blocchi $B-C, C$, mentre $Q$ viene modificato da sue applicazioni successive della funzione Split. E' evidente che $Q$ deve essere stabile rispetto a $B-C, C$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva. Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = B$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due Split ai blocchi $\{C_1, \dots, C_n\} - C$ è $B-C$, mentre l'unione dei due nuovi blocchi (di cui uno è eventualmente vuoto) generati a partire da $C$ è chiaramente $C$.
 \end{proof2}
 Possiamo ora dedurre in modo diretto il seguente risultato:
 \begin{corollary}
@@ -448,3 +448,4 @@ Possiamo ora dedurre in modo diretto il seguente risultato:
 \begin{proof2}
     Ad ogni iterazione il numero di blocchi in $X$ aumenta di una unità. Quindi in $O(|S|)$ iterazioni si avrà $X = \{\{s\} \mid s \in S\}$ (se l'algoritmo non termina prima). Ma per il Lemma \ref{lem:pt_qx} $Q$ rifinisce $X$ prima di ogni iterazione, quindi deve essere necessariamente $Q = \{\{s\} \mid s \in S\} = X$.
 \end{proof2}
+Dimostriamo ora che l'algoritmo fornisce la
