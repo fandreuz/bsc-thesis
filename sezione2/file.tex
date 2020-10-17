@@ -460,3 +460,34 @@ Dimostriamo ora che l'algoritmo è corretto:
 \begin{proof2}
     Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Ma allora, sempre per il Lemma \ref*{lem:pt_qx} (punto 3), $Q$ è la $\rscp(\widetilde{S},R)$.
 \end{proof2}
+
+\subsubsection{Complessità}
+Riportiamo e commentiamo il Lemma 3 proposto in \cite{paigetarjan}:
+\begin{lemma}
+    \label{lem:pt_lemma3}
+    Sia $S$ un insieme, e sia $Q$ una partizione di $S$ stabile rispetto alla coppia $(R,A)$, dove $R$ è una relazione binaria su $S$. Supponiamo inoltre che $B$ sia l'unione di alcuni blocchi di $Q$. Supponiamo di rifinire $Q$ con due applicazioni successive di Split: prima rifiniamo rispetto ad un blocco $C \in Q, C \subset B$, e poi rispetto ad $B-C$ (l'ordine è ininfluente per il Teorema \ref{theo:split_properties}). Allora valgono le seguenti condizioni:
+    \begin{enumerate}
+        \item $\splitfunc(C,Q)$ divide i blocchi $D \in Q$ in due blocchi non vuoti $D_1 = D \cap R^{-1}(C), D_2 = D - D_1$ se e solo se $D \cap R^{-1}(C) \neq \emptyset \land D - R^{-1}(C) \neq \emptyset$;
+        \item $\splitfunc(B-C,\splitfunc(C,Q))$ divide i blocchi $D_1$ di $\splitfunc(C,Q)$ in due blocchi non vuoti $D_{11} = D_1 \cap R^{-1}(B-C), D_{12} = D_1 - D_{11}$ se e solo se $D_1 \cap R^{-1}(B-C) \neq \emptyset \land D_1 - R^{-1}(B-C) \neq \emptyset$;
+        \item $\splitfunc(B-C,\splitfunc(C,Q))$ non modifica i blocchi di tipo $D_2$;
+        \item $D_{12} = D_1 \cap (R^{-1}(C) - R^{-1}(B-C))$.
+    \end{enumerate}
+\end{lemma}
+\begin{figure}[t]
+    \centering
+
+    \begin{venndiagram3sets}[labelA=$D_1$, labelB=$R^{-1}(C)$, labelC=$R^{-1}(B-C)$, showframe=false, labelOnlyAB=$D_{12}$]
+        \fillACapBNotC
+    \end{venndiagram3sets}
+
+    \caption{Punto 4. del Lemma \ref{lem:pt_lemma3}}
+    \label{fig:pt_lemma_insiemi}
+\end{figure}
+\begin{proof2}
+    La dimostrazione è banale per i primi due punti (è una conseguenza diretta della Definizione \ref{def:funz_split}).
+    \begin{enumerate}
+        \item[3.] Supponiamo che un blocco $D \in Q$ sia stato diviso in $D_1, D_2$ da $\splitfunc(C,Q)$. Allora, per il punto 1, $D \cap R^{-1}(C) \neq \emptyset$. Ma allora, per la stabilità di $Q$ rispetto a $(R,B)$, deve valere $D \subseteq R^{-1}(B)$. In particolare allora vale $D_2 \subset D \subseteq R^{-1}(B)$. Per definizione $D_2$ e $E^{-1}(C)$ sono disgiunti, quindi $D_2 \subseteq R^{-1}(B-C)$;
+        \item[4.] Evidente nella Figura \ref{fig:pt_lemma_insiemi}.
+    \end{enumerate}
+    \vspace*{-0.75cm}
+\end{proof2}
