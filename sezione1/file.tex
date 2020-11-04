@@ -31,9 +31,9 @@ In alcune situazioni risulta conveniente definire la più piccola relazione (cio
 \begin{definition}
 	Sia $R$ una relazione binaria su $A$. Le seguenti relazioni sono chiusure di $R$:
     \begin{itemize}
-        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \mid x \in A\}$
-        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \mid x R y\}$
-        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \mid \exists y \in A,\, x R y \land y R z\}$
+        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \mid x \in A\}$;
+        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \mid x R y\}$;
+        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \mid \exists y \in A,\, x R y \land y R z\}$.
     \end{itemize}
 \end{definition}
 \begin{example}
@@ -44,7 +44,7 @@ Nel seguito useremo ampiamente la definizione seguente:
     Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A \mid x R y\}$.\\
     Più in generale, la \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
 \end{definition}
-Adottiamo infine la seguente notazione ``|A|'' per denotare la \emph{cardinalità} di un insieme $A$. Di conseguenza, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
+Adottiamo infine la notazione ``$|A|$'' per indicare la \emph{cardinalità} dell'insieme $A$. In modo analogo, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
 
 \subsection{Grafi}
 Con queste premesse possiamo definire un \emph{grafo} come segue:
@@ -91,11 +91,11 @@ Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \end{definition}
 Un grafo diretto è quindi un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E* v$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E^{*} v$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
 \end{definition}
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
-    Uun grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $v_1 E* v_2$.
+    Un grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $v_1 E^{*} v_2$.
 \end{definition}
 Allora possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
 \begin{definition}
@@ -228,7 +228,8 @@ Riportiamo una formulazione equivalente dell'Assioma \ref{axi:foundation}:
 \begin{axiom*}[\ref{axi:foundation} bis]
     $\forall A$ la relazione ``$\in$'' è ben-fondata su $A$ \cite[Chapter III.4]{kunen}
 \end{axiom*}
-Da questa questa formulazione risulta evidente l'impossibilità, in ZFC, di costruire insiemi non-ben-fondati.\\
+Da questa questa formulazione risulta evidente l'impossibilità, in ZFC, di costruire insiemi non-ben-fondati.
+
 Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi che ammette l'esistenza di insiemi non-ben-fondati; tuttavia si può verificare che questo sistema non è più sufficiente a descrivere in modo esaustivo l'aritmetica per mezzo di operazioni su insiemi. Per ovviare a questa mancanza si introduce l'Assioma AFA, che verrà presentato e discusso nella sezione seguente.
 
 % TODO: definisci insieme ereditariamente finito (si può costruire a partire dall'insieme vuoto utilizzando solamente il costruttore {} vedi ZFC) e insime non-ben-fondato prima di usare i grafi per rappresentare gli insiemi
@@ -237,7 +238,7 @@ Rinunciando all'Assioma \ref{axi:foundation} si ottiene un sistema di assiomi ch
 \label{sec:graphs_sets}
 In alcuni casi risulta conveniente fornire un'in\-ter\-pre\-ta\-zio\-ne insiemistica della nozione di grafo vista sopra. Introduciamo innanzitutto un concetto fondamentale per il seguito del lavoro:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo orientato. Sia $u \in V \mid \forall v \in V u E* v$, cioè ogni nodo di $G$ è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
+    Sia $G = (V, E)$ un grafo diretto. Supponiamo che esista un $u \in V$ tale che ogni vertice del grafo è raggiungibile da $u$. Allora la coppia $(G, u)$ è un \emph{accessible pointed graph}, o \emph{APG}.
 \end{definition}
 Per rappresentare un insieme tramite un grafo diretto è necessario definire un processo denominato \emph{decorazione}:
 \begin{definition}
@@ -438,7 +439,7 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
 \end{proof2}
 Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo diretto finito. Allora $\exists R_M$ la bisimulazione massima su $G$.
+    Sia $G$ un grafo diretto finito. Allora esiste la bisimulazione massima su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
@@ -679,7 +680,7 @@ Dimostriamo ora il risultato opposto:
 \end{proposition}
 \begin{proof2}
     Se per assurdo $X$ non fosse stabile esisterebbero due blocchi $x_1, x_2 \mid x_1 \,\,\cap E^{-1}(x_2)$ non è ne $x_1$ nè $\emptyset$. Chiamiamo $A$ questo insieme.\\
-    Gli elementi $a$ di $A$ sono i nodi in $x_1 \mid \nexists b \in x_2 \mid a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
+    Gli elementi $a$ di $A$ sono i nodi in $x_1 \mid \nexists b \in x_2$ per cui valga $a E b$. Ma poichè questi $a$ e gli $x \in x_1 - A$ si trovano all'interno dello stesso blocco $x_1$ deve valere $x R a$.\\
     Sia $x \in x_1 - A$, ed $y \in x_2 \mid x E y$. Poichè $\forall a \in A$ vale $x R a$, allora $\exists a' \mid a E a', a' R y$, cioè $[a']_X = [y]_X = x_2$. Quindi $A$ deve necessariamente essere vuoto.
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
