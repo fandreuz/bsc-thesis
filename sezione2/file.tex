@@ -91,15 +91,15 @@ li stati equivalenti consente di minimizzare il sistema, preservando al tempo st
 \begin{observation}
     La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
 \end{observation}
-La seguente osservazione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref{sec:rscp}:
-\begin{observation}
-    \label{obs:equivalent_states}
+La seguente proposizione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref{sec:rscp}:
+\begin{proposition}
+    \label{prop:equivalent_states}
     Due stati $x,y$ sono equivalenti nel senso della definizione \ref{def:equivalent_states} se e solo se
     \begin{gather}
         \forall i \in I, \quad \delta(x,i) \sim \delta(y,i)
     \end{gather}
     e $Out(x) = Out(y)$.
-\end{observation}
+\end{proposition}
 \begin{proof2}
     Supponiamo che $\exists i \in I : \delta(x,i) \not\sim \delta(y,i)$. Allora, ad esempio:
     \begin{gather*}
@@ -112,11 +112,11 @@ La seguente osservazione sarà utile per formulare il problema con la terminolog
     \end{gather*}
     e quindi $x \sim y$.
 \end{proof2}
-\begin{observation}
-    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{obs:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
-\end{observation}
+\begin{proposition}
+    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{prop:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
+\end{proposition}
 \begin{proof2}
-    Supponiamo che $x \sim y$. Sia $x E x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y E y'$. Allora, per l'Osservazione \ref{obs:equivalent_states}, $x' \sim y'$.\\
+    Supponiamo che $x \sim y$. Sia $x E x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y E y'$. Allora, per l'Osservazione \ref{prop:equivalent_states}, $x' \sim y'$.\\
     Chiaramente lo stesso argomento vale in modo speculare.
 \end{proof2}
 Osserviamo che nella definizione di ``$E$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
@@ -161,7 +161,7 @@ Possiamo dimostrare il seguente risultato:
     \begin{gather*}
         S_1 \not\subseteq \delta_i^{-1}(S_2) \,\, \land \,\, S_1 \,\cap \,\delta_i^{-1}(S_2) \neq \emptyset
     \end{gather*}
-    La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{obs:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
+    La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{prop:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
     Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
     \begin{gather*}
         S_1 \cap X \neq \emptyset \,\,\land\,\, S_2 \cap X \neq \emptyset
@@ -267,19 +267,19 @@ Inizialmente la partizione contiene due blocchi: gli stati finali e quelli non f
 Per evitare accessi inutili (che incrementerebbero i termini costanti dell'algoritmo) nella Riga \ref{alg:hop_stati_delta_nonvuoto} definiamo $i(j)$ per $i \in I, j \in \{1,2\}$ come l'insieme degli stati $s$ nel blocco $B(j)$ per cui esiste qualche stato $t$ tale che $\delta(t,i) = s$.\\
 All'interno del ciclo della Riga \ref{alg:hop_splitters} definiamo gli insiemi $L(i)\,\, \forall i \in I$, che contengono gli indici dei blocchi che verranno usati come \emph{splitter} nel seguito del procedimento. Osserviamo che all'interno di questo insieme vengono inseriti gli indici dei blocchi per cui la cardinalità di ``$i(\cdot)$'' è minima. Come dimosteremo nel seguito, questa tecnica
 
-In \cite{paigetarjan} si osserva che, limitatamente al caso particolare a cui si applica l'algoritmo di Hopcroft, è possibile scegliere gli \emph{splitter} in modo vantaggioso, allo scopo di ridurre il carico di lavoro e dunque la complessità. Riportiamo e commentiamo la dimostrazione:
-\begin{observation}
+In \cite{paigetarjan} si dimostra che, limitatamente al caso particolare a cui si applica l'algoritmo di Hopcroft, è possibile scegliere gli \emph{splitter} in modo vantaggioso, allo scopo di ridurre il carico di lavoro e dunque la complessità. Riportiamo e commentiamo la dimostrazione:
+\begin{proposition}
     Sia $S$ un insieme finito. Sia $f : S E S$ una funzione (cioè $\forall s \in S\,\, |f({s})| = 1$). Sia $\widetilde{S}$ una partizione di $S$. Sia $Q$ l'unione di alcuni blocchi di $\widetilde{S}$, e sia $B$ un blocco di $\widetilde{S}$, con $B \subseteq Q$. Supponiamo $\widetilde{S}$ stabile rispetto a $Q$. Allora
     \begin{center}
         Split$(B,\widetilde{S})$ = Split$(Q - B, $Split$(B,\widetilde{S}))$
     \end{center}
-\end{observation}
+\end{proposition}
 \begin{proof2}
     Vogliamo dimostrare che $Q - B$ non è uno \emph{splitter} di Split$(B,\widetilde{S})$, cioè che $\forall S_x \in $ Split$(B,\widetilde{S})$ si ha
     \begin{gather*}
         S_x \subseteq f^{-1}(Q - B) \,\,\lor\,\, S_s \cap f^{-1}(Q-B) = \emptyset
     \end{gather*}
-    Ricordando che $\widetilde{S}$ è stabile rispetto a $Q$, $\widehat{S} \coloneqq$ Split$(B,\widetilde{S})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref*{obs:split_eredita}. Di conseguenza per ogni blocco $S_x \in \widehat{S}$ si ha
+    Ricordando che $\widetilde{S}$ è stabile rispetto a $Q$, $\widehat{S} \coloneqq$ Split$(B,\widetilde{S})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref{prop:split_eredita}. Di conseguenza per ogni blocco $S_x \in \widehat{S}$ si ha
     \begin{gather*}
         S_x \subseteq f^{-1}(B) \lor S_x \cap f^{-1}(B) = \emptyset\\
         \land\\
@@ -306,7 +306,7 @@ Il seguente Teorema dimostra la validità del risultato:
     Dimostriamo innanzitutto che $[x]_{\widetilde{S}} \neq [y]_{\widetilde{S}} \implies x \not\sim y$. Procediamo per induzione:
     \begin{itemize}
         \item La relazione vale prima del ciclo \ref{alg:hop_ciclo_infinito}, infatti stati finali e non finali non possono essere equivalenti;
-        \item Supponiamo che sia vero prima di una certa iterazione. Supponiamo che gli stati $x,y$ finiscano in partizioni diverse nelle Righe tra \ref{alg:hop_split} e \ref{alg:hop_aggiorna_dopo_split}. Questo significa che $[\delta(x,i)]_{\widetilde{S}_n} \neq [\delta(y,i)]_{\widetilde{S}_n}$, dove $\widetilde{S}_n$ è la partizione costruita dall'algoritmo fino all'iterazione considerata. Ma allora, per l'ipotesi induttiva, $\delta(x,i) \not\sim \delta(y,i)$, e quindi $x,y$ non sono equivalenti (per l'Osservazione \ref{obs:equivalent_states}).
+        \item Supponiamo che sia vero prima di una certa iterazione. Supponiamo che gli stati $x,y$ finiscano in partizioni diverse nelle Righe tra \ref{alg:hop_split} e \ref{alg:hop_aggiorna_dopo_split}. Questo significa che $[\delta(x,i)]_{\widetilde{S}_n} \neq [\delta(y,i)]_{\widetilde{S}_n}$, dove $\widetilde{S}_n$ è la partizione costruita dall'algoritmo fino all'iterazione considerata. Ma allora, per l'ipotesi induttiva, $\delta(x,i) \not\sim \delta(y,i)$, e quindi $x,y$ non sono equivalenti (per l'Osservazione \ref{prop:equivalent_states}).
     \end{itemize}
     Questo ragionamento è valido perchè il fatto che due stati si trovino in partizioni differenti dopo una certa iterazione implica che si troveranno in partizioni differenti anche al termine del procedimento.\\
     Dimostriamo ora che $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \implies x \sim y$. Supponiamo per assurdo che per due stati $x,y$ si abbia $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \land x \not\sim y$. Allora, ad esempio, $\exists i^* \in I^* : \delta^*(x,i^*) \in F, \delta^*(y,i^*) \not\in F$. Ma poichè inizialmente poniamo stati inziali e finali in partizioni diverse, deve valere chiaramente $[\delta^*(x,i^*)]_{\widetilde{S}} \neq [\delta^*(y,i^*)]_{\widetilde{S}}$, e quindi procedendo a ritroso sui simboli di $i^*$ si ha
@@ -318,15 +318,15 @@ Il seguente Teorema dimostra la validità del risultato:
 
 Discutiamo ora la complessità dell'algoritmo. In questo paragrafo non tratteremo i dettagli dell'implementazione, facilmente reperibili in \cite{hopcroft}, e ci concentreremo unicamente sul contributo del procedimento.\\
 Per costruire $\delta^{-1}$ è sufficiente valutare una sola volta ogni stato per ogni ingresso, quindi l'operazione è $\Theta(|S||I|)$. La costruzione delle due partizioni iniziali è $\Theta(|S|)$. La costruzione di $L(i) \,\,\forall i \in I$ è chiaramente $\Theta(|I|)$. Di conseguenza la complessità delle istruzioni precedenti alla Riga \ref{alg:hop_ciclo_infinito} è $\Theta(|S||I|)$.\\
-Prima di procedere, consideriamo la seguente Osservazione:
-\begin{observation}
+Prima di procedere, dimostriamo il seguente risultato:
+\begin{proposition}
     \label{obs:log}
     Sia
     \begin{gather*}
         f_a(x) \coloneqq a\log_2(a) - (a-x)\log_2(a-x) - x\log_2(x) \qquad a > 0,\,\, 0 < x < a
     \end{gather*}
     Tale funzione ha massimo in $\frac{a}{2}$, con $f_a(\frac{a}{2}) = a$, ed è strettamente positiva sul dominio considerato.
-\end{observation}
+\end{proposition}
 \begin{proof2}
     L'osservazione si dimostra con un semplice studio di funzione.
 \end{proof2}
@@ -386,6 +386,147 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
 \end{gather*}
 
 \subsection{L'algoritmo di Paige-Tarjan}
-L'algoritmo che presentiamo in questa sezione (proposto da Paige e Tarjan in \cite{paigetarjan}) risolve il problema generale presentato all'inizio di questo lavoro, e generalizza il procedimento di Hopcroft sfruttandone l'intuizione.\\
-Descriveremo innanzitutto un algoritmo \emph{naive} avente complessità $O(|R||A|)$. Sulla base di questo applicheremo i miglioramenti sviluppati dall'idea di Hopcroft, che consentiranno di ridurre la complessità ad $O(|R|\log |A|)$. Come osserveremo nel seguito, l'idea generale consiste nello scegliere in modo oculato gli \emph{splitter} con cui rifinire la partizione.
+In questa sezione, dopo aver trattato il caso specifico risolto dall'algoritmo di Hopcroft, discutiamo l'algoritmo di Paige-Tarjan presentato in \cite{paigetarjan}. Il procedimento ha complessità $O(|R|\log |S|)$ (dati un insieme $S$ ed una relazione $R$), ed è il primo a risolvere il caso generale migliorando la complessità $O(|R||S|)$ manifestata dall'algoritmo di Kanellakis e Smolka, che non adotta particolari accorgimenti per la selezione dei blocchi da usare come \emph{splitter}.
 
+\subsubsection{L'algoritmo}
+Proponiamo e commentiamo innanzitutto lo pseudocodice:\\
+\begin{algorithm}[H]
+    \label{alg:pt}
+    \KwData{$S,R,\widetilde{S}$}
+    \caption{Algoritmo di Paige-Tarjan}
+    \Begin{
+        $Q \coloneqq \widetilde{S}, X \coloneqq \{S\}\}$\;
+        \While{$Q \neq X$}{
+            Scelgo in modo casuale un blocco $B \in X \mid B \not\in Q$\;
+            Scelgo un blocco $C \in X \mid C \subset B, |C| \leq |B|/2$\;
+            $X = (X - \{B\}) \cup \{C, B-C\}$\;
+            $Q = (Q \,- \{C\}) \,\cup \splitfunc(B-C, \splitfunc(C,Q))$\;\label{alg:pt_doublesplit}
+        }
+        \Return{$Q$}\;
+    }
+\end{algorithm}
+
+L'algoritmo definisce inizialmente due partizioni $Q,X$: la prima coincide con $P$, mentre la seconda è la partizione banale formata da un unico blocco contenente tutto $S$. Le relazioni invarianti che intercorrono tra queste due partizioni sono fondamentali per la complessità migliorata del procedimento.
+
+Il corpo del procedimento è formato da un ciclo che ripete le seguenti istruzioni finchè le partizioni $Q,X$ non coincidono:
+\begin{enumerate}
+    \item Viene scelto casualmente un blocco $B \in X$ non appartenente a $Q$. Per questo passaggio e per il successivo dimostreremo nel seguito che è sempre possibile trovare blocchi con le caratteristiche cercate;
+    \item Viene scelto casualmente un blocco $C \in Q$ tra quelli contenuti in $B$, e la cui cardinalità sia inferiore a $|B|/2$;
+    \item In $X$ il blocco $B$ viene sostituito da $\{C, B-C\}$;
+    \item In $Q$ il blocco $C$ viene sostituito da \splitfunc$(B-C,$ \splitfunc$(C,Q))$.
+\end{enumerate}
+
+Quando $Q$ e $X$ coincidono, viene restituita la partizione $Q$.
+
+\subsubsection{Analisi}
+Dimostriamo innanzitutto la validità della seguente invariante:
+\begin{lemma}
+    \label{lem:pt_qx}
+    L'algoritmo ristabilisce le seguenti relazioni invarianti dopo ogni iterazione del ciclo
+    \begin{enumerate}
+        \item $Q$ è stabile rispetto ad ogni blocco di $X$;
+        \item $Q$ è rifinisce $X$;
+        \item La $\rscp(\widetilde{S},R)$ rifinisce $Q$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof2}
+    In entrambi i casi procediamo per induzione sulle iterazioni:
+    \begin{itemize}
+        \item[1/2.] All'inizio della prima iterazione viene scelto in modo casuale un blocco $C \in \widetilde{S} = Q$, e per definizione di Split, dopo la Riga \ref{alg:pt_doublesplit}, $Q$ è stabile rispetto a $C, S-C$, cioè tutti i blocchi di $X$.
+
+        Ora supponiamo che l'invariante sia valida dopo un'iterazione qualsiasi: durante l'iterazione successiva in $X$ viene sostituito il blocco $B$ con i blocchi $B-C, C$, mentre $Q$ viene modificato da sue applicazioni successive della funzione Split. E' evidente che $Q$ deve essere stabile rispetto a $B-C, C$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva. Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = B$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due Split ai blocchi $\{C_1, \dots, C_n\} - C$ è $B-C$, mentre l'unione dei due nuovi blocchi (di cui uno è eventualmente vuoto) generati a partire da $C$ è chiaramente $C$.
+        \item[3.] La relazione è vera banalmente prima della prima iterazione.
+
+        Supponiamo che l'invariante sia valida dopo un'iterazione qualsiasi: durante l'iterazione successiva la
+        partizione $Q$ viene rifinita utilizzando come \emph{splitter} i blocchi $C, B-C$. Poichè $Q$ rifinisce $X$, e $B$ è un blocco di $X$, $B$ è l'unione di alcuni blocchi di $Q$. Inoltre, essendo $C$ un blocco di $Q$ (con $C \subseteq B$), anche $B-C$ è unione di alcuni blocchi di $Q$. Allora, poichè per l'ipotesi induttiva $\rscp(\widetilde{S},R)$ rifinisce $Q$:
+        \begin{gather*}
+            \rscp(\widetilde{S},R) = \splitfunc(B-C, \splitfunc(C, \rscp(\widetilde{S},R)))
+        \end{gather*}
+        Quindi, per il Teorema \ref{theo:split_properties} (monotonia di Split), $\rscp(\widetilde{S},R)$ rifinisce la ``nuova'' partizione $Q' = \splitfunc(B-C, \splitfunc(C, Q))$.
+    \end{itemize}
+    \vspace*{-0.75cm}
+\end{proof2}
+Possiamo ora dedurre in modo diretto il seguente risultato:
+\begin{corollary}
+    L'Algoritmo \ref{alg:pt} termina.
+\end{corollary}
+\begin{proof2}
+    Ad ogni iterazione il numero di blocchi in $X$ aumenta di una unità. Quindi in $O(|S|)$ iterazioni si avrà $X = \{\{s\} \mid s \in S\}$ (se l'algoritmo non termina prima). Ma per il Lemma \ref{lem:pt_qx} $Q$ rifinisce $X$ prima di ogni iterazione, quindi deve essere necessariamente $Q = \{\{s\} \mid s \in S\} = X$.
+\end{proof2}
+Dimostriamo ora che l'algoritmo è corretto:
+\begin{proposition}
+    L'Algoritmo \ref{alg:pt} fornisce la $\rscp(R,\widetilde{S})$.
+\end{proposition}
+\begin{proof2}
+    Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Ma allora, sempre per il Lemma \ref*{lem:pt_qx} (punto 3), $Q$ è la $\rscp(\widetilde{S},R)$.
+\end{proof2}
+
+\subsubsection{Complessità}
+Riportiamo e commentiamo il Lemma 3 proposto in \cite{paigetarjan}:
+\begin{lemma}
+    \label{lem:pt_lemma3}
+    Sia $S$ un insieme, e sia $Q$ una partizione di $S$ stabile rispetto alla coppia $(R,A)$, dove $R$ è una relazione binaria su $S$. Supponiamo inoltre che $B$ sia l'unione di alcuni blocchi di $Q$. Supponiamo di rifinire $Q$ con due applicazioni successive di Split: prima rifiniamo rispetto ad un blocco $C \in Q, C \subset B$, e poi rispetto ad $B-C$ (l'ordine è ininfluente per il Teorema \ref{theo:split_properties}). Allora valgono le seguenti condizioni:
+    \begin{enumerate}
+        \item $\splitfunc(C,Q)$ divide i blocchi $D \in Q$ in due blocchi non vuoti $D_1 = D \cap R^{-1}(C), D_2 = D - D_1$ se e solo se $D \cap R^{-1}(C) \neq \emptyset \land D - R^{-1}(C) \neq \emptyset$;
+        \item $\splitfunc(B-C,\splitfunc(C,Q))$ divide i blocchi $D_1$ di $\splitfunc(C,Q)$ in due blocchi non vuoti $D_{11} = D_1 \cap R^{-1}(B-C), D_{12} = D_1 - D_{11}$ se e solo se $D_1 \cap R^{-1}(B-C) \neq \emptyset \land D_1 - R^{-1}(B-C) \neq \emptyset$;
+        \item $\splitfunc(B-C,\splitfunc(C,Q))$ non modifica i blocchi di tipo $D_2$;
+        \item $D_{12} = D_1 \cap (R^{-1}(C) - R^{-1}(B-C))$.
+    \end{enumerate}
+\end{lemma}
+\begin{figure}[t]
+    \centering
+
+    \begin{venndiagram3sets}[labelA=$D_1$, labelB=$R^{-1}(C)$, labelC=$R^{-1}(B-C)$, showframe=false, labelOnlyAB=$D_{12}$]
+        \fillACapBNotC
+    \end{venndiagram3sets}
+
+    \caption{Punto 4. del Lemma \ref{lem:pt_lemma3}}
+    \label{fig:pt_lemma_insiemi}
+\end{figure}
+\begin{proof2}
+    La dimostrazione è banale per i primi due punti (è una conseguenza diretta della Definizione \ref{def:funz_split}).
+    \begin{enumerate}
+        \item[3.] Supponiamo che un blocco $D \in Q$ sia stato diviso in $D_1, D_2$ da $\splitfunc(C,Q)$. Allora, per il punto 1, $D \cap R^{-1}(C) \neq \emptyset$. Ma allora, per la stabilità di $Q$ rispetto a $(R,B)$, deve valere $D \subseteq R^{-1}(B)$. In particolare allora vale $D_2 \subset D \subseteq R^{-1}(B)$. Per definizione $D_2$ e $E^{-1}(C)$ sono disgiunti, quindi $D_2 \subseteq R^{-1}(B-C)$;
+        \item[4.] Evidente nella Figura \ref{fig:pt_lemma_insiemi}.
+    \end{enumerate}
+    \vspace*{-0.75cm}
+\end{proof2}
+
+\accente chiaro che ad ogni iterazione l'Algoritmo \ref{alg:pt} divide alcuni blocchi di $Q$ in $D_{11}, D_{12}, D_2$.
+
+\begin{observation}
+    Con opportuni accorgimenti è possibile implementare una funzione che divide ogni blocco di $Q$ in $D_{11}, D_{12}, D_2$ avente complessità $O(|B| + \sum_{y \in B} |R^{-1}(\{y\})|)$, dove $B$ è il blocco usato come \emph{splitter}. I dettagli sono discussi in \cite{paigetarjan}.
+\end{observation}
+
+Da questa implementazione possiamo dedurre il seguente upper-bound sulla complessità dell'Algoritmo di Paige-Tarjan:
+
+\begin{theorem}
+    La complessità dell'Algoritmo \ref{alg:pt} è $O(|R|\log |S|)$.
+\end{theorem}
+\begin{proof2}
+    Chiaramente la complessità è:
+    \begin{align*}
+        \displaystyle &\sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B| + \sum_{y \in B} |R^{-1}(\{y\})|)\\
+        &= \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) + \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |R^{-1}(\{y\})|)
+    \end{align*}
+
+    \begin{observation}
+        Ogni elemento $x \in S$ può apparire al più $\log_2 ((|S| + 1))$ volte in un blocco usato come \emph{splitter}, visto che ad ogni nuova iterazione un eventuale blocco contentente questo stesso $x$ ha cardinalità dimezzata.
+    \end{observation}
+
+    Allora un $y \in S$ fissato può apparire al più $\log_2 (|S| + 1)$ volte nella sommatoria a destra, per cui vale:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |R^{-1}(\{y\})|) &\leq \log_2 (|S|+1) \sum_{x \in S} |R^{-1}(\{x\})|\\
+        &= \log_2 (|S|+1) |R|\\
+        &= O(|R|\log |S|)
+    \end{align*}
+
+    Inoltre:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) &\leq \sum_{x \in S} \log_{2} (|S|+1)\\
+        &= |S|\log_{2} (|S|+1)\\
+        &= O(|S|\log |S|)
+    \end{align*}
+
+    Sotto opportune ipotesi (possiamo ad esempio pre-processare il grafo in modo da avere $|R(\{x\})| \forall x \in S$) senza condizionare il risultato ottenuto, si consulti \cite{paigetarjan} per i dettagli) è lecito considerare $|R| = \Theta(|S|)$, per cui la complessità è $O(R\log |S|)$.
+\end{proof2}
