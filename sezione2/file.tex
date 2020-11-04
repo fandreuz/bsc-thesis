@@ -491,3 +491,42 @@ Riportiamo e commentiamo il Lemma 3 proposto in \cite{paigetarjan}:
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
+
+\accente chiaro che ad ogni iterazione l'Algoritmo \ref{alg:pt} divide alcuni blocchi di $Q$ in $D_{11}, D_{12}, D_2$.
+
+\begin{observation}
+    Con opportuni accorgimenti è possibile implementare una funzione che divide ogni blocco di $Q$ in $D_{11}, D_{12}, D_2$ avente complessità $O(|B| + \sum_{y \in B} |R^{-1}(\{y\})|)$, dove $B$ è il blocco usato come \emph{splitter}. I dettagli sono discussi in \cite{paigetarjan}.
+\end{observation}
+
+Da questa implementazione possiamo dedurre il seguente upper-bound sulla complessità dell'Algoritmo di Paige-Tarjan:
+
+\begin{theorem}
+    La complessità dell'Algoritmo \ref{alg:pt} è $O(|R|\log |S|)$.
+\end{theorem}
+\begin{proof2}
+    Chiaramente la complessità è:
+    \begin{align*}
+        \displaystyle &\sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B| + \sum_{y \in B} |R^{-1}(\{y\})|)\\
+        &= \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) + \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |R^{-1}(\{y\})|)
+    \end{align*}
+
+    \begin{observation}
+        Ogni elemento $x \in S$ può apparire al più $\log_2 ((|S| + 1))$ volte in un blocco usato come \emph{splitter}, visto che ad ogni nuova iterazione un eventuale blocco contentente questo stesso $x$ ha cardinalità dimezzata.
+    \end{observation}
+
+    Allora un $y \in S$ fissato può apparire al più $\log_2 (|S| + 1)$ volte nella sommatoria a destra, per cui vale:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |R^{-1}(\{y\})|) &\leq \log_2 (|S|+1) \sum_{x \in S} |R^{-1}(\{x\})|\\
+        &= \log_2 (|S|+1) |R|\\
+        &= O(|R|\log |S|)
+    \end{align*}
+
+    Inoltre:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) &\leq \sum_{x \in S} \log_{2} (|S|+1)\\
+        &= |S|\log_{2} (|S|+1)\\
+        &= O(|S|\log |S|)
+    \end{align*}
+
+    Sotto opportune ipotesi (possiamo ad esempio pre-processare il grafo in modo da avere $|R(\{x\})| \forall x \in S$) senza condizionare il risultato ottenuto, si consulti \cite{paigetarjan} per i dettagli) è lecito considerare $|R| = \Theta(|S|)$, per cui la complessità è $O(R\log |S|)$.
+\end{proof2}
