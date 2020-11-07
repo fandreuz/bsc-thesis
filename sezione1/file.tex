@@ -128,20 +128,20 @@ Allora possiamo individuare i sottografi massimali (cioè la ripartizione del gr
     Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
 \end{example}
 Il partizionamento dei nodi in SCC è definito come segue:
-\begin{definition}
-    Sia $G = (V, E)$ un grafo diretto. Il grafo $G^{SCC} = (V^{SCC}, E^{SCC})$, dove:
+\begin{definition} \label{def:scc_partition}
+    Sia $G = (V, E)$ un grafo diretto. Il grafo $G^{\superscc} = (V^{\superscc}, E^{\superscc})$, dove:
     \begin{itemize}
-        \item $V^{SCC} = \{C \mid \,C$ è una SCC$\}$;
-        \item $E^{SCC} = \{(A,B) \in V^{SCC} \times V^{SCC} \mid A \neq B, \exists m \in A, n \in B, m E n\}$
+        \item $V^{\superscc} = \{C \mid \,C$ è una SCC$\}$;
+        \item $E^{\superscc} = \{(A,B) \in V^{\superscc} \times V^{\superscc} \mid A \neq B, \exists m \in A, n \in B, m E n\}$
     \end{itemize}
     è il partizionamento del grafo iniziale in SCC.
 \end{definition}
 Riportiamo la seguente proprietà immediata:
 \begin{proposition}
-    Sia $G^{SCC}$ il grafo delle SCC di un grafo $G$ generico. Allora $G^{SCC}$ è aciclico.
+    Sia $G^{\superscc}$ il grafo delle SCC di un grafo $G$ generico. Allora $G^{\superscc}$ è aciclico.
 \end{proposition}
 \begin{proof2}
-    Supponiamo per assurdo che in $G^{SCC}$ esista un ciclo. Allora tutti i nodi di $V^{SCC}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
+    Supponiamo per assurdo che in $G^{\superscc}$ esista un ciclo. Allora tutti i nodi di $V^{\superscc}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
 \end{proof2}
 \begin{example}
     \begin{figure}[b]
@@ -205,7 +205,7 @@ Riportiamo la seguente proprietà immediata:
     \end{figure}
     La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo diretto generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
 \end{example}
-Dato un grafo diretto generico possiamo determinare la partizione in SCC sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
+Dato un grafo diretto generico possiamo determinare la ripartizione in SCC dei suoi nodi sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.
 
 \subsection{Insiemi}
 \subsubsection{Cenni di teoria degli insiemi}
