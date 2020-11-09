@@ -458,7 +458,7 @@ Dimostriamo ora che l'algoritmo è corretto:
     L'Algoritmo \ref{alg:pt} fornisce la $\rscp(R,\widetilde{S})$.
 \end{proposition}
 \begin{proof2}
-    Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Ma allora, sempre per il Lemma \ref*{lem:pt_qx} (punto 3), $Q$ è la $\rscp(\widetilde{S},R)$.
+    Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Ma allora, sempre per il Lemma \ref{lem:pt_qx} (punto 3), $Q$ è la $\rscp(\widetilde{S},R)$.
 \end{proof2}
 
 \subsubsection{Complessità}
@@ -545,7 +545,7 @@ Iniziamo con la seguente definizione fondamentale:
     \end{gather*}
     dove $\restr{N}{n}$ è il sottoinsieme di $V$ dei nodi raggiungibili da $n$.
 \end{definition}
-Nel seguito la notazione $[n]$ indica il blocco di $V^{\superscc}$ in cui viene inserito il vertice $n$, coerentemente con quando asserito nella Definizione \ref*{def:scc_partition}.
+Nel seguito la notazione $[n]$ indica il blocco di $V^{\superscc}$ in cui viene inserito il vertice $n$, coerentemente con quando asserito nella Definizione \ref{def:scc_partition}.
 
 Sulla base dell'ultima definizione possiamo distinguere una porzione del grafo per una caratteristica importante:
 \begin{definition}
@@ -554,8 +554,68 @@ Sulla base dell'ultima definizione possiamo distinguere una porzione del grafo p
         WF(G) \coloneqq \left\{n \in V \mid \restr{G}{n} \text{ è aciclico}\right\}
     \end{gather*}
 \end{definition}
-% TODO: esempio
-Sulla base di queste definizioni, introduciamo la seguente funzione, che ricopre un ruolo primario nell'Algoritmo BFA:
+\begin{observation}
+    Condizione necessaria affinchè un vertice $n$ possa appartenere a $WF(G)$ è che $|[n]| = 1$.
+\end{observation}
+\begin{proof2}
+    Supponiamo che $n \in WF(G)$. Questo vuol dire che da tutti i nodi raggiungibili da $n$ non si può ritornare in $n$ (perchè non si hanno cicli). Ma allora non ci può essere un altro nodo nella SCC di $n$.
+\end{proof2}
+La determinazione della parte ``ben fondata'' di un grafo è di fondamentale importanza per il seguito, per cui presentiamo l'Algoritmo \ref{alg:dfs-wf} che risolve il problema in tempo lineare.
+\begin{figure}
+    \begin{algorithm}[H]
+        \label{alg:dfs-wf}
+        \KwData{$G = (V,E)$}
+        \caption{DFS-WF}
+        \SetAlgoLined
+        \SetKwProg{Fn}{function}{:}{end}
+        \Fn{\textup{check-wf}($G = (V,E), n$)}{
+            n.color = GRAY\;
+            \ForAll{$m \in V \mid n E m$}{
+                \uIf{!$m$.wf} {
+                    $n$.wf = false\;
+                }
+                \tcc*[h]{Trovare un nodo grigio durante una visita in profondità equivale a trovare un ciclo}\\
+                \uElseIf{$m$.color = GRAY}{
+                    \label{alg:linea_recog_ciclo}
+                    $m$.wf = false\;
+                    $n$.wf = false\;
+                }
+                \tcc*[h]{Nel caso in cui $m$ sia nero, siamo sicuri che $m$.wf non cambierà più}\\
+                \uElseIf{$m$.color = WHITE}{
+                    check-wf($G,m$)\;
+                    \lIf*{$n$.wf and !$m$.wf}{
+                        $n$.wf = false\;
+                    }
+                }
+            }
+            n.color = BLACK\;
+        }
+        \Begin{
+            \ForAll{$n \in V$}{
+                $n$.color = WHITE\;
+                $n$.wf = true\;
+            }
+
+            \While{$\exists n \in V \mid n.$color = WHITE}{
+                check-wf($G,n$)\;
+            }
+        }
+    \end{algorithm}
+\end{figure}
+
+\begin{observation}
+    L'Algoritmo \ref{alg:dfs-wf} è corretto, ed ha complessità $O(|V| + |E|)$.
+\end{observation}
+\begin{proof2}
+    \accente chiaro che il procedimento è $O(|V| + |E|)$, in quanto si tratta di una semplice modifica dell'Algoritmo \ref{alg:dfs}. Per dimostrare la correttezza, supponiamo per assurdo che esista un nodo $n \in V \mid n \not\in WF(G)$, e per cui al termine dell'esecuzione si abbia $n$.wf = true. Per definizione, perchè $n$ non sia ben fondato deve esserci un ciclo in $G$ raggiungibile da $n$. Supponiamo che il ciclo venga visitato per la prima volta conseguentemente alla visita di $n$. Perchè si possa avere un ciclo deve esistere un nodo $n''$ che "chiude" il ciclo, cioè che raggiunge un nodo $n'$ da cui è raggiungibile $n''$. Poichè l'algoritmo è una visita in profondità, prima che $n$ venga "abbandonato" (cioè prima che $n$.color diventi BLACK) deve essere esplorato tutto l'insieme dei nodi raggiungibili da $n$. Quando viene visitato $n''$ si avrà $n'$.color = GRAY. Ma questo scenario viene gestito dalla Riga \ref{alg:linea_recog_ciclo}, quindi tutti i nodi del ciclo sono correttamente riconosciuti come \emph{non-well-founded}. Lo stesso vale per $n$.
+\end{proof2}
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{graph_wf.png}
+    \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:dfs-wf}. Rosso: \emph{non-well-founded}.}
+\end{figure}
+
+Fatte queste premesse introduciamo la funzione ``\rankfunc'', che ricopre un ruolo primario nell'Algoritmo BFA:
 \begin{definition}
     Sia $G = (V,E)$ un grafo diretto. Per comodità definiamo le seguenti funzioni:
     \begin{align*}
@@ -565,35 +625,92 @@ Sulla base di queste definizioni, introduciamo la seguente funzione, che ricopre
     La funzione $\rankfunc: V \to \mathbb{N} \cup \{0, -\infty\}$ è definita come segue:
     \begin{gather*}
         \rankfunc(n) = \begin{cases}
-            0 &\text{se $n$ è una foglia di $G$}\\
+            0 &\text{se $n$ è un pozzo di $G$}\\
             -\infty &\text{se $[n]$ è un pozzo di $G^{\scalebox{.5}{SCC}}$, $n$ non è un pozzo di $G$}\\
-            \max(\{1 + rank(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
-            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{rank(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
+            \max(\{1 + \rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
+            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{\rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
         \end{cases}
     \end{gather*}
 \end{definition}
+\begin{observation}
+    Sia $n \in V$, e supponiamo $\rankfunc(n) = k$. Allora $\rankfunc(m) = k$ per ogni vertice nella SCC a cui appartiene $n$.
+\end{observation}
+\begin{proof2}
+    Se $k = 0$, allora $n$ è una foglia, per cui la sua SCC ha cardinalità 1, quindi la tesi vale banalmente. Se $k = -\infty$, nessuno dei nodi in $[n]$ può essere un pozzo di $G$, per cui hanno tutti rango $-\infty$. Quest'ultima argomentazione si può applicare anche al caso in cui $k > 0$, osservando che la definizione della funzione \rankfunc \, non distingue tra nodi appartenenti alla stessa SCC.
+\end{proof2}
+La funzione \rankfunc \, viene utilizzata dall'Algoritmo BFA per stabilire l'ordine degli \emph{splitter}; giustificheremo in modo dettagliato questa affermazione nel seguito.
 
-\subsubsection{L'algoritmo FBA}
-\begin{algorithm}[H]
-    \label{alg:fba}
-    \SetAlgoLined
-    \KwData{$G = (V,E)$}
-    \tcp*[h]{Partizione iniziale contenente un unico blocco}
-    \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
-    \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
-    $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
-    \ForAll{$i \in I$} {
-        \label{alg:hop_banale_for_ingressi}
-        \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
-            \label{alg:hop_banale_for_ns}
-            \tcc*[h]{Estraiamo casualmente una coppia di blocchi non stabili}\\
-            $(X,Y) = NS[0]$\;
-            $X_1 \coloneqq X - \delta_i^{-1}({Y})$\;
-            $X_2 \coloneqq X \cap \delta_i^{-1}({Y})$\;
-            \tcp*[h]{Aggiorniamo $S$}\\
-            $\widetilde{S} = (\widetilde{S} - \{X\}) \cup \{X_1,X_2\}$\;
+Prima di proseguire, proponiamo e commentiamo un algoritmo per la computazione della funzione \rankfunc \, per ogni nodo di un grafo diretto, che verrà usato come subroutine dall'Algoritmo FBA. Avendo a disposizione $G^{\superscc}$, per calcolare il rango dei nodi di $G$ è sufficiente una visita in profondità su $G^{\superscc}$ e su $G$.
+\begin{figure}[H]
+    \begin{algorithm}[H]
+        \label{alg:rank1}
+        \KwData{$G = (V,E), G^{\superscc} = (V^{\superscc}, E^{\superscc})$}
+        \caption{DFS-Rank}
+        \SetAlgoLined
+        \SetKwProg{Fn}{function}{:}{end}
+        \Fn{\textup{dsf-rank-visit}($G = (V,E), G^{\superscc} = (V^{\superscc},E^{\superscc}), N$)}{
+            \uIf{$N = \{n\} \mid$ n è un pozzo di $G$}{
+                $N$.rank = 0\;
+            }
+            \uElseIf{$N$ è un pozzo di $G^{\superscc}$}{
+                $N$.rank = $-\infty$\;
+            }
+            \Else{
+                current-max $\coloneqq -\infty$\;
+                \ForAll{$M \mid N E^{\superscc} M$}{
+                    \lIf*{$M$.rank = NULL}{
+                        dfs-rank-visit($G, G^{\superscc}, M$)\;
+                    }
+
+                    \eIf{$M = \{m\} \land m.wf$} {
+                        current-max = $\max$(current-max, $m$.rank + 1)\;
+                    } {
+                        current-max = $\max$(current-max, $M$.rank)\;
+                    }
+                }
+
+                $N$.rank = current-max\;
+            }
         }
-    }
-    \Return{$S$}
-    \caption{Algoritmo }
-\end{algorithm}
+        \Begin{
+            DFS-WF(G)\;
+
+            \While{$\exists N \in V^{\superscc} \mid N.$rank = NULL}{
+                dfs-rank-visit($G, G^{\superscc},N$)\;
+            }
+        }
+    \end{algorithm}
+\end{figure}
+Si osservi che nell'Algoritmo \ref{alg:rank1} non teniamo traccia del colore dei nodi per $G^{\superscc}$, in quanto non c'è il rischio di incontrare cicli. La correttezza è banale, in quanto il rango e $WF(G)$ vengono calcolati semplicemente applicando le definizioni. La complessità (avendo a disposizione $G^{\superscc}$) è chiaramente quella di due visite in profondità, cioè $O(|V| + |E| + |V^{\superscc}| + |E^{\superscc}|) = O(|V| + |E|)$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.6]{graph_rank.png}
+    \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:rank1}. Il rango del nodo è tra parentesi, i nodi appartenenti a diverse SCC sono disegnati in colori diversi.}
+\end{figure}
+
+%
+%\subsubsection{L'algoritmo FBA}
+%\begin{algorithm}[H]
+%    \label{alg:fba}
+%    \SetAlgoLined
+%    \KwData{$G = (V,E)$}
+%    \tcp*[h]{Partizione iniziale contenente un unico blocco}
+%    \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
+%    \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
+%    $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
+%    \ForAll{$i \in I$} {
+%        \label{alg:hop_banale_for_ingressi}
+%        \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
+%            \label{alg:hop_banale_for_ns}
+%            \tcc*[h]{Estraiamo casualmente una coppia di blocchi non stabili}\\
+%            $(X,Y) = NS[0]$\;
+%            $X_1 \coloneqq X - \delta_i^{-1}({Y})$\;
+%            $X_2 \coloneqq X \cap \delta_i^{-1}({Y})$\;
+%            \tcp*[h]{Aggiorniamo $S$}\\
+%            $\widetilde{S} = (\widetilde{S} - \{X\}) \cup \{X_1,X_2\}$\;
+%        }
+%    }
+%    \Return{$S$}
+%    \caption{Algoritmo }
+%\end{algorithm}
+%
