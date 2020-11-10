@@ -638,6 +638,59 @@ Fatte queste premesse introduciamo la funzione ``\rankfunc'', che ricopre un ruo
 \begin{proof2}
     Se $k = 0$, allora $n$ è una foglia, per cui la sua SCC ha cardinalità 1, quindi la tesi vale banalmente. Se $k = -\infty$, nessuno dei nodi in $[n]$ può essere un pozzo di $G$, per cui hanno tutti rango $-\infty$. Quest'ultima argomentazione si può applicare anche al caso in cui $k > 0$, osservando che la definizione della funzione \rankfunc \, non distingue tra nodi appartenenti alla stessa SCC.
 \end{proof2}
+Se un grafo è \emph{ben fondato}, o se restringiamo il dominio ad un sottografo \emph{ben fondato}, possiamo dare una formulazione alternativa della funzione rank:
+\begin{gather*}
+        \rankfunc(n) = \begin{cases}
+            0 &\text{se $n$ è un pozzo di $G$}\\
+            1 + \max\{\rankfunc(m) \mid n E m\} &\text{altrimenti}
+        \end{cases}
+\end{gather*}
+Questa forma sarà utile per semplificare alcune delle dimostrazioni che seguono.
+
+Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'analisi successiva:
+\begin{proposition} \label{prop:rank_bisi_imp_wf}
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la bisimulazione massima su $G$. Siano $m,n \in WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
+\end{proposition}
+\begin{proof2}
+    Procediamo per induzione su $\rankfunc(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\rankfunc(n) = 0$.
+
+    Supponiamo che per due nodi bisimili per cui valga $\rankfunc(m) \leq k-1$ valga anche $\rankfunc(m) = \rankfunc(n)$. Sia $\rankfunc(m) = k$, e sia $m' \in V$ il nodo tale che $m E m', \rankfunc(m') = k-1$. Allora deve esistere un nodo $n' \mid n E n', m' \equiv n'$, e quindi $\rankfunc(m') = \rankfunc(n')$. Ma allora $\rankfunc(n) \geq k-1 + 1 = k$, per la formulazione alternativa di rank. Analogamente si dimostra che $\rankfunc(m) \geq k$, per cui si ha la tesi.
+\end{proof2}
+\begin{proposition}
+    Sia $G = (V,E)$. Siano $m \in V$. Allora:
+    \begin{gather*}
+        \rankfunc(m) = -\infty \iff \text{l'APG } \restr{G}{m} \text{rappresenta l'insieme } \Omega
+    \end{gather*}
+\end{proposition}
+\begin{proof2}
+    Si ricordi la caratterizzazione dell'insieme $\Omega$ (cioè un insieme che contiene solamente se stesso) fornita in \cite{aczel}: un APG rappresenta $\Omega$ se e solo se ogni nodo ha almeno un arco uscente. Dalle ipotesi fatte si deduce che $[m]$ non contiene solamente $m$ (altrimenti $m$ sarebbe un pozzo di $G$). Possiamo dimostrare che ogni nodo in $[m]$ deve avere almeno un arco uscente: infatti, supponendo che non sia così, tale nodo non avrebbe modo di tornare in $[m]$, per cui non potrebbero stare nella stessa SCC.
+
+    Supponiamo ora che l'APG $\restr{G}{m}$ rappresenti l'insieme $\Omega$. Chiaramente $m$ non può essere un pozzo di $G$, altrimenti non ripetterebbe la caratterizzazione. Supponiamo per assurdo che $[m]$ non sia un pozzo di $G^{\superscc}$, cioè da un nodo di $[m]$ parte un arco verso un nodo $x$. Si presentano quattro possibilità:
+    \begin{enumerate}
+        \item Da $x$ non esce alcun nodo: impossibile per la caratterizzazione;
+        \item Da $x$ esce un unico nodo che ha per destinazione $x$ stesso: $[x]$ contiene solamente $x$, ed è una foglia di $G^{\superscc}$, per cui ha rango $-\infty$;
+        \item Da $x$ esce un nodo che ha per destinazione un nodo di $[m]$: impossibile perchè si è supposto $x \not\in [m]$;
+        \item Da $x$ esce un nodo che ha per destinazione un nodo $x' \not\in [m]$.
+    \end{enumerate}
+    Per cui è evidente che le uniche opzioni valide sono b. e d. Possiamo dimostrare che il blocco di $G^{\superscc}$ contenente una sequenza di nodi connessi secondo queste due regole è necessariamente un pozzo: possiamo continuare potenzialmente all'infinito ad aggiungere nuiovi nodi all'infinito, ma l'ultimo nodo dovrà avere un \emph{self loop}, oppure tornare in un nodo precedente della sequenza. In entrambi i casi i nodi coinvolti ottengono rango $-\infty$, per cui a cascata (per il terzo caso nella definizione di \rankfunc) i nodi precedenti della sequenza hanno sempre rango $-\infty$.
+\end{proof2}
+\begin{proposition}
+    Con le stesse ipotesi della Proposizione \ref{prop:rank_bisi_imp_wf}, supponiamo che $m,n \in V - WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
+\end{proposition}
+\begin{proof2}
+    Sempre per il Teorema \ref{theo:bisi_iff_eqsets}, $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = -\infty$, per la proposizione precedente $m$ rappresenta $\Omega$, per cui anche $n$ rappresenta $\Omega$. Ma allora $\rankfunc(n) = -\infty$.
+
+    Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione rank deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in WF(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
+\end{proof2}
+\begin{theorem}
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la bisimulazione massima su $G$. Siano $m,n \in V$. Allora
+    \begin{gather*}
+        m \equiv n \implies \rankfunc(m) = \rankfunc(n)
+    \end{gather*}
+\end{theorem}
+\begin{proof2}
+    \accente chiaro che perchè i nodi possano essere bisimili devono essere entrambi \emph{ben fondati} o entrambi \emph{non ben fondati}. La tesi segue dalle proposizioni appena dimostrate.
+\end{proof2}
 La funzione \rankfunc \, viene utilizzata dall'Algoritmo BFA per stabilire l'ordine degli \emph{splitter}; giustificheremo in modo dettagliato questa affermazione nel seguito.
 
 Prima di proseguire, proponiamo e commentiamo un algoritmo per la computazione della funzione \rankfunc \, per ogni nodo di un grafo diretto, che verrà usato come subroutine dall'Algoritmo FBA. Avendo a disposizione $G^{\superscc}$, per calcolare il rango dei nodi di $G$ è sufficiente una visita in profondità su $G^{\superscc}$ e su $G$.
@@ -681,36 +734,11 @@ Prima di proseguire, proponiamo e commentiamo un algoritmo per la computazione d
         }
     \end{algorithm}
 \end{figure}
+
 Si osservi che nell'Algoritmo \ref{alg:rank1} non teniamo traccia del colore dei nodi per $G^{\superscc}$, in quanto non c'è il rischio di incontrare cicli. La correttezza è banale, in quanto il rango e $WF(G)$ vengono calcolati semplicemente applicando le definizioni. La complessità (avendo a disposizione $G^{\superscc}$) è chiaramente quella di due visite in profondità, cioè $O(|V| + |E| + |V^{\superscc}| + |E^{\superscc}|) = O(|V| + |E|)$.
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{graph_rank.png}
+    \includegraphics[scale=0.6]{"graph_rank".png}
     \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:rank1}. Il rango del nodo è tra parentesi, i nodi appartenenti a diverse SCC sono disegnati in colori diversi.}
 \end{figure}
 
-%
-%\subsubsection{L'algoritmo FBA}
-%\begin{algorithm}[H]
-%    \label{alg:fba}
-%    \SetAlgoLined
-%    \KwData{$G = (V,E)$}
-%    \tcp*[h]{Partizione iniziale contenente un unico blocco}
-%    \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
-%    \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
-%    $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
-%    \ForAll{$i \in I$} {
-%        \label{alg:hop_banale_for_ingressi}
-%        \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
-%            \label{alg:hop_banale_for_ns}
-%            \tcc*[h]{Estraiamo casualmente una coppia di blocchi non stabili}\\
-%            $(X,Y) = NS[0]$\;
-%            $X_1 \coloneqq X - \delta_i^{-1}({Y})$\;
-%            $X_2 \coloneqq X \cap \delta_i^{-1}({Y})$\;
-%            \tcp*[h]{Aggiorniamo $S$}\\
-%            $\widetilde{S} = (\widetilde{S} - \{X\}) \cup \{X_1,X_2\}$\;
-%        }
-%    }
-%    \Return{$S$}
-%    \caption{Algoritmo }
-%\end{algorithm}
-%
