@@ -29,8 +29,11 @@ def well_founded_nodes(graph):
         graph.nodes[node]['wf'] = True
         graph.nodes[node]['color'] = WHITE
 
-    for node in filter(lambda node: graph.nodes[node]['color'] == BLACK, graph.nodes):
+    for node in filter(lambda node: graph.nodes[node]['color'] == WHITE, graph.nodes):
         dfs_wf_visit(graph, node)
+
+    for node in graph.nodes:
+        del graph.nodes[node]['color']
 
 def dfs_rank_visit(graph_scc, current_scc):
     # current_scc contains only a leaf of graph
@@ -57,7 +60,10 @@ def build_map_to_scc(graph_scc, graph):
     scc_map = [frozenset() for node in graph.nodes]
     for scc in graph_scc.nodes:
         for node in scc:
-            scc_map[node] = scc
+            try:
+                scc_map[node] = scc
+            except:
+                print('you are probably using a grah whose nodes are not properly numbered')
     return scc_map
 
 def prepare_scc(graph):

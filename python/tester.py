@@ -1,24 +1,41 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-import rank
 import randomcolor
+import rank
+import fba
+from networkx.drawing.nx_agraph import to_agraph
 
 MATERIAL_COLORS = ['#26A69A', '#9FA8DA', '#80DEEA', '#FDD835', '#FF8A65', '#A1887F']
+
+def draw(graph, file_name):
+    for node in graph.nodes:
+        graph.nodes[node]['height'] = 0.1
+        graph.nodes[node]['shape'] = 'circle'
+
+        graph.nodes[node]['width'] = 0.3
+        graph.nodes[node]['height'] = 0.3
+        graph.nodes[node]['fixedsize'] = True
+        graph.nodes[node]['fontsize'] = 6
+
+    for edge in graph.edges:
+        graph.edges[edge]['arrowsize'] = 0.2
+
+    A = to_agraph(graph)
+    A.layout('sfdp')
+    A.graph_attr['nodesep'] = 1
+    A.graph_attr['dpi'] = 300
+    A.graph_attr['height'] = 500
+    A.draw('{}.png'.format(file_name))
 
 def test_wf(graph):
     rank.well_founded_nodes(graph)
 
-    colors = list(map(lambda wf: '#8a8e94' if wf else 'red', nx.get_node_attributes(graph, 'wf').values()))
-
-    plt.subplot(111)
-
-    pos=nx.spring_layout(graph, k=2)
-    nx.draw(graph, pos, node_color=colors, with_labels=True, font_weight='bold', connectionstyle='arc3, rad = 0.1')
-
-    plt.savefig("graph_wf.png", dpi=300)
-
     for node in graph.nodes:
-        print('{} is {}'.format(node, 'wf' if graph.nodes[node]['wf'] else 'nwf'))
+        if not graph.nodes[node]['wf']:
+            graph.nodes[node]['fillcolor'] = 'red'
+            graph.nodes[node]['style'] = 'filled'
+
+    draw(graph, 'wf')
 
 def test_rank(graph):
     rank.compute_rank(graph)
@@ -33,18 +50,25 @@ def test_rank(graph):
 
     scc_color_map = {scc: MATERIAL_COLORS[index] for index,scc in enumerate(graph_scc.nodes)}
 
-    labels = {node: '{}({})'.format(node, graph.nodes[node]['rank']) for node in graph.nodes}
-    colors = [scc_color_map[scc_map[node]] for node in graph.nodes]
+    for node in graph.nodes:
+        graph.nodes[node]['fillcolor'] = scc_color_map[scc_map[node]]
+        graph.nodes[node]['style'] = 'filled'
 
-    plt.subplot(111)
-    pos=nx.spring_layout(graph, k=4)
-    nx.draw(graph, pos, labels=labels, node_size=700, node_color=colors, with_labels=True, font_weight='bold', connectionstyle='arc3, rad = 0.1')
+        graph.nodes[node]['label'] = '{}({})'.format(node, graph.nodes[node]['rank'])
 
-    #plt.subplot(122)
-    #pos=nx.spring_layout(graph_scc, k=2)
-    #nx.draw(graph_scc, pos, labels={node:'{}'.format(','.join(map(str,node))) for node in graph_scc.nodes}, with_labels=True, font_weight='bold', connectionstyle='arc3, rad = 0.1')
+    draw(graph, 'rank')
 
-    plt.savefig("graph_rank.png", dpi=300)
+def test_collapse(graph):
+    draw(graph, 'no-collapse')
+    fba.collapse(graph, [0,1,2,3])
+    draw(graph, 'collapsed')
+
+
+graph = nx.erdos_renyi_graph(10, 0.15, directed=True)
+test_collapse(graph)
+
+graph = nx.erdos_renyi_graph(10, 0.15, directed=True)
+test_wf(graph)
 
 graph = nx.erdos_renyi_graph(10, 0.15, directed=True)
 test_rank(graph)
