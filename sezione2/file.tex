@@ -611,7 +611,7 @@ La determinazione della parte ``ben fondata'' di un grafo è di fondamentale imp
 \end{proof2}
 \begin{figure}[H]
     \centering
-    \includegraphics[scale=0.6]{graph_wf.png}
+    \includegraphics[scale=0.2]{wf.png}
     \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:dfs-wf}. Rosso: \emph{non-well-founded}.}
 \end{figure}
 
@@ -737,8 +737,24 @@ Prima di proseguire, proponiamo e commentiamo un algoritmo per la computazione d
 
 Si osservi che nell'Algoritmo \ref{alg:rank1} non teniamo traccia del colore dei nodi per $G^{\superscc}$, in quanto non c'è il rischio di incontrare cicli. La correttezza è banale, in quanto il rango e $WF(G)$ vengono calcolati semplicemente applicando le definizioni. La complessità (avendo a disposizione $G^{\superscc}$) è chiaramente quella di due visite in profondità, cioè $O(|V| + |E| + |V^{\superscc}| + |E^{\superscc}|) = O(|V| + |E|)$.
 \begin{figure}[H]
+    \hspace*{-0.8cm}
     \centering
-    \includegraphics[scale=0.6]{"graph_rank".png}
+    \includegraphics[scale=0.2]{rank.png}
     \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:rank1}. Il rango del nodo è tra parentesi, i nodi appartenenti a diverse SCC sono disegnati in colori diversi.}
 \end{figure}
 
+\subsubsection{L'algoritmo}
+Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Inoltre definiamo la funzione ``collapse''$(G = (V,E),B)$ con $B \subseteq V$, che rimuove da $V$ tutti i nodi in $B$ tranne uno (scelto in modo casuale) e per ogni arco indidente ad un nodo rimosso (entrante o uscente) ne aggiunge uno nuovo, incidente al nodo preservato.
+
+Presentiamo lo pseudocodice per l'Algoritmo FBA:\\
+\begin{algorithm}[H]
+    \label{alg:fba}
+    \KwData{$G = (V,E)$}
+    \caption{Algoritmo FBA}
+    \Begin{
+        DFS-RANK($G$)\;
+        $\rho \coloneqq \max\{\rankfunc(n) \mid n \in V\}$\;
+        $B_k \coloneqq \{n \in V \mid \rankfunc(n) = k\}, \,\, k \in \mathbb{N}^*$\;
+        $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\;
+    }
+\end{algorithm}
