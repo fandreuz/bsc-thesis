@@ -63,7 +63,6 @@ def test_collapse(graph):
     fba.collapse(graph, [0,1,2,3])
     draw(graph, 'collapsed')
 
-
 graph = nx.erdos_renyi_graph(10, 0.15, directed=True)
 test_collapse(graph)
 
