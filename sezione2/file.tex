@@ -800,6 +800,6 @@ L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{a
 
 Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}\,).
 
-In seguito, per ogni rango a partire dal rango 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenenti solamente nodi composti dai nodi che vi sono contenuti. A questo punto si applica l'Algoritmo PTA a questo sottografo, e si ottiene la RSCP del sottografo. I blocchi di questa nuova partizione vengono ``collassati'', e poi si impone ai blocchi di rango superiore la condizione di stabilità.
+In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenenti solamente nodi composti dai nodi che vi sono contenuti. A questo punto si applica l'Algoritmo PTA a questo sottografo, e si ottiene la RSCP del sottografo. I blocchi di questa nuova partizione vengono ``collassati'', e poi si impone ai blocchi di rango superiore la condizione di stabilità.
 
 \subsubsection{Correttezza e complessità}
