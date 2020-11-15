@@ -532,13 +532,14 @@ Da questa implementazione possiamo dedurre il seguente upper-bound sulla comples
 \end{proof2}
 
 \subsection{L'algoritmo FBA}
-Presentiamo ora l'Algoritmo risolutivo presentato in \cite{dovier}. Si noti che, differentemente dai procedimenti presentati fino a questo punto del lavoro, l'Algoritmo FBA calcola direttamente la contrazione rispetto alla bisimulazione massima del grafo. Inoltre non migliora la complessità $O(|E| \log |N|)$ dell'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre drasticamente questo upper-bound, avvicinandolo in aluni casi ad una computazione lineare.
+Presentiamo ora l'Algoritmo risolutivo presentato in \cite{dovier}. Inoltre non migliora la complessità $O(|E| \log |N|)$ dell'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre drasticamente questo upper-bound, avvicinandolo in aluni casi ad una computazione lineare.
 
 Prima di presentare e commentare lo pseudocodice, proponiamo delle definizioni fondamentali, insieme ad alcune osservazioni utili. In seguito proporremo la dimostrazione della correttezza e della complessità dell'Algoritmo FBA nel caso peggiore, e discuteremo alcune delle euristiche menzionate sopra.
 
 \subsubsection{Nozioni preliminari}
 Iniziamo con la seguente definizione fondamentale:
 \begin{definition}
+    \label{def:grafo_restr}
     Sia $G = (V,E)$ un grafo diretto. Sia $n \in V$. Il grafo $\restr{G}{n}$, cioè il \emph{sottografo di $G$ raggiungibile da $n$}, è definito come segue:
     \begin{gather*}
         \restr{G}{n} = \left(\restr{N}{n}, E \cap \left(\restr{N}{n} \times \restr{N}{n}\right)\right)
@@ -657,6 +658,7 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
     Supponiamo che per due nodi bisimili per cui valga $\rankfunc(m) \leq k-1$ valga anche $\rankfunc(m) = \rankfunc(n)$. Sia $\rankfunc(m) = k$, e sia $m' \in V$ il nodo tale che $m E m', \rankfunc(m') = k-1$. Allora deve esistere un nodo $n' \mid n E n', m' \equiv n'$, e quindi $\rankfunc(m') = \rankfunc(n')$. Ma allora $\rankfunc(n) \geq k-1 + 1 = k$, per la formulazione alternativa di rank. Analogamente si dimostra che $\rankfunc(m) \geq k$, per cui si ha la tesi.
 \end{proof2}
 \begin{proposition}
+    \label{prop:omega_rank}
     Sia $G = (V,E)$. Siano $m \in V$. Allora:
     \begin{gather*}
         \rankfunc(m) = -\infty \iff \text{l'APG } \restr{G}{m} \text{rappresenta l'insieme } \Omega
@@ -683,6 +685,7 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
     Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione rank deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in WF(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
 \end{proof2}
 \begin{theorem}
+    \label{theo:bisi_rank}
     Sia $G = (V,E)$. Sia ``\,$\equiv$'' la bisimulazione massima su $G$. Siano $m,n \in V$. Allora
     \begin{gather*}
         m \equiv n \implies \rankfunc(m) = \rankfunc(n)
@@ -744,17 +747,57 @@ Si osservi che nell'Algoritmo \ref{alg:rank1} non teniamo traccia del colore dei
 \end{figure}
 
 \subsubsection{L'algoritmo}
-Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Inoltre definiamo la funzione ``collapse''$(G = (V,E),B)$ con $B \subseteq V$, che rimuove da $V$ tutti i nodi in $B$ tranne uno (scelto in modo casuale) e per ogni arco indidente ad un nodo rimosso (entrante o uscente) ne aggiunge uno nuovo, incidente al nodo preservato.
-
-Presentiamo lo pseudocodice per l'Algoritmo FBA:\\
+Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo FBA:\\
 \begin{algorithm}[H]
     \label{alg:fba}
     \KwData{$G = (V,E)$}
     \caption{Algoritmo FBA}
+    \SetKwProg{Fn}{function}{:}{end}
+    \Fn{\textup{collapse}($G = (V,E), B \subseteq V$)}{
+        Sia $u \in V$ scelto casualmente\;
+        \ForAll{$v \in B$}{
+            \ForAll{$e \in E \mid$ ``$e$ è incidente a $v$''}{
+                \tcp*[h]{$e'$ è l'arco $e$ se si sostuisce $u$ al posto di $v$}\\
+                $E = (E - \{e\}) \cup \{e'\}$\;
+            }
+            $V = V - \{v\}$\;
+        }
+        \Return{$u$}\;
+    }
+    \Fn{\textup{Split2}($G = (V,E), P, u, \widehat{B}$)} {
+        \ForAll{$B \in P \mid B \in \widehat{B}$}{
+            $P = (P - \{B\}) \cup \{\{v \in B \mid v E u\}, \{v \in B \mid \neg (v E u)\}\}$\;
+        }
+    }
     \Begin{
         DFS-RANK($G$)\;
         $\rho \coloneqq \max\{\rankfunc(n) \mid n \in V\}$\;
         $B_k \coloneqq \{n \in V \mid \rankfunc(n) = k\}, \,\, k \in \mathbb{N}^*$\;
-        $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\;
+        $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\; \label{alg:partizione_rudimentale}
+
+        \tcp*[h]{$u$ è il nodo di $B_{-\infty}$ preservato da collapse}\\
+        $u  \coloneqq$ collapse($G,B_{-\infty}$)\; \label{alg:impunemente_omega}
+        Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\;
+
+        \ForAll{$i = 0, \dots, \rho$}{
+            \tcp*[h]{i blocchi di $P$ aventi rango $i$}\\
+            $D_i \coloneqq \{B \in P \mid B \subseteq B_i\}$\;
+            Sia $\restr{G}{i}$ come nella Definizione \ref{def:grafo_restr}\,\;
+            \tcp*[h]{$D_i$ è una partizione di $G_i$}\\
+            $D_i =$ Paige-Tarjan($G_i, D_i$)\;
+
+            \ForAll{$B \in D_i$}{
+                $u \coloneqq$ collapse($G,B$)\;
+                Split2($G, P, u, \bigcup_{j=i+1}^\rho B_i$)\;
+            }
+        }
     }
 \end{algorithm}
+
+La funzione ``collapse'' rimuove dal grafo tutti i nodi all'interno di un blocco, ad eccezione di un nodo scelto in modo casuale. Dopodichè sostituisce il nodo mantenuto nel ruolo dei nodi rimossi in ogni arco incidente ad un nodo rimosso. Questa funzione viene usata per contrarre i nodi in un blocco per cui si è già stabilito che siano tutti bisimili.
+
+L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} sarà sicuramente necessario rifinire questa partizione per determinare la bisimulazione massima: non è possibile infatti che vi siano due nodi bisimili che vengono sistemati in due blocchi differenti a questo punto.
+
+Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}\,).
+
+In seguito, per ogni rango a partire dal rango 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenenti solamente nodi composti dai nodi che vi sono contenuti. A questo punto si applica l'Algoritmo PTA a questo sottografo, e si ottiene la RSCP del sottografo. I blocchi di questa nuova partizione vengono ``collassati'', e poi si impone ai blocchi di rango superiore la condizione di stabilità.
