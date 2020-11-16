@@ -799,7 +799,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
 
             \ForAll{$B \in D_i$}{
                 $u \coloneqq$ collapse($G,B$)\; \label{alg:collapse_rank}
-                Split2($G, P, u, \bigcup_{j=i+1}^\rho B_i$)\;
+                Split2($G, P, u, \bigcup_{j=i+1}^\rho B_j$)\;
             }
         }
     }
@@ -814,8 +814,49 @@ Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisim
 In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo PTA a questo sottografo, in modo da calcolarne la RSCP. I blocchi di questa nuova partizione vengono ``collassati'', ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità.
 
 \subsubsection{Correttezza e complessità}
-Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno ``collassati'' in un unico nodo.
+Presentiamo i seguenti risultati, che costituiscono un analisi completa dell'Algoritmo \ref{alg:fba}, sulla base della discussione proposta in \cite{dovier}:
+\begin{theorem}
+    Due nodi $m,n$ vengono ``collassati'' in un unico nodo durante l'esecuzione dell'Algoritmo \ref{alg:fba} se e solo se sono bisimili.
+\end{theorem}
+\begin{proof2}
+    Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno ``collassati'' in un unico nodo.
 
-Se $\rankfunc(m) = \rankfunc(n) = -\infty$ il blocco contenente questi due nodi viene ``collassato'' alla Riga \ref{alg:impunemente_omega}.
+    Se $\rankfunc(m) = \rankfunc(n) = -\infty$ il blocco contenente questi due nodi viene ``collassato'' alla Riga \ref{alg:impunemente_omega}.
 
-Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene ``collassato'' alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $m E m' \implies \exists n' \mid n E n' \land m' E n'$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo PTA, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene ``collassato'', allora sono necessariamente bisimili.
+    Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene ``collassato'' alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $m E m' \implies \exists n' \mid n E n' \land m' E n'$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo PTA, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene ``collassato'', allora sono necessariamente bisimili.
+\end{proof2}
+
+Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie:
+\begin{observation}
+    Un'implementazione efficiente congiunta delle funzioni ``collapse'' e ``Split2'' ha complessità $\Theta(|E^{-1}(B)|)$, dove $B$ è il blocco su cui sono chiamate in sequenza.
+\end{observation}
+\begin{proof2}
+    \accente sufficiente creare inizialmente l'insieme $E^{-1}(\{v\}) \, \forall v \in V$, cioè la contro-immagine di $v$ rispetto alla relazione binaria $E$. Per ``collassare'' il blocco $B$ e ricalcolare la partizione, cioè per eseguire le due seguenti righe di pseudocodice:
+    \begin{align*}
+        &u \coloneqq \textup{collapse}(G,B);\\
+        &\textup{Split2}(G, P, u, \bigcup_{j=i+1}^\rho B_j);
+    \end{align*}
+    è sufficiente visitare in modo esaustivo l'insieme $E^{-1}(B)$ e per ogni blocco $C$ della partizione iniziale (tra quelli contenuti in $\bigcup_{j=i+1}^\rho B_j$) raggiunto da questa visita rimuovere da $C$ i nodi che rientrano nella contro-immagine di $B$, ed inserirli in un nuovo blocco.
+\end{proof2}
+\begin{theorem}
+    L'Algoritmo \ref{alg:fba} ha complessità $O(|E| \log |V|)$.
+\end{theorem}
+\begin{proof2}
+    Il rango dei nodi del grafo si può calcolare con l'Algoritmo \ref{alg:rank1}, che ha complessità $O(|V|+|E|)$. Per l'osservazione precedente le operazioni alle Righe \ref{alg:impunemente_omega}, \ref{alg:split_post_omega} hanno un'implementazione lineare.
+
+    Il ciclo alla Riga \ref{alg:fba_principal_loop} è composto da tre elementi:
+    \begin{enumerate}
+        \item La creazione dell'insieme $D_i$ e del sottografo $\restr{G}{i}$;
+        \item La chiamata all'Algoritmo PTA;
+        \item Il ciclo sui blocci appartenenti all'insieme $D_i$.
+    \end{enumerate}
+    Gli elementi di tipo 1 sono chiaramente dominati dagli elementi di tipo 2, in quanto determinare il sottografo $\restr{G}{i}$ ha complessità $O(|B_i| + E \cap (B_i \times B_i))$. La complessità degli elementi di tipo 2 invece è $O(|E \cap (B_i \times B_i)| \log |B_i|)$, come abbiamo già dimostrato.  Per lo stesso motivo, vista l'osservazione precedente, anche gli elementi di tipo 3 sono dominati dagli elementi di tipo 2.
+
+    Ne segue che la complessità dell'algoritmo è:
+    \begin{align*}
+        T(V,E) &= O(|V| + |E|) + \sum_{i=0}^\rho O(|E \cap (B_i \times B_i)| \log |B_i|)\\
+        &= O(|V| + |E|) +  O(\log |V|) \sum_{i=0}^\rho O(|E \cap (B_i \times B_i)|)\\
+        &= O(|V| + |E|) +  O(\log |V| |E|)\\
+        &= O(|E| \log |V|)
+    \end{align*}
+\end{proof2}
