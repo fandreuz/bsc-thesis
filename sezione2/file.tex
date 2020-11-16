@@ -777,7 +777,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
 
         \tcp*[h]{$u$ è il nodo di $B_{-\infty}$ preservato da collapse}\\
         $u  \coloneqq$ collapse($G,B_{-\infty}$)\; \label{alg:impunemente_omega}
-        Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\;
+        Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\; \label{alg:split_post_omega}
 
         \ForAll{$i = 0, \dots, \rho$}{
             \tcp*[h]{i blocchi di $P$ aventi rango $i$}\\
@@ -798,8 +798,9 @@ La funzione ``collapse'' rimuove dal grafo tutti i nodi all'interno di un blocco
 
 L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} sarà sicuramente necessario rifinire questa partizione per determinare la bisimulazione massima: non è possibile infatti che vi siano due nodi bisimili che vengono sistemati in due blocchi differenti a questo punto.
 
-Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}\,).
+Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}).
 
-In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenenti solamente nodi composti dai nodi che vi sono contenuti. A questo punto si applica l'Algoritmo PTA a questo sottografo, e si ottiene la RSCP del sottografo. I blocchi di questa nuova partizione vengono ``collassati'', e poi si impone ai blocchi di rango superiore la condizione di stabilità.
+In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo PTA a questo sottografo, in modo da calcolarne la RSCP. I blocchi di questa nuova partizione vengono ``collassati'', ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità.
 
 \subsubsection{Correttezza e complessità}
+Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo non vengono mai divisi.
