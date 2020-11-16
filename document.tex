@@ -14,16 +14,30 @@
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage{venndiagram}
-\usepackage[linesnumbered,ruled,lined,boxed,vlined]{algorithm2e}
+\usepackage[linesnumbered,ruled,lined,boxed,vlined,noend]{algorithm2e}
 \usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
 
 \newcommand{\accente}{\`E }
+
 \newcommand{\splitfunc}{\textup{Split}}
+\newcommand{\rankfunc}{\textup{rank}}
 \newcommand{\rscp}{\textup{RSCP}}
+
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+  }}
+
+\newcommand\sccto{\stackrel{\mathclap{\normalfont\mbox{\tiny{SCC}}}}{\to}}
+\newcommand\superscc{\scalebox{.5}{SCC}}
 
 \definechangesauthor[name=Alberto Casagrande, color=red]{ac}
 
 \usetikzlibrary{arrows,automata,patterns,shapes,snakes,arrows.meta}
+
+\graphicspath{ {imgs/} }
 
 \captionsetup[figure]{name=Figura}
 \captionsetup[table]{name=Tabella}
