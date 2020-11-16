@@ -659,7 +659,7 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
 \end{proof2}
 \begin{proposition}
     \label{prop:omega_rank}
-    Sia $G = (V,E)$. Siano $m \in V$. Allora:
+    Sia $G = (V,E)$. Sia $m \in V$. Allora:
     \begin{gather*}
         \rankfunc(m) = -\infty \iff \text{l'APG } \restr{G}{m} \text{rappresenta l'insieme } \Omega
     \end{gather*}
@@ -675,6 +675,16 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
         \item Da $x$ esce un nodo che ha per destinazione un nodo $x' \not\in [m]$.
     \end{enumerate}
     Per cui è evidente che le uniche opzioni valide sono b. e d. Possiamo dimostrare che il blocco di $G^{\superscc}$ contenente una sequenza di nodi connessi secondo queste due regole è necessariamente un pozzo: possiamo continuare potenzialmente all'infinito ad aggiungere nuiovi nodi all'infinito, ma l'ultimo nodo dovrà avere un \emph{self loop}, oppure tornare in un nodo precedente della sequenza. In entrambi i casi i nodi coinvolti ottengono rango $-\infty$, per cui a cascata (per il terzo caso nella definizione di \rankfunc) i nodi precedenti della sequenza hanno sempre rango $-\infty$.
+\end{proof2}
+\begin{proposition}
+    \label{prop:leaf_rank}
+    Sia $G = (V,E)$. Siano $m,n \in V$. Allora:
+    \begin{gather*}
+        \rankfunc(m) = \rankfunc(n) = 0 \implies m \equiv n
+    \end{gather*}
+\end{proposition}
+\begin{proof2}
+    $m,n$ sono pozzi di $G$, per cui rappresentano l'insieme $\emptyset$. Allora $m,n$ sono bisimili per il Teorema \ref{theo:bisi_iff_eqsets}.
 \end{proof2}
 \begin{proposition}
     Con le stesse ipotesi della Proposizione \ref{prop:rank_bisi_imp_wf}, supponiamo che $m,n \in V - WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
@@ -780,6 +790,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
         Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\; \label{alg:split_post_omega}
 
         \ForAll{$i = 0, \dots, \rho$}{
+            \label{alg:fba_principal_loop}
             \tcp*[h]{i blocchi di $P$ aventi rango $i$}\\
             $D_i \coloneqq \{B \in P \mid B \subseteq B_i\}$\;
             Sia $\restr{G}{i}$ come nella Definizione \ref{def:grafo_restr}\,\;
@@ -787,7 +798,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
             $D_i =$ Paige-Tarjan($G_i, D_i$)\;
 
             \ForAll{$B \in D_i$}{
-                $u \coloneqq$ collapse($G,B$)\;
+                $u \coloneqq$ collapse($G,B$)\; \label{alg:collapse_rank}
                 Split2($G, P, u, \bigcup_{j=i+1}^\rho B_i$)\;
             }
         }
@@ -803,4 +814,8 @@ Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisim
 In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo PTA a questo sottografo, in modo da calcolarne la RSCP. I blocchi di questa nuova partizione vengono ``collassati'', ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità.
 
 \subsubsection{Correttezza e complessità}
-Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo non vengono mai divisi.
+Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno ``collassati'' in un unico nodo.
+
+Se $\rankfunc(m) = \rankfunc(n) = -\infty$ il blocco contenente questi due nodi viene ``collassato'' alla Riga \ref{alg:impunemente_omega}.
+
+Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene ``collassato'' alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $m E m' \implies \exists n' \mid n E n' \land m' E n'$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo PTA, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene ``collassato'', allora sono necessariamente bisimili.
