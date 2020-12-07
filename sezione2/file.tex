@@ -430,7 +430,7 @@ Quando $Q$ e $X$ coincidono, viene restituita la partizione $Q$.
 Dimostriamo innanzitutto la validità della seguente invariante:
 \begin{lemma}
     \label{lem:pt_qx}
-    L'algoritmo ristabilisce le seguenti relazioni invarianti dopo ogni iterazione del ciclo
+    L'algoritmo ristabilisce le seguenti relazioni invarianti dopo ogni iterazione del ciclo principale:
     \begin{enumerate}
         \item $Q$ è stabile rispetto ad ogni blocco di $X$;
         \item $Q$ rifinisce $X$;
@@ -861,7 +861,7 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
     \begin{enumerate}
         \item La creazione dell'insieme $D_i$ e del sottografo $\restr{G}{i}$;
         \item La chiamata all'Algoritmo PTA;
-        \item Il ciclo sui blocci appartenenti all'insieme $D_i$.
+        \item Il ciclo sui blocchi appartenenti all'insieme $D_i$.
     \end{enumerate}
     Gli elementi di tipo 1 sono chiaramente dominati dagli elementi di tipo 2, in quanto determinare il sottografo $\restr{G}{i}$ ha complessità $O(|B_i| + |E \cap (B_i \times B_i)|)$. La complessità degli elementi di tipo 2 invece è $O(|E \cap (B_i \times B_i)| \log |B_i|)$, come abbiamo già dimostrato.  Per lo stesso motivo, vista l'osservazione precedente, anche gli elementi di tipo 3 sono dominati dagli elementi di tipo 2.
 
