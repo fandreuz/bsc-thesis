@@ -804,9 +804,10 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
 
         \ForAll{$i = 0, \dots, \rho$}{
             \label{alg:fba_principal_loop}
-            \tcp*[h]{i blocchi di $P$ aventi rango $i$}\\
+            \tcp*[h]{I blocchi di $P$ aventi rango $i$}\\
             $D_i \coloneqq \{B \in P \mid B \subseteq B_i\}$\;
-            Sia $\restr{G}{i}$ come nella Definizione \ref{def:grafo_restr}\,\;
+            \tcp*[h]{Il sottografo di $G$ dei nodi di rango $i$}\\
+            $G_i = (B_i, (B_i \times B_i) \cap E)$\;
             \tcp*[h]{$D_i$ è una partizione di $G_i$}\\
             $D_i =$ Paige-Tarjan($G_i, D_i$)\;
 
