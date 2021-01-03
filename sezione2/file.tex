@@ -666,8 +666,56 @@ Per questo motivo useremo l'implementazione proposta in \cite{dovier}:\\
     \label{alg:rank}
     \KwData{$G = (V,E)$}
     \caption{Compute-Rank}
+    \SetKwProg{Fn}{function}{:}{end}
+    \Fn{\textup{dsf-rank-visit}($G = (V,E), n$)}{
+        n.color = GRAY\;
+
+        \If{$|E(n)| == 0$}{
+            \tcp*[h]{$n$ è un pozzo}\\
+            n.rank = 0\;
+        } \Else{
+            max-rank = $-\infty$\;
+
+            \tcp*[h]{Visita l'immagine di $n$}\\
+            \ForAll{$v \in E(n)$}{
+                \If{v.color == WHITE or v.color == GRAY or !v.wf}{
+                    n.wf = false\;
+                }
+
+                \If{v.color == WHITE}{
+                    dfs-rank-visit($G, v$)\;
+                }
+
+                \If{v.rank != None}{
+                    \If{v.wf}{
+                        max-rank = max(max-rank, v.rank)\;
+                    } \Else{
+                        max-rank = max(max-rank, v.rank + 1)\;
+                    }
+                }
+            }
+        }
+
+        n.color = BLACK\;
+    }
     \Begin{
-        OK
+        \tcp*[h]{Visita in profondità $G^{-1}$ (vedi Algoritmo \ref{alg:dfs})}\\
+        DFS($G^{-1}$)\;\label{alg:rank_inverse_dfs}
+
+        \tcp*[h]{Resetta il colore dei nodi per una nuova visita}\\
+        \ForAll{$n \in V$}{
+            n.color = WHITE\;
+        }
+
+        \tcp*[h]{Ordina $V$ in ordine decrescente di \emph{finishing-time}}\\
+        sorted\_$V$ = sort($V$, vertex $\to$ vertex.finishing-time, order='decreasing')\;
+
+        \tcp*[h]{DFS di $G$ con ordinamento dato da DFS alla Riga \ref{alg:rank_inverse_dfs}}\\
+        \ForAll{$n \in$ sorted\_$V$}{
+            \If{n.color == WHITE}{
+                dfs-rank-visit($G,n$)\;
+            }
+        }
     }
 \end{algorithm}
 
