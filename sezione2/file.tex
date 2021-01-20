@@ -180,7 +180,7 @@ Innanzitutto, con i risultati della sezione precedente, possiamo progettare il s
     \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
     \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
     $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
-    \ForAll{$i \in I$} {
+    \ForEach{$i \in I$} {
         \label{alg:hop_banale_for_ingressi}
         \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
             \label{alg:hop_banale_for_ns}
@@ -218,20 +218,20 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
     \KwData{$S,I,\delta,F$}
     \caption{Algoritmo di Hopcroft}
     \Begin{
-        \ForAll{$(s,i) \in S \times I$}{
+        \ForEach{$(s,i) \in S \times I$}{
             $\delta^{-1}(s,i) \coloneqq \{t : \delta(t,i) = s\}$\;\label{alg:hop_deltainverso}
         }
         $B(1) \coloneqq F, B(2) \coloneqq S - F$\;
         \tcc*[h]{$\forall i \in I$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}\\
-        \ForAll{$j \in \{1,2\}$}{
-            \ForAll{$i \in I$}{
+        \ForEach{$j \in \{1,2\}$}{
+            \ForEach{$i \in I$}{
                 $i(j) = \{s : s \in B(j) \land \delta^{-1}(s,i) \neq \emptyset\}$\;\label{alg:hop_stati_delta_nonvuoto}
             }
         }
         \tcc*[h]{$k$ è il numero di blocchi della partizione. Aumenta dopo le rifiniture}\\
         $k \coloneqq 2$\;
         \tcc*[h]{Per ogni ingresso $i$ creiamo un insieme $L(i)$ contenente l'indice $j$ che minimizza $|i(j)|$}\\
-        \ForAll{$i \in I$}{
+        \ForEach{$i \in I$}{
             \label{alg:hop_splitters}
             \eIf{$|i(1)| \leq |i(2)|$}{
                 $L(i) = \{1\}$\;
@@ -243,11 +243,11 @@ Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso
             \label{alg:hop_ciclo_infinito}
             Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
             \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
-            \ForAll{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
+            \ForEach{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
                 $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
                 $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
                 $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
-                \ForAll{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
+                \ForEach{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
                     $a(m) = \{s : s \in B(m) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
                     $a(k+1) \coloneqq \{s : s \in B(k+1) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
                     \eIf{$|a(m)| \leq |a(k+1)|$}{
@@ -539,8 +539,8 @@ Da questa implementazione possiamo dedurre il seguente upper-bound sulla comples
     \accente lecito considerare $|V| = O(|E|)$, per cui la complessità è $O(E\log |V|)$.
 \end{proof2}
 
-\subsection{L'algoritmo FBA}
-Discutiamo ora l'Algoritmo risolutivo presentato in \cite{dovier}. Non vengono introdotti miglioramente per quanto riguarda la complessità, che resta $O(|E| \log |N|)$ come per l'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre questo upper-bound, avvicinandolo in aluni casi particolari alla linearità.
+\subsection{L'algoritmo di Dovier-Piazza-Policriti}
+In questa sezione trattiamo l'Algoritmo risolutivo presentato in \cite{dovier}, che chiameremo anche ``FBA''. Non c'è un miglioramento generale per quanto riguarda la complessità, che resta $O(|E| \log |N|)$ come per l'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre drasticamente questo upper-bound, avvicinandolo in aluni casi ad una computazione lineare.
 
 Prima di presentare e commentare lo pseudocodice, proponiamo delle definizioni fondamentali, insieme ad alcune osservazioni. In seguito proporremo la dimostrazione della correttezza e della complessità dell'Algoritmo FBA nel caso peggiore, e discuteremo alcune delle euristiche menzionate sopra.
 
@@ -569,64 +569,8 @@ Sulla base dell'ultima definizione possiamo distinguere una porzione del grafo p
 \begin{proof2}
     Supponiamo che $n \in WF(G)$. Questo vuol dire che da tutti i nodi raggiungibili da $n$ non si può ritornare in $n$ (perchè non si hanno cicli). Ma allora non ci può essere un altro nodo nella SCC di $n$.
 \end{proof2}
-La determinazione della parte ``ben fondata'' di un grafo è di fondamentale importanza per il seguito, per cui presentiamo l'Algoritmo \ref{alg:dfs-wf} che risolve il problema in tempo lineare.
-\begin{figure}[H]
-    \begin{algorithm}[H]
-        \label{alg:dfs-wf}
-        \KwData{$G = (V,E)$}
-        \caption{DFS-WF}
-        \SetAlgoLined
-        \SetKwProg{Fn}{function}{:}{end}
-        \Fn{\textup{check-wf}($G = (V,E), n$)}{
-            n.color = GRAY\;
-            \ForAll{$m \in V \mid n E m$}{
-                \uIf{!$m$.wf} {
-                    $n$.wf = false\;
-                }
-                \tcc*[h]{Trovare un nodo grigio durante una visita in profondità equivale a trovare un ciclo}\\
-                \uElseIf{$m$.color = GRAY}{
-                    \label{alg:linea_recog_ciclo}
-                    $m$.wf = false\;
-                    $n$.wf = false\;
-                }
-                \tcc*[h]{Nel caso in cui $m$ sia nero, siamo sicuri che $m$.wf non cambierà più}\\
-                \uElseIf{$m$.color = WHITE}{
-                    check-wf($G,m$)\;
-                    \lIf*{$n$.wf and !$m$.wf}{
-                        $n$.wf = false\;
-                    }
-                }
-            }
-            n.color = BLACK\;
-        }
-        \Begin{
-            \ForAll{$n \in V$}{
-                $n$.color = WHITE\;
-                $n$.wf = true\;
-            }
 
-            \While{$\exists n \in V \mid n.$color = WHITE}{
-                check-wf($G,n$)\;
-            }
-        }
-    \end{algorithm}
-\end{figure}
-
-\begin{observation}
-    L'Algoritmo \ref{alg:dfs-wf} è corretto, ed ha complessità $O(|V| + |E|)$.
-\end{observation}
-\begin{proof2}
-    \accente chiaro che il procedimento è $O(|V| + |E|)$, in quanto si tratta di una semplice modifica dell'Algoritmo \ref{alg:dfs}. Per dimostrare la correttezza, supponiamo per assurdo che esista un nodo $n \in V \mid n \not\in WF(G)$, e per cui al termine dell'esecuzione si abbia $n$.wf = true. Per definizione, perchè $n$ non sia ben fondato deve esserci un ciclo in $G$ raggiungibile da $n$. Supponiamo che il ciclo venga visitato per la prima volta conseguentemente alla visita di $n$. Perchè si possa avere un ciclo deve esistere un nodo $n''$ che "chiude" il ciclo, cioè da $n''$ deve uscire un arco avente per destinazione un nodo $n'$ da cui è raggiungibile lo stesso $n''$. Poichè l'algoritmo è una visita in profondità, prima che $n$ venga "abbandonato" (cioè prima che $n$.color diventi BLACK) deve essere esplorato tutto l'insieme dei nodi raggiungibili da $n$. Quando viene visitato $n''$ si avrà $n'$.color = GRAY. Ma questo scenario viene gestito dalla Riga \ref{alg:linea_recog_ciclo}, quindi tutti i nodi del ciclo sono correttamente riconosciuti come \emph{non-well-founded}. Lo stesso vale per $n$.
-
-    Se da $n$ è raggiungibile un ciclo che è già stato visitato in precedenza dall'algoritmo, $n$ verrà direttamente marcato \emph{non-well-founded} alla Riga \ref{alg:linea_recog_ciclo}.
-\end{proof2}
-\begin{figure}[H]
-    \centering
-    \includegraphics[scale=0.2]{wf.png}
-    \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:dfs-wf}. Rosso: \emph{non-well-founded}.}
-\end{figure}
-
-Fatte queste premesse introduciamo la funzione ``\rankfunc'', che ricopre un ruolo primario nell'Algoritmo BFA:
+Introduciamo la funzione ``\rankfunc'', che ricopre un ruolo primario nell'Algoritmo BFA:
 \begin{definition}
     Sia $G = (V,E)$ un grafo diretto. Per comodità definiamo le seguenti funzioni:
     \begin{align*}
@@ -717,59 +661,133 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
 \begin{proof2}
     Perchè i nodi possano essere bisimili devono essere entrambi \emph{ben fondati} o entrambi \emph{non ben fondati}. La tesi segue dalle proposizioni appena dimostrate.
 \end{proof2}
-La funzione \rankfunc \, viene utilizzata dall'Algoritmo BFA per stabilire l'ordine degli \emph{splitter}; questa affermazione sarà giustificata dalla discussione dello pseudocodice e dal successivo commento sulla correttezza dell'algoritmo.
 
-Prima di proseguire, proponiamo e commentiamo un algoritmo per la computazione della funzione \rankfunc \, per ogni nodo di un grafo diretto, che verrà usato come subroutine dall'Algoritmo FBA. Avendo a disposizione $G^{\superscc}$, per calcolare il rango dei nodi di $G$ è sufficiente una visita in profondità su $G^{\superscc}$ e su $G$.
-\begin{figure}[H]
-    \begin{algorithm}[H]
-        \label{alg:rank1}
-        \KwData{$G = (V,E), G^{\superscc} = (V^{\superscc}, E^{\superscc})$}
-        \caption{DFS-Rank}
-        \SetAlgoLined
-        \SetKwProg{Fn}{function}{:}{end}
-        \Fn{\textup{dsf-rank-visit}($G = (V,E), G^{\superscc} = (V^{\superscc},E^{\superscc}), N$)}{
-            \uIf{$N = \{n\} \mid$ n è un pozzo di $G$}{
-                $N$.rank = 0\;
-            }
-            \uElseIf{$N$ è un pozzo di $G^{\superscc}$}{
-                $N$.rank = $-\infty$\;
-            }
-            \Else{
-                current-max $\coloneqq -\infty$\;
-                \ForAll{$M \mid N E^{\superscc} M$}{
-                    \lIf*{$M$.rank = NULL}{
-                        dfs-rank-visit($G, G^{\superscc}, M$)\;
-                    }
+Proponiamo di seguito un algoritmo per la computazione del rango dei nodi di un grafo diretto. Sarebbe ragionevole determinare prima le SCC del grafo (con due visite in profondità su $G$ e $G^{-1}$), per poi effettuare una visita in profondità su $G^{\superscc}$ ed una ulteriore su $G$. Nonostante questo sia il metodo più lineare, è anche poco performante: un'implementazione dell'algoritmo FBA che sfrutta questo procedimento risulta quasi sempre più lenta dell'algoritmo FBA.
 
-                    \eIf{$M = \{m\} \land m.wf$} {
-                        current-max = $\max$(current-max, $m$.rank + 1)\;
-                    } {
-                        current-max = $\max$(current-max, $M$.rank)\;
+Per questo motivo useremo l'implementazione proposta in \cite{dovier}:\\
+\begin{algorithm}[H]
+    \label{alg:rank}
+    \KwData{$G = (V,E)$}
+    \caption{Compute-Rank}
+    \SetKwProg{Fn}{function}{:}{end}
+    \Fn{\textup{dsf-rank-visit}($G = (V,E), n$)}{
+        n.color = GRAY\;
+
+        \If{$|E(n)| == 0$}{
+            n.rank = 0\;
+        } \Else{
+            max-rank = $-\infty$\;
+            \BlankLine
+            \BlankLine
+            \ForEach{$v \in E(n)$}{
+                \If{v.color == WHITE or v.color == GRAY or !v.wf}{
+                    n.wf = false\;
+                }
+                \BlankLine
+                \If{v.color == WHITE}{
+                    dfs-rank-visit($G, v$)\;
+                }
+                \BlankLine
+                \If{v.rank != None}{ \label{alg:set_rank}
+                    \If{v.wf}{
+                        n.rank = max(n.rank, v.rank + 1)\;
+                    } \Else{
+                        n.rank = max(n.rank, v.rank)\;
                     }
                 }
-
-                $N$.rank = current-max\;
             }
         }
-        \Begin{
-            DFS-WF(G)\;
 
-            \While{$\exists N \in V^{\superscc} \mid N.$rank = NULL}{
-                dfs-rank-visit($G, G^{\superscc},N$)\;
+        n.color = BLACK\;
+    }
+    \Begin{
+        DFS($G^{-1}$)\;\label{alg:rank_inverse_dfs}
+        \BlankLine
+        \BlankLine
+        Ordina $V$ in ordine decrescente di \emph{finishing-time}\;
+        \ForEach{$v \in V$}{
+            Ordina $E(v)$ in ordine decrescente di \emph{finishing-time}\;
+        }
+        \BlankLine
+        \BlankLine
+        \ForEach{$n \in V$}{
+            n.color = WHITE\;
+        }
+        \BlankLine
+        \BlankLine
+        \ForEach{$n \in V$}{
+            \If{n.color == WHITE}{
+                dfs-rank-visit($G,n$)\;
             }
         }
-    \end{algorithm}
-\end{figure}
+    }
+\end{algorithm}
 
-Si osservi che nell'Algoritmo \ref{alg:rank1} non teniamo traccia del colore dei nodi per $G^{\superscc}$, in quanto non c'è il rischio di incontrare cicli. La correttezza è banale, in quanto il rango e $WF(G)$ vengono calcolati semplicemente applicando le definizioni. La complessità (avendo a disposizione $G^{\superscc}$) è chiaramente quella di due visite in profondità, cioè $O(|V| + |E| + |V^{\superscc}| + |E^{\superscc}|) = O(|V| + |E|)$.
-\begin{figure}[H]
-    \hspace*{-0.8cm}
-    \centering
-    \includegraphics[scale=0.2]{rank.png}
-    \caption{Esempio di esecuzione dell'Algoritmo \ref{alg:rank1}. Il rango del nodo è tra parentesi, i nodi appartenenti a diverse SCC sono disegnati in colori diversi.}
-\end{figure}
+Valgono i seguenti risultati sull'algoritmo appena proposto:
+\begin{observation}
+    L'Algoritmo \ref{alg:rank} termina, essendo una DFS. Inoltre, per lo stesso motivo, l'algoritmo ha complessità $O(|V| + |E|)$.
+\end{observation}
+Nel seguito indicheremo con ``$v$.\emph{rank}'' il rango del nodo $v$ impostato dall'algoritmo, e con ``$\rankfunc(v)$'' il rango corretto. Inoltre useremo la notazione ``$v$.ft'' per indicare il \emph{finishing-time} per la DFS su $G^{-1}$ del nodo $v$.
+\begin{theorem}
+    \label{theo:rank_correct}
+    Dopo l'esecuzione dell'Algoritmo \ref{alg:rank} il rango di ogni nodo di $G$ è corretto, cioè $\forall v \in V\, \rankfunc(v) = v$.\emph{rank}.
+\end{theorem}
+E' importante ricordare che la DFS di $G$ procede secondo l'ordine indotto dalla DFS di $G^{-1}$.
 
-\subsubsection{L'algoritmo}
+Proponiamo innanzitutto alcuni risultati preliminari che consentono di semplificare la trattazione. La seguente osservazione è riferita alla seconda DFS nell'Algoritmo \ref{alg:rank}, cioè quella su $G$:
+\begin{observation}
+    \label{obs:rank_img_scc}
+    Se $\langle v,u\rangle \in E$ e $v$.ft $> u$.ft, allora $u \in [v]$.
+\end{observation}
+\begin{proof2}
+    Chiaramente da $v$ è possibile raggiungere $u$ per ipotesi. Consideriamo la DFS su $G^{-1}$: ovviamente si avrà $\langle u, v\rangle \in E^{-1}$. Ma se $v$ fosse stato raggiunto per la prima volta durante la visita in profondità di $u$, avremmo $u$.ft $> v$.ft. Allora $v$ viene raggiunto \emph{prima} di $u$, e l'unica possibilità per cui si possa avere $v$.ft $> u$.ft è che esista un percorso da $v$ a $u$ (in $G^{-1}$). Procedendo al contrario lungo questo cammino si verifica che da $u$ è possibile raggiungere $v$.
+\end{proof2}
+L'osservazione può essere riformulata in modo più esplitito:
+\begin{corollary}
+    Se durante la visita dell'immagine $v$ si incontra un vertice $u$ di colore bianco, $v$ è raggiungibile da $u$ e viceversa.
+\end{corollary}
+E può essere anche generalizzata:
+\begin{corollary}
+    \label{cor:scc_minore_inglobamento}
+    Se $v$.ft $> u$.ft, e $u$ è raggiungibile da $v$, allora $u \in [v]$.
+\end{corollary}
+Possiamo dedurre alcuni risultati interessanti:
+\begin{corollary}
+    Se $\langle v,u\rangle \in E$ e $v$.ft $> u$.ft, $u,v \in NWF(G)$. Quindi il criterio usato dall'Algoritmo \ref{alg:rank} per impostare il campo ``\emph{wf}'' dei nodi è corretto.
+\end{corollary}
+\begin{corollary}
+    \label{cor:no_buchi_scc}
+    Il \emph{finishing-time} dei nodi di una SCC è un intervallo di interi senza buchi.
+\end{corollary}
+\begin{proof2}
+    Supponiamo per assurdo che esista un nodo $x$ che trasgredisca questa proprietà ($x$.\emph{ft} $= i$). Supponiamo che $v_1, \dots, v_n \in [v]$ (in ordine decrescente di \emph{finishing-time}), e che $v_n$.\emph{ft} $= i-1$. Inoltre supponiamo che ci siano altri nodi in $[v]$, tutti con \emph{finishing-time} minore di $v_n$.\emph{ft}. Chiaramente deve valere $\langle v_n,x \rangle \in E^{-1}$, o equivalentemente $\langle x,v_n \rangle \in E$. Allora $x \in [v]$ per l'Osservazione \ref{obs:rank_img_scc}.
+\end{proof2}
+Per comodità, nel seguito adotteremo la seguente notazione:
+\begin{align*}
+    [v].\emph{ft}^* &\coloneqq \max_{x \in [v]} x.\emph{ft}\\
+    [v].\emph{ft}_* &\coloneqq \min_{x \in [v]} x.\emph{ft}
+\end{align*}
+Deduciamo il seguente risultato:
+\begin{proposition}
+    \label{prop:rank_independent}
+    $\rankfunc(v)$ dipende esclusivamente dal rango dei nodi $u$ che soddisfano la seguente proprietà:
+    \begin{gather}
+        u \in [v] \lor u.ft > [v].ft^* \label{rank_independency_formula}
+    \end{gather}
+\end{proposition}
+\begin{proof2}
+    Sia un nodo $x$ per cui non vale nessuna delle due condizioni, quindi $u$.\emph{ft} $< [v].\emph{ft}_*$. Allora dai nodi di $[v]$ non è possibile raggiungere $u$ (nemmeno con cammini più lunghi di un arco): se per assurdo fosse possibile, per il Corollario \ref{cor:scc_minore_inglobamento} si avrebbe $u \in [v]$; allora, per la definizione di \rankfunc, si ha la tesi.
+\end{proof2}
+Abbiamo spiegato perchè risulta conveniente operare la DFS su $G$ in ordine decrescente di \emph{finishing-time}: ad ogni passo saranno già disponibili le uniche informazioni necessarie, cioè il rango dei nodi con \emph{finishing-time} maggiore.
+
+Possiamo ora dimostrare il Teorema \ref{theo:rank_correct}:
+\begin{proof2}
+    Sia $v$ un nodo. Se $v$.\emph{rank} $= 0$, $v$ è una foglia.
+
+    Se $v$.\emph{rank} $\neq 0$, poichè il rango viene calcolato come da definizione, è sufficiente dimostrare che al momento della visita di $E(v)$ si ha $u$.\emph{rank} $= \rankfunc(u) \,\forall u \in E(v)$. Chiaramente gli unici nodi problematici sono quelli di colore grigio al momento della visita, in quanto l'esplorazione della loro immagine non è ancora terminata. Questi nodi stanno in $[v]$, e per il Corollario \ref{cor:no_buchi_scc} non ci sono nodi esterni alla SCC nell'intervallo, se si considera il \emph{finishing-time}. Ma allora tutti i nodi il cui rango è rilevante sono già stati visitati (Proposizione \ref{prop:rank_independent}).
+\end{proof2}
+
+\subsubsection{L'algoritmo FBA}
 Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo FBA:\\
 \begin{algorithm}[H]
     \label{alg:fba}
@@ -778,8 +796,8 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
     \SetKwProg{Fn}{function}{:}{end}
     \Fn{\textup{collapse}($G = (V,E), B \subseteq V$)}{
         Sia $u \in V$ scelto casualmente\;
-        \ForAll{$v \in B$}{
-            \ForAll{$e \in E \mid$ ``$e$ è incidente a $v$''}{
+        \ForEach{$v \in B$}{
+            \ForEach{$e \in E \mid$ ``$e$ è incidente a $v$''}{
                 \tcp*[h]{$e'$ è l'arco $e$ se si sostuisce $u$ al posto di $v$}\\
                 $E = (E - \{e\}) \cup \{e'\}$\;
             }
@@ -788,12 +806,12 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
         \Return{$u$}\;
     }
     \Fn{\textup{Split2}($G = (V,E), P, u, \widehat{B}$)} {
-        \ForAll{$B \in P \mid B \in \widehat{B}$}{
+        \ForEach{$B \in P \mid B \in \widehat{B}$}{
             $P = (P - \{B\}) \cup \{\{v \in B \mid v E u\}, \{v \in B \mid \neg (v E u)\}\}$\;
         }
     }
     \Begin{
-        DFS-RANK($G$)\;
+        Compute-Rank($G$)\;
         $\rho \coloneqq \max\{\rankfunc(n) \mid n \in V\}$\;
         $B_k \coloneqq \{n \in V \mid \rankfunc(n) = k\}, \,\, k \in \mathbb{N}^*$\;
         $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\; \label{alg:partizione_rudimentale}
@@ -802,7 +820,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
         $u  \coloneqq$ collapse($G,B_{-\infty}$)\; \label{alg:impunemente_omega}
         Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\; \label{alg:split_post_omega}
 
-        \ForAll{$i = 0, \dots, \rho$}{
+        \ForEach{$i = 0, \dots, \rho$}{
             \label{alg:fba_principal_loop}
             \tcp*[h]{I blocchi di $P$ aventi rango $i$}\\
             $D_i \coloneqq \{B \in P \mid B \subseteq B_i\}$\;
@@ -811,7 +829,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
             \tcp*[h]{$D_i$ è una partizione di $G_i$}\\
             $D_i =$ Paige-Tarjan($G_i, D_i$)\;
 
-            \ForAll{$B \in D_i$}{
+            \ForEach{$B \in D_i$}{
                 $u \coloneqq$ collapse($G,B$)\; \label{alg:collapse_rank}
                 Split2($G, P, u, \bigcup_{j=i+1}^\rho B_j$)\;
             }
@@ -856,7 +874,7 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
     L'Algoritmo \ref{alg:fba} ha complessità $O(|E| \log |V|)$.
 \end{theorem}
 \begin{proof2}
-    Il rango dei nodi del grafo si può calcolare con l'Algoritmo \ref{alg:rank1}, che ha complessità $O(|V|+|E|)$. Per l'osservazione precedente le operazioni alle Righe \ref{alg:impunemente_omega}, \ref{alg:split_post_omega} hanno un'implementazione lineare.
+    Il rango dei nodi del grafo si può calcolare con l'Algoritmo \ref{alg:rank}, che ha complessità $O(|V|+|E|)$. Per l'osservazione precedente le operazioni alle Righe \ref{alg:impunemente_omega}, \ref{alg:split_post_omega} hanno un'implementazione lineare.
 
     Il ciclo alla Riga \ref{alg:fba_principal_loop} è composto da tre elementi:
     \begin{enumerate}
