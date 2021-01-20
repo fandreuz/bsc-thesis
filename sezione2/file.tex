@@ -385,6 +385,7 @@ che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora 
     T_{alg} = O(|S|\log|S|).
 \end{gather*}
 
+\newpage
 \subsection{L'algoritmo di Paige-Tarjan}
 In questa sezione, dopo aver trattato il caso specifico risolto dall'algoritmo di Hopcroft, discutiamo l'algoritmo di Paige-Tarjan presentato in \cite{paigetarjan}. Il procedimento ha complessità $O(|E|\log |V|)$ (dati un insieme $V$ ed una relazione $E$), ed è il primo a risolvere il caso generale migliorando la complessità $O(|E||V|)$ manifestata dall'algoritmo di Kanellakis e Smolka, che non adotta particolari accorgimenti per la selezione dei blocchi da usare come \emph{splitter}.
 
@@ -539,6 +540,7 @@ Da questa implementazione possiamo dedurre il seguente upper-bound sulla comples
     \accente lecito considerare $|V| = O(|E|)$, per cui la complessità è $O(E\log |V|)$.
 \end{proof2}
 
+\newpage
 \subsection{L'algoritmo di Dovier-Piazza-Policriti}
 In questa sezione trattiamo l'Algoritmo risolutivo presentato in \cite{dovier}, che chiameremo anche ``FBA''. Non c'è un miglioramento generale per quanto riguarda la complessità, che resta $O(|E| \log |N|)$ come per l'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre drasticamente questo upper-bound, avvicinandolo in aluni casi ad una computazione lineare.
 
@@ -892,3 +894,7 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
         &= O(|E| \log |V|)
     \end{align*}
 \end{proof2}
+
+\newpage
+\subsection{L'algoritmo incrementale di Saha}
+Finora abbiamo trattato solamente algoritmi che, a partire dal grafo e da una eventuale partizione iniziale, determinano la \rscpnomath (e quindi la bisimulazione massima). Se in seguito il grafo viene modificato, ad esempio con l'aggiunta di un arco, è necessario far ripartire l'algoritmo, in quanto è possibile che la \rscpnomath cambi. L'algoritmo di Saha, presentato in \cite{saha}, consente di ridurre drasticamente la complessità del ricalcolo della \rscpnomath, quando sono note la trasformazione del grafo (l'aggiunta di un arco) e la \rscpnomath prima della trasformazione. Come vedremo, l'algoritmo si basa sulla considerazione di diversi casi in cui sono necessarie operazioni differenti a seconda del rango delle SCC messe in relazione dal nuovo arco.
