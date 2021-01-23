@@ -897,4 +897,55 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
 
 \newpage
 \subsection{L'algoritmo incrementale di Saha}
-Finora abbiamo trattato solamente algoritmi che, a partire dal grafo e da una eventuale partizione iniziale, determinano la \rscpnomath (e quindi la bisimulazione massima). Se in seguito il grafo viene modificato, ad esempio con l'aggiunta di un arco, è necessario far ripartire l'algoritmo, in quanto è possibile che la \rscpnomath cambi. L'algoritmo di Saha, presentato in \cite{saha}, consente di ridurre drasticamente la complessità del ricalcolo della \rscpnomath, quando sono note la trasformazione del grafo (l'aggiunta di un arco) e la \rscpnomath prima della trasformazione. Come vedremo, l'algoritmo si basa sulla considerazione di diversi casi in cui sono necessarie operazioni differenti a seconda del rango delle SCC messe in relazione dal nuovo arco.
+Finora abbiamo trattato solamente algoritmi che determinano la \rscpnomath (e quindi la bisimulazione massima) a partire dal grafo e da una eventuale partizione iniziale. Se in seguito il grafo viene modificato, ad esempio con l'aggiunta di un arco, per ottenere la nuova \rscpnomath è necessario far ripartire l'algoritmo da zero. L'algoritmo di Saha, presentato in \cite{saha}, consente di ridurre drasticamente la complessità del ricalcolo della \rscpnomath quando sono note la trasformazione del grafo (l'aggiunta di un arco) e la \rscpnomath prima della trasformazione. Come vedremo, l'algoritmo si basa sulla considerazione di diversi casi in cui sono necessarie operazioni differenti. L'ingrediente fondamentale per l'Algoritmo di Saha è, come per Dovier-Piazza-Policriti, la funzione \rankfuncnomath.
+
+Introduciamo innanzitutto l'idea che sta alla base dell'algoritmo oggetto di questa sezione; forniremo poi una serie di risultati che supportano l'intuizione con un apparato formale, ed infine presenteremo l'algoritmo vero e proprio. Infine tratteremo la complessità e la correttezza del procedimento illustrato.
+
+Nel seguito useremo la seguente notazione: aggiungendo un apice singolo dopo un simbolo ($G', X', \dots$) si intende designare l'oggetto matematico rappresentato dal simbolo senza apice, dopo la trasformazione ($G'$ è il grafo $G$ con l'aggiunta del nuovo arco). Inoltre, per mantenere la notazione proposta in \cite{saha}, indicheremo con $X$ la \rscpnomath di $G$, e con $X'$ la \rscpnomath dopo l'aggiunta del nuovo arco.
+
+L'algoritmo si compone essenzialmente di tre fasi (indicheremo con $X_i$ la partizione ottenuta dopo la fase $i$-esima):
+\begin{enumerate}
+    \item \emph{Split}, si usa una versione leggermente modificata dell'algoritmo di Paige-Tarjan su $G'$, con partizione iniziale uguale a $X$ (che deve essere nota a priori);
+    \item \emph{Merge}, si ricalcola il rango dei nodi di $G'$ e si determina $WF(G')$. In seguito alcuni blocchi di $X_1$ vengono uniti, secondo un criterio che vedremo nel seguito del lavoro;
+    \item \emph{Split}, è necessaria solo in alcuni casi: $X_2$ è in generale un'approssimazione più grossolana della \rscpnomath effettiva, ma è possibile individuare alcuni casi in cui questa seconda rifinitura risulta superflua.
+\end{enumerate}
+
+\subsubsection{Risultati preliminari}
+Al fine di spiegare l'intuizione dell'algoritmo e di semplificare la seguente trattazione della complessità e della correttezza, presentiamo alcuni risultati.
+
+\begin{proposition}
+    Siano $u,v \in V'$ due nodi non bisimili di $G'$. Allora $u,v$ appartengono a blocchi diversi di $X_1$.
+\end{proposition}
+\begin{proof2}
+    Segue dalla correttezza dell'Algoritmo di Paige-Tarjan.
+\end{proof2}
+
+Non possiamo fermarci ad $X_1$ per ovvi motivi: essa è la \rscpnomath di $G'$ con partizione iniziale $X$, che è una rifinitura della partizione iniziale vera e propria (e che nel seguito chiameremo $Q$). In altre parole, $X_1$ è la \rscpnomath per una partizione iniziale più ``restrittiva'': per questo motivo possiamo sperare che la soluzione effettiva sia \emph{più grossolana} rispetto ad $X_1$.
+
+A questo punto vengono ricalcolati il rango dei nodi e $WF(G)$. La seconda fase dell'algoritmo consiste nell'unione di alcuni blocchi di $X_1$ sulla base della seguente intuizione: supponiamo di applicare l'Algoritmo di Paige-Tarjan al grafo \emph{prima} dell'aggiunta del nuovo arco (che supponiamo essere $\langle u, v\rangle$). Il blocco $U$ contenente $u$ potrebbe essere stato diviso, ad un certo punto del procedimento, nei blocchi $U_1, U_2$, dove $U_1 \coloneqq U \cap E^{-1}(V), U_2 \coloneqq U - E^{-1}(V), v \in V$, e per la mancanza dell'arco $\langle u,v\rangle, u \in U_2$. La difficoltà della seconda fase sta dunque nel riformare $U$ unendo $U_1, U_2$, e nel determinare poi se sia necessario unire altri blocchi secondo lo stesso criterio conseguentemente all'unione di $U_1,U_2$.
+
+\begin{proposition}
+    Siano $u,v \in V'$ due nodi bisimili di $G'$. Allora $u,v$ appartengono allo stesso blocco di $X_2$.
+\end{proposition}
+\begin{proof2}
+    In $X_1$ gli unici nodi bisimili che possono trovarsi in blocchi differenti sono quelli che in $X$ non erano ancora bisimili per la mancanza dell'arco $\langle u,v\rangle$. Riformando $U$ (e a catena gli altri blocchi per i quali almeno un nodo ha un arco con destinazione in $U$) la mancanza viene sanata.
+\end{proof2}
+
+Si nota facilmente che in generale la mancanza viene sanata \emph{per eccesso}, ovvero i nuovi blocchi formati nella fase di \emph{Merge} devono essere nuovamente rifiniti per poter ottenere la \rscpnomath.
+
+\begin{observation}
+    Il rango dei blocchi uniti nella seconda fase è non decrescente.
+\end{observation}
+\begin{proof2}
+    \accente una conseguenza del fatto che la seconda coppia di blocchi che viene unita ha necessariamente un nodo verso il blocco $U$, la terza coppia ha necessariamente un nodo verso il blocco che risulta dall'unione della seconda coppia di blocchi, e così via. Inoltre $\langle a,b \rangle \in E \implies \rankfunc(a) \geq \rankfunc(b)$, e per la correttezza dell'Algoritmo di Paige-Tarjan i vertici all'interno di uno stesso blocco di $X_1$ hanno tutti lo stesso rango.
+\end{proof2}
+
+Proponiamo una condizione necessaria per verificare se due blocchi possono essere uniti.
+
+\begin{definition}
+    Siano $B,B' \in X_1$. Un blocco $C \in X_1$ è un \emph{causal splitter} di $B_1,B_2$ se valgono le seguenti condizioni:
+    \begin{itemize}
+        \item $C \in X'$;
+        \item $B \implies C \land B' \centernot\implies C$ oppure $B' \implies C \land B \centernot\implies C$.
+    \end{itemize}
+\end{definition}
