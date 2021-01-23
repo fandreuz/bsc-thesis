@@ -14,6 +14,8 @@
 \usepackage[english]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage{venndiagram}
+\usepackage{xspace}
+\usepackage{centernot}
 \usepackage[linesnumbered,ruled,lined,boxed,vlined,noend]{algorithm2e}
 \usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
 
@@ -21,8 +23,9 @@
 
 \newcommand{\splitfunc}{\textup{Split}}
 \newcommand{\rankfunc}{\textup{rank}}
+\newcommand{\rankfuncnomath}{\emph{rank}\xspace}
 \newcommand{\rscp}{\textup{RSCP}}
-\newcommand{\rscpnomath}{\emph{RSCP}\,}
+\newcommand{\rscpnomath}{\emph{RSCP}\xspace}
 
 \newcommand\restr[2]{{% we make the whole thing an ordinary symbol
   \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
