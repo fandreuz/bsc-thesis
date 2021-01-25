@@ -790,7 +790,7 @@ Possiamo ora dimostrare il Teorema \ref{theo:rank_correct}:
 \end{proof2}
 
 \subsubsection{L'algoritmo FBA}
-Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo FBA:\\
+Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo Dovier-Piazza-Policriti:\\
 \begin{algorithm}[H]
     \label{alg:fba}
     \KwData{$G = (V,E)$}
@@ -901,7 +901,7 @@ Finora abbiamo trattato solamente algoritmi che determinano la \rscpnomath (e qu
 
 Introduciamo innanzitutto l'idea che sta alla base dell'algoritmo oggetto di questa sezione; forniremo poi una serie di risultati che supportano l'intuizione con un apparato formale, ed infine presenteremo l'algoritmo vero e proprio. Infine tratteremo la complessità e la correttezza del procedimento illustrato.
 
-Nel seguito useremo la seguente notazione: aggiungendo un apice singolo dopo un simbolo ($G', X', \dots$) si intende designare l'oggetto matematico rappresentato dal simbolo senza apice, dopo la trasformazione ($G'$ è il grafo $G$ con l'aggiunta del nuovo arco). Inoltre, per mantenere la notazione proposta in \cite{saha}, indicheremo con $X$ la \rscpnomath di $G$, e con $X'$ la \rscpnomath dopo l'aggiunta del nuovo arco.
+Nel seguito useremo la seguente notazione: aggiungendo un apice singolo dopo un simbolo ($G', X', \dots$) si intende designare l'oggetto matematico rappresentato dal simbolo senza apice, dopo la trasformazione ($G'$ è il grafo $G$ con l'aggiunta del nuovo arco). Inoltre, per mantenere la notazione proposta in \cite{saha}, indicheremo con $X$ la \rscpnomath di $G$, e con $X'$ la \rscpnomath dopo l'aggiunta del nuovo arco. Scriveremo inoltre $A \implies B$ se $A,B$ sono blocchi di una stessa partizione e $\exists a \in A, b \in B \mid \langle a, b\rangle$ è un arco esistente.
 
 L'algoritmo si compone essenzialmente di tre fasi (indicheremo con $X_i$ la partizione ottenuta dopo la fase $i$-esima):
 \begin{enumerate}
@@ -943,9 +943,86 @@ Si nota facilmente che in generale la mancanza viene sanata \emph{per eccesso}, 
 Proponiamo una condizione necessaria per verificare se due blocchi possono essere uniti.
 
 \begin{definition}
+    \label{def:causal_splitter}
     Siano $B,B' \in X_1$. Un blocco $C \in X_1$ è un \emph{causal splitter} di $B_1,B_2$ se valgono le seguenti condizioni:
     \begin{itemize}
         \item $C \in X'$;
         \item $B \implies C \land B' \centernot\implies C$ oppure $B' \implies C \land B \centernot\implies C$.
     \end{itemize}
 \end{definition}
+
+Un \emph{causal splitter} di due blocchi $B_1,B_2$ è intuitivamente uno dei blocchi che potrebbe aver determinato la divisione di $B_1,B_2$. Dimostriamo alcune proprietà che verranno tacitamente usate nel seguito.
+
+\begin{observation}
+    Siano $B_1, B_2, B_3$ tre blocchi, e sia $C$ un blocco che \emph{non è} un \emph{causal splitter} di $B_1,B_2$ nè di $B_2,B_3$. Allora:
+    \begin{itemize}
+        \item $C$ non è un \emph{causal splitter} di $B_1,B_3$;
+        \item Sia $B_4 \coloneqq B_1 \cup B_2$. $C$ non è un \emph{causal splitter} di $B_3, B_4$.
+    \end{itemize}
+    Siano $B_1, B_2, C_1, C_2$ dei blocchi. Supponiamo che $C_1$ non sia un \emph{causal splitter} di $B_1,B_2$. Allora $C_1 \cup C_2$ è un \emph{causal splitter} di $B_1,B_2$ se e solo se $C_2$ è un \emph{causal splitter} di $B_1,B_2$.
+\end{observation}
+\begin{proof2}
+    I tre punti sono conseguenze elementari della definizione.
+\end{proof2}
+
+\begin{observation}
+    Siano $B,B' \in X_1$. Se esiste un blocco $C$ che sia un \emph{causal splitter} di $B,B'$, allora i nodi di $B$ e $B'$ non sono bisimili.
+\end{observation}
+\begin{proof2}
+    Sia $A = B \cup B'$. Allora $A \cap C \neq \emptyset, A - C \neq \emptyset$, e poichè $C$ è un blocco della \rscpnomath è necessario che $B, B'$ restino separati.
+\end{proof2}
+
+La prima richiesta nella Definizione \ref{def:causal_splitter} è fondamentale: se $C \not\in X'$ potremmo avere ad esempio $C_1, C_2 \in X', C \subseteq C_1 \cup C_2$. \accente palese che in questo caso richiedere che valga la seconda condizione della Definizione \ref{def:causal_splitter} fornisce un criterio poco restrittivo.
+
+Vediamo ora come si applica nella pratica il criterio appena proposto, con un algoritmo per la seconda fase che si applica ad un caso semplificato:
+
+\begin{algorithm}[H]
+    \label{alg:simple_merge}
+    \KwData{$G = (V,E), Q, \langle u,v\rangle, X_1$}
+    \caption{Simple-Merge}
+    \SetKwProg{Fn}{function}{:}{end}
+    \Fn{\textup{Merge-Blocks}($G, X_1, B$)} {
+        CausalSplitters$(A) \coloneqq \{C \in X \mid C \text{ è un \emph{causal splitter} di } A,B\}$\;
+        \tcp*[h]{$S$ contiene i blocchi che possono essere uniti a $B$}\\
+        $S \coloneqq \{A \mid $ CausalSplitters$(A) = \emptyset \land \rankfunc(A) = \rankfunc(B) \land \exists K \in Q \mid A,B \subset K\}$\;
+        $B' \coloneqq B \cup \bigcup_{A \in S} A$\;
+        $X_1 = (X_1 - S) - \{B\}$\;
+        $X_1 = X_1 \cup B'$\;
+        \tcp*[h]{Propaghiamo le modifiche}\\
+        \ForAll{$A \mid A \implies B'$}{
+            Merge-Blocks(A)\;
+        }
+    }
+    \Begin{
+        Update-Rank($G' = (V, E \cup \langle u,v\rangle)$)\;
+        Merge-Blocks($G, X_1, [u]$)\;
+        \Return{$X_1$}\;
+    }
+\end{algorithm}
+
+L'algoritmo prende in ingresso il grafo $G$, la partizione iniziale $Q$, l'arco aggiunto nel passaggio da $G$ a $G'$ e la partizione $X_1$ che risulta dalla prima fase. Viene applicata ricorsivamente la funzione \emph{Merge-Blocks}, che determina quali blocchi della partizione possono essere uniti al parametro $B$ (cioè per quali coppie $A,B$ non esiste \emph{causal splitter}). Da questo insieme di blocchi vengono scartati quelli che non hanno rango \emph{aggiornato} uguale a $\rankfunc(B)$, e quelli che non appartengono allo stesso blocco di $Q$ in cui si trova $B$. La prima chiamata viene effettuata con parametro $[v]$ (che è il primo blocco a cambiare in seguito all'aggiunta del nuovo arco). In seguito il cambiamento viene propagato a tutti i blocchi che risentono dell'unione dei blocchi nella chiamata attuale di \emph{Merge-Blocks} (cioè quelli che hanno un arco con destinazione in $B'$).
+
+\begin{observation}
+    I blocchi vengono raggiunti dall'Algoritmo \ref{alg:simple_merge} in ordine non decrescente di \rankfuncnomath.
+\end{observation}
+
+\begin{proposition}
+    Nell'Algoritmo \ref{alg:simple_merge} i nuovi blocchi derivanti dall'unione di blocchi di $X_1$ non vengono più raggiunti dalla ricorsione se l'aggiunta del nuovo arco non ha determinato la formazione di una nuova SCC.
+\end{proposition}
+\begin{proof2}
+    Ehm..
+\end{proof2}
+
+L'ultima proposizione ha una conseguenza molto utile in termini pratici:
+
+\begin{corollary}
+    Se il nuovo arco non crea una nuova SCC nel grafo $G'$, l'output dell'Algoritmo \ref{alg:simple_merge} è $X'$.
+\end{corollary}
+\begin{proof2}
+    La partizione determinata è chiaramente stabile:
+    \begin{itemize}
+        \item $X_1$ è stabile per la correttezza dell'Algoritmo di Paige-Tarjan. Poichè che la partizione viene modificata solamente con l'unione di blocchi la condizione per la stabilità resta valida per i blocchi non modificati;
+        \item Due blocchi vengono uniti solamente se non esiste un \emph{causal splitter} per la coppia, il che equivale ad imporre la condizione per la stabilità.
+    \end{itemize}
+    Resta da dimostrare che l'output è la \rscpnomath...
+\end{proof2}
