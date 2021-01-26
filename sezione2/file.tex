@@ -1007,6 +1007,7 @@ L'algoritmo prende in ingresso il grafo $G$, la partizione iniziale $Q$, l'arco 
 \end{observation}
 
 \begin{proposition}
+    \label{prop:no_new_scc_causal_splitter}
     Nell'Algoritmo \ref{alg:simple_merge} i nuovi blocchi derivanti dall'unione di blocchi di $X_1$ non vengono più raggiunti dalla ricorsione se l'aggiunta del nuovo arco non ha determinato la formazione di una nuova SCC.
 \end{proposition}
 \begin{proof2}
@@ -1026,3 +1027,7 @@ L'ultima proposizione ha una conseguenza molto utile in termini pratici:
     \end{itemize}
     Resta da dimostrare che l'output è la \rscpnomath...
 \end{proof2}
+
+Il caso in cui non viene creata una nuova SCC è però una notevole semplificazione, e con alcuni accorgimenti siamo in grado di determinare un procedimento che gestisca anche il caso generale. Per questo sarà necessario introdurre una ``over-approximation'' (come viene chiamata dall'autore in \cite{saha}) a cui si rimedierà con la terza fase (\emph{Split II}).
+
+Quando viene creata una nuova SCC la Proposizione \ref{prop:no_new_scc_causal_splitter} non è più valida, per cui è possibile che due blocchi $C_1,C_2$, entrambi \emph{causal splitter} per due blocchi $B_1,B_2$ ad un certo istante, vengano uniti successivamente. Per tenere in considerazione questa eventualità $B_1,B_2$ vengono uniti in ogni caso, durante la terza fase sarà necessario rifinire la partizione. Naturalmente non è efficiente unire tutti i blocchi con rango uguale e contenuti nello stesso blocco della partizione iniziale: per questo motivo dovremo definire un criterio per capire quando è effettivamente possibile che due o più \emph{causal splitter} vengano accorpati ad un istante successivo.
