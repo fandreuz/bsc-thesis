@@ -916,11 +916,12 @@ Al fine di spiegare l'intuizione dell'algoritmo e di semplificare la seguente tr
 \begin{proposition}
     Siano $u,v \in V'$ due nodi non bisimili di $G'$. Allora $u,v$ appartengono a blocchi diversi di $X_1$.
 \end{proposition}
+Ricordiamo che $X_1$ è la partizione ottenuta al termine della prima fase di \emph{Split}.
 \begin{proof2}
     Segue dalla correttezza dell'Algoritmo di Paige-Tarjan.
 \end{proof2}
 
-Non possiamo fermarci ad $X_1$ per ovvi motivi: essa è la \rscpnomath di $G'$ con partizione iniziale $X$, che è una rifinitura della partizione iniziale vera e propria (e che nel seguito chiameremo $Q$). In altre parole, $X_1$ è la \rscpnomath per una partizione iniziale più ``restrittiva'': per questo motivo possiamo sperare che la soluzione effettiva sia \emph{più grossolana} rispetto ad $X_1$.
+Non possiamo fermarci ad $X_1$ per ovvi motivi: essa è la \rscpnomath di $G'$ con partizione iniziale $X$, che è una rifinitura della partizione iniziale vera e propria (e che nel seguito chiameremo $Q$). In altre parole, $X_1$ è la \rscpnomath per una partizione iniziale più ``restrittiva'': per questo motivo possiamo sperare che la soluzione effettiva sia in realtà \emph{più grossolana} rispetto ad $X_1$.
 
 A questo punto vengono ricalcolati il rango dei nodi e $WF(G)$. La seconda fase dell'algoritmo consiste nell'unione di alcuni blocchi di $X_1$ sulla base della seguente intuizione: supponiamo di applicare l'Algoritmo di Paige-Tarjan al grafo \emph{prima} dell'aggiunta del nuovo arco (che supponiamo essere $\langle u, v\rangle$). Il blocco $U$ contenente $u$ potrebbe essere stato diviso, ad un certo punto del procedimento, nei blocchi $U_1, U_2$, dove $U_1 \coloneqq U \cap E^{-1}(V), U_2 \coloneqq U - E^{-1}(V), v \in V$, e per la mancanza dell'arco $\langle u,v\rangle, u \in U_2$. La difficoltà della seconda fase sta dunque nel riformare $U$ unendo $U_1, U_2$, e nel determinare poi se sia necessario unire altri blocchi secondo lo stesso criterio conseguentemente all'unione di $U_1,U_2$.
 
@@ -957,77 +958,20 @@ Un \emph{causal splitter} di due blocchi $B_1,B_2$ è intuitivamente uno dei blo
     Siano $B_1, B_2, B_3$ tre blocchi, e sia $C$ un blocco che \emph{non è} un \emph{causal splitter} di $B_1,B_2$ nè di $B_2,B_3$. Allora:
     \begin{itemize}
         \item $C$ non è un \emph{causal splitter} di $B_1,B_3$;
-        \item Sia $B_4 \coloneqq B_1 \cup B_2$. $C$ non è un \emph{causal splitter} di $B_3, B_4$.
+        \item Sia $B_4 \coloneqq B_1 \cup B_2$. $C$ non è un \emph{causal splitter} di $B_3, B_4$;
+        \item Siano $B_1, B_2, C_1, C_2$ dei blocchi. Supponiamo che $C_1$ non sia un \emph{causal splitter} di $B_1,B_2$. Allora $C_1 \cup C_2$ è un \emph{causal splitter} di $B_1,B_2$ se e solo se $C_2$ è un \emph{causal splitter} di $B_1,B_2$.
     \end{itemize}
-    Siano $B_1, B_2, C_1, C_2$ dei blocchi. Supponiamo che $C_1$ non sia un \emph{causal splitter} di $B_1,B_2$. Allora $C_1 \cup C_2$ è un \emph{causal splitter} di $B_1,B_2$ se e solo se $C_2$ è un \emph{causal splitter} di $B_1,B_2$.
 \end{observation}
 \begin{proof2}
     I tre punti sono conseguenze elementari della definizione.
 \end{proof2}
 
 \begin{observation}
-    Siano $B,B' \in X_1$. Se esiste un blocco $C$ che sia un \emph{causal splitter} di $B,B'$, allora i nodi di $B$ e $B'$ non sono bisimili.
-\end{observation}
-\begin{proof2}
-    Sia $A = B \cup B'$. Allora $A \cap C \neq \emptyset, A - C \neq \emptyset$, e poichè $C$ è un blocco della \rscpnomath è necessario che $B, B'$ restino separati.
-\end{proof2}
-
-La prima richiesta nella Definizione \ref{def:causal_splitter} è fondamentale: se $C \not\in X'$ potremmo avere ad esempio $C_1, C_2 \in X', C \subseteq C_1 \cup C_2$. \accente palese che in questo caso richiedere che valga la seconda condizione della Definizione \ref{def:causal_splitter} fornisce un criterio poco restrittivo.
-
-Vediamo ora come si applica nella pratica il criterio appena proposto, con un algoritmo per la seconda fase che si applica ad un caso semplificato:
-
-\begin{algorithm}[H]
-    \label{alg:simple_merge}
-    \KwData{$G = (V,E), Q, \langle u,v\rangle, X_1$}
-    \caption{Simple-Merge}
-    \SetKwProg{Fn}{function}{:}{end}
-    \Fn{\textup{Merge-Blocks}($G, X_1, B$)} {
-        CausalSplitters$(A) \coloneqq \{C \in X \mid C \text{ è un \emph{causal splitter} di } A,B\}$\;
-        \tcp*[h]{$S$ contiene i blocchi che possono essere uniti a $B$}\\
-        $S \coloneqq \{A \mid $ CausalSplitters$(A) = \emptyset \land \rankfunc(A) = \rankfunc(B) \land \exists K \in Q \mid A,B \subset K\}$\;
-        $B' \coloneqq B \cup \bigcup_{A \in S} A$\;
-        $X_1 = (X_1 - S) - \{B\}$\;
-        $X_1 = X_1 \cup B'$\;
-        \tcp*[h]{Propaghiamo le modifiche}\\
-        \ForAll{$A \mid A \implies B'$}{
-            Merge-Blocks(A)\;
-        }
-    }
-    \Begin{
-        Update-Rank($G' = (V, E \cup \langle u,v\rangle)$)\;
-        Merge-Blocks($G, X_1, [u]$)\;
-        \Return{$X_1$}\;
-    }
-\end{algorithm}
-
-L'algoritmo prende in ingresso il grafo $G$, la partizione iniziale $Q$, l'arco aggiunto nel passaggio da $G$ a $G'$ e la partizione $X_1$ che risulta dalla prima fase. Viene applicata ricorsivamente la funzione \emph{Merge-Blocks}, che determina quali blocchi della partizione possono essere uniti al parametro $B$ (cioè per quali coppie $A,B$ non esiste \emph{causal splitter}). Da questo insieme di blocchi vengono scartati quelli che non hanno rango \emph{aggiornato} uguale a $\rankfunc(B)$, e quelli che non appartengono allo stesso blocco di $Q$ in cui si trova $B$. La prima chiamata viene effettuata con parametro $[v]$ (che è il primo blocco a cambiare in seguito all'aggiunta del nuovo arco). In seguito il cambiamento viene propagato a tutti i blocchi che risentono dell'unione dei blocchi nella chiamata attuale di \emph{Merge-Blocks} (cioè quelli che hanno un arco con destinazione in $B'$).
-
-\begin{observation}
-    I blocchi vengono raggiunti dall'Algoritmo \ref{alg:simple_merge} in ordine non decrescente di \rankfuncnomath.
+    Siano $B,B' \in X_1$. Se esiste un \emph{causal splitter}, allora i nodi di $B$ e $B'$ non sono bisimili.
 \end{observation}
 
-\begin{proposition}
-    \label{prop:no_new_scc_causal_splitter}
-    Nell'Algoritmo \ref{alg:simple_merge} i nuovi blocchi derivanti dall'unione di blocchi di $X_1$ non vengono più raggiunti dalla ricorsione se l'aggiunta del nuovo arco non ha determinato la formazione di una nuova SCC.
-\end{proposition}
-\begin{proof2}
-    Ehm..
-\end{proof2}
+La prima richiesta nella Definizione \ref{def:causal_splitter} è fondamentale: considerare come \emph{causal splitter} un blocco che non siamo sicuri faccia effettivamente parte di $X'$ (che, ricordiamo, è la \emph{RSCP} del grafo dopo l'aggiunta del nuovo arco) significa rinunciare ad unire due blocchi. Se in seguito tale \emph{causal splitter} viene unito ad un altro blocco, la condizione di \emph{causal splitter} potrebbe non essere più valida.
 
-L'ultima proposizione ha una conseguenza molto utile in termini pratici:
+Per questo motivo, nel caso in cui non fossimo sicuri dell'effettiva appartenenza di un blocco ad $X'$ questo verrà escluso dalla valutazione dei possibili \emph{causal splitter}. \accente evidente che questa decisione ci porta ad unire blocchi per cui potrebbe, in linea di principio, esistere un \emph{causal splitter}.
 
-\begin{corollary}
-    Se il nuovo arco non crea una nuova SCC nel grafo $G'$, l'output dell'Algoritmo \ref{alg:simple_merge} è $X'$.
-\end{corollary}
-\begin{proof2}
-    La partizione determinata è chiaramente stabile:
-    \begin{itemize}
-        \item $X_1$ è stabile per la correttezza dell'Algoritmo di Paige-Tarjan. Poichè che la partizione viene modificata solamente con l'unione di blocchi la condizione per la stabilità resta valida per i blocchi non modificati;
-        \item Due blocchi vengono uniti solamente se non esiste un \emph{causal splitter} per la coppia, il che equivale ad imporre la condizione per la stabilità.
-    \end{itemize}
-    Resta da dimostrare che l'output è la \rscpnomath...
-\end{proof2}
-
-Il caso in cui non viene creata una nuova SCC è però una notevole semplificazione, e con alcuni accorgimenti siamo in grado di determinare un procedimento che gestisca anche il caso generale. Per questo sarà necessario introdurre una ``over-approximation'' (come viene chiamata dall'autore in \cite{saha}) a cui si rimedierà con la terza fase (\emph{Split II}).
-
-Quando viene creata una nuova SCC la Proposizione \ref{prop:no_new_scc_causal_splitter} non è più valida, per cui è possibile che due blocchi $C_1,C_2$, entrambi \emph{causal splitter} per due blocchi $B_1,B_2$ ad un certo istante, vengano uniti successivamente. Per tenere in considerazione questa eventualità $B_1,B_2$ vengono uniti in ogni caso, durante la terza fase sarà necessario rifinire la partizione. Naturalmente non è efficiente unire tutti i blocchi con rango uguale e contenuti nello stesso blocco della partizione iniziale: per questo motivo dovremo definire un criterio per capire quando è effettivamente possibile che due o più \emph{causal splitter} vengano accorpati ad un istante successivo.
+Per ovviare a questa mancanza viene introdotta la terza fase, che rimedia all'approssimazione per eccesso che viene fatta nel rinunciare ad alcuni \emph{causal splitter}.
