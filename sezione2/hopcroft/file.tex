@@ -1,0 +1,383 @@
+\subsection{Minimizzazione di automi a stati finiti}
+Esaminiamo innanzitutto l'algoritmo risolutivo per una versione semplificata del problema della determinazione della bisimulazione massima, ovvero la minimizzazione di un'automa a stati finiti, presentato in \cite{hopcroft} nel 1971. Sebbene questa soluzione non sia generale, ha fornito alcuni spunti fondamentali per l'ideazione di algoritmi risolutivi più completi, che verranno presentati nel seguito del lavoro.
+
+\subsubsection{Alcune nozioni fondamentali}
+Innanzitutto definiamo il concetto di \emph{automa}, chiaramente centrale nella descrizione del problema:
+\begin{definition}
+    Consideriamo i seguenti oggetti:
+    \begin{itemize}
+        \item Un insieme finito $I$ detto \emph{insieme degli ingressi};
+        \item Un insieme finito $S$ detto \emph{insieme degli stati}, ad ogni stato è associata un'unica uscita;
+        \item Un insieme finito $F \subseteq S$ detto \emph{insieme degli stati finali};
+        \item Una funzione $\delta: S \times I E S$ detta \emph{funzione di trasferimento}.
+    \end{itemize}
+    Chiameremo $A = (S,I,\delta,F)$ \emph{automa}. Useremo la notazione $Out(x)$ per indicare l'output corrispondente allo stato $x$.
+\end{definition}
+Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga rappresenta uno stato, ogni colonna un ingresso, ed ogni cella contiene il nuovo stato del sistema quando, nel momento in cui il sistema si trova nello stato corrispondente alla riga, si inserisce l'ingresso corrispondente alla colonna.In alternativa possiamo utilizzare una rappresentazione grafica, in cui ogni stato è descritto da un cerchio contenente il nome dello stato, e le transizioni tra stati sono descritte da frecce, sulle quali viene specificato l'ingresso che ha innescato la transizione.\\
+\begin{example}
+    Nella Tabella \ref{fig:tab_automata} è rappresentato un'automa che cambia stato ($A E B$, $B E C$) solamente se l'ingresso è ``1'', e lo stato non è ``$C$''. In qualsiasi altro caso lo stato non cambia.
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{ c | c c }
+            \hline
+            & 0 & 1\\
+            \hline
+            a[0] & a & b \\
+            b[0] & b & c \\
+            c[1] & c & c \\
+            \hline
+          \end{tabular}
+        \caption{Rappresentazione tabellare di un'automa}
+        \label{fig:tab_automata}
+    \end{table}
+    \label{exa:automata_tab}
+\end{example}
+\begin{example}
+    Nella Figura \ref{fig:automata} è rappresentato lo stesso automa dell'Esempio \ref{exa:automata_tab}.
+    \begin{figure}[hb]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
+            scale = 1,transform shape]
+            \node[state] (a) {$a[0]$};
+            \node[state] (b) [right of=a] {$b[0]$};
+            \node[state] (c) [right of=b] {$c[1]$};
+
+            \path (a) edge              node {$1$} (b)
+                  (b) edge              node {$1$} (c)
+                  (a) edge [loop above]             node {$0$} (a)
+                  (b) edge [loop above]             node {$0$} (b)
+                  (c) edge [loop above]              node {$0/1$} (c);
+        \end{tikzpicture}
+        \caption{Rappresentazione grafica di un'automa}
+        \label{fig:automata}
+    \end{figure}
+\end{example}
+In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente, il sistema si comporta in modo simile quando riceve in input un ingresso qualsiasi, e si trova in uno degli stati presi in esame. Diamo un esempio di questa situazione:
+\begin{example}
+    \begin{figure}[b]
+        \centering
+        \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
+            scale = 1,transform shape]
+            \node[state] (a) {$a[0]$};
+            \node[state] (b) [right of=a] {$b[1]$};
+            \node[state] (c) [right of=b] {$c[1]$};
+
+            \path (a) edge              node {$1$} (b)
+                  (b) edge [bend right]             node {$1$} (c)
+                  (c) edge [bend right]             node {$1$} (b)
+                  (a) edge [loop above]             node {$0$} (a)
+                  (b) edge [loop above]             node {$0$} (b)
+                  (c) edge [loop above]             node {$0$} (c);
+        \end{tikzpicture}
+        \caption{Automa contenente stati equivalenti}
+        \label{fig:automata_eq}
+    \end{figure}
+    Consideriamo gli stati dell'automa rappresentato graficamente nella Figura \ref{fig:automata_eq}. Supponiamo di accorpare gli stati $B,C$ in un unico stato, che chiamiamo $B'$. Se ci interessiamo solamente alla sequenza di output ed all'eventuale raggiungimento di uno stato finale, il nuovo automa risulta indistinguibile dal primo.
+\end{example}
+Proponiamo la definizione formale di equivalenza tra stati che viene utilizzata in \cite{hopcroft}. Nel seguito ne dedurremo un'altra, che consente di stabilire un parallelo con gli argomenti trattati nella Sezione \ref{sec:base}.
+\begin{definition}
+    \label{def:equivalent_states}
+    Sia $I^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : S \times I^*$ la funzione di transizione ``iterata''. Diremo che due stati $x,y$ sono equivalenti (con la notazione ``$x \sim y$'') se e soltanto se valgono congiuntamente le seguenti condizioni:
+    \begin{enumerate}
+        \item $Out(x) = Out(y)$;
+        \item $\forall i^* \in I^*,\,\, \delta^*(x,i^*) \in F \iff \delta^*(y,i^*) \in F$.
+    \end{enumerate}
+\end{definition}
+\accente evidente che individuare g
+li stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti. In questo lavoro non illustreremo cosa comporta questa definizione, e perchè è importante che per qualsiasi stringa di lunghezza finita si giunga ad uno stato finale partendo da due stati supposti equivalenti.
+\begin{observation}
+    La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
+\end{observation}
+La seguente proposizione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref{sec:rscp}:
+\begin{proposition}
+    \label{prop:equivalent_states}
+    Due stati $x,y$ sono equivalenti nel senso della definizione \ref{def:equivalent_states} se e solo se
+    \begin{gather}
+        \forall i \in I, \quad \delta(x,i) \sim \delta(y,i)
+    \end{gather}
+    e $Out(x) = Out(y)$.
+\end{proposition}
+\begin{proof2}
+    Supponiamo che $\exists i \in I : \delta(x,i) \not\sim \delta(y,i)$. Allora, ad esempio:
+    \begin{gather*}
+        \exists i^* \in I^* : \delta^*(\delta(x,i),i^*) = \delta^*(x,ii^*) \in F, \,\, \delta^*(\delta(y,i),i^*) = \delta^*(y,ii^*) \notin F
+    \end{gather*}
+    Quindi, per l'esistenza della stringa $ii^*$ si ha $x \not\sim y$. La dimostrazione è speculare se $\exists i^* \in I^* : \delta^*(x,ii^*) \notin F, \delta^*(y,ii^*) \in F$.\\
+    Ora supponiamo che valga la (1). E' chiaro che $\forall i^* \in I^*, \forall i \in I$ si ha che
+    \begin{gather*}
+        \delta^*(x,ii^*) \sim \delta^*(y,ii^*)
+    \end{gather*}
+    e quindi $x \sim y$.
+\end{proof2}
+\begin{proposition}
+    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{prop:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
+\end{proposition}
+\begin{proof2}
+    Supponiamo che $x \sim y$. Sia $x E x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y E y'$. Allora, per l'Osservazione \ref{prop:equivalent_states}, $x' \sim y'$.\\
+    Chiaramente lo stesso argomento vale in modo speculare.
+\end{proof2}
+Osserviamo che nella definizione di ``$E$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
+Possiamo definire la \emph{minimizzazione per stati equivalenti} di un'automa a stati finiti:
+\begin{definition}\label{def:minim_eq_states}
+    Sia $A = (S,I,\delta,F)$ un'automa. Chiameremo \emph{minimizzazione per stati equivalenti} l'automa $A = (\widetilde{S}, I, \widetilde{\delta}, \widetilde{F})$ dove
+    \begin{itemize}
+        \item $\widetilde{S} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $S$'';
+        \item $\widetilde{\delta} : (\widetilde{S} \times I) E \widetilde{S}, \quad \delta(i, x) = y \implies \widetilde{\delta}(i,\widetilde{x}) = \widetilde{y}$, dove $x,y \in S, i \in I$, e $\widetilde{x}, \widetilde{y} \in \widetilde{S}$ sono rispettivamente le classi di equivalenza di ``$\sim$'' a cui appartengono $x,y$;
+        \item $\widetilde{F} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $F$'';
+    \end{itemize}
+\end{definition}
+Prima di concludere l'esposizione delle nozioni preliminari è necessario dimostrare un risultato interessante che lega il problema della minimizzazzione di un'automa a stati finiti con quanto è stato presentato nella sezione \ref{sec:rscp}. A questo scopo dimostriamo i seguenti lemmi, che consentono di dimostrare tale legame in modo agevole:
+\begin{lemma}
+    \label{lem:part_stab_stesso_blocco}
+    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Allora $\forall (x,y) \in S \times S$ tali che $[x]_{\widehat{S}} = [y]_{\widehat{S}}$ si ha che $\forall i^* \in I^*$
+    \begin{gather*}
+        [\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}
+    \end{gather*}
+\end{lemma}
+\begin{proof2}
+    Procediamo per induzione su $i^*$. Inizialmente i due stati si trovano nello stesso blocco. Ora supponiamo che dopo l'inserimento dell' $(n-1)$-esimo simbolo di $i^*$ i due stati $x_{n-1}, y_{n-1}$ in cui si trova l'automa appartengano ancora allo stesso blocco. La partizione è stabile rispetto alla funzione $\delta_i$, dove $i$ è l' $n$-esimo simbolo di $i^*$, quindi tutto il blocco $[x_{n-1}]_{\widehat{S}} = [y_{n-1}]_{\widehat{S}}\,\,$ è contenuto all'interno dell'insieme $\delta_i^{-1}([\delta_i(x_{n-1})]_{\widehat{S}}) = \delta_i^{-1}([x_n]_{\widehat{S}})$. Quindi $\delta_i(y_{n-1}) \in \delta_i^{-1}([x_n]_{\widehat{S}})$, e dunque si ha anche $[x_n]_{\widehat{S}} = [y_n]_{\widehat{S}}$.
+\end{proof2}
+\begin{lemma}
+    \label{lem:part_stab_equiv}
+    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Supponiamo inoltre che per $\widehat{S}$ valga la segente condizione:
+    \begin{gather*}
+        \forall (x,f) \in S \times F, \quad [x]_{\widetilde{S}} = [f]_{\widetilde{S}} \implies x \in F
+    \end{gather*}
+    Allora $\forall X \in \widehat{S}, \,\,\forall (x,y) \in X \times X$ si ha $x \sim y$.
+\end{lemma}
+\begin{proof2}
+    Supponiamo per assurdo che in un blocco $X \in \widehat{S}$ esistano due stati $x,y$ non equivalenti. Allora deve esistere una stringa $i^* \in I^*$ tale che, ad esempio, $\delta^*(x,i^*) \in F \land \delta^*(y,i^*) \not\in F$. Ma per il Lemma \ref{lem:part_stab_stesso_blocco} $[\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}$. Chiaramente questo è assurdo per la condizione supposta nell'ipotesi, quindi non possono esistere nello stesso blocco due stati non equivalenti.
+\end{proof2}
+Possiamo dimostrare il seguente risultato:
+\begin{theorem}
+    \label{theo:auto_mini_rscp}
+    Sia $A$ un'automa a stati finiti. Supponiamo che in tale automa ad uno stato finale ed uno non finale non possa essere assegnato un output identico. La minimizzazione per stati equivalenti proposta nella Definizione \ref{def:minim_eq_states} è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$.
+\end{theorem}
+\begin{proof2}
+    Dimostriamo che la minimizzazione proposta nella Definizione \ref{def:minim_eq_states} è una partizione stabile rispetto alle funzioni $\delta_i$. Supponiamo per assurdo che $\exists i \in I : \widetilde{S}$ non è stabile rispetto a $\delta_i$. Quindi $\exists S_1, S_2 \in S :$
+    \begin{gather*}
+        S_1 \not\subseteq \delta_i^{-1}(S_2) \,\, \land \,\, S_1 \,\cap \,\delta_i^{-1}(S_2) \neq \emptyset
+    \end{gather*}
+    La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{prop:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
+    Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
+    \begin{gather*}
+        S_1 \cap X \neq \emptyset \,\,\land\,\, S_2 \cap X \neq \emptyset
+    \end{gather*}
+    Ma questo è chiaramente in contrasto con il Lemma \ref{lem:part_stab_equiv} per come è stata costruita la partizione $\widetilde{S}$, in quanto esistono coppie di stati $(x,y) \in X \times X$ per cui vale $x \in S_1, y \in S_2$, cioè $x \not\sim y$.
+\end{proof2}
+Osserviamo che la condizione richiesta nell'ipotesi del Teorema \ref{theo:auto_mini_rscp}, che impone l'assegnazione di un output diverso a stati finali e non finali, è estremamente leggera: dato un'automa qualsiasi è sempre possibile costruirne un altro, che soddisfa tale condizione, in tempo lineare rispetto al numero di stati.
+
+\subsubsection{L'algoritmo naive}
+Innanzitutto, con i risultati della sezione precedente, possiamo progettare il seguente algoritmo banale:\\
+\begin{algorithm}[H]
+    \label{alg:hop_banale}
+    \SetAlgoLined
+    \KwData{$S,I,\delta$}
+    \tcp*[h]{Partizione iniziale contenente un unico blocco}
+    \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
+    \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
+    $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
+    \ForEach{$i \in I$} {
+        \label{alg:hop_banale_for_ingressi}
+        \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
+            \label{alg:hop_banale_for_ns}
+            \tcc*[h]{Estraiamo casualmente una coppia di blocchi non stabili}\\
+            $(X,Y) = NS[0]$\;
+            $X_1 \coloneqq X - \delta_i^{-1}({Y})$\;
+            $X_2 \coloneqq X \cap \delta_i^{-1}({Y})$\;
+            \tcp*[h]{Aggiorniamo $S$}\\
+            $\widetilde{S} = (\widetilde{S} - \{X\}) \cup \{X_1,X_2\}$\;
+        }
+    }
+    \Return{$S$}
+    \caption{Procedimento banale per la minimizzazzione}
+\end{algorithm}
+L'algoritmo termina, perchè la condizione del ciclo diventa sicuramente falsa quando la partizione $S$ è composta da $n$ blocchi, uno per ogni stato, ed ad ogni iterazione un blocco viene diviso in due blocchi distinti e non vuoti. \\
+Inoltre la risposta fornita è corretta, perchè l'algoritmo si ferma appena viene trovata una partizione stabile. Poichè ad ogni iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ns} il numero di blocchi aumenta di 1, il risultato è la partizione stabile più grossolana rispetto alle funzioni $\delta_i$. Osserviamo inoltre che, se la partizione è stabile rispetto a $\delta_i$ dopo una certa iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ingressi}, allora resta stabile fino alla fine dell'esecuzione.\\
+Consideriamo la complessità dell'algoritmo:
+\begin{itemize}
+    \item La Riga \ref{alg:hop_banale_partiziona_output} ha complessità $\Theta(|S|)$;
+    \item Il ciclo della Riga \ref{alg:hop_banale_for_ingressi} viene eseguito $\Theta(|I|)$ volte;
+    \item La funzione ``BlocchiNonStabili'' ha complessità $O(|S|^2)$;
+    \item Il ciclo nella Riga \ref{alg:hop_banale_for_ns} viene eseguito $O(|S|)$ volte;
+    \item Il contenuto del ciclo nella Riga \ref{alg:hop_banale_for_ns} ha complessità $O(|S|)$ (con gli opportuni accorgimenti).
+\end{itemize}
+Quindi la complessità dell'algoritmo è \begin{gather*}
+    T_{alg_{\ref{alg:hop_banale}}}(|S|,|I|) = \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
+\end{gather*}
+Se consideriamo costante il numero di ingressi: $T_{alg_{\ref{alg:hop_banale}}}(|S|) = O(|S|^2)$.
+
+\subsubsection{L'algoritmo di Hopcroft}
+Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso migliora la procedura presentata nella sezione precedente, in quanto ha complessità \emph{loglineare}. Forniremo un commento allo pseudocodice, in modo da spiegare il procedimento in modo dettagliato. In seguito analizzeremo formalmente l'algoritmo, proporremo e commenteremo la dimostrazione della correttezza e della complessità.\\
+\begin{algorithm}[H]
+    \thispagestyle{empty}
+    \label{alg:hop}
+    \KwData{$S,I,\delta,F$}
+    \caption{Algoritmo di Hopcroft}
+    \Begin{
+        \ForEach{$(s,i) \in S \times I$}{
+            $\delta^{-1}(s,i) \coloneqq \{t : \delta(t,i) = s\}$\;\label{alg:hop_deltainverso}
+        }
+        $B(1) \coloneqq F, B(2) \coloneqq S - F$\;
+        \tcc*[h]{$\forall i \in I$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}\\
+        \ForEach{$j \in \{1,2\}$}{
+            \ForEach{$i \in I$}{
+                $i(j) = \{s : s \in B(j) \land \delta^{-1}(s,i) \neq \emptyset\}$\;\label{alg:hop_stati_delta_nonvuoto}
+            }
+        }
+        \tcc*[h]{$k$ è il numero di blocchi della partizione. Aumenta dopo le rifiniture}\\
+        $k \coloneqq 2$\;
+        \tcc*[h]{Per ogni ingresso $i$ creiamo un insieme $L(i)$ contenente l'indice $j$ che minimizza $|i(j)|$}\\
+        \ForEach{$i \in I$}{
+            \label{alg:hop_splitters}
+            \eIf{$|i(1)| \leq |i(2)|$}{
+                $L(i) = \{1\}$\;
+            }{
+                $L(i) = \{2\}$\;
+            }
+        }
+        \While{$\exists i \in I : L(i) \neq \emptyset$}{
+            \label{alg:hop_ciclo_infinito}
+            Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
+            \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
+            \ForEach{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
+                $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
+                $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
+                $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
+                \ForEach{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
+                    $a(m) = \{s : s \in B(m) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
+                    $a(k+1) \coloneqq \{s : s \in B(k+1) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
+                    \eIf{$|a(m)| \leq |a(k+1)|$}{
+                        $L(a) = L(a) \cup \{m\}$\;
+                    }{
+                        $L(a) = L(a) \cup \{k+1\}$\;
+                    }
+                }
+                $k = k + 1$\;
+            }
+        }
+    }
+    \thispagestyle{empty}
+\end{algorithm}
+Nella Riga \ref{alg:hop_deltainverso} definiamo $\delta^{-1}$, che consente l'accesso in tempo costante all'insieme degli stati che conducono ad un determinato stato conseguentemente ad un determinato ingresso.\\
+Inizialmente la partizione contiene due blocchi: gli stati finali e quelli non finali. Di conseguenza le rifiniture successive della partizione manterranno sempre separati stati finali e non finali.\\
+Per evitare accessi inutili (che incrementerebbero i termini costanti dell'algoritmo) nella Riga \ref{alg:hop_stati_delta_nonvuoto} definiamo $i(j)$ per $i \in I, j \in \{1,2\}$ come l'insieme degli stati $s$ nel blocco $B(j)$ per cui esiste qualche stato $t$ tale che $\delta(t,i) = s$.\\
+All'interno del ciclo della Riga \ref{alg:hop_splitters} definiamo gli insiemi $L(i)\,\, \forall i \in I$, che contengono gli indici dei blocchi che verranno usati come \emph{splitter} nel seguito del procedimento. Osserviamo che all'interno di questo insieme vengono inseriti gli indici dei blocchi per cui la cardinalità di ``$i(\cdot)$'' è minima. Come dimosteremo nel seguito, questa tecnica
+
+In \cite{paigetarjan} si dimostra che, limitatamente al caso particolare a cui si applica l'algoritmo di Hopcroft, è possibile scegliere gli \emph{splitter} in modo vantaggioso, allo scopo di ridurre il carico di lavoro e dunque la complessità. Riportiamo e commentiamo la dimostrazione:
+\begin{proposition}
+    Sia $S$ un insieme finito. Sia $f : S E S$ una funzione (cioè $\forall s \in S\,\, |f({s})| = 1$). Sia $\widetilde{S}$ una partizione di $S$. Sia $Q$ l'unione di alcuni blocchi di $\widetilde{S}$, e sia $B$ un blocco di $\widetilde{S}$, con $B \subseteq Q$. Supponiamo $\widetilde{S}$ stabile rispetto a $Q$. Allora
+    \begin{center}
+        Split$(B,\widetilde{S})$ = Split$(Q - B, $Split$(B,\widetilde{S}))$
+    \end{center}
+\end{proposition}
+\begin{proof2}
+    Vogliamo dimostrare che $Q - B$ non è uno \emph{splitter} di Split$(B,\widetilde{S})$, cioè che $\forall S_x \in $ Split$(B,\widetilde{S})$ si ha
+    \begin{gather*}
+        S_x \subseteq f^{-1}(Q - B) \,\,\lor\,\, S_s \cap f^{-1}(Q-B) = \emptyset
+    \end{gather*}
+    Ricordando che $\widetilde{S}$ è stabile rispetto a $Q$, $\widehat{S} \coloneqq$ Split$(B,\widetilde{S})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref{prop:split_eredita}. Di conseguenza per ogni blocco $S_x \in \widehat{S}$ si ha
+    \begin{gather*}
+        S_x \subseteq f^{-1}(B) \lor S_x \cap f^{-1}(B) = \emptyset\\
+        \land\\
+        S_x \subseteq f^{-1}(Q) \lor S_x \cap f^{-1}(Q) = \emptyset
+    \end{gather*}
+    Se $S_x \subseteq f^{-1}(B)$ chiaramente $S_x \,\,\cap \subseteq f^{-1}(Q-B) = \emptyset$. Se $S_x \cap f^{-1}(Q) = \emptyset$, allora $S_x \cap f^{-1}(Q-B) = \emptyset$. Se $S_x \cap f^{-1}(B) = \emptyset \land S_x \subseteq f^{-1}(Q)$ bisogna avere $S_x \subseteq f^{-1}(Q-B)$.\\
+    Osserviamo che queste deduzioni valgono solamente se $f$ è una funzione.
+\end{proof2}
+
+Dal punto di vista computazionale è chiaramente più conveniente usare come \emph{splitter} l'insieme tra $B$ e $Q - B$ avente cardinalità minore. La strategia di Hopcroft (``\emph{process the smaller half}'', come viene sintetizzata in \cite{paigetarjan}) consiste infatti nella selezione degli \emph{splitter} secondo il criterio della cardinalità, a differenza di quanto avviene nell'Algoritmo \ref{alg:hop_banale}.\\
+Dalla Riga \ref{alg:hop_split} alla Riga \ref{alg:hop_aggiorna_dopo_split} viene operato lo ``Split''. Nel ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono aggiornate le strutture dati relative ai nuovi blocchi creati. Osserviamo che ad ogni iterazione del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono creati due nuovi blocchi, anche se il numero di blocchi aumenta soltanto di 1, perchè viene anche ``smembrato'' un blocco già esistente. Di questi due blocchi se ne sceglie uno da usare come \emph{splitter}, seguendo il criterio illustrato sopra.\\
+Queste operazioni vengono ripetute finchè in $L(i)$ per qualche $i$ resta un blocco da usare come \emph{splitter}.
+\\\\
+Analizziamo la correttezza dell'algoritmo. Trascurando la parte iniziale, ad ogni iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito} viene prima rimosso un elemento in $L(i)$, e solamente in seguito ad una rifinitura della partizione ne viene inserito un altro. Poichè non è possibile rifinire all'infinito, l'algoritmo termina.\\
+Il seguente Teorema dimostra la validità del risultato:
+\begin{theorem}
+    \label{teo:hop_corretto}
+    Sia $A = (S,I,\delta,F)$ un'automa. Sia $\widetilde{S}$ la partizione risultante dall'applicazione dell'Algoritmo \ref{alg:hop}. Siano $x,y \in S$. Allora
+    \begin{gather*}
+        x \sim y \iff [x]_{\widetilde{S}} = [y]_{\widetilde{S}}
+    \end{gather*}
+\end{theorem}
+\begin{proof2}
+    Dimostriamo innanzitutto che $[x]_{\widetilde{S}} \neq [y]_{\widetilde{S}} \implies x \not\sim y$. Procediamo per induzione:
+    \begin{itemize}
+        \item La relazione vale prima del ciclo \ref{alg:hop_ciclo_infinito}, infatti stati finali e non finali non possono essere equivalenti;
+        \item Supponiamo che sia vero prima di una certa iterazione. Supponiamo che gli stati $x,y$ finiscano in partizioni diverse nelle Righe tra \ref{alg:hop_split} e \ref{alg:hop_aggiorna_dopo_split}. Questo significa che $[\delta(x,i)]_{\widetilde{S}_n} \neq [\delta(y,i)]_{\widetilde{S}_n}$, dove $\widetilde{S}_n$ è la partizione costruita dall'algoritmo fino all'iterazione considerata. Ma allora, per l'ipotesi induttiva, $\delta(x,i) \not\sim \delta(y,i)$, e quindi $x,y$ non sono equivalenti (per l'Osservazione \ref{prop:equivalent_states}).
+    \end{itemize}
+    Questo ragionamento è valido perchè il fatto che due stati si trovino in partizioni differenti dopo una certa iterazione implica che si troveranno in partizioni differenti anche al termine del procedimento.\\
+    Dimostriamo ora che $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \implies x \sim y$. Supponiamo per assurdo che per due stati $x,y$ si abbia $[x]_{\widetilde{S}} = [y]_{\widetilde{S}} \land x \not\sim y$. Allora, ad esempio, $\exists i^* \in I^* : \delta^*(x,i^*) \in F, \delta^*(y,i^*) \not\in F$. Ma poichè inizialmente poniamo stati inziali e finali in partizioni diverse, deve valere chiaramente $[\delta^*(x,i^*)]_{\widetilde{S}} \neq [\delta^*(y,i^*)]_{\widetilde{S}}$, e quindi procedendo a ritroso sui simboli di $i^*$ si ha
+    \begin{gather*}
+        [\delta^*(x,i^*_n)]_{\widetilde{S}} \neq [\delta^*(y,i^*)_n]_{\widetilde{S}} \implies [\delta^*(x,i^*_{n-1})]_{\widetilde{S}} \neq [\delta^*(y,i^*)_{n-1}]_{\widetilde{S}}
+    \end{gather*}
+    Per cui si ha chiaramente $[x]_{\widetilde{S}} = [\delta^*(x,i^*_0)]_{\widetilde{S}} \neq [\delta^*(y,i^*)_0]_{\widetilde{S}} = [y]_{\widetilde{S}}$.
+\end{proof2}
+
+Discutiamo ora la complessità dell'algoritmo. In questo paragrafo non tratteremo i dettagli dell'implementazione, facilmente reperibili in \cite{hopcroft}, e ci concentreremo unicamente sul contributo del procedimento.\\
+Per costruire $\delta^{-1}$ è sufficiente valutare una sola volta ogni stato per ogni ingresso, quindi l'operazione è $\Theta(|S||I|)$. La costruzione delle due partizioni iniziali è $\Theta(|S|)$. La costruzione di $L(i) \,\,\forall i \in I$ è chiaramente $\Theta(|I|)$. Di conseguenza la complessità delle istruzioni precedenti alla Riga \ref{alg:hop_ciclo_infinito} è $\Theta(|S||I|)$.\\
+Prima di procedere, dimostriamo il seguente risultato:
+\begin{proposition}
+    \label{obs:log}
+    Sia
+    \begin{gather*}
+        f_a(x) \coloneqq a\log_2(a) - (a-x)\log_2(a-x) - x\log_2(x) \qquad a > 0,\,\, 0 < x < a
+    \end{gather*}
+    Tale funzione ha massimo in $\frac{a}{2}$, con $f_a(\frac{a}{2}) = a$, ed è strettamente positiva sul dominio considerato.
+\end{proposition}
+\begin{proof2}
+    L'osservazione si dimostra con un semplice studio di funzione.
+\end{proof2}
+Il seguente risultato fornisce un \emph{upper-bound} per il contributo al tempo di esecuzione di tutte le iterazioni del ciclo in cui si seleziona l'ingresso $i$ considerato sopra, dalla $n$-esima fino alla terminazione dell'algoritmo:
+\begin{theorem}
+    Sia $i$ un ingresso. Consideriamo l'iterazione $n$-esima del ciclo della Riga \ref{alg:hop_ciclo_infinito} per un $n$ qualsiasi per cui si abbia la seguente configurazione:
+    \begin{gather*}
+        \widetilde{S}_n = \{S_1,\dots,S_m\}, \quad L(i) = \{i_1,\dots,i_r\}, \quad  \{i_{r+1},\dots,i_m\} = \{1,\dots,m\} - L(i)
+    \end{gather*}
+    Allora il contributo alla complessità dato da tutte le iterazioni in cui si seleziona l'ingresso $i$, dalla $n$-esima fino alla terminazione dell'algoritmo, è maggiorato dalla seguente espressione:
+    \begin{gather*}
+        T_i^n = k\left(\sum_{j = 1}^r |i(i_j)|\log_2|i(i_j)| + \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\right)
+    \end{gather*}
+\end{theorem}
+\begin{proof2}
+    Procediamo per induzione ``al contrario''. Chiaramente la maggiorazione è valida alla terminazione dell'algoritmo, ovvero dopo l'ultima iterazione. Ora supponiamo che la maggiorazione sia valida dopo l'iterazione $k$-esima (con $k > n$), e dimostriamo che questo implica la validità della stessa prima dell'iterazione $k$-esima, ovvero al termine dell'iterazione $(k-1)$-esima. In altre parole è necessario dimostrare che la somma tra $T_i^{k-1}$ ed il tempo impiegato per l'esecuzione dell'iterazione $k$-esima è minore o uguale di $T_i^k$. La seguente osservazione consente di quantificare il contributo di una singola iterazione:
+    \begin{observation*}
+        Se all'inizio dell'iterazione viene selezionato l'indice $x \in L(i)$, la complessità dell'iterazione è $O(|i(x)|)$, cioè il tempo impiegato durante l'esecuzione è maggiorato da $k|i(x)|$, dove $k$ è una costante di propozionalità. Possiamo trarre questa conclusione perchè il ciclo della Riga \ref{alg:hop_ciclo_blocchi_preimmagine} è in realtà un ciclo sugli stati $s\in i(x)$, che per ognuno estrae (in tempo costante) $\delta^{-1}(s,i)$.
+    \end{observation*}
+    All'inizio di ogni iterazione viene estratto un ingresso $a$. Si presentano due casi:
+    \begin{itemize}
+        \item $a \neq i$: poichè $T_i^k$ prende in considerazione solamente il tempo impiegato dalle iterazioni in cui viene selezionato $i$, questa iterazione è esclusa dalla stima. Ciononostante l'iterazione può modificare i blocchi della partizione $\widetilde{S}_k$, e dobbiamo quindi verificare che $T_i^{k-1} \leq T_i^k$:
+        \begin{itemize}
+            \item Se viene modificato un blocco $B(x)$ con $x \in L(i)$, nella stima dobbiamo sostituire un elemento maggiorabile con $b \log_2 b$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 (b-c)$. Per l'osservazione \ref{obs:log} si ha $T_i^{k-1} < T_i^k$;
+            \item Se invece $x \not\in L(i)$, in $T_i^{k-1}$ dobbiamo sostituire un elemento del tipo $b \log_2 \frac{b}{2}$ con un elemento del tipo $c \log_2 c + (b-c) \log_2 \frac{b-c}{2}$ (supponendo che $c \leq b - c$, in caso contrario la dimostrazione è simile). Infatti il blocco avente cardinalità $b-c$ fa parte, alla fine dell'iterazione, dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$, ed al termine del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} si ha $c \in L(i)$. Chiaramente si ha $c \leq \frac{b}{2}$, e quindi:
+            \begin{align*}
+                c \log_2 c + (b-c) \log_2 \frac{b-c}{2} &\leq c \log_2 \frac{b}{2} + (b-c) \log_2 \frac{b}{2}\\
+                &= (c + b - c) \log_2 \frac{b}{2}\\
+                &= b \log_2 \frac{b}{2}.
+            \end{align*}
+        \end{itemize}
+        \item $a = i$: come abbiamo osservato sopra, il tempo impiegato all'interno dell'iterazione è $O(|i(x)|)$, dove $x$ è l'indice estratto da $L(i)$. Poichè si ha:
+        \begin{align*}
+            T_i^{k-1} + k|i(x)| = k \Bigg( |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &+ \sum_{\substack{j = 1\\i_j \neq x}}^r |i(i_j)|\log_2|i(i_j)| \\
+            &+ \sum_{j = r+1}^m |i(i_j)|\log_2\frac{|i(i_j)|}{2}\Bigg)
+         \end{align*}
+        dove consideriamo il tempo impiegato per l'iterazione, ed il fatto che l'indice $x$, al termine dell'iterazione, fa parte dell'insieme dei blocchi il cui indice non appartiene ad $L(i)$. Poichè vale:
+        \begin{align*}
+            |i(x)| + |i(x)|\log_2 \frac{|i(x)|}{2} &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\log_2 2\\
+            &= |i(x)| + |i(x)|\log_2 |i(x)| - |i(x)|\\
+            &= |i(x)|\log_2 |i(x)|
+        \end{align*}
+        si deduce facilmente la seguente relazione:
+        \begin{gather*}
+            T_i^{k-1} + k|i(x)| = T_i^k.
+        \end{gather*}
+    \end{itemize}
+    \vspace*{-0.8cm}
+\end{proof2}
+Prima della prima iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito}, per un $i \in I$ fissato, (supponendo $|S-F| \geq |F|$) si ha
+\begin{gather*}
+    T_i = k\left(|S-F|\log_2|S-F| + |F|\log_2\frac{|F|}{2}\right)
+\end{gather*}
+che, per l'Osservazione \ref{obs:log}, si maggiora con $k |S|\log_2|S|$. Allora la complessità dell'algoritmo è data dalla somma della complessità delle righe precedenti alla \ref{alg:hop_ciclo_infinito}, ovvero $\Theta(|I||S|)$, e $|I| * O(|S|\log|S|)$, cioè $|I||S|\log|S|$. Considerando costante la cardinalità di $I$:
+\begin{gather*}
+    T_{alg} = O(|S|\log|S|).
+\end{gather*}
