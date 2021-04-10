@@ -1,0 +1,153 @@
+\subsection{L'algoritmo di Paige-Tarjan}
+In questa sezione, dopo aver trattato il caso specifico risolto dall'algoritmo di Hopcroft, discutiamo l'algoritmo di Paige-Tarjan presentato in \cite{paigetarjan}. Il procedimento ha complessità $O(|E|\log |V|)$ (dati un insieme $V$ ed una relazione $E$), ed è il primo a risolvere il caso generale migliorando la complessità $O(|E||V|)$ manifestata dall'algoritmo di Kanellakis e Smolka, che non adotta particolari accorgimenti per la selezione dei blocchi da usare come \emph{splitter}.
+
+\subsubsection{L'algoritmo}
+Proponiamo e commentiamo innanzitutto lo pseudocodice:\\
+\begin{algorithm}[H]
+    \label{alg:pt}
+    \KwData{$V,E,\widetilde{V}$}
+    \caption{Algoritmo di Paige-Tarjan}
+    \Begin{
+        $Q \coloneqq \widetilde{V}, X \coloneqq \{V\}$\;
+        \tcp*[h]{I blocchi di $Q$ vengono rifiniti rispetto a $E^{-1}(V)$}\\
+        $Q = \splitfunc(V,Q)$\; \label{alg:pta_rifi_iniziale}
+        \While{$Q \neq X$}{
+            Scelgo in modo casuale un blocco $S \in X \mid B \not\in Q$\;
+            Scelgo un blocco $B \in X \mid B \subset S, |B| \leq |S|/2$\;
+            $X = (X - \{S\}) \cup \{B, S-B\}$\;
+            $Q = \splitfunc(S-B, \splitfunc(B,Q))$\;\label{alg:pt_doublesplit}
+        }
+        \Return{$Q$}\;
+    }
+\end{algorithm}
+
+L'algoritmo definisce inizialmente due partizioni $Q,X$: la prima coincide con la partizione iniziale $\widetilde{V}$, mentre la seconda è la partizione banale formata da un unico blocco contenente tutto $V$.
+
+Alla Riga \ref{alg:pta_rifi_iniziale} viene imposta l'invariante che verrà poi mantenuta per tutta l'esecuzione dell'algoritmo: ogni blocco di $Q$ viene diviso in due blocchi (di cui uno eventualmente vuoto): nel primo vengono inseriti i nodi che sono sorgente di almeno un arco; nel secondo vengono inseriti i pozzi (cioè gli elementi dell'insieme $B - E^{-1}(V)$, dove $B$ è un blocco di $Q$). Dopo questa operazione la partizione $Q$ è stabile rispetto a $V$.
+
+Il corpo del procedimento è formato da un ciclo che ripete le seguenti istruzioni finchè le partizioni $Q,X$ non coincidono:
+\begin{enumerate}
+    \item Viene scelto casualmente un blocco $S \in X$ non appartenente a $Q$;
+    \item Viene scelto casualmente un blocco $B \in Q \mid B \subset S$, e la cui cardinalità sia inferiore a $|S|/2$;
+    \item In $X$ il blocco $S$ viene sostituito da $\{B, S-B\}$;
+    \item Si sostituisce la partizione $Q$ con \splitfunc$(S-B,$ \splitfunc$(B,Q))$.
+\end{enumerate}
+
+Quando $Q$ e $X$ coincidono, viene restituita la partizione $Q$.
+
+\begin{observation}
+    \accente sempre possibile trovare un blocco in $X$ per portare a termine il passaggio 1. Quando non è possibile l'algoritmo termina, perchè $Q = X$.
+\end{observation}
+
+\subsubsection{Analisi}
+Dimostriamo innanzitutto la validità della seguente invariante:
+\begin{lemma}
+    \label{lem:pt_qx}
+    L'algoritmo ristabilisce le seguenti relazioni invarianti dopo ogni iterazione del ciclo principale:
+    \begin{enumerate}
+        \item $Q$ è stabile rispetto ad ogni blocco di $X$;
+        \item $Q$ rifinisce $X$;
+        \item $\rscp(\widetilde{V},E)$ rifinisce $Q$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof2}
+    In entrambi i casi procediamo per induzione sulle iterazioni:
+    \begin{itemize}
+        \item[1/2.] Prima della prima iterazione $Q$ è stabile rispetto a $X$ per l'operazione eseguita alla Riga \ref{alg:pta_rifi_iniziale}. Inoltre $Q$ rifinisce $X$ perchè quest'ultima è la partizione banale di $V$.
+
+        Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi: durante l'iterazione successiva in $X$ viene sostituito il blocco $S$ con i blocchi $S-B, B$, mentre $Q$ viene modificato da sue applicazioni successive della funzione Split. E' evidente che $Q$ deve essere stabile rispetto a $S-B, B$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva. Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = S$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due Split ai blocchi $\{C_1, \dots, C_n\} - B$ è $S-B$, mentre l'unione dei due nuovi blocchi (di cui uno eventualmente vuoto) generati dalla divisione di $B$ è chiaramente $B$. Per cui $Q$ rifinisce ancora $X$.
+        \item[3.] La proprietà è vera banalmente prima della prima iterazione.
+
+        Supponiamo che l'invariante sia valida prima dell'iterazione $i$-esima: durante l'iterazione successiva la
+        partizione $Q$ viene rifinita utilizzando come \emph{splitter} i blocchi $B, S-B$. Poichè $Q$ rifinisce $X$, e $S$ è un blocco di $X$, $S$ è l'unione di alcuni blocchi di $Q$. Inoltre, essendo $B$ un blocco di $Q$ (con $B \subset S$), anche $S-B$ è unione di alcuni blocchi di $Q$. Allora, poichè per l'ipotesi induttiva $\rscp(\widetilde{V},E)$ rifinisce $Q$:
+        \begin{gather*}
+            \rscp(\widetilde{V},E) = \splitfunc(S-B, \splitfunc(B, \rscp(\widetilde{V},E)))
+        \end{gather*}
+        Quindi, per il Teorema \ref{theo:split_properties} (monotonia di \splitfunc), $\rscp(\widetilde{V},E)$ rifinisce la nuova partizione $Q' = \splitfunc(S-B, \splitfunc(B, Q))$.
+    \end{itemize}
+    \vspace*{-0.75cm}
+\end{proof2}
+Possiamo ora dedurre in modo diretto il seguente risultato:
+\begin{corollary}
+    L'Algoritmo \ref{alg:pt} termina.
+\end{corollary}
+\begin{proof2}
+    Ad ogni iterazione il numero di blocchi in $X$ aumenta di una unità. Quindi in $O(|V|)$ iterazioni si avrà $X = \{\{v\} \mid v \in V\}$ (se l'algoritmo non termina prima). Ma per il Lemma \ref{lem:pt_qx} $Q$ rifinisce $X$ prima di ogni iterazione, quindi deve essere necessariamente $Q = \{\{v\} \mid v \in V\} = X$.
+\end{proof2}
+Dimostriamo ora che l'algoritmo è corretto:
+\begin{proposition}
+    Al termine dell'Algoritmo \ref{alg:pt} $Q = \rscp(E,\widetilde{V})$.
+\end{proposition}
+\begin{proof2}
+    Per il Lemma \ref{lem:pt_qx}, la partizione $Q$ è sempre stabile rispetto ad ogni blocco di $X$. Poichè la condizione di terminazione è $Q=X$, $Q$ è stabile. Ma allora, sempre per il Lemma \ref{lem:pt_qx} (punto 3), $Q = \rscp(\widetilde{V},E)$.
+\end{proof2}
+
+\subsubsection{Complessità}
+Riportiamo e commentiamo il Lemma 3 proposto in \cite{paigetarjan}:
+\begin{lemma}
+    \label{lem:pt_lemma3}
+    Valgono le seguenti uguaglianze insiemistiche per il ``doppio \splitfunc'' della Riga \ref{alg:pt_doublesplit}:
+    \begin{enumerate}
+        \item $\splitfunc(B,Q)$ divide i blocchi $D \in Q$ in due blocchi $D_1 = D \cap E^{-1}(B), D_2 = D - D_1$. $D_1, D_2$ sono entrambi non vuoti se e solo se $D \cap E^{-1}(B) \neq \emptyset \land D - E^{-1}(B) \neq \emptyset$;
+        \item $\splitfunc(S-B,\splitfunc(B,Q))$ divide i blocchi $D_1$ di $\splitfunc(B,Q)$ in due blocchi $D_{11} = D_1 \cap E^{-1}(S-B), D_{12} = D_1 - D_{11}$. $D_{11}, D_{12}$ sono entrambi non vuoti se e solo se $D_1 \cap E^{-1}(S-B) \neq \emptyset \land D_1 - E^{-1}(S-B) \neq \emptyset$;
+        \item $\splitfunc(S-B,\splitfunc(B,Q))$ non modifica i blocchi di tipo $D_2$;
+        \item $D_{12} = D_1 \cap (E^{-1}(B) - E^{-1}(S-B))$.
+    \end{enumerate}
+\end{lemma}
+\begin{figure}[t]
+    \centering
+
+    \begin{venndiagram3sets}[labelA=$D_1$, labelB=$E^{-1}(B)$, labelC=$E^{-1}(S-B)$, showframe=false, labelOnlyAB=$D_{12}$]
+        \fillACapBNotC
+    \end{venndiagram3sets}
+
+    \caption{Punto 4. del Lemma \ref{lem:pt_lemma3}}
+    \label{fig:pt_lemma_insiemi}
+\end{figure}
+\begin{proof2}
+    La dimostrazione è banale per i primi due punti (è una conseguenza diretta della Definizione \ref{def:funz_split}).
+    \begin{enumerate}
+        \item[3.] Supponiamo che un blocco $D \in Q$ sia stato diviso in due blocchi non vuoti $D_1, D_2$ da $\splitfunc(B,Q)$. Allora, per il punto 1, $D \cap E^{-1}(B) \neq \emptyset$. Quindi, per la stabilità di $Q$ rispetto a $(E,S)$, deve valere $D \subseteq E^{-1}(S)$. Allora $D_2 \subset D \subseteq E^{-1}(S)$. Per definizione $D_2$ e $E^{-1}(B)$ sono disgiunti, quindi $D_2 \subseteq E^{-1}(S-B)$;
+        \item[4.] Evidente nella Figura \ref{fig:pt_lemma_insiemi}.
+    \end{enumerate}
+    \vspace*{-0.75cm}
+\end{proof2}
+
+\accente chiaro che ad ogni iterazione l'Algoritmo \ref{alg:pt} divide alcuni blocchi di $Q$ in $D_{11}, D_{12}, D_2$.
+
+\begin{observation}
+    Con opportuni accorgimenti è possibile implementare una funzione che divide ogni blocco di $Q$ in $D_{11}, D_{12}, D_2$ avente complessità $O(|B| + \sum_{y \in B} |E^{-1}(\{y\})|)$, dove $B$ è il blocco usato come \emph{splitter}. I dettagli sono discussi in \cite{paigetarjan}.
+\end{observation}
+
+Da questa implementazione possiamo dedurre il seguente upper-bound sulla complessità dell'Algoritmo di Paige-Tarjan:
+
+\begin{theorem}
+    La complessità dell'Algoritmo \ref{alg:pt} è $O(|E|\log |V|)$.
+\end{theorem}
+\begin{proof2}
+    Chiaramente la complessità è:
+    \begin{align*}
+        \displaystyle &\sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B| + \sum_{y \in B} |E^{-1}(\{y\})|)\\
+        &= \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) + \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |E^{-1}(\{y\})|)
+    \end{align*}
+
+    \begin{observation}
+        Ogni elemento $x \in S$ può apparire al più $\log_2 (|V| + 1)$ volte in un blocco usato come \emph{splitter}, visto che ad ogni nuova iterazione un eventuale blocco contentente questo stesso $x$ ha cardinalità dimezzata.
+    \end{observation}
+
+    Allora:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} \sum_{y \in B} |E^{-1}(\{y\})|) &\leq \log_2 (|V|+1) \sum_{x \in V} |E^{-1}(\{x\})|\\
+        &= \log_2 (|V|+1) |E|\\
+        &= O(|E|\log |V|)
+    \end{align*}
+
+    Inoltre:
+    \begin{align*}
+        \sum_{\substack{B \mid B \text{ è usato}\\\text{come \emph{splitter}}}} O(|B|) &\leq \sum_{x \in V} \log_{2} (|V|+1)\\
+        &= |V|\log_{2} (|V|+1)\\
+        &= O(|V|\log |V|)
+    \end{align*}
+
+    \accente lecito considerare $|V| = O(|E|)$, per cui la complessità è $O(E\log |V|)$.
+\end{proof2}
