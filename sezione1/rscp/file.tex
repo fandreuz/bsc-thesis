@@ -1,0 +1,110 @@
+\subsection{Relational stable coarsest partition}
+\label{sec:rscp}
+In questa sezione introdurremo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition}. Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della bisimulazione massima, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.\\
+Cominciamo con alcune definizioni di base:
+\begin{definition}
+    Sia $S$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. $X$ è una \emph{partizione} di $S$ se:
+    \begin{gather*}
+        \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
+    \end{gather*}
+    Inoltre gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ si usa la notazione $[a]_X = x_i$.
+\end{definition}
+\begin{observation}
+    \label{obs:part_banale}
+    Ogni insieme $S$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme.
+\end{observation}
+\begin{example}
+    Sia $S \coloneqq \{0,1,2,3,4,5,6\}$. Alcuni possibili partizionamenti sono $\{S\}$ (il partizionamento banale), $S_1 = \{\{0,1,2,3\},\{4,5,6\}\}, S_2 = \{\{0,1\},\{2,3\},\{4,5,6\}\}$.
+    \label{exa:set_partition}
+\end{example}
+\begin{definition}
+    Siano $X_1,X_2$ due partizioni dello stesso insieme. $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 \mid x_2 \subseteq x_1$.
+\end{definition}
+\begin{example}
+    Riprendendo l'Esempio \ref*{exa:set_partition}, la partizione $S_2$ rifinisce $S_1$, che a sua volta rifinisce la partizione banale.
+\end{example}
+Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in questo lavoro quando si impone la seguente condizione sui blocchi:
+\begin{definition}
+    Sia $S$ un insieme, ed $R$ una relazione binaria su $S$. Sia $X$ una partizione su $S$, e sia $B \subseteq A$.
+    \begin{itemize}
+        \item $X$ è \emph{stabile} rispetto alla coppia $(B,R)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(B) \lor x_i \cap R^{-1}(B) = \emptyset$;
+        \item La partizione $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a $(x,R) \,\,\forall x \in X$.
+    \end{itemize}
+\end{definition}
+\begin{example}
+    \label{exa:set_partition_stable}
+    Consideriamo la relazione binaria $R$ su $S$ che mette in relazione le coppie $\{(0,1),(1,0),(2,3),(3,2),(4,5),(5,6),(0,4),(1,5)\}$. $S_2$ è stabile rispetto a $R$, ma lo stesso non vale per $S_1$.
+\end{example}
+In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
+\begin{itemize}
+    \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
+    \item Nessuno degli elementi del primo blocco è in relazione con qualche elemento del secondo blocco.
+\end{itemize}
+Vale il seguente risultato:
+\begin{proposition}
+    Sia $\widetilde{S}$ una partizione qualsiasi di un insieme $S$, e siano $P,Q \subseteq S$. Sia $R$ una relazione binaria su $S$. Supponiamo $\widetilde{S}$ stabile rispetto alle coppie $(R,P),(R,Q)$. Allora:
+    \begin{enumerate}
+        \item Qualsiasi rifinitura di $\widetilde{S}$ resta stabile rispetto alla coppia $(R,P)$;
+        \item $\widetilde{S}$ è stabile rispetto alla coppia $(f,P \cup Q)$.
+    \end{enumerate}
+\end{proposition}
+\begin{proof2}
+    Dimostriamo separatamente i due enunciati:
+    \begin{enumerate}
+        \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(P) \lor x \cap R^{-1}(P) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
+        \item Sia $x \in S$. Chiaramente vale $R^{-1}(P),R^{-1}(Q) \subseteq R^{-1}(P \cup Q)$. Allora, se almeno uno tra $R^{-1}(P),R^{-1}(Q)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(P \cup Q)$, altrimenti $x \cap R^{-1}(P \cup Q)$ dovrà chiaramente essere vuoto.
+    \end{enumerate}
+    \vspace*{-0.75cm}
+\end{proof2}
+\accente evidente che l'ultimo punto può essere esteso in modo molto semplice all'unione di più sottoinsiemi di $S$. In altre parole, se $\widetilde{S}$ è stabile rispetto alle coppie $(R,S_i), S_i \subset S, i = 1, \dots, n$, allora è stabile anche rispetto alla coppia $(R, \bigcup_{i=1}^{n} S_i)$.
+
+Con queste premesse possiamo definire il problema della determinazione della RSCP:
+\begin{definition}
+    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\widetilde{S}$ una partizione di $S$. La $\rscp(\widetilde{S},R)$ di $S$ è la partizione di $S$ stabile rispetto ad $R$, che rifinisce $\widetilde{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
+    Si usa la notazione ``$\rscp(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
+\end{definition}
+\begin{example}
+    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\rscp(R)$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
+\end{example}
+
+\subsubsection{Insiemi \emph{splitter}, e la funzione Split}
+La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
+\begin{definition}
+    \label{def:funz_split}
+    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
+    \begin{gather*}
+        \exists S_x \in \widetilde{S} \mid \,\, S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
+    \end{gather*}
+    ovvero se la partizione non è stabile rispetto ad $A$. In tal caso definiamo la seguente funzione:
+    \begin{gather*}
+        \splitfunc(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \mid S_x \in \widetilde{S}\} - \{\emptyset\}
+    \end{gather*}
+\end{definition}
+Valgono i seguenti risultati sulla funzione appena introdotta:
+\begin{observation}
+    Se $A$ non è uno \emph{splitter} di $\widetilde{S}$ si ha $\widetilde{S} = \splitfunc(A,\widetilde{S})$.
+\end{observation}
+\begin{proposition}
+    \label{prop:split_eredita}
+    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``Split'' preserva la stabilità.
+\end{proposition}
+\begin{proof2}
+    ``Split'' può solamente dividere i blocchi, e non mescolarli.
+\end{proof2}
+Dimostriamo il seguente risultato che useremo nel seguito:
+\begin{theorem}
+    \label{theo:split_properties}
+    Consideriamo la funzione ``Split'' proposta nella Definizione \ref{def:funz_split}:
+    \begin{enumerate}
+        \item La funzione è monotona rispetto al secondo argomento, cioè se $\widetilde{S}$ rifinisce di $S$, allora $\splitfunc(A,\widetilde{S})$ rifinisce $\splitfunc(A,S)$;
+        \item La funzione è commutativa rispetto al primo argomento: \splitfunc$(A,\splitfunc(B,S)) = \splitfunc(B, \splitfunc(A,S))$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof2}
+    Dimostriamo separatamente gli enunciati:
+    \begin{enumerate}
+        \item I blocchi di \splitfunc$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di \splitfunc$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S \mid x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
+        \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
+    \end{enumerate}
+    \vspace*{-0.75cm}
+\end{proof2}
