@@ -1,0 +1,23 @@
+\subsection{Risultati sperimentali}
+Proponiamo alcuni risultati sperimentali ottenuti dal package Python contenente gli algoritmi per il calcolo della bisimulazione massima che abbiamo presentato nelle sezioni precedenti. Innanzitutto illustreremo brevemente l'ambiente e gli strumenti con cui sono state prese le misurazioni. Dopodichè presenteremo i risultati in forma di grafici, e tenteremo di evidenziare le differenze tra i vari algoritmi.
+
+\subsubsection{Hardware e strumenti per le misura}
+I risultati sono stati misurati su un computer con sistema operativo \emph{CentOS Linux}, architettura x86\_64, processore \emph{Intel(R) Core(TM) i7-4790 CPU} (4 cores, 3.60GHz), e memoria RAM da 16 GB. Per ottenere le misurazioni è stato utilizzato il package Python \emph{timeit}, che presenta alcune caratteristiche che lo rendono un valido strumento per la misurazione del tempo di esecuzione \cite{pythondocs}:
+\begin{itemize}
+    \item Utilizza la più precisa funzione disponibile sulla piattaforma per la misurazione del tempo trascorso;
+    \item Disabilita il \emph{garbage collector}, che potrebbe intervenire in un momento casuale della misurazione introducendo rumore nei risultati;
+    \item Esegue lo script preso in esame molte volte (il numero è deciso dall'utilizzatore) in modo da ridurre il rumore dovuto a temporanei sovraccarichi della CPU o della RAM.
+\end{itemize}
+Abbiamo scelto di ripetere la misurazione per 1000 volte, in modo da ottenere un campione affidabile in tempi ragionevoli.
+
+Il dataset su cui sono stati applicati gli algoritmi è stato generato utilizzando la funzione \verb|erdos_renyi_graph| del package Python \emph{NetworkX} \cite{networkx}, che consente di generare grafi randomici specificando alcuni parametri:
+\begin{itemize}
+    \item \verb|n|: numero di nodi del grafo generato;
+    \item \verb|p|: probabilità che presa una coppia di nodi $u,v \in V$ si abbia $\langle u,v\rangle \in E$.
+\end{itemize}
+Abbiamo considerato diversi valori di \verb|n| e \verb|p| per valutare le prime fasi dell'andamento asintotico del tempo di esecuzione degli algoritmi implementati.
+
+\subsubsection{Performance}
+Molto buone.
+
+\subsubsection{Andamento asintotico della dimensione della bisimulazione massima}
