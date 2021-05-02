@@ -8,14 +8,8 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
     \item Disabilita il \emph{garbage collector}, che potrebbe intervenire in un momento casuale della misurazione introducendo rumore nei risultati;
     \item Esegue lo script preso in esame molte volte (il numero è deciso dall'utilizzatore) in modo da ridurre il rumore dovuto a temporanei sovraccarichi della CPU o della RAM.
 \end{itemize}
-Abbiamo scelto di ripetere la misurazione per 1000 volte, in modo da ottenere un campione affidabile in tempi ragionevoli.
 
-Il dataset su cui sono stati applicati gli algoritmi è stato generato utilizzando la funzione \verb|erdos_renyi_graph| del package Python \emph{NetworkX} \cite{networkx}, che consente di generare grafi randomici specificando alcuni parametri:
-\begin{itemize}
-    \item \verb|n|: numero di nodi del grafo generato;
-    \item \verb|p|: probabilità che presa una coppia di nodi $u,v \in V$ si abbia $\langle u,v\rangle \in E$.
-\end{itemize}
-Abbiamo considerato diversi valori di \verb|n| e \verb|p| per valutare le prime fasi dell'andamento asintotico del tempo di esecuzione degli algoritmi implementati.
+Al fine di ottenere misurazioni significative abbiamo generato diversi dataset di grafi con caratteristiche particolari, utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
 Molto buone.
