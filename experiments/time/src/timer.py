@@ -12,30 +12,26 @@ if __name__ == "__main__":
     # 1: FBA
     # 2: n of edges
 
-    for d in depths:
-        results = np.zeros((len(branching_factors), 4))
+    results = np.zeros((len(ns), 4))
+    for n_idx, n in enumerate(ns):
+        print('doing n={}'.format(n))
 
-        print('doing depth={}'.format(d))
-        for r_idx, r in enumerate(branching_factors):
-            print('\t doing r={}'.format(r))
+        graph = nx.complete_graph(n, create_using=nx.DiGraph)
 
-            import networkx as nx
-            graph = nx.balanced_tree(r, d, create_using=nx.DiGraph)
-
-            setup = """\
+        setup = """\
 import networkx as nx
 from bisimulation_algorithms import paige_tarjan, dovier_piazza_policriti
 
-graph = nx.balanced_tree({}, {}, create_using=nx.DiGraph)
+graph = nx.complete_graph({}, create_using=nx.DiGraph)
 
 import sys
-sys.setrecursionlimit(20000)""" .format(r, d)
+sys.setrecursionlimit(20000)""" .format(n)
 
-            import timeit
-            pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=True)', setup=setup, number=number) / number
-            fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=True)', setup=setup, number=number) / number
+        import timeit
+        pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=True)', setup=setup, number=100) / 100
+        fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=True)', setup=setup, number=100) / 100
 
-            results[r_idx] = np.array([pta, fba, len(graph.nodes), len(graph.edges)])
+        results[n_idx] = np.array([pta, fba, len(graph.nodes), len(graph.edges)])
 
-            print('\t\t{},{}'.format(pta, fba))
-        np.save('altro/src/tree_depth{}.npy'.format(d), results)
+        print('\t{},{}'.format(pta, fba))
+    np.save('bisi/complete/result.npy', results)
