@@ -12,9 +12,10 @@ if __name__ == "__main__":
 
     n = 2
     graph = nx.DiGraph()
-    graph.add_nodes_from(range(n))
-    graph.add_edges_from(list(chain.from_iterable(((i, i), (i, i - 1)) for i in range(1, n))))
-    graph.add_edge(0, 0)
+    graph.add_nodes_from(range(1,n+1))
+    graph.add_edges_from([(i, n // 2 + 2 * i - 1) for i in range(1, n+1)])
+    graph.add_edges_from([(n//2+i, 2*i-1) for i in range(n//2+1, n+1)])
+    graph.add_edges_from([(n // 4 + 1, 2 * i - 1) for i in range(1, n // 4 + 1)])
 
     print(graph.edges)
 
@@ -23,9 +24,10 @@ if __name__ == "__main__":
         print('doing n={}'.format(n))
 
         graph = nx.DiGraph()
-        graph.add_nodes_from(range(n))
-        graph.add_edges_from(list(chain.from_iterable(((i, i), (i, i - 1)) for i in range(1, n))))
-        graph.add_edge(0, 0)
+        graph.add_nodes_from(range(1,n+1))
+        graph.add_edges_from([(i, n // 2 + 2 * i - 1) for i in range(1, n+1)])
+        graph.add_edges_from([(n//2+i, 2*i-1) for i in range(n//2+1, n+1)])
+        graph.add_edges_from([(n//4+1, 2*i-1) for i in range(1,n//4+1)])
 
         setup = """\
 import networkx as nx
@@ -39,10 +41,10 @@ import sys
 sys.setrecursionlimit(20000)""" .format(n,list(graph.edges))
 
         import timeit
-        pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=True)', setup=setup, number=number) / number
-        fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=True)', setup=setup, number=number) / number
+        pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=False)', setup=setup, number=number) / number
+        fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=False)', setup=setup, number=number) / number
 
         results[n_idx] = np.array([pta, fba, len(graph.nodes), len(graph.edges)])
 
         print('\t{},{}'.format(pta, fba))
-    np.save('bisi/hopcroft/result_first_class.npy', results)
+    np.save('bisi/hopcroft/result_second_class.npy', results)
