@@ -1,37 +1,48 @@
 if __name__ == "__main__":
-    #realizations = 10
-    #ns = [10, 20, 50, 100, 250, 500, 1000]
-    #ps = [0.1, 0.3, 0.5]
-
-    ns = [10, 20, 50, 100, 250, 500, 1000]
+    ns = [10, 20, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 11000]
+    numbers = [100, 100, 100, 100, 100, 100, 25, 25, 25, 15, 15, 10, 5]
 
     import numpy as np
     import networkx as nx
+    from itertools import chain
 
     # 0: PTA
     # 1: FBA
     # 2: n of edges
 
+    n = 2
+    graph = nx.DiGraph()
+    graph.add_nodes_from(range(n))
+    graph.add_edges_from(list(chain.from_iterable(((i, i), (i, i - 1)) for i in range(1, n))))
+    graph.add_edge(0, 0)
+
+    print(graph.edges)
+
     results = np.zeros((len(ns), 4))
-    for n_idx, n in enumerate(ns):
+    for n_idx, n, number in zip(range(len(ns)), ns, numbers):
         print('doing n={}'.format(n))
 
-        graph = nx.complete_graph(n, create_using=nx.DiGraph)
+        graph = nx.DiGraph()
+        graph.add_nodes_from(range(n))
+        graph.add_edges_from(list(chain.from_iterable(((i, i), (i, i - 1)) for i in range(1, n))))
+        graph.add_edge(0, 0)
 
         setup = """\
 import networkx as nx
 from bisimulation_algorithms import paige_tarjan, dovier_piazza_policriti
 
-graph = nx.complete_graph({}, create_using=nx.DiGraph)
+graph = nx.DiGraph()
+graph.add_nodes_from(range({}))
+graph.add_edges_from({})
 
 import sys
-sys.setrecursionlimit(20000)""" .format(n)
+sys.setrecursionlimit(20000)""" .format(n,list(graph.edges))
 
         import timeit
-        pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=True)', setup=setup, number=100) / 100
-        fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=True)', setup=setup, number=100) / 100
+        pta = timeit.timeit('paige_tarjan(graph, is_integer_graph=True)', setup=setup, number=number) / number
+        fba = timeit.timeit('dovier_piazza_policriti(graph, is_integer_graph=True)', setup=setup, number=number) / number
 
         results[n_idx] = np.array([pta, fba, len(graph.nodes), len(graph.edges)])
 
         print('\t{},{}'.format(pta, fba))
-    np.save('bisi/complete/result.npy', results)
+    np.save('bisi/hopcroft/result_first_class.npy', results)
