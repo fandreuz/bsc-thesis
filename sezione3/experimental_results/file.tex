@@ -12,7 +12,22 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
 I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
-Per avere dati significativi considereremo dataset composti da grafi con caratteristiche particolari.
+Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo di esecuzione necessario per l'esecuzione degli algoritmi che abbiamo implementato.
+
+Cominciamo l'esposizione dei risultati con la categoria dei grafi chiamati ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
+\begin{itemize}
+    \item \emph{depth}: determina il numero di livelli (senza contare la \emph{root});
+    \item \emph{branching factor}: il numero di successori di ogni nodo, ad eccezione dei nodi dell'ultimo livello.
+\end{itemize}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree_graph.png}
+    \caption{Un albero bilanciato con \emph{depth} 2 e \emph{branching factor} 3.}
+    \label{fig:balanced_tree}
+\end{figure}
+
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree.png}
