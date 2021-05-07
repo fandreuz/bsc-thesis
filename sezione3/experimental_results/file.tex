@@ -12,7 +12,7 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
 I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
-Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo di esecuzione necessario per l'esecuzione degli algoritmi che abbiamo implementato.
+Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo di esecuzione necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici abbiamo rimpiazzato ad ogni grafo il corrispondente valore di $|V| \log |E|$, ed abbiamo utilizzato questa scala per l'asse delle ascisse, in quanto è lecito supporre che questo ci consenta di avere un andamento abbastanza lineare per gli algoritmi implementati.
 
 Cominciamo l'esposizione dei risultati con la categoria dei grafi chiamati ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
 \begin{itemize}
@@ -23,17 +23,52 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree_graph.png}
-    \caption{Un albero bilanciato caratterizzato dai parametri \emph{depth}=2, \emph{branching factor}=3.}
-    \label{fig:balanced_tree}
+    \begin{subfigure}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/tree_graph.png}
+        \caption{Un albero bilanciato, \emph{depth}=2, \emph{branching factor}=3.}
+        \label{fig:balanced_tree}
+    \end{subfigure}
+    \qquad
+    \begin{subfigure}[b]{0.1\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/hopcroft_graph_1.png}
+        \caption{Hopcroft, $n=2$}
+        \label{fig:hopcroft_graph_1}
+    \end{subfigure}
+    \qquad \qquad
+    \begin{subfigure}[b]{0.2\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/hopcroft_graph_2.png}
+        \caption{Hopcroft, $n=3$}
+        \label{fig:hopcroft_graph_2}
+    \end{subfigure}
+    \caption{Tipologie di grafi su cui abbiamo testato gli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan.}
 \end{figure}
 
+Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'algoritmo di Dovier-Piazza-Policriti è asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene intuitivamente la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è non indifferente, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
+
 \begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree.png}
-    \caption{Tempo di esecuzione degli algoritmi di \emph{Paige-Tarjan} (blu tratteggiato) e \emph{Dovier-Piazza-Policriti} (arancione continuo) su un dataset di ``alberi'' con \emph{depth} e \emph{branching-factor} variabili.}
-    \label{fig:tree_exp_result}
+    \makebox[\linewidth][c]{
+        \begin{subfigure}[b]{0.6\textwidth}
+            \centering
+            \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree.png}
+            \caption{Performance su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
+            \label{fig:tree_exp_result}
+        \end{subfigure}
+        \qquad
+        \begin{subfigure}[b]{0.6\textwidth}
+            \centering
+            \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/hopcroft.png}
+            \caption{Performance su grafi della tipologia proposta da Hopcroft di dimensioni varie.}
+            \label{fig:hopcroft_exp_result}
+        \end{subfigure}
+    }
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan sulle tipologie di grafi testate.}
 \end{figure}
+
+La seconda tiplogia di grafi che consideriamo è tratta dal paper in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} visualizziamo alcune realizzazioni di questa tipologia di grafo.
+
+In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti, mantenendo la quantità $|E| \log |V|$ nell'asse delle ascisse. Come prima, possiamo osservare un andamento abbastanza lineare dei due algoritmi nella scala che abbiamo adottato, e vediamo che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
 
 \subsubsection{Dimensione della bisimulazione massima}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applitations}. Consideriamo l'andamento del numero di classi di equivalenza nella bisimulazione massima per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
