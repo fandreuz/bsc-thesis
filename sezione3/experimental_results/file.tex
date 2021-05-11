@@ -51,14 +51,14 @@ Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'
     \makebox[\linewidth][c]{
         \begin{subfigure}[b]{0.6\textwidth}
             \centering
-            \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/tree.png}
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/tree.png}
             \caption{Performance su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
             \label{fig:tree_exp_result}
         \end{subfigure}
         \qquad
         \begin{subfigure}[b]{0.6\textwidth}
             \centering
-            \includegraphics[width=0.7\textwidth]{./sezione3/experimental_results/plots/hopcroft.png}
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/hopcroft.png}
             \caption{Performance su grafi della tipologia proposta da Hopcroft di dimensioni varie.}
             \label{fig:hopcroft_exp_result}
         \end{subfigure}
@@ -70,11 +70,63 @@ La seconda tiplogia di grafi che consideriamo è tratta dal paper in cui viene p
 
 In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti, mantenendo la quantità $|E| \log |V|$ nell'asse delle ascisse. Come prima, possiamo osservare un andamento abbastanza lineare dei due algoritmi nella scala che abbiamo adottato, e vediamo che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
 
+Per testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo considerato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato alcune trasformazioni, che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo. Definiamo innanzitutto la funzione $\mathcal{P} : V \to V$ che restituisce il nodo parente. Nei nostri test l'abbiamo implementata come segue ($b$ è il \emph{branching factor} dell'albero che consideriamo):
+\begin{gather*}
+    \mathcal{P}(v) = \ceil[\Big]{\frac{v}{b}} - 1
+\end{gather*}
+Ricordiamo che i nodi sono numerati a partire da 0 per livello, come in Figura \ref{fig:balanced_tree}. Utilizzeremo anche una versione ``iterata'' di $\mathcal{P}$: $\mathcal{P}^i(v)$ denota il parente di grado $i$ del nodo $v$ ($\mathcal{P}^i(v)$ è il parente del parente di $v$).
+
+A partire da ogni realizzazzione dell'albero bilanciato aggingiamo i seguenti archi ($L(G)$ denota l'ultimo nodo dell'ultimo livello dell'albero $G$):
+\begin{enumerate}
+    \item $\langle 0, L(G)\rangle$;
+    \item $\langle L(G), \mathcal{P}(L(G))\rangle$;
+    \item $\langle L(G), \mathcal{P}^3(L(G))\rangle$;
+    \item $\langle L(G), \mathcal{P}^6(L(G))\rangle$;
+\end{enumerate}
+All'arco 1. corrisponde un caso semplice in cui non viene creato un nuovo ciclo, nè è necessario aggiornare alcun rango. Gli altri tre archi invece formano cicli di ``dimensione'' varia, che coinvolgono rispettivamente 2,4 e 7 nodi.
+
+\begin{figure}[h!]
+    \centering
+    \makebox[\linewidth][c]{
+        \begin{subfigure}[b]{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/saha_1.png}
+            \caption{Arco 1.}
+            \label{fig:saha_1_result}
+        \end{subfigure}
+        \qquad
+        \begin{subfigure}[b]{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/saha_2.png}
+            \caption{Arco 2.}
+            \label{fig:saha_2_result}
+        \end{subfigure}
+    }
+    \makebox[\linewidth][c]{
+        \begin{subfigure}[b]{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/saha_3.png}
+            \caption{Arco 3.}
+            \label{fig:saha_3_result}
+        \end{subfigure}
+        \qquad
+        \begin{subfigure}[b]{0.5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{./sezione3/experimental_results/plots/saha_4.png}
+            \caption{Arco 4.}
+            \label{fig:saha_4_result}
+        \end{subfigure}
+    }
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti e Saha in seguito all'aggiunta di diversi tipi di arco, su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
+\end{figure}
+
+Risulta evidente che quando la modifica è "leggera" (Figure \ref{fig:saha_1_result}, \ref{fig:saha_2_result}) l'algoritmo incrementale si comporta significativamente meglio rispetto alla categoria di algoritmi che ricalcola la bisimulazione massima da zero. Introducendo modifiche più importanti, con l'apparizione di cicli di cardinalità maggiore e conseguente necessità di ricalcolare il rango di molti nodi, la differenza tra i due algoritmi comincia a ridursi (Figure \ref{fig:saha_3_result}, \ref{fig:saha_4_result}).
+
 \subsubsection{Dimensione della bisimulazione massima}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applitations}. Consideriamo l'andamento del numero di classi di equivalenza nella bisimulazione massima per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
 Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica.
 
-\begin{figure}
+\begin{figure}[b!]
     \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./sezione3/experimental_results/plots/bisize.png}}
     \caption{Numero di classi di equivalenza della bisimulazione massima per grafi generati in modo casuale, normalizzato con il numero di nodi nel grafo.}
     \label{fig:bisi_size}

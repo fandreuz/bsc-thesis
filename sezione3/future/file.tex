@@ -6,7 +6,7 @@ Sebbene il pacchetto Python sia funzionante, testato e documentato, non si può 
     \item \emph{NetworkX}: la libreria Python \emph{NetworkX} contiene numerose funzioni utili per i grafi (come ad esempio la visità in profondità, o l'algoritmo di Kosaraju) che tuttavia si applicano unicamente ad oggetti di tipo \verb|networkx.Graph|; nelle prime fasi dello sviluppo si è deciso di non percorrere la possibilità di implementare il pacchetto rappresentando i grafi con gli oggetti forniti da \emph{NetworkX}, ma piuttosto di creare classi apposite (\emph{\_Vertex, \_Edge}, \dots) in quanto l'autore riteneva (erroneamente) che l'accesso agli attributi dell'istanza di una classe fosse $O(1)$, mentre per salvare attributi all'interno di un oggetto di \emph{NetworkX} è necessario passare per un dizionario; questa assunzione si è rivelata chiaramente falsa quando si è utilizzato lo strumento \emph{cProfile} (Figura \ref{fig:cprofile_result}), e dunque non c'è più nessun motivo per non passare, in futuro, ad un approccio puramente \emph{NetworkX}-friendly.
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.7\textwidth]{./sezione3/future/resources/profiler.png}
     \caption{Output fornito da cProfile per una delle funzioni implementate nel pacchetto, sono evidenziate le righe corrispondenti ad interrogazioni o aggiornamenti di un dizionario.}
