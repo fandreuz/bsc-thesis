@@ -1,6 +1,17 @@
 \subsection{Strumenti per lo sviluppo}
-Abbiamo utilizzato \emph{git} come \emph{Version Control System}, sfruttando ampiamente diverse feature come le branch per lavorare contemporaneamente su più algoritmi ancora incompleti, ed il comando \verb|git bisect| per verificare dove è stato introdotto un certo errore. Come abbiamo anticipato nell'introduzione della Sezione \ref{sec:bispy}, il codice sorgente è caricato su GitHub in un repository pubblico.
+Abbiamo utilizzato \emph{git} come \emph{Version Control System}, sfruttando ampiamente diverse feature come le branch per lavorare contemporaneamente su più algoritmi ancora incompleti, ed il comando \verb|git bisect| per verificare in quale \emph{commit} è stato introdotto un certo errore. Come abbiamo anticipato nell'introduzione della Sezione \ref{sec:bispy}, il codice sorgente è caricato su GitHub in un repository pubblico.
 
 Il pacchetto è testato con la libreria \texttt{PyTest} \cite{pytest}, e nel momento in cui stiamo scrivendo ha \emph{code coverage} (che grossolanamente può essere definita come la percentuale di righe di codice coperte da almeno un test) pari a 97\%. Quest'ultima è stata calcolata tramite il tool \emph{coveralls}, che ``esamina'' il codice a richiesta e fornisce la \emph{code coverage}.
 
 Per automatizzare le interazioni con le API di \emph{coveralls} abbiamo utilizzato \emph{GitHub Actions}, un framework che consente di specificare alcune azioni da compiere (la richiesta di revisione a \emph{coveralls}, ad esempio) in risposta ad eventi di vario genere (nel nostro caso il ``push'' di una o più commit sul repository GitHub).
+
+Per ottenere informazioni circa la performance del pacchetto è stato utilizzato il tool \emph{cProfile}, che analizza l'esecuzione di una funzione (nel nostro caso uno degli algoritmi che abbiamo implementato) e fornisce per ogni funzione (tra gli altri) i seguenti dati:
+\begin{itemize}
+    \item Numero di chiamate;
+    \item Numero di chiamate ricorsive e non ricorsive da cui è stata raggiunta;
+    \item Durata complessiva dell'esecuzione (comprese le chiamate ad altre funzioni);
+    \item Durata complessiva dell'esecuzione (senza considerare le chiamate ad altre funzioni);
+\end{itemize}
+Sfruttando questo strumento siamo riusciti ad identificare diversi problemi di implementazione degli algoritmi che abbiamo considerato, spesso guardando solamente il dato sul numero di chiamate.
+
+Infine, abbiamo utilizzato ampiamente il debugger dell'IDE \emph{VSCode}.

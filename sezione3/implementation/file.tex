@@ -1,10 +1,25 @@
 \subsection{Implementazione}
 Come abbiamo già menzionato, il pacchetto è stato implementato in Python 3. Si è cercato di rendere il package funzionante su quante più versioni di Python 3 ci è stato possibile, rimpiazzando costrutti delle ultime versioni con features retrocompatibili.
 
-Internamente i grafi sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
+Internamente grafi e partizioni sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
 \begin{itemize}
     \item \verb|_Vertex|: un nodo del grafo;
     \item \verb|_Edge|: un arco del grafo;
     \item \verb|_QBlock|, \verb|_XBlock|: rappresentano rispettivamente i blocchi di tipo \verb|Q|,\verb|X| dell'algoritmo di Paige-Tarjan, negli algoritmi successivi solo la prima classe viene utilizzata, in quanto è più flessibile e contiene diverse funzioni utili (come \verb|_QBlock.mitosis(_Vertex[])|, che consente di dividere il blocco in due in tempo lineare, data una lista di nodi da estrarre).
 \end{itemize}
-Tutte le classi contengono attributi utilizzati ampiamente dagli algoritmi per depositare informazioni utili.
+Le classi contengono attributi utilizzati ampiamente dagli algoritmi per depositare informazioni utili.
+
+Nel pacchetto sono stati implementati da zero i seguenti algoritmi, per il calcolo della massima bisimulazione o utilizzati come subroutine:
+\begin{itemize}
+    \item Algoritmo di Paige-Tarjan \ref{alg:pt} (\verb|paige_tarjan/pta.py|);
+    \item Algoritmo di Dovier-Piazza-Policriti \ref{alg:fba} (\verb|dovier_piazza_policriti/fba.py|);
+    \item Algoritmo incrementale di Saha \ref{alg:saha} (\verb|saha/saha.py|);
+    \item Depth first search (varie versioni);
+    \item Algoritmo di Kosaraju/Sharir \cite{sharir} (\verb|utilities/kosaraju.py|).
+\end{itemize}
+
+Sono state utilizzate le seguenti librerie open source:
+\begin{itemize}
+    \item \emph{NetworkX}, per la rappresentazione dei grafi presi in input dall'utente;
+    \item \emph{llist}, per un'implementazione delle \emph{doubly linked list}, fondamentali per una corretta stesura dell'algoritmo di Paige-Tarjan.
+\end{itemize}
