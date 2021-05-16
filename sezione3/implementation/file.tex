@@ -1,1 +1,10 @@
 \subsection{Implementazione}
+Come abbiamo già menzionato, il pacchetto è stato implementato in Python 3. Si è cercato di rendere il package funzionante su quante più versioni di Python 3 ci è stato possibile, rimpiazzando costrutti delle ultime versioni con features retrocompatibili.
+
+Internamente i grafi sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
+\begin{itemize}
+    \item \verb|_Vertex|: un nodo del grafo;
+    \item \verb|_Edge|: un arco del grafo;
+    \item \verb|_QBlock|, \verb|_XBlock|: rappresentano rispettivamente i blocchi di tipo \verb|Q|,\verb|X| dell'algoritmo di Paige-Tarjan, negli algoritmi successivi solo la prima classe viene utilizzata, in quanto è più flessibile e contiene diverse funzioni utili (come \verb|_QBlock.mitosis(_Vertex[])|, che consente di dividere il blocco in due in tempo lineare, data una lista di nodi da estrarre).
+\end{itemize}
+Tutte le classi contengono attributi utilizzati ampiamente dagli algoritmi per depositare informazioni utili.
