@@ -2,6 +2,8 @@
 
 *.pdf
 
+**/.ipynb_checkpoints/**
+
 *__latexindent_temp.tex
 
 ## Core latex/pdflatex auxiliary files:
