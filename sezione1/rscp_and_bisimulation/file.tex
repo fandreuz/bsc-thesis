@@ -1,4 +1,4 @@
-\subsection{Equivalenza tra RSCP e bisimulazione massima}
+\subsection{Equivalenza tra RSCP e massima bisimulazione}
 Dimostriamo innanzitutto il seguente risultato preliminare presentato in \cite{gentilini}:
 \begin{proposition}
     Sia $G = (V,E)$. Sia $X$ una partizione di $V$ stabile rispetto a $E$. Allora la relazione binaria $R$ su $V$ definita come:
@@ -25,12 +25,12 @@ Dimostriamo ora il risultato opposto:
 \end{proof2}
 Cioè una bisimulazione induce un partizionamento stabile rispetto a $E$ dei nodi del grafo. Vale il seguente corollario:
 \begin{corollary}
-    Determinare la bisimulazione massima su un grafo diretto $G = (V,E)$ e trovare $\rscp(E)$ di $V$ sono problemi equivalenti.
+    Determinare la massima bisimulazione su un grafo diretto $G = (V,E)$ e trovare $\rscp(E)$ di $V$ sono problemi equivalenti.
 \end{corollary}
 \begin{proof2}
-    Dimostriamo separatamente che la bisimulazione ricavata dalla $\rscp(E)$ è massima, e che la partizione ricavata dalla bisimulazione massima è la $\rscp(E)$.
+    Dimostriamo separatamente che la bisimulazione ricavata dalla $\rscp(E)$ è massima, e che la partizione ricavata dalla massima bisimulazione è la $\rscp(E)$.
     \begin{itemize}
-        \item Sia $R_M$ la bisimulazione massima su $G$. Per la Proposizione \ref{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $E$.\\
+        \item Sia $R_M$ la massima bisimulazione su $G$. Per la Proposizione \ref{prop:bisi_max_equi} è una relazione di equivalenza. Per la Proposizione \ref{prop:bisi_induce_part} è possibile determinare una partizione $X$ stabile rispetto a $E$.\\
               Supponiamo per assurdo che $X$ non sia $\rscp(E)$ di $V$, quindi esiste una partizione $\widetilde{X}$ stabile rispetto a $E$ che ha meno blocchi di quanti ne ha $X$. Ma per la Proposizione \ref{prop:part_induce_bisi} da
               $\widetilde{X}$ è possibile ricavare una bisimulazione $\widetilde{R}$ su $G$. Ma quindi $|\widetilde{R}| > |R|$, che è assurdo.
         \item Sia $X$ la $\rscp(E)$ di V. Supponiamo per assurdo che la bisimulazione $R$ ricavata da $X$ come nella Proposizione \ref{prop:part_induce_bisi} non sia massima. Allora deve esistere un'altra bisimulazione $\widetilde{R}$ che

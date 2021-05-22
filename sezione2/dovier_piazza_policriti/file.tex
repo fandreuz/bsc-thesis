@@ -68,7 +68,7 @@ Questa forma sarà utile per semplificare alcune delle dimostrazioni che seguono
 
 Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'analisi successiva:
 \begin{proposition} \label{prop:rank_bisi_imp_wf}
-    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la bisimulazione massima su $G$. Siano $m,n \in WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
 \end{proposition}
 \begin{proof2}
     Procediamo per induzione su $\rankfunc(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} gli APG aventi origine in $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\rankfunc(n) = 0$.
@@ -113,7 +113,7 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
 \end{proof2}
 \begin{theorem}
     \label{theo:bisi_rank}
-    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la bisimulazione massima su $G$. Siano $m,n \in V$. Allora
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in V$. Allora
     \begin{gather*}
         m \equiv n \implies \rankfunc(m) = \rankfunc(n)
     \end{gather*}
@@ -299,7 +299,7 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
 
 La funzione ``collapse'' rimuove dal grafo tutti i nodi all'interno di un blocco, ad eccezione di un nodo scelto in modo casuale. Dopodichè sostituisce il nodo mantenuto nel ruolo dei nodi rimossi in ogni arco incidente ad un nodo rimosso. Questa funzione viene usata per contrarre i nodi in un blocco per cui si è già stabilito che siano tutti bisimili. La funzione ``Split2'' è analoga alla funzione ``\splitfunc'', ma consente di specificare i blocchi che possono essere divisi (cioè solo quelli in $\widehat{B}$), e prende in considerazione un unico vertice (cioè $u$) come destinazione degli archi partenti dai blocchi in $\widehat{B}$.
 
-L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} sarà sicuramente necessario rifinire questa partizione per determinare la bisimulazione massima: non è possibile infatti che vi siano due nodi bisimili che vengono sistemati in due blocchi differenti a questo punto.
+L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} sarà sicuramente necessario rifinire questa partizione per determinare la massima bisimulazione: non è possibile infatti che vi siano due nodi bisimili che vengono sistemati in due blocchi differenti a questo punto.
 
 Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}).
 

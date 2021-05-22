@@ -73,21 +73,21 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
     Siano $u,v \mid u R v$. Sia $u' \mid u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' \mid (v E v' \land u' R_{1|2} v')$.
 \end{proof2}
 
-\subsubsection{Bisimulazione massima}
+\subsubsection{massima bisimulazione}
 \label{sec:bisi_max}
-Definiamo ora il concetto di \emph{bisimulazione massima}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
+Definiamo ora il concetto di \emph{massima bisimulazione}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
 \begin{definition}
     Una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2 \,\, u R v \implies u R_M v$.
 \end{definition}
 \begin{observation}
-    Sia $R_M$ la bisimulazione massima su un grafo diretto $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
+    Sia $R_M$ la massima bisimulazione su un grafo diretto $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
 \end{observation}
-Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche banali:
+Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche banali:
 \begin{proposition}
     Valgono le seguenti proprietà:
     \begin{enumerate}
-        \item La bisimulazione massima su due grafi $G_1,G_2$ è unica;
-        \item La bisimulazione massima è una relazione di equivalenza.
+        \item La massima bisimulazione su due grafi $G_1,G_2$ è unica;
+        \item La massima bisimulazione è una relazione di equivalenza.
     \end{enumerate}
     \vspace*{-0.3cm}
     \label{prop:bisi_max_equi}
@@ -96,17 +96,17 @@ Naturalmente la bisimulazione massima dipende dai due grafi presi in esame. Poss
     Le proprietà seguono dal Corollario \ref{cor:bisimulation_eqrel} e dall'Osservazione \ref{obs:bisimulation_union}:
     \begin{enumerate}
         \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
-        \item Se per assurdo la bisimulazione massima non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale, e sarebbe per costruzione una relazione di equivalenza.
+        \item Se per assurdo la massima bisimulazione non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale, e sarebbe per costruzione una relazione di equivalenza.
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
-Naturalmente il concetto di \emph{bisimulazione massima} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
+Naturalmente il concetto di \emph{massima bisimulazione} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo diretto finito. Allora esiste la bisimulazione massima su $G$.
+    Sia $G$ un grafo diretto finito. Allora esiste la massima bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
-    Allora possiamo considerare l'unione di questo numero finito di bisimulazioni, che sarà chiaramente la bisimulazione massima.
+    Allora possiamo considerare l'unione di questo numero finito di bisimulazioni, che sarà chiaramente la massima bisimulazione.
 \end{proof2}
 
 \subsubsection{Interpretazione insiemistica della bisimulazione}
@@ -198,14 +198,14 @@ Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizz
 \end{observation}
 Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco la bisimulazione prescelta per minimizzare la rappresentazione di un dato insieme:
 \begin{theorem}
-    Sia $(G,v)$ un APG rappresentante un insieme. Sia $R_M$ la bisimulazione massima su $(G,v)$. Allora la contrazione per bisimulazione indotta da $R_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
+    Sia $(G,v)$ un APG rappresentante un insieme. Sia $R_M$ la massima bisimulazione su $(G,v)$. Allora la contrazione per bisimulazione indotta da $R_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
 \end{theorem}
 \begin{proof2}
-    Supponiamo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la bisimulazione massima.\\
+    Supponiamo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la massima bisimulazione.\\
     Supponiamo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
     Definiamo una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
     \begin{gather*}
         x R_{\widetilde{M}} y \iff (x R_M y \lor [x]_{R_M} R_O [y]_{R_M})
     \end{gather*}
-    Per definizione di bisimulazione massima bisogna avere $R_{\widetilde{M}} \subset R_M$, quindi non è possibile che la contrazione indotta da $R_O$ sia una rappresentazione minore di quella indotta da $R_M$.
+    Per definizione di massima bisimulazione bisogna avere $R_{\widetilde{M}} \subset R_M$, quindi non è possibile che la contrazione indotta da $R_O$ sia una rappresentazione minore di quella indotta da $R_M$.
 \end{proof2}
