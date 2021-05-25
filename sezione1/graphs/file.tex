@@ -1,8 +1,8 @@
 \subsection{Grafi}
-Il problema che intendiamo affrontare in questo elaborato è descritto con il formalismo della teoria dei grafi. In questa sezione presentiamo un sottoinsieme minimale di definizioni e risultati che ci consentirà di introdurre e trattare la questione.
+Il problema che intendiamo affrontare in questo elaborato è descritto naturalmente con il formalismo della teoria dei grafi. In questa sezione presentiamo un sottoinsieme minimale di definizioni e risultati che ci consentirà di introdurre e trattare la questione in modo appropriato.
 
 \subsubsection{Definizione e generalità}
-Con le premesse viste sopra possiamo definire un \emph{grafo} come segue:
+Con le premesse viste nella Sezione \ref{subsec:binrel} possiamo definire un \emph{grafo} come segue:
 \begin{definition}
     Sia $V$ un insieme finito non vuoto. Sia $E$ una relazione binaria su $V$. La coppia $G = (V, E)$ è un \emph{grafo diretto} (o \emph{orientato}). Con questa notazione:
     \begin{itemize}
@@ -10,6 +10,7 @@ Con le premesse viste sopra possiamo definire un \emph{grafo} come segue:
         \item $E$ è una relazione binaria (in generale non simmetrica) che mette in relazione alcuni dei nodi di $G$.
     \end{itemize}
 \end{definition}
+
 \begin{example}
     \begin{figure}[t]
         \centering
@@ -40,24 +41,30 @@ Con le premesse viste sopra possiamo definire un \emph{grafo} come segue:
         \item $E = \{(a,b), (a,d), (b,c), (d,c), (c,e), (d,e)\}$
     \end{itemize}
 \end{example}
+
 Nel seguito utilizzeremo ampiamente la seguente terminologia:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo diretto. Consideriamo un arco $(u,v) \in E$. In questo caso $u$ è la \emph{sorgente} dell'arco, mentre $v$ è la \emph{destinazione}. Se il numero di archi uscenti da un nodo è zero, allora tale nodo  è un \emph{pozzo} (dall'inglese \emph{sink}).
+    Sia $G = (V,E)$ un grafo diretto. Consideriamo un arco $(u,v) \in E$. In questo caso $u$ è la \emph{sorgente} dell'arco, mentre $v$ è la \emph{destinazione}. Se il numero di archi uscenti da un nodo è zero tale nodo  è un \emph{pozzo} (dall'inglese \emph{sink}).
 \end{definition}
 
+Inoltre adotteremo la seguente notazione per indicare che esiste un arco che collega $a,b \in V$ nel grafo $G = (V,E)$: $\langle a, b \rangle$. Se vi è ambiguità specificheremo la relazione binaria $E$ in pedice: $\langle a, b \rangle_E$.
+
 \subsubsection{Componenti fortemente connesse}
-Come abbiamo visto sopra, un grafo diretto è un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è definito da un insieme di nodi ed un insieme di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
+Come abbiamo visto sopra, un grafo diretto è un insieme di elementi (i \emph{nodi}) accoppiato con un insieme di relazioni tra questi elementi (gli \emph{archi}). \accente naturale associare questo concetto all'idea di percorso: ogni grafo è caratterizzato da un insieme di nodi e da uno di \emph{cammini} che consentono di spostarsi da un nodo ad un altro. La seguente definizione sorge in modo spontaneo da questa interpretazione:
 \begin{definition}
-    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $u E^{*} v$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, x_n E x_{n+1}$.
+    Sia $G = (V, E)$ un grafo diretto. Siano $u,v \in V$. Diciamo che $v$ \emph{è raggiungibile} da $u$, o in alternativa \emph{esiste un cammino} da $u$ a $v$, o ancora $\langle u, v \rangle_{E^*}$, se esiste una sequenza finita di nodi $\displaystyle \{x_n\}_{n \in \{0,\dots,K\}}$, tale che $x_0 = u, x_K = v, \langle x_n, x_{n+1} \rangle_E$.
 \end{definition}
+
 L'esistenza di un cammino tra nodi fornisce un criterio immediato per partizionare un grafo in gruppi di nodi. Diamo innanzitutto la seguente definizione:
 \begin{definition}
-    Un grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $v_1 E^{*} v_2$.
+    Un grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $\langle v_1, v_2 \rangle_{E^*}$.
 \end{definition}
-Allora possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
+
+Possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
 \begin{definition}
     Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo diretto sono i sottografi che compongono la ripartizione (massimale) del grafo in sottografi fortemente connessi.
 \end{definition}
+
 \begin{example}
     \begin{figure}[t]
         \centering
@@ -84,24 +91,27 @@ Allora possiamo individuare i sottografi massimali (cioè la ripartizione del gr
     \end{figure}
     Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
 \end{example}
+
 Il partizionamento dei nodi in SCC è definito come segue:
 \begin{definition} \label{def:scc_partition}
     Sia $G = (V, E)$ un grafo diretto. Il grafo $G^{\superscc} = (V^{\superscc}, E^{\superscc})$, dove:
     \begin{itemize}
         \item $V^{\superscc} = \{C \mid \,C$ è una SCC$\}$;
-        \item $E^{\superscc} = \{(A,B) \in V^{\superscc} \times V^{\superscc} \mid A \neq B, \exists m \in A, n \in B, m E n\}$
+        \item $E^{\superscc} = \{(A,B) \in V^{\superscc} \times V^{\superscc} \mid A \neq B, \exists m \in A, n \in B, \langle m,n \rangle_E\}$
     \end{itemize}
     è il partizionamento del grafo iniziale in SCC.
 \end{definition}
+
 Riportiamo la seguente proprietà immediata:
 \begin{proposition}
     Sia $G^{\superscc}$ il grafo delle SCC di un grafo $G$ generico. Allora $G^{\superscc}$ è aciclico.
 \end{proposition}
 \begin{proof2}
-    Supponiamo per assurdo che in $G^{\superscc}$ esista un ciclo. Allora tutti i nodi di $V^{\superscc}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
+    Supponiamo per assurdo che in $G^{\superscc}$ (i cui nodi sono i sottografi massimali che compongono la partizione delle SCC) esista un ciclo. Allora tutti i nodi di $V^{\superscc}$ facenti parte del ciclo sono mutuamente raggiungibili (percorrendo il ciclo). Quindi tutti i nodi fanno parte della stessa SCC, ma questo è assurdo.
 \end{proof2}
+
 \begin{example}
-    \begin{figure}[t]
+    \begin{figure}[b]
         \centering
         \begin{subfigure}{.45\textwidth}
           \centering
@@ -134,7 +144,8 @@ Riportiamo la seguente proprietà immediata:
                 \path [->] (B) edge node {} (H);
             \end{scope}
             \end{tikzpicture}
-          \caption{Un grafo}
+            \caption{Un grafo diretto}
+          \label{fig:graph_cfc_2_graph}
         \end{subfigure}
         \hfill
         \begin{subfigure}{.45\textwidth}
@@ -155,17 +166,35 @@ Riportiamo la seguente proprietà immediata:
 
             \end{scope}
             \end{tikzpicture}
-          \caption{Corrispondente grafo delle SCC}
+            \caption{Grafo delle SCC}
+          \label{fig:graph_cfc_2_scc}
         \end{subfigure}
-        \caption{Un grafo ed il corrispondente grafo delle SCC}
-        \label{fig:graph_cfc_2}
+        \caption{Un grafo diretto composto dai nodi $A,B,C,D,E,F,G,H,I$, che possono essere raggruppati nelle SCC $(DEF), (A), (B), (GHI)$.}
     \end{figure}
-    La Figura \ref{fig:graph_cfc_2}.a rappresenta un grafo diretto generico, la Figura \ref{fig:graph_cfc_2}.b rappresenta il suo grafo delle componenti fortemente connesse associato.
+    Nella Figura \ref{fig:graph_cfc_2_graph} è riportato un grafo diretto generico, nella Figura \ref{fig:graph_cfc_2_scc} si è rappresentato il corrispondente grafo delle componenti fortemente connesse.
 \end{example}
-Dato un grafo diretto generico possiamo determinare la ripartizione in SCC dei suoi nodi sfruttando un algoritmo avente complessità lineare $\Theta(|V| + |E|)$ \cite{tarjan}. L'algoritmo non verrà trattato in questo elaborato.\\
+
+Osserviamo infine che la ripartizione in componenti fortemente connesse di un grafo è sempre unica. Per dimostrarlo sfruttiamo il seguente risultato preliminare:
+\begin{lemma}
+    La relazione binaria $\widehat{E}$ che associa le coppie di nodi mutuamente raggiungibili (si osservi che vale $\widehat{E} \subseteq E^*$) è simmetrica e transitiva.
+\end{lemma}
+\begin{proof2}
+    La simmetria è banale, la transitività discende dal fatto che se $a \widehat{E} b, b \widehat{E} c$, allora è possibile raggiungere $c$ passando per $b$ partendo da $a$, e facendo lo stesso percorso al contrario si dimostra che $a \widehat{E} c$.
+\end{proof2}
+
+\begin{corollary}
+    La ripartizione in SCC di un grafo è unica.
+\end{corollary}
+\begin{proof2}
+    Supponiamo per assurdo che sia possibile ``scegliere'' se mettere $a,b$ oppure $b,c$ nella stessa SCC, e che questo generi una ripartizione differente. Ma allora si ha anche $a \widehat{E} c$, e quindi un'unico partizionamento.
+\end{proof2}
+
+Dato un grafo diretto generico possiamo determinare la partizione delle componenti fortemente connesse utilizzando alcuni algoritmi a complessità lineare \cite{sharir} \cite{tarjan}, che non verranno esposti in questo elaborato.
 
 \subsubsection{Visita in profondità}
-Delle due metodologie prevalenti per l'esplorazione di un grafo, \emph{visita in ampiezza} (\emph{Breadth-First-Search}, abbreviato in BFS) e \emph{visita in profondità} (\emph{Depth-First-Search}, abbreviato in DFS), in questo lavoro ci interessiamo alla seconda. Come dice il nome, questa tecnica consiste nella visita esaustiva di tutti i figli di un nodo, prima di passare agli altri nodi sullo stesso livello. Riportiamo lo pseudocodice da \cite{clrs}, leggermente modificato:\\
+Delle due metodologie prevalenti per l'esplorazione di un grafo, \emph{visita in ampiezza} (\emph{Breadth-First-Search}, abbreviato in BFS) e \emph{visita in profondità} (\emph{Depth-First-Search}, abbreviato in DFS), in questo utilizzeremo prevalentemente la seconda. Come dice il nome, questa tecnica consiste nella visita esaustiva di tutti i figli di un nodo, prima di passare agli altri nodi sullo stesso livello.
+
+Riportiamo lo pseudocodice da \cite{clrs}, leggermente modificato:\\
 \begin{algorithm}[H]
     \label{alg:dfs}
     \KwData{$G = (V,E)$}
@@ -174,7 +203,7 @@ Delle due metodologie prevalenti per l'esplorazione di un grafo, \emph{visita in
     \SetKwProg{Fn}{function}{:}{end}
     \Fn{\textup{dsf-visit}($G = (V,E), n,$ time)}{
         n.color = GRAY\;
-        \ForAll{$m \mid (nEm \land m.$color = WHITE)}{
+        \ForAll{$m \mid (\langle n,m \rangle \land m.$color = WHITE)}{
             time = dfs-visit($G, m,$ time)\;
         }
         n.finishing-time = time\;
