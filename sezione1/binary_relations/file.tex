@@ -1,36 +1,36 @@
 \subsection{Relazioni Binarie}
-Riportiamo la definizione di \emph{relazione binaria} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato:
+Riportiamo la definizione di \emph{relazione binaria} \cite{bin_relations} su uno o due insiemi, che sarà utile per definire formalmente il concetto di \emph{grafo}, fondamentale all'interno di questo elaborato:
 \begin{definition}
     Una \emph{relazione binaria} su $A,B$ è un sottoinsieme del prodotto cartesiano $A \times B$.\\
     Una \emph{relazione binaria} su $A$ è un sottoinsieme del prodotto cartesiano $A \times A$.\\
-	Se $R$ mette in relazione $u,v$, cioè $(u,v) \in R$, si usa la notazione $u R v$.
+	Se $\mathcal{R}$ mette in relazione $u,v$, cioè $(u,v) \in \mathcal{R}$, si usa la notazione $u \mathcal{R} v$ o $\mathcal{R}(u,v)$.
 \end{definition}
 \begin{definition}
-    L' \emph{insieme immagine} di un elemento $x$ dell'insieme $A$ attraverso la relazione $R$ è l'insieme $R(x) = \{y \in B \mid x R y\}$.
+    L' \emph{insieme immagine} di un elemento $x$ dell'insieme $A$ attraverso la relazione $\mathcal{R}$ è l'insieme $\mathcal{R}(x) = \{y \in B \mid x \mathcal{R} y\}$.
 \end{definition}
-Alcune relazioni binarie mostrano proprietà fondamentali, che presentiamo nella definizione seguente:
+Alcune relazioni binarie dispongono di una o più delle seguenti caratteristiche:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A$. Siano $x,y,z$ qualsiasi appartenenti ad $A$. Allora $R$ è:
+    Sia $\mathcal{R}$ una relazione binaria su $A$. Siano $x,y,z$ qualsiasi appartenenti ad $A$. Allora $\mathcal{R}$ è:
     \begin{itemize}
-        \item \emph{Riflessiva} se $x R x$;
-        \item \emph{Simmetrica} se $x R y \implies y R x$;
-        \item \emph{Transitiva} se $(x R y \land y R z) \implies x R z$.
+        \item \emph{Riflessiva} se $x \mathcal{R} x$;
+        \item \emph{Simmetrica} se $x \mathcal{R} y \implies y \mathcal{R} x$;
+        \item \emph{Transitiva} se $(x \mathcal{R} y \land y \mathcal{R} z) \implies x \mathcal{R} z$.
     \end{itemize}
 \end{definition}
 \begin{example}
-    La relazione ``$\leq$'' sui naturali è riflessiva e transitiva, ma non simmetrica. La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') sui naturali è simmetrica, riflessiva e transitiva.
+    La relazione ``$\leq$'' su $\mathbb{N}$ è riflessiva e transitiva, ma non simmetrica. La relazione ``$=$'' ($a = b \iff $``$a,b$ sono lo stesso numero'') su $\mathbb{N}$ è simmetrica, riflessiva e transitiva.
 \end{example}
 \begin{definition}
     Una \emph{relazione di equivalenza} su un insieme $A$ è una relazione binaria riflessiva, simmetrica e transitiva. Si vede facilmente che questo genere di relazione partiziona $A$ in \emph{classi di equivalenza}, ovvero sottoinsiemi disgiunti di $A$ all'interno dei quali tutte le coppie di elementi sono in relazione.
 \end{definition}
-Data una relazione di equivalenza $R$ su un insieme $A$, si usa la notazione ``$[a]_R$'' per indicare la classe di equivalenza di $R$ a cui appartiene $a$. Inoltre si usa la notazione ``$A/R$'', che si legge ``\emph{quoziente} di $A$ rispetto a $R$'', per denotare l'insieme delle classi di equivalenza di $R$ su $A$.\\
+Data una relazione di equivalenza $\mathcal{R}$ su un insieme $A$, si usa la notazione ``$[a]_{\mathcal{R}}$'' per indicare la classe di equivalenza di $\mathcal{R}$ cui appartiene $\mathcal{R}$. Inoltre si usa la notazione ``$A/\mathcal{R}$'', letta ``\emph{quoziente} di $A$ rispetto a $\mathcal{R}$'', per denotare l'insieme delle classi di equivalenza di $\mathcal{R}$ su $A$.\\
 In alcune situazioni risulta conveniente definire la più piccola relazione (cioè quella che mette in relazione il minor numero possibile di coppie) che dispone di una certa proprietà, e che contiene una relazione binaria di partenza. Una relazione costruita in questo modo è una ``\emph{chiusura}'':
 \begin{definition}
-	Sia $R$ una relazione binaria su $A$. Le seguenti relazioni sono chiusure di $R$:
+	Sia $\mathcal{R}$ una relazione binaria su $A$. Le seguenti relazioni sono chiusure di $\mathcal{R}$:
     \begin{itemize}
-        \item \emph{Riflessiva}: $R_r = R \cup \{(x,x) \mid x \in A\}$;
-        \item \emph{Simmetrica}: $R_s = R \cup \{(y,x) \mid x R y\}$;
-        \item \emph{Transitiva}: $R_t = R \cup \{(x,z) \mid \exists y \in A,\, x R y \land y R z\}$.
+        \item \emph{Riflessiva}: $\mathcal{R}_r = \mathcal{R} \cup \{(x,x) \mid x \in A\}$;
+        \item \emph{Simmetrica}: $\mathcal{R}_s = \mathcal{R} \cup \{(y,x) \mid x \mathcal{R} y\}$;
+        \item \emph{Transitiva}: $\mathcal{R}_t = \mathcal{R} \cup \{(x,z) \mid \exists y \in A,\, x \mathcal{R} y \land y \mathcal{R} z\}$.
     \end{itemize}
 \end{definition}
 \begin{example}
@@ -38,7 +38,7 @@ In alcune situazioni risulta conveniente definire la più piccola relazione (cio
 \end{example}
 Nel seguito useremo ampiamente la definizione seguente:
 \begin{definition}
-    Sia $R$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $R$ è l'insieme $R^{-1}(y) = \{x \in A \mid x R y\}$.\\
-    Più in generale, la \emph{funzione inversa} di $R$ è la funzione $R^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x R y$ per almeno un $y$ del sottoinsieme.
+    Sia $\mathcal{R}$ una relazione binaria su $A \times B$. La \emph{contro-immagine} di un elemento $y \in B$ rispetto ad $\mathcal{R}$ è l'insieme $\mathcal{R}^{-1}(y) = \{x \in A \mid x \mathcal{R} y\}$.\\
+    Più in generale, la \emph{funzione inversa} di $R$ è la funzione $\mathcal{R}^{-1} : \mathcal{P}(B) \to \mathcal{P}(A)$ (dove ``$\mathcal{P}$'' denota l'insieme delle parti) che associa ad un sottoinsieme di $B$ tutti gli $x \in A$ tali che vale $x \mathcal{R} y$ per almeno un $y$ del sottoinsieme.
 \end{definition}
-Adottiamo infine la notazione ``$|A|$'' per indicare la \emph{cardinalità} dell'insieme $A$. In modo analogo, data una relazione binaria $R$, $|R|$ è il numero delle coppie messe in relazione da $R$.
+Adottiamo infine la notazione ``$|A|$'' per indicare la \emph{cardinalità} dell'insieme $A$. In modo analogo, data una relazione binaria $\mathcal{R}$, $|\mathcal{R}|$ è il numero delle coppie messe in relazione da $\mathcal{R}$.
