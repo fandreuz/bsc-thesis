@@ -82,40 +82,50 @@ Con queste premesse possiamo definire il problema della determinazione della \em
 La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
 \begin{definition}
     \label{def:funz_split}
-    Sia $\widetilde{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $f: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $S$ rispetto a $f$ se
+    Sia $\mathfrak{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $\mathcal{R}: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $\mathfrak{S}$ rispetto a $\mathcal{R}$ se
     \begin{gather*}
-        \exists S_x \in \widetilde{S} \mid \,\, S_x \cap f^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq f^{-1}(A)
+        \exists S_x \in \mathfrak{S} \mid \,\, S_x \cap \mathcal{R}^{-1}(A) \neq \emptyset \,\,\land\,\, S_x \not\subseteq \mathcal{R}^{-1}(A)
     \end{gather*}
-    ovvero se la partizione non è stabile rispetto ad $A$. In tal caso definiamo la seguente funzione:
+    ovvero se la partizione non è stabile rispetto alla coppia $(\mathcal{R},A)$.
+
+    In tal caso definiamo la seguente funzione:
     \begin{gather*}
-        \splitfunc(A,\widetilde{S}) = \{S_x \cap f^{-1}(A), S_x - f^{-1}(A) \mid S_x \in \widetilde{S}\} - \{\emptyset\}
+        \splitfunc(A,\mathfrak{S}) = \mathfrak{S} \cup \{S_x \cap \mathcal{R}^{-1}(A), S_x - \mathcal{R}^{-1}(A) \mid S_x \in \mathfrak{S}\} - \{\emptyset\}
     \end{gather*}
+
+    Si osservi che la definizione di \splitfunc dipende anche dal parametro ``$\mathcal{R}$''. Siccome solitamente non c'è ambiguità sulla relazione presa in considerazione nella maggior parte dei casi non metteremo in evidenza questa dipendenza.
 \end{definition}
-Valgono i seguenti risultati sulla funzione appena introdotta:
+
+Valgono i seguenti risultati sulla funzione Split appena introdotta:
 \begin{observation}
-    Se $A$ non è uno \emph{splitter} di $\widetilde{S}$ si ha $\widetilde{S} = \splitfunc(A,\widetilde{S})$.
+    Se $A$ non è uno \emph{splitter} di $\mathfrak{S}$ si ha $\mathfrak{S} = \splitfunc(A,\mathfrak{S})$.
 \end{observation}
+
 \begin{proposition}
     \label{prop:split_eredita}
-    Se $\widetilde{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\widetilde{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione ``Split'' preserva la stabilità.
+    Se $\mathfrak{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\mathfrak{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione Split preserva la stabilità.
 \end{proposition}
 \begin{proof2}
-    ``Split'' può solamente dividere i blocchi, e non mescolarli.
+    Split può solamente dividere i blocchi, e non mescolarli.
 \end{proof2}
-Dimostriamo il seguente risultato che useremo nel seguito:
+
+Dimostriamo il seguente risultato che utilizzeremo nel seguito \cite{dovier}:
 \begin{theorem}
     \label{theo:split_properties}
-    Consideriamo la funzione ``Split'' proposta nella Definizione \ref{def:funz_split}:
+    Consideriamo la funzione Split proposta nella Definizione \ref{def:funz_split}:
     \begin{enumerate}
-        \item La funzione è monotona rispetto al secondo argomento, cioè se $\widetilde{S}$ rifinisce di $S$, allora $\splitfunc(A,\widetilde{S})$ rifinisce $\splitfunc(A,S)$;
-        \item La funzione è commutativa rispetto al primo argomento: \splitfunc$(A,\splitfunc(B,S)) = \splitfunc(B, \splitfunc(A,S))$.
+        \item La funzione è monotona rispetto al secondo argomento, cioè se $\mathfrak{S}$ rifinisce $\mathfrak{S}_2$, allora $\splitfunc(A,\mathfrak{S})$ rifinisce $\mathfrak(A,\mathfrak{S}_2)$;
+        \item La funzione è commutativa rispetto al primo argomento:
+
+        \splitfunc$(A,\splitfunc(B,\mathfrak{S})) = \splitfunc(B, \splitfunc(A,\mathfrak{S}))$.
     \end{enumerate}
 \end{theorem}
 \begin{proof2}
     Dimostriamo separatamente gli enunciati:
     \begin{enumerate}
-        \item I blocchi di \splitfunc$(A,\widetilde{S})$ sono del tipo $x - R^{-1}(A)$ oppure $x \cap R^{-1}(A)$, dove $x$ è un blocco di $\widetilde{S}$. I blocchi di \splitfunc$(A,S)$ sono del tipo $y - R^{-1}(A)$ oppure $y \cap R^{-1}(A)$, dove $y$ è un blocco di $S$. Poichè $\forall x \in \widetilde{S} \,\,\exists y \in S \mid x \subseteq y$ si ha $x - R^{-1}(A) \subseteq y - R^{-1}(A)$ e $x \cap R^{-1}(A) \subseteq y \cap R^{-1}(A)$;
-        \item Conseguenza della commutatività delle operazioni ``$-$'' e ``$\cap$'' su insiemi.
+        \item I blocchi di \splitfunc$(A,\mathfrak{S})$ sono del tipo $x - \mathcal{R}^{-1}(A)$ oppure $x \cap \mathcal{R}^{-1}(A)$, dove $x$ è un blocco di $\mathfrak{S}$. I blocchi di \splitfunc$(A,\mathfrak{S}_2)$ sono del tipo $y - \mathcal{R}^{-1}(A)$ oppure $y \cap \mathcal{R}^{-1}(A)$, dove $y$ è un blocco di $\mathcal{S}_2$.
+
+        Poichè $\forall x \in \mathfrak{S} \,\,\exists y \in \mathfrak{S}_2 \mid x \subseteq y$ si ha $x - \mathcal{R}^{-1}(A) \subseteq y - \mathcal{R}^{-1}(A)$ e $x \cap \mathcal{R}^{-1}(A) \subseteq y \cap \mathcal{R}^{-1}(A)$;
+        \item Conseguenza delle proprietà delle operazioni insiemistiche ``$-$'' e ``$\cap$''.
     \end{enumerate}
-    \vspace*{-0.75cm}
 \end{proof2}
