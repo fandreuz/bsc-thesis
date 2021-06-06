@@ -134,43 +134,44 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA (
 \begin{proof2}
     Siano $G_A = (V_A, E_A), G_B = (V_B, E_B)$. Dimostriamo separatamente le due implicazioni:
     \begin{enumerate}
-        \item[$(\implies)$] Osserviamo innanzitutto che la relazione binaria ``$\equiv$'' su $V_A, V_B$ definita come segue:
-              \begin{gather*}
-                  a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
-              \end{gather*}
-              è una bisimulazione sui grafi $G_A, G_B$.\\
-              Chiaramente se $a \equiv b$ e $\langle a, a' \rangle$ si ha:
-              \begin{itemize}
-                  \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (unica per AFA);
-                  \item $a,b$ rappresentano lo stesso insieme.
-              \end{itemize}
-              Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b',a'$ rappresentano lo stesso insieme, cioè $\langle b, b' \rangle$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
-              La relazione ``$\equiv$'' è quindi una bisimulazione sugli APG $G_A,G_B$ quando si assume per ipotesi che rappresentino lo stesso insieme.
-        \item[$(\impliedby)$] Sia $\mathcal{R}$ una bisimulazione su $G_A,G_B$. Consideriamo la decorazione $d_A$ (l'unica) di $G_A$. Vogliamo definire una decorazione per $G_B$, e dimostrare che i due grafi con le rispettive decorazioni sono due immagini dello stesso insieme. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
-              Definiamo la decorazione $d_B$ come segue:
-              \begin{gather*}
-                  d_B(v) = d_A(u), \text{con $u$ nodo di $G_A$} \mid u \mathcal{R} v
-              \end{gather*}
-              \begin{observation*}
-                  Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $G_A \mid u R v$ perchè si suppone che i due APG siano bisimili.
-              \end{observation*}
-              Dimostriamo che $d_B$ è una decorazione di $G_B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $G_B$ l'insieme $d_B(v)$ contiene tutti e soli gli insiemi $d_B(v')$ dove $v'$ è figlio di $v$.
-              \begin{itemize}
-                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d_B(v)$. Poichè la decorazione di $G_A$ è ben definita, il nodo $u$ di $G_A \mid u \mathcal{R} v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$, per cui vale quindi $d_A(u') = X$. Ma $u \mathcal{R} b \land \langle u, u' \rangle \implies \exists v' \mid \langle v, v' \rangle, u' \mathcal{R} v'$. Cioè $d_B(v') = d_A(u') = X$. Dunque il nodo mancante è stato trovato.
-                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid \langle v, v' \rangle$ e $d_B(v') = Y$ con $Y \notin d(v)$. Ma allora, considerando un nodo $u$ di $G_A \mid u \mathcal{R} v$, dovrebbe esistere un $u' \mid \langle u, u' \rangle$ e $u' \mathcal{R} v'$, cioè $d_A(u') = d_B(v') = Y$.
-                  Ma allora $Y \in d_A(u) = d_B(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
-              \end{itemize}
-              \accente possibile che ci siano due nodi di $a_1, a_2$ di $G_A$ ed un nodo $b$ di $G_B$ per cui vale $a_1 \mathcal{R} b \land a_2 \mathcal{R} b$. In questo caso la decorazione definita è ambigua. Per questo motivo correggiamo la formulazione di $d_B$ come segue:
-              \begin{gather*}
-                d_B(v) = X \text{, dove $X$ è l'insieme associato al nodo $u$ di $A$} \mid u \mathcal{R} v, \\
-                \text{con $u$ preso casualmente tra i nodi di $G_A$ bisimili a $v$.}
-              \end{gather*}
-              Per AFA esiste un'unica decorazione di $G_B$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $G_B$:
-              \begin{itemize}
-                  \item $\exists ! u \in V_A \mid u \mathcal{R} v$;
-                  \item $\forall u \in V_A \mid u \mathcal{R} v$, la decorazione di $G_A$ associa a tutti gli $u$ lo stesso insieme.
-              \end{itemize}
-              Dunque l'ambiguità è risolta.
+        \item[$(\implies)$] Osserviamo innanzitutto che la relazione binaria $\equiv \,: V_A \times V_B$ definita come:
+        \begin{gather*}
+            a \equiv b \iff ``\text{le decorazioni di } G_A,G_B \text{ associano ad } a,b \text{ lo stesso insieme}''
+        \end{gather*}
+        è una bisimulazione sui grafi $G_A, G_B$.\\
+        Chiaramente se $a \equiv b$ e $\langle a, a' \rangle$ si ha:
+        \begin{itemize}
+            \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (unica per AFA);
+            \item $a,b$ rappresentano lo stesso insieme.
+        \end{itemize}
+        Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b',a'$ rappresentano lo stesso insieme, cioè $\langle b, b' \rangle$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+        La relazione ``$\equiv$'' è quindi una bisimulazione sugli APG $G_A,G_B$ quando si assume per ipotesi che rappresentino lo stesso insieme.
+        \item[$(\impliedby)$] Sia $\mathcal{R}$ una bisimulazione su $G_A,G_B$. Consideriamo la decorazione $d_A$ (l'unica) di $G_A$. Vogliamo definire una decorazione per $G_B$, e dimostrare che i due grafi con le rispettive decorazioni sono due immagini dello stesso insieme. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.
+
+        Definiamo la decorazione $d_B$ come segue:
+        \begin{gather*}
+            d_B(v) = d_A(u), \text{con $u$ nodo di $G_A$} \mid u \mathcal{R} v
+        \end{gather*}
+        \begin{observation*}
+            Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $G_A \mid u \mathcal{R} v$ perchè si suppone che i due APG siano bisimili.
+        \end{observation*}
+        Dimostriamo che $d_B$ è una decorazione di $G_B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $G_B$ l'insieme $d_B(v)$ contiene tutti e soli gli insiemi $d_B(v')$ dove $v'$ è figlio di $v$.
+        \begin{itemize}
+            \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d_B(v)$. Poichè la decorazione di $G_A$ è ben definita, il nodo $u$ di $G_A \mid u \mathcal{R} v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$, per cui vale quindi $d_A(u') = X$. Ma $u \mathcal{R} b \land \langle u, u' \rangle \implies \exists v' \mid \langle v, v' \rangle, u' \mathcal{R} v'$. Cioè $d_B(v') = d_A(u') = X$. Dunque il nodo mancante è stato trovato.
+            \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid \langle v, v' \rangle$ e $d_B(v') = Y$ con $Y \notin d(v)$. Ma allora, considerando un nodo $u$ di $G_A \mid u \mathcal{R} v$, dovrebbe esistere un $u' \mid \langle u, u' \rangle$ e $u' \mathcal{R} v'$, cioè $d_A(u') = d_B(v') = Y$.
+            Ma allora $Y \in d_A(u) = d_B(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
+        \end{itemize}
+        \accente possibile che ci siano due nodi di $a_1, a_2$ di $G_A$ ed un nodo $b$ di $G_B$ per cui vale $a_1 \mathcal{R} b \land a_2 \mathcal{R} b$. In questo caso la decorazione definita è ambigua. Per questo motivo correggiamo la formulazione di $d_B$ come segue:
+        \begin{gather*}
+        d_B(v) = X \text{, dove $X$ è l'insieme associato al nodo $u$ di $A$} \mid u \mathcal{R} v, \\
+        \text{con $u$ preso casualmente tra i nodi di $G_A$ bisimili a $v$.}
+        \end{gather*}
+        Per AFA esiste un'unica decorazione di $G_B$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $G_B$:
+        \begin{itemize}
+            \item $\exists ! u \in V_A \mid u \mathcal{R} v$;
+            \item $\forall u \in V_A \mid u \mathcal{R} v$, la decorazione di $G_A$ associa a tutti gli $u$ lo stesso insieme.
+        \end{itemize}
+        Dunque l'ambiguità è risolta.
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
@@ -179,59 +180,59 @@ Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorem
 Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
     \label{def:bisi_contraction}
-    Sia $R$ una bisimulazione su $G = (V,E)$, dove $G$ è un grafo diretto. Supponiamo che $R$ sia una relazione di equivalenza. Il grafo, definito a partire dal grafo iniziale, ottenuto con una \emph{contrazione rispetto alla bisimulazione} $R$, è il grafo diretto $G_R = (V_R, E_R)$ definito come in \cite{gentilini}:
+    Sia $\mathcal{R}$ una bisimulazione su $G = (V,E)$, dove $G$ è un grafo diretto. Supponiamo che $\mathcal{R}$ sia una relazione di equivalenza. Il grafo, definito a partire dal grafo iniziale, ottenuto con una \emph{contrazione rispetto alla bisimulazione} $\mathcal{R}$ \cite{gentilini}, è il grafo diretto $G_{\mathcal{R}} = (V_{\mathcal{R}}, E_{\mathcal{R}})$:
     \begin{itemize}
-        \item $V_R = \{[m]_R, m \in V\}$;
-        \item $[m]_R E_R [n]_R \iff \exists b \in [m]_R, c \in [n]_R \mid b E c$.
+        \item $V_{\mathcal{R}} = \{[m]_{\mathcal{R}}, m \in V\}$;
+        \item $\langle [m]_{\mathcal{R}}, [n]_{\mathcal{R}} \rangle \in E_{\mathcal{R}} \iff \exists b \in [m]_{\mathcal{R}}, c \in [n]_{\mathcal{R}} \mid \langle b, c \rangle \in E$.
     \end{itemize}
-    Si chiama \emph{classe} del nodo $a$ rispetto alla bisimulazione $R$, indicata con la notazione $[a]_R$, il nodo di $V_R$ in cui viene inserito il nodo $a$.
+    Si chiama \emph{classe} del nodo $a$ rispetto alla bisimulazione $\mathcal{R}$, indicata con la notazione $[a]_{\mathcal{R}}$, il nodo di $V_{\mathcal{R}}$ in cui viene inserito il nodo $a$.
 \end{definition}
+
 La Definizione \ref{def:bisi_contraction} è di fondamentale importanza per la seguente osservazione:
 \begin{proposition}
-    Sia $G$ un grafo diretto, e sia $G_R$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_R$ sono bisimili.
+    Sia $G$ un grafo diretto, e sia $G_{\mathcal{R}}$ come nella Definizione \ref{def:bisi_contraction}, per una bisimulazione $R$ qualsiasi. Allora $G, G_{\mathcal{R}}$ sono bisimili.
     \label{prop:bisi_cont_bisi}
 \end{proposition}
 \begin{proof2}
-    Sia ``$\equiv$'' la relazione binaria su $V\times V_R$ definita come segue:
+    Sia ``$\equiv$'' la relazione binaria su $V\times V_{\mathcal{R}}$ definita come segue:
     \begin{gather*}
-        m \equiv M \iff M = [m]_R
+        m \equiv M \iff M = [m]_{\mathcal{R}}
     \end{gather*}
-    Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_R$.\\
-    Supponiamo che $x \equiv X$, e che $x E y$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_R$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $X E_R Y$. Inoltre vale banalmente $y \equiv Y$.\\
-    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $X E_R Y$ per qualche $Y \in V_R$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y \mid (y \equiv Y \land x E y)$.
+    Vogliamo dimostrare che tale relazione è una bisimulazione sui grafi $G, G_{\mathcal{R}}$. Supponiamo che $x \equiv X$, e che $\langle x,y \rangle \in E$ per qualche $y \in V$. Chiamiamo $Y \coloneqq [y]_{\mathcal{R}}$. Allora, per la Definizione \ref{def:bisi_contraction}, si ha $\langle X, Y \rangle \in E_{\mathcal{R}}$. Inoltre vale banalmente $y \equiv Y$.
+
+    Per dimostrare la seconda condizione caratteristica della bisimulazione, supponiamo che $x \equiv X$, e che $\langle X, Y \rangle \in E_{\mathcal{R}}$ per qualche $Y \in V_{\mathcal{R}}$. Sempre per la Definizione \ref{def:bisi_contraction} deve esistere un $y \in Y \mid (y \equiv Y \land \langle x, y \rangle \in E)$.
 \end{proof2}
+
 La Proposizione \ref{prop:bisi_cont_bisi} ha una conseguenza ovvia, che risulta evidente dal Teorema \ref{theo:bisi_iff_eqsets}:
 \begin{corollary}
     Sia $R$ una bisimulazione che sia anche una relazione di equivalenza. Allora l'APG $(G, v)$ e l'APG $(G_R, [v]_R)$ rappresentano lo stesso insieme.
 \end{corollary}
-Quindi risulta naturale sfruttare le proprietà della bisimulazione per minimizzare la rappresentazione di insiemi, considerando che è sufficiente una bisimulazione sulla rappresentazione iniziale per ottenere una rappresentazione equivalente. Definiamo una relazione d'ordine sulle rappresentazioni:
+
+Possiamo quindi sfruttare le proprietà della bisimulazione per rappresentare insiemi in una forma minimizzata: è sufficiente ricavare una bisimulazione (che sia anche una relazione di equivalenza) sul grafo che rappresenta l'insieme.
+
+Poichè in generale un grafo ammette più di una bisimulazione (che sia anche una relazione di equivalenza), definiamo una relazione d'ordine sulle rappresentazioni:
 \begin{definition}
-    La rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.\\
+    La rappresentazione $(G_a, v_a)$ di un insieme è \emph{minore} della rappresentazione equivalente $(G_b, v_b)$ se $|Va| < |Vb|$.
+
     Una rappresentazione è \emph{minima} se non esiste una rappresentazione equivalente minore.
 \end{definition}
+
 \begin{observation}
     La \emph{contrazione per bisimulazione} è una rappresentazione minore (o eventualmente uguale) di quella iniziale.
 \end{observation}
+
 Concludiamo la sezione con il seguente risultato, che stabilisce in modo univoco la bisimulazione prescelta per minimizzare la rappresentazione di un dato insieme:
 \begin{theorem}
-    Sia $(G,v)$ un APG rappresentante un insieme. Sia $R_M$ la massima bisimulazione su $(G,v)$. Allora la contrazione per bisimulazione indotta da $R_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
+    Sia $(G,v)$ un APG rappresentante un insieme. Sia $\mathcal{R}_M$ la massima bisimulazione su $(G,v)$. Allora la contrazione per bisimulazione indotta da $\mathcal{R}_M$ su $(G,v)$ fornisce la rappresentazione minima dell'insieme.
 \end{theorem}
 \begin{proof2}
-    Supponiamo per assurdo che esista una bisimulazione $R_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $R_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $R_V$ e non secondo $R_M$. Chiaramente questa deduzione è in contrasto con il fatto che $R_M$ è la massima bisimulazione.\\
-    Supponiamo per assurdo che, dopo la contrazione indotta da $R_M$, sia possibile trovare una nuova bisimulazione $R_O$ su $(G_{R_M}, [v]_{R_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{R_M}, [v]_{R_M})$. Chiaramente $R_O \subset V{R_M} \times V{R_M}$.\\
-    Definiamo una nuova bisimulazione $R_{\widetilde{M}} \subset V\times V$ tale che
+    Supponiamo per assurdo che esista una bisimulazione $\mathcal{R}_V$ su $(G,v)$ che fornisce una contrazione avente un numero di nodi strettamente inferiore alla contrazione indotta da $\mathcal{R}_M$. Ma questo implica che esistono almeno due nodi di $G$ che sono in relazione secondo $\mathcal{R}_V$ e non secondo $\mathcal{R}_M$. Chiaramente questa deduzione è in contrasto con il fatto che $\mathcal{R}_M$ è la massima bisimulazione.
+
+    Supponiamo per assurdo che, dopo la contrazione indotta da $\mathcal{R}_M$, sia possibile trovare una nuova bisimulazione $\mathcal{R}_O$ su $(G_{\mathcal{R}_M}, [v]_{\mathcal{R}_M})$ che induca una contrazione avente un numero di nodi strettamente inferiore a quello di $(G_{\mathcal{R}_M}, [v]_{\mathcal{R}_M})$. Chiaramente $\mathcal{R}_O \subset V_{\mathcal{R}_M} \times V_{\mathcal{R}_M}$.
+
+    Definiamo una nuova bisimulazione $\mathcal{R}_{\widetilde{M}} \subset V\times V$ tale che
     \begin{gather*}
-        x R_{\widetilde{M}} y \iff (x R_M y \lor [x]_{R_M} R_O [y]_{R_M})
+        x \mathcal{R}_{\widetilde{M}} y \iff (x \mathcal{R}_M y \lor [x]_{\mathcal{R}_M} \mathcal{R}_O [y]_{\mathcal{R}_M})
     \end{gather*}
-    Per definizione di massima bisimulazione bisogna avere $R_{\widetilde{M}} \subset R_M$, quindi non è possibile che la contrazione indotta da $R_O$ sia una rappresentazione minore di quella indotta da $R_M$.
+    Per definizione di massima bisimulazione è necessario che valga $\mathcal{R}_{\widetilde{M}} \subset \mathcal{R}_M$, quindi non è possibile che la contrazione indotta da $\mathcal{R}_O$ sia una rappresentazione minore di quella indotta da $\mathcal{R}_M$.
 \end{proof2}
-
-\subsubsection{Applicazioni}
-\label{sec:applications}
-Abbiamo esposto le definizioni di base ed introdotto le nozioni di \emph{bisimulazione} e \emph{massima bisimulazione}, per cui riteniamo che sia interessante analizzare alcune applicazioni, prima di entrare nel merito del problema algoritmico.
-
-\accente risaputo che molti sistemi possono essere modellizzati efficacemente utilizzando grafi di complessità arbitraria. Si pensi ad esempio alla rete di contatti tra utenti di un \emph{social network}, di cui i grafi sono la rappresentazione più naturale, o l'insieme delle relazioni all'interno di un qualsiasi tipo di rete meccanica o elettronica (``se il componente $b$ è guasto, allora il componente $a$ è guasto''). Si osservi inoltre la potenza del concetto di \emph{etichetta} (in inglese \emph{label}): se ad esempio volessimo classificare gli utenti di un \emph{social network}, potremmo attribuire alle aziende la \emph{label} di ``\emph{seller}'', agli utenti l'etichetta di ``\emph{user}'', e ad alcuni utenti particolari (che in gergo si dicono \emph{influencer}), le cui opinioni hanno un'ampia risonanza sulla platea degli \emph{user}, l'etichetta di ``\emph{influencer}''. I risultati che otterremmo applicando uno qualsiasi degli algoritmi visti su un grafo di questo genere sarebbero sicuramente molto più profondi ed interessanti rispetto al caso \emph{unlabeled}, in quanto abbiamo diversificato il dataset in base ad informazioni che già avevamo, comunicando all'algoritmo il tipo di classificazione a cui eravamo interessati.
-
-La bisimulazione può essere applicata efficacemente per indicizzare dati semi-strutturati, ovvero dati organizzati in gerarchie di oggetti in cui alcuni attributi possono eventualmente essere assenti \cite{milo}. In mancanza di un'indicizzazione di qualche tipo saremmo costretti, per risolvere una query, ad esplorare tutti i livelli della gerarchia fino a trovare quella sotto-gerarchia di oggetti che la soddisfa. Utilizzando la bisimulazione possiamo raggruppare i dati in classi di equivalenza, e creare quindi una sorta di indice (chiamato \emph{1-index}); in base alle caratteristiche della query possiamo scegliere la classe di equivalenza in cui sappiamo che devono risidere i possibili risultati della ricerca, e restringere quindi la parte di verifica del ``matching'' ai soli membri della classe selezionata, riducendo di molto il tempo richiesto dalla procedura.
-
-\accente possibile applicare la bisimulazione anche nell'ambito della \emph{concurrency theory}, ovvero la teoria che studia l'interazione tra processi software che vengono eseguiti in parallelo. Possiamo costruire un modello semplificato di un sistema di questo tipo tramite la teoria dei grafi. In questo ambito è vitale ridurre problemi come il \emph{deadlock}, una situazione in cui una risorsa ``bloccata'' da un processo non viene mai rilasciata, per cui altri processi in attesa della stessa risorsa si bloccano per un tempo indefinito \cite{concurrency}. Analisi di questo tipo risultano estremamente complesse, soprattutto quando il software diventa molto complesso ed articolato. Per questo motivo esistono degli strumenti, chiamati \emph{concurrency workbench}, per cercare problemi nell'interazione tra processi \cite{caal}, che sfruttano ampiamente diverse nozioni di equivalenza, come appunto la bisimulazione ed alcune sue varianti \cite{kanellakis}.
