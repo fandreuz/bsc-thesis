@@ -1,88 +1,101 @@
 \subsection{Bisimulazione}
-In questa sezione introdurremo la definizione di bisimulazione ed alcune proprietà immediate. In seguito esamineremo la relazione tra la teoria degli insiemi e la bisimulazione.
-\subsubsection{Definizione e risultati generali}
+In questa sezione introduciamo la definizione della \emph{bisimulazione} ed alcune sue proprietà. Proseguiremo con la definizione di \emph{massima bisimulazione}, ed infine proporremo alcune osservazioni che legano la bisimulazione e la teoria degli insiemi.
+
+\subsubsection{Definizione e risultati preliminari}
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi diretti. Una relazione binaria $R: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi diretti. Una relazione binaria $\mathcal{R}: V_1 \times V_2$ è una \emph{bisimulazione} su $G_1, G_2$ se $\forall a \in V_1, b \in V_2$ valgono congiuntamente le seguenti proprietà:
     \begin{itemize}
-        \item $a R b, a E_1 a' \implies \exists b' \in V_2 \mid (a' R b' \land b E_2 b')$
-        \item $a R b, b E_2 b' \implies \exists a' \in V_1 \mid (a' R b' \land a E_1 a')$
+        \item $a \mathcal{R} b, \langle a, a' \rangle_{E_1} \implies \exists b' \in V_2 \mid a' \mathcal{R} b' \land \langle b, b' \rangle_{E_2}$
+        \item $a \mathcal{R} b, \langle b, b' \rangle_{E_2} \implies \exists a' \in V_1 \mid a' \mathcal{R} b' \land \langle a, a' \rangle_{E_1}$
     \end{itemize}
     Analogamente si definisce una bisimulazione su un unico grafo diretto $G$, ponendo $G_1 = G_2 = G$.
 \end{definition}
-L'esistenza di una bisimulazione tra due grafi, come vedremo, è un'informazione rilevante se siamo interessati agli insiemi rappresentati dai grafi considerati:
+
+Nei prossimi paragrafi osserveremo che l'esistenza di una bisimulazione tra due grafi è un'informazione rilevante se siamo interessati agli insiemi che rappresentano.
 \begin{definition}
-    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Essi sono \emph{bisimili} se esiste una bisimulazione su $G_1, G_2$.\\
-    Due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 R v_2$ per almeno una bisimulazione $R$ su $G_1, G_2$.
+    Siano $G_1 = (V_1,E_1), G_2 = (V_2,E_2)$ due grafi. Essi sono \emph{bisimili} se esiste una bisimulazione su $G_1, G_2$.
+    Due APG $(G_1, v_1), (G_2, v_2)$ sono \emph{bisimili} se $G_1, G_2$ sono bisimili e vale $v_1 \mathcal{R} v_2$ per almeno una bisimulazione $\mathcal{R}$ su $G_1, G_2$.
 \end{definition}
+
 \begin{observation}
     Una bisimulazione può non essere riflessiva, simmetrica, nè transitiva.
 \end{observation}
+
 \begin{example}
-    La relazione $a R b \iff$ ``$a,b$ sono lo stesso nodo'' su un grafo qualsiasi è una bisimulazione riflessiva, simmetrica e transitiva.\\
-    La relazione $R = \emptyset$ è una bisimulazione su un grafo qualsiasi, ma non è riflessiva.\\
+    La relazione $a R b \iff$ ``$a,b$ sono lo stesso nodo'' su un grafo qualsiasi è una bisimulazione riflessiva, simmetrica e transitiva.
+
+    La relazione $R = \emptyset$ è una bisimulazione su un grafo qualsiasi, ma non è riflessiva.
+
     La relazione $R = \{(a,a),(b,b),(c,c),(d,d),(a,b),(b,c),(c,d)\}$ sul grafo $G = (\{a,b,c,d\}, \{(a,b),(b,c),(c,d),(d,d)\})$ è una bisimulazione, ed è solamente riflessiva.
 \end{example}
+
 Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante delle chiusure:
 \begin{theorem}
-    Sia $R$ una bisimulazione sul grafo diretto $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
+    Sia $\mathcal{R}$ una bisimulazione sul grafo diretto $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
-    Consideriamo separatamente le tre relazioni $R_r, R_s, R_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva:
+    Consideriamo separatamente le tre relazioni $\mathcal{R}_r, \mathcal{R}_s, \mathcal{R}_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva. Per ogni caso consideriamo solamente le coppie aggiunte dalla chiusura:
     \begin{itemize}
-        \item $R_r$: Per definizione $R \subset R_r$, quindi è sufficiente dimostrare che $R_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.\\
-        Sia $u \in V$. Chiaramente per definizione di $R_r$ si ha $u R_r u$. Se $\exists u' \in V \mid u E u'$ allora (sempre per definizione di $R_r$) si ha $u' R_r u'$.
-        \item $R_s$: Per definizione $R \subset R_s$, quindi è sufficiente dimostrare che $R_s$ è una bisimulazione quando per $u,v \in V$ si ha $u R v$ ma non $v R u$.\\
+        \item $\mathcal{R}_r$: Per definizione $\mathcal{R} \subseteq \mathcal{R}_r$, quindi è sufficiente dimostrare che $\mathcal{R}_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.
+
+        Sia $u \in V$. Chiaramente per definizione di $\mathcal{R}_r$ si ha $u \mathcal{R}_r u$. Se $\exists u' \in V \mid \langle u, u' \rangle$ allora (sempre per definizione di $\mathcal{R}_r$) si ha $u' \mathcal{R}_r u'$.
+        \item $\mathcal{R}_s$: Per definizione $\mathcal{R} \subset \mathcal{R}_s$, quindi è sufficiente dimostrare che $\mathcal{R}_s$ è una bisimulazione quando per $u,v \in V$ si ha $u \mathcal{R} v$ ma non $v \mathcal{R} u$.
+
         Sia $(u,v) \in V\times V$. Allora:
         \begin{center}
-            $u R_s v \implies u R v \lor v R u$
+            $u \mathcal{R}_s v \implies u \mathcal{R} v \lor v \mathcal{R} u$
         \end{center}
-        Supponiamo ad esempio che $v R u$.
+        Supponiamo ad esempio che $v \mathcal{R} u$.
         \begin{align*}
-            &\implies \forall v' \in V\mid (v E v') \,\,\exists u' \in V, (u E u' \land v' R u')\\
-            &\implies u' R_s v'
+            &\implies \forall v' \in V \mid \langle v, v' \rangle \,\,\exists u' \in V, \langle u, u' \rangle \land v' \mathcal{R} u'\\
+            &\implies u' \mathcal{R}_s v'
         \end{align*}
         e
         \begin{align*}
-            &\implies \forall u' \in V\mid (u E u') \,\,\exists v' \in V, (v E v' \land v' R u')\\
-            &\implies u' R_s v'
+            &\implies \forall u' \in V\mid \langle u, u' \rangle \,\,\exists v' \in V, \langle v, v' \rangle \land v' \mathcal{R} u'\\
+            &\implies u' \mathcal{R}_s v'
         \end{align*}
         cioè sono dimostrate le due condizioni caratteristiche della bisimulazione.\\
-        La dimostrazione è analoga se $u R v$.
-        \item $R_t$: Per definizione $b \subset R_t$, quindi è sufficiente dimostrare che $R_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u R v$, $v R z$ ma non $u R z$.\\
-        Sia $(u,v,z) \in V\times V\times V$ con questa proprietà. Allora:
+        La dimostrazione è analoga se $u \mathcal{R} v$.
+        \item $\mathcal{R}_t$: Per definizione $b \subset \mathcal{R}_t$, quindi è sufficiente dimostrare che $\mathcal{R}_t$ è una bisimulazione quando per gli argomenti $u,v,z \in V$ si ha $u \mathcal{R} v$, $v \mathcal{R} z$ ma non $u \mathcal{R} z$.\\
+        Sia $(u,v,z) \in V^3$ una terna con questa proprietà. Allora:
         \begin{gather*}
-            \forall u' \in V\mid u E u' \,\, \exists v' \in V, (v E v' \land u' R v')
+            \forall u' \in V\mid \langle u, u' \rangle \,\, \exists v' \in V, \langle v, v' \rangle \land u' \mathcal{R} v'
         \end{gather*}
-        Inoltre $\exists z' \mid z E z' \land v' R z'$.\\
-        Riordinando si ha $u' R v', v' R z'$. Allora per definizione di $b_t, \, u' R_t z'$.\\
+        Inoltre $\exists z' \mid \langle z, z' \rangle \land v' \mathcal{R} z'$.\\
+        Riordinando si ha $u' \mathcal{R} v', v' \mathcal{R} z'$. Allora per definizione di $b_t, \, u' \mathcal{R}_t z'$.\\
         In modo speculare si ottiene la seconda condizione caratteristica della bisimulazione.
     \end{itemize}
     \vspace*{-0.75cm}
 \end{proof2}
+
 Da questa proposizione si deduce il seguente corollario, che risulta dall'applicazione iterata delle tre chiusure viste in precedenza:
 \begin{corollary}
-    Ad ogni bisimulazione $R$ è possibile associare una bisimulazione $\widetilde{R} : R \subset \widetilde{R} \,\,\land\,\, \widetilde{R}$ è una relazione di equivalenza.
+    Ad ogni bisimulazione $\mathcal{R}$ è possibile associare una bisimulazione $\widetilde{\mathcal{R}} \supseteq \mathcal{R}$ che è anche una relazione di equivalenza (Definizione \emph{\ref{def:eq_rel}}).
     \label{cor:bisimulation_eqrel}
 \end{corollary}
+
 Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la seguente proposizione, che sarà utile nel seguito:
 \begin{proposition}
-    Siano $R_1, R_2$ due bisimulazioni su $G_1, G_2$. Allora $R = R_1 \cup R_2$ è ancora una bisimulazione.
+    Siano $\mathcal{R}_1, \mathcal{R}_2$ due bisimulazioni su $G_1, G_2$. Allora $\mathcal{R} = \mathcal{R}_1 \cup \mathcal{R}_2$ è ancora una bisimulazione.
     \label{obs:bisimulation_union}
 \end{proposition}
 \begin{proof2}
-    Siano $u,v \mid u R v$. Sia $u' \mid u E u'$. Allora deve essere $u R_1 v \lor u R_2 v$. Ma quindi $\exists v' \mid (v E v' \land u' R_{1|2} v')$.
+    Siano $u,v \mid u \mathcal{R} v$, per cui deve valere $u \mathcal{R}_1 v \lor u \mathcal{R}_2 v$. Sia $u' \mid \langle u, u' \rangle$. Ma quindi $\exists v' \mid \langle v,v' \rangle \land u' \mathcal{R}_{1|2} v'$.
 \end{proof2}
 
 \subsubsection{Massima bisimulazione}
 \label{sec:bisi_max}
-Definiamo ora il concetto di \emph{massima bisimulazione}, che gioca un ruolo chiave nella risoluzione dei problemi considerati in questo elaborato:
+Definiamo ora il concetto di \emph{massima bisimulazione}, che sarà l'argomento principale di questo elaborato:
 \begin{definition}
-    Una bisimulazione $R_M$ su $G_1, G_2$ è \emph{massima} se per ogni bisimulazione $R$ su $G_1,G_2 \,\, u R v \implies u R_M v$.
+    Una bisimulazione $\mathcal{R}_M$ su $G_1, G_2$ è la \emph{bisimulazione massima} su $G_1, G_2$ se per ogni bisimulazione $\mathcal{R}$ su $G_1,G_2 \,\, u \mathcal{R} v \implies u \mathcal{R}_M v$, o equivalentemente $\mathcal{R}_M \supseteq \mathcal{R}$ per ogni bisimulazione $\mathcal{R}$ su $G_1, G_2$.
 \end{definition}
+
 \begin{observation}
-    Sia $R_M$ la massima bisimulazione su un grafo diretto $G$. Allora per qualsiasi altra bisimulazione $R$ su $G$ si ha $|R_M| \geq |R|$.
+    Sia $\mathcal{R}_M$ la massima bisimulazione su un grafo diretto $G$. Allora per ogni bisimulazione $\mathcal{R}$ su $G$ si ha $|\mathcal{R}_M| \geq |\mathcal{R}|$.
 \end{observation}
-Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Possiamo dedurre alcune caratteristiche banali:
+
+Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Deduciamo alcune caratteristiche immediate:
 \begin{proposition}
     Valgono le seguenti proprietà:
     \begin{enumerate}
@@ -95,8 +108,8 @@ Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Poss
 \begin{proof2}
     Le proprietà seguono dal Corollario \ref{cor:bisimulation_eqrel} e dall'Osservazione \ref{obs:bisimulation_union}:
     \begin{enumerate}
-        \item Supponiamo per assurdo che esistano due bisimulazioni massime $R_{M_1}, R_{M_2}$. La loro unione è ancora una bisimulazione, che è "più massima" delle supposte bisimulazioni massime.
-        \item Se per assurdo la massima bisimulazione non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale, e sarebbe per costruzione una relazione di equivalenza.
+        \item Supponiamo per assurdo che esistano due massime bisimulazioni $\mathcal{R}_{M_1}, \mathcal{R}_{M_2}$. La loro unione è ancora una bisimulazione, ed ha cardinalità maggiore (se così non fosse le due bisimulazioni coinciderebbero).
+        \item Se per assurdo la massima bisimulazione non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale alla supposta massima bisimulazione e sarebbe per costruzione una relazione di equivalenza.
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
@@ -110,9 +123,9 @@ Naturalmente il concetto di \emph{massima bisimulazione} può essere definito an
 \end{proof2}
 
 \subsubsection{Interpretazione insiemistica della bisimulazione}
-Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
+Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA (Sezione \ref{sec:graphs_sets}):
 \begin{theorem}
-    Due APG rappresentano lo stesso insieme $\iff$ sono bisimili.
+    Due APG rappresentano lo stesso insieme se e solo se sono bisimili.
     \label{theo:bisi_iff_eqsets}
 \end{theorem}
 \begin{proof2}
@@ -123,42 +136,42 @@ Mostriamo ora una conseguenza diretta dell'Assioma di Estensionalità e di AFA:
                   a \equiv b \iff ``\text{le decorazioni di } A,B \text{ associano ad } a,b \text{ lo stesso insieme}''
               \end{gather*}
               è una bisimulazione sui grafi $G_A, G_B$.\\
-              Chiaramente se $a \equiv b, a E a'$ si ha:
+              Chiaramente se $a \equiv b$ e $\langle a, a' \rangle$ si ha:
               \begin{itemize}
-                  \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (l'unica) considerata;
+                  \item $a' \in a$, associando ad $a,a'$ gli insiemi che rappresentano secondo la decorazione (unica per AFA);
                   \item $a,b$ rappresentano lo stesso insieme.
               \end{itemize}
-              Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b' = a'$, cioè $b E b'$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
-              La relazione ``$\equiv$'' è una bisimulazione sugli APG $G_A,G_B$ quando si assume per ipotesi che rappresentino lo stesso insieme.
-        \item[$(\impliedby)$] Sia $R$ una bisimulazione su $G_A,G_B$. Consideriamo la decorazione $d_A$ (l'unica) di $G_A$. Vogliamo estrapolarne una decorazione per $G_B$, e dimostrare che i due grafi con le rispettive decorazioni sono due immagini dello stesso insieme. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
+              Quindi per l'Assioma di Estensionalità $\exists b' \in b\mid b',a'$ rappresentano lo stesso insieme, cioè $\langle b, b' \rangle$ e $a' \equiv b'$. Si procede specularmente per la seconda condizione caratteristica della bisimulazione.\\
+              La relazione ``$\equiv$'' è quindi una bisimulazione sugli APG $G_A,G_B$ quando si assume per ipotesi che rappresentino lo stesso insieme.
+        \item[$(\impliedby)$] Sia $\mathcal{R}$ una bisimulazione su $G_A,G_B$. Consideriamo la decorazione $d_A$ (l'unica) di $G_A$. Vogliamo definire una decorazione per $G_B$, e dimostrare che i due grafi con le rispettive decorazioni sono due immagini dello stesso insieme. Dalla possibilità di operare questo procedimento, dall'Assioma di Estensionalità e da AFA potremo dedurre l'uguaglianza degli insiemi rappresentati.\\
               Definiamo la decorazione $d_B$ come segue:
               \begin{gather*}
-                  d_B(v) = d_A(u), \text{con $u$ nodo di $G_A$} \mid u R v
+                  d_B(v) = d_A(u), \text{con $u$ nodo di $G_A$} \mid u \mathcal{R} v
               \end{gather*}
               \begin{observation*}
                   Per ogni nodo $v$ di $B$ deve esistere almeno un nodo $u$ di $G_A \mid u R v$ perchè si suppone che i due APG siano bisimili.
               \end{observation*}
               Dimostriamo che $d_B$ è una decorazione di $G_B$. In altre parole vogliamo dimostrare che per ogni nodo $v$ di $G_B$ l'insieme $d_B(v)$ contiene tutti e soli gli insiemi $d_B(v')$ dove $v'$ è figlio di $v$.
               \begin{itemize}
-                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d_B(v)$. Poichè la decorazione di $G_A$ è ben definita,il nodo $u$ di $G_A \mid u R v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$. Ma $u R b, u E u' \implies \exists v' \mid v E v', u' R v'$. Cioè $d_B(v') = X$. Dunque il nodo mancante è stato identificato.
-                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid v E v', d_B(v') = Y$ con $Y \notin d(v)$. Ma allora, sempre considerando $u$ il nodo di $G_A \mid u R v$, dovrebbe esistere un $u' \mid u E u', u' R v'$, cioè $d_A(u') = d_B(v') = Y$.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ``manchi" il nodo corrispondente ad un elemento $X \in d_B(v)$. Poichè la decorazione di $G_A$ è ben definita, il nodo $u$ di $G_A \mid u \mathcal{R} v$ deve avere un figlio corrispondente a $X$, che chiameremo $u'$, per cui vale quindi $d_A(u') = X$. Ma $u \mathcal{R} b \land \langle u, u' \rangle \implies \exists v' \mid \langle v, v' \rangle, u' \mathcal{R} v'$. Cioè $d_B(v') = d_A(u') = X$. Dunque il nodo mancante è stato trovato.
+                  \item Supponiamo per assurdo che tra i figli di $v$ ci sia un nodo ``in più'', ovvero un nodo $v' \mid \langle v, v' \rangle$ e $d_B(v') = Y$ con $Y \notin d(v)$. Ma allora, considerando un nodo $u$ di $G_A \mid u \mathcal{R} v$, dovrebbe esistere un $u' \mid \langle u, u' \rangle$ e $u' \mathcal{R} v'$, cioè $d_A(u') = d_B(v') = Y$.
                   Ma allora $Y \in d_A(u) = d_B(v)$, deduzione che è chiaramente in contrasto con l'ipotesi.
               \end{itemize}
-              \accente possibile che ci siano due nodi di $a_1, a_2$ di $G_A$ ed un nodo $b$ di $G_B$ per cui vale $a_1 R b \land a_2 R b$. In questo caso la decorazione definita è ambigua. Per questo motivo correggiamo la formulazione di $d_B$ come segue:
+              \accente possibile che ci siano due nodi di $a_1, a_2$ di $G_A$ ed un nodo $b$ di $G_B$ per cui vale $a_1 \mathcal{R} b \land a_2 \mathcal{R} b$. In questo caso la decorazione definita è ambigua. Per questo motivo correggiamo la formulazione di $d_B$ come segue:
               \begin{gather*}
-                d_B(v) = X \text{, dove $X$ è l'insieme associato al nodo $u$ di $A$} \mid u R v, \\
+                d_B(v) = X \text{, dove $X$ è l'insieme associato al nodo $u$ di $A$} \mid u \mathcal{R} v, \\
                 \text{con $u$ preso casualmente tra i nodi di $G_A$ bisimili a $v$.}
               \end{gather*}
               Per AFA esiste un'unica decorazione di $G_B$, quindi si deve avere, alternativamente, per ogni nodo $v$ di $G_B$:
               \begin{itemize}
-                  \item $\exists ! u$ nodo di $G_A \mid u R v$;
-                  \item $\forall u$ nodo di $G_A \mid u R v$, la decorazione di $G_A$ associa a tutti gli $u$ lo stesso insieme.
+                  \item $\exists ! u \in V_A \mid u \mathcal{R} v$;
+                  \item $\forall u \in V_A \mid u \mathcal{R} v$, la decorazione di $G_A$ associa a tutti gli $u$ lo stesso insieme.
               \end{itemize}
               Dunque l'ambiguità è risolta.
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
-Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.\\
+Tenendo conto di quanto affermato nella sezione \ref{sec:graphs_sets}, il Teorema \ref{theo:bisi_iff_eqsets} dimostra che la bisimulazione può sostituire la relazione di uguaglianza tra insiemi quando questi sono rappresentati con APG \cite{dovier}.
 
 Dopo questa considerazone possiamo dare la seguente definizione:
 \begin{definition}
