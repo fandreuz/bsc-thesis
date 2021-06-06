@@ -1,5 +1,5 @@
 \subsection{Bisimulazione}
-In questa sezione introduciamo la definizione della \emph{bisimulazione} ed alcune sue proprietà. Proseguiremo con la definizione di \emph{massima bisimulazione}, ed infine proporremo alcune osservazioni che legano la bisimulazione e la teoria degli insiemi.
+In questa sezione introdurremo la definizione di \emph{bisimulazione} ed alcune proprietà. Proseguiremo con la definizione di \emph{massima bisimulazione}, ed infine proporremo alcune osservazioni che legano la bisimulazione e la teoria degli insiemi.
 
 \subsubsection{Definizione e risultati preliminari}
 \begin{definition}
@@ -32,13 +32,14 @@ Nei prossimi paragrafi osserveremo che l'esistenza di una bisimulazione tra due 
 Dalla definizione di bisimulazione possiamo dedurre una proprietà interessante delle chiusure:
 \begin{theorem}
     Sia $\mathcal{R}$ una bisimulazione sul grafo diretto $G$. La sua chiusura riflessiva, simmetrica o transitiva è ancora una bisimulazione su $G$.
+    \label{theo:bisi_chiusura}
 \end{theorem}
 \begin{proof2}
     Consideriamo separatamente le tre relazioni $\mathcal{R}_r, \mathcal{R}_s, \mathcal{R}_t$, rispettivamente la chiusura riflessiva, simmetrica e transitiva. Per ogni caso consideriamo solamente le coppie aggiunte dalla chiusura:
     \begin{itemize}
         \item $\mathcal{R}_r$: Per definizione $\mathcal{R} \subseteq \mathcal{R}_r$, quindi è sufficiente dimostrare che $\mathcal{R}_r$ è una bisimulazione quando gli argomenti $u,v \in V$ non sono distinti.
 
-        Sia $u \in V$. Chiaramente per definizione di $\mathcal{R}_r$ si ha $u \mathcal{R}_r u$. Se $\exists u' \in V \mid \langle u, u' \rangle$ allora (sempre per definizione di $\mathcal{R}_r$) si ha $u' \mathcal{R}_r u'$.
+        Sia $u \in V$. Chiaramente per definizione di $\mathcal{R}_r$ si ha $u \mathcal{R}_r u$. Ma $\forall u' \in V \mid \langle u, u' \rangle$ vale (sempre per definizione di $\mathcal{R}_r$) $u' \mathcal{R}_r u'$.
         \item $\mathcal{R}_s$: Per definizione $\mathcal{R} \subset \mathcal{R}_s$, quindi è sufficiente dimostrare che $\mathcal{R}_s$ è una bisimulazione quando per $u,v \in V$ si ha $u \mathcal{R} v$ ma non $v \mathcal{R} u$.
 
         Sia $(u,v) \in V\times V$. Allora:
@@ -81,7 +82,7 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
     \label{obs:bisimulation_union}
 \end{proposition}
 \begin{proof2}
-    Siano $u,v \mid u \mathcal{R} v$, per cui deve valere $u \mathcal{R}_1 v \lor u \mathcal{R}_2 v$. Sia $u' \mid \langle u, u' \rangle$. Ma quindi $\exists v' \mid \langle v,v' \rangle \land u' \mathcal{R}_{1|2} v'$.
+    Siano $u,v \mid u \mathcal{R} v$; allora deve valere $u \mathcal{R}_1 v \lor u \mathcal{R}_2 v$. Sia $u' \mid \langle u, u' \rangle$. Ma quindi $\exists v' \mid \langle v,v' \rangle \land u' \mathcal{R}_{1|2} v'$.
 \end{proof2}
 
 \subsubsection{Massima bisimulazione}
@@ -108,18 +109,20 @@ Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Dedu
 \begin{proof2}
     Le proprietà seguono dal Corollario \ref{cor:bisimulation_eqrel} e dall'Osservazione \ref{obs:bisimulation_union}:
     \begin{enumerate}
-        \item Supponiamo per assurdo che esistano due massime bisimulazioni $\mathcal{R}_{M_1}, \mathcal{R}_{M_2}$. La loro unione è ancora una bisimulazione, ed ha cardinalità maggiore (se così non fosse le due bisimulazioni coinciderebbero).
+        \item Supponiamo per assurdo che esistano due massime bisimulazioni $\mathcal{R}_{M_1}, \mathcal{R}_{M_2}$. La loro unione è ancora una bisimulazione per l'Osservazione \ref{obs:bisimulation_union}, ed ha cardinalità maggiore (se così non fosse le due bisimulazioni coinciderebbero).
         \item Se per assurdo la massima bisimulazione non fosse una relazione di equivalenza, potremmo considerare la sua chiusura riflessiva, simmetrica e transitiva, che avrebbe cardinalità maggiore o uguale alla supposta massima bisimulazione e sarebbe per costruzione una relazione di equivalenza.
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
 Naturalmente il concetto di \emph{massima bisimulazione} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
-    Sia $G$ un grafo diretto finito. Allora esiste la massima bisimulazione su $G$.
+    Sia $G=(V,E)$ un grafo diretto finito. Allora esiste la massima bisimulazione su $G$.
 \end{theorem}
 \begin{proof2}
     Può esistere solamente un numero finito di relazioni binarie su $G$, e questo numero fornisce un limite superiore al numero massimo di bisimulazioni su $G$.
     Allora possiamo considerare l'unione di questo numero finito di bisimulazioni, che sarà chiaramente la massima bisimulazione.
+
+    Abbiamo almeno una bisimulazione non banale (ovvero diversa da $\emptyset$) che possiamo ricavare dalla chiusura riflessiva di $\emptyset$ (Teorema \ref{theo:bisi_chiusura}), ovvero la relazione $\mathcal{R} = \{(u,u) \mid u \in V\}$.
 \end{proof2}
 
 \subsubsection{Interpretazione insiemistica della bisimulazione}
