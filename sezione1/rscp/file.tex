@@ -1,70 +1,81 @@
 \subsection{Relational stable coarsest partition}
 \label{sec:rscp}
-In questa sezione introdurremo il concetto di \emph{RSCP} o \emph{Relational Stable Coarsest Partition}. Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della massima bisimulazione, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.\\
+In questa sezione introdurremo il concetto di \emph{Relational Stable Coarsest Partition} (nel seguito abbreviato in \emph{RSCP}). Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della massima bisimulazione, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.
+
 Cominciamo con alcune definizioni di base:
 \begin{definition}
-    Sia $S$ un insieme finito. Sia $X = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. $X$ è una \emph{partizione} di $S$ se:
+    Sia $S$ un insieme finito. Sia $\mathfrak{X} = \{x_1, \dots, x_n\}$ con $x_i \subseteq S \,\,\,\forall i \in \{1,\dots,n\}$. $\mathfrak{X}$ è una \emph{partizione} di $S$ se:
     \begin{gather*}
         \bigcup_{i = 1}^n x_i = A \qquad \land \qquad x_i \cap x_j = \emptyset \,\,\forall i,j \in \{1,\dots,n\} \qquad \land \qquad x_i \neq \emptyset \,\,\forall i
     \end{gather*}
-    Inoltre gli insiemi $x_i$ sono i \emph{blocchi} della partizione $X$. Se $a \in x_i$ si usa la notazione $[a]_X = x_i$.
+    Inoltre gli insiemi $x_i$ sono i \emph{blocchi} della partizione $\mathfrak{X}$. Se $a \in x_i$ si usa la notazione $[a]_{\mathfrak{X}} = x_i$.
 \end{definition}
+
 \begin{observation}
     \label{obs:part_banale}
     Ogni insieme $S$ ha una partizionamento banale, consistente in un unico blocco contenente tutti gli elementi dell'insieme.
 \end{observation}
+
 \begin{example}
-    Sia $S \coloneqq \{0,1,2,3,4,5,6\}$. Alcuni possibili partizionamenti sono $\{S\}$ (il partizionamento banale), $S_1 = \{\{0,1,2,3\},\{4,5,6\}\}, S_2 = \{\{0,1\},\{2,3\},\{4,5,6\}\}$.
+    Sia $S \coloneqq \{0,1,2,3,4,5,6\}$. Alcuni possibili partizionamenti sono $\{S\}$ (il partizionamento banale), $\mathfrak{S}_1 = \{\{0,1,2,3\},\{4,5,6\}\}, \mathfrak{S}_2 = \{\{0,1\},\{2,3\},\{4,5,6\}\}$.
     \label{exa:set_partition}
 \end{example}
+
 \begin{definition}
-    Siano $X_1,X_2$ due partizioni dello stesso insieme. $X_2$ \emph{rifinisce} $X_1$ se $\forall x_2 \in X_2, \,\,\exists x_1 \in X_1 \mid x_2 \subseteq x_1$.
+    Siano $\mathfrak{X}_1,\mathfrak{X}_2$ due partizioni dello stesso insieme. $\mathfrak{X}_2$ \emph{rifinisce} $\mathfrak{X}_1$ se $\forall x_2 \in \mathfrak{X}_2, \,\,\exists x_1 \in \mathfrak{X}_1 \mid x_2 \subseteq x_1$.
 \end{definition}
+
 \begin{example}
-    Riprendendo l'Esempio \ref*{exa:set_partition}, la partizione $S_2$ rifinisce $S_1$, che a sua volta rifinisce la partizione banale.
+    Riprendendo l'Esempio \ref*{exa:set_partition}, la partizione $\mathfrak{S}_2$ rifinisce $\mathfrak{S}_1$, che a sua volta rifinisce la partizione banale.
 \end{example}
-Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in questo lavoro quando si impone la seguente condizione sui blocchi:
+
+Il partizionamento di insiemi finiti assume interesse nell'ambito trattato in questo lavoro quando viene introdotta la seguente condizione:
 \begin{definition}
-    Sia $S$ un insieme, ed $R$ una relazione binaria su $S$. Sia $X$ una partizione su $S$, e sia $B \subseteq A$.
+    Sia $S$ un insieme, ed $\mathcal{R}$ una relazione binaria su $S$. Sia $\mathfrak{X}$ una partizione di $S$, e sia $B \subseteq S$.
     \begin{itemize}
-        \item $X$ è \emph{stabile} rispetto alla coppia $(B,R)$ se $\forall x \in X$ vale $x \subseteq R^{-1}(B) \lor x_i \cap R^{-1}(B) = \emptyset$;
-        \item La partizione $X$ è \emph{stabile} rispetto ad $R$ se è stabile rispetto a $(x,R) \,\,\forall x \in X$.
+        \item $\mathfrak{X}$ è \emph{stabile} rispetto alla coppia $(B,\mathcal{R})$ se $\forall x \in \mathfrak{X}$ vale $x \subseteq \mathcal{R}^{-1}(B) \lor x_i \cap \mathcal{R}^{-1}(B) = \emptyset$;
+        \item La partizione $\mathfrak{X}$ è \emph{stabile} rispetto ad $\mathcal{R}$ se è stabile rispetto a $(x,\mathcal{R}) \,\,\forall x \in \mathfrak{X}$.
     \end{itemize}
 \end{definition}
+
 \begin{example}
     \label{exa:set_partition_stable}
-    Consideriamo la relazione binaria $R$ su $S$ che mette in relazione le coppie $\{(0,1),(1,0),(2,3),(3,2),(4,5),(5,6),(0,4),(1,5)\}$. $S_2$ è stabile rispetto a $R$, ma lo stesso non vale per $S_1$.
+    Consideriamo la relazione binaria $\mathcal{R}$ su $S$ che mette in relazione le coppie $\{(0,1),(1,0),(2,3),(3,2),(4,5),(5,6),(0,4),(1,5)\}$. $\mathfrak{S}_2$ è stabile rispetto a $\mathcal{R}$; $\mathfrak{S}_1$ invece non è stabile rispetto a $\mathcal{R}$.
 \end{example}
+
 In altre parole per ogni coppia di blocchi di una partizione stabile si hanno due alternative:
 \begin{itemize}
     \item Tutti gli elementi del primo blocco sono in relazione con almeno un elemento del secondo blocco;
     \item Nessuno degli elementi del primo blocco è in relazione con qualche elemento del secondo blocco.
 \end{itemize}
+
 Vale il seguente risultato:
 \begin{proposition}
-    Sia $\widetilde{S}$ una partizione qualsiasi di un insieme $S$, e siano $P,Q \subseteq S$. Sia $R$ una relazione binaria su $S$. Supponiamo $\widetilde{S}$ stabile rispetto alle coppie $(R,P),(R,Q)$. Allora:
+    Sia $\mathfrak{S}$ una partizione qualsiasi di un insieme $S$, e siano $P,Q \subseteq S$. Sia $\mathcal{R}$ una relazione binaria su $S$. Supponiamo $\mathfrak{S}$ stabile rispetto alle coppie $(\mathcal{R},P),(\mathcal{R},Q)$. Allora:
     \begin{enumerate}
-        \item Qualsiasi rifinitura di $\widetilde{S}$ resta stabile rispetto alla coppia $(R,P)$;
-        \item $\widetilde{S}$ è stabile rispetto alla coppia $(f,P \cup Q)$.
+        \item Qualsiasi rifinitura di $\mathfrak{S}$ resta stabile rispetto alla coppia $(\mathcal{R},P)$;
+        \item $\mathfrak{S}$ è stabile rispetto alla coppia $(\mathcal{R},P \cup Q)$.
     \end{enumerate}
 \end{proposition}
 \begin{proof2}
     Dimostriamo separatamente i due enunciati:
     \begin{enumerate}
-        \item Chiaramente se per un blocco qualsiasi $x \in X$ vale $x \subseteq R^{-1}(P) \lor x \cap R^{-1}(P) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
-        \item Sia $x \in S$. Chiaramente vale $R^{-1}(P),R^{-1}(Q) \subseteq R^{-1}(P \cup Q)$. Allora, se almeno uno tra $R^{-1}(P),R^{-1}(Q)$ contiene l'immagine di $x$ si avrà $x \subseteq R^{-1}(P \cup Q)$, altrimenti $x \cap R^{-1}(P \cup Q)$ dovrà chiaramente essere vuoto.
+        \item Chiaramente se per un blocco qualsiasi $x \in \mathfrak{S}$ vale $x \subseteq \mathcal{R}^{-1}(P) \lor x \cap \mathcal{R}^{-1}(P) = \emptyset$, la stessa relazione vale per qualsiasi sottoinsieme di $x$;
+        \item Sia $x \in \mathfrak{S}$. Chiaramente vale $\mathcal{R}^{-1}(P),\mathcal{R}^{-1}(Q) \subseteq \mathcal{R}^{-1}(P \cup Q)$. Allora, se almeno uno tra $\mathcal{R}^{-1}(P),\mathcal{R}^{-1}(Q)$ contiene l'immagine di $x$ si avrà $x \subseteq \mathcal{R}^{-1}(P \cup Q)$, altrimenti $x \cap \mathcal{R}^{-1}(P \cup Q)$ dovrà chiaramente essere vuoto.
     \end{enumerate}
     \vspace*{-0.75cm}
 \end{proof2}
-\accente evidente che l'ultimo punto può essere esteso in modo molto semplice all'unione di più sottoinsiemi di $S$. In altre parole, se $\widetilde{S}$ è stabile rispetto alle coppie $(R,S_i), S_i \subset S, i = 1, \dots, n$, allora è stabile anche rispetto alla coppia $(R, \bigcup_{i=1}^{n} S_i)$.
 
-Con queste premesse possiamo definire il problema della determinazione della RSCP:
+\accente evidente che l'ultimo punto può essere esteso in modo molto semplice all'unione di più sottoinsiemi di $S$. In altre parole, se $\mathfrak{S}$ è stabile rispetto alle coppie $(\mathcal{R},S_i), S_i \subset S, i = 1, \dots, n$, allora è stabile anche rispetto alla coppia $(\mathcal{R}, \bigcup_{i=1}^{n} S_i)$.
+
+Con queste premesse possiamo definire il problema della determinazione della \emph{RSCP}:
 \begin{definition}
-    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\widetilde{S}$ una partizione di $S$. La $\rscp(\widetilde{S},R)$ di $S$ è la partizione di $S$ stabile rispetto ad $R$, che rifinisce $\widetilde{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).\\
-    Si usa la notazione ``$\rscp(R)$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
+    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\mathfrak{S}$ una partizione di $S$. La $\emph{RSCP}(\mathfrak{S},\mathcal{R})$ di $S$ è la partizione di $S$ stabile rispetto ad $\mathcal{R}$, che rifinisce $\mathfrak{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+
+    Si usa la notazione ``$\emph{RSCP}(\mathcal{R})$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
 \begin{example}
-    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\rscp(R)$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La RSCP è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
+    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\emph{RSCP}(\mathcal{R})$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La \emph{RSCP} è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
 \end{example}
 
 \subsubsection{Insiemi \emph{splitter}, e la funzione Split}
