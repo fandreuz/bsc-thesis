@@ -32,7 +32,7 @@ Con le premesse viste nella Sezione \ref{subsec:binrel} possiamo definire un \em
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{Rappresentazione grafica di un grafo diretto}
+        \caption{Rappresentazione grafica di un grafo diretto.}
         \label{fig:graph}
     \end{figure}
     Il grafo di Figura \ref{fig:graph} è descritto dalla coppia
@@ -60,7 +60,7 @@ L'esistenza di un cammino tra nodi fornisce un criterio immediato per partiziona
     Un grafo diretto $(V,E)$ è \emph{fortemente connesso} se per ogni coppia di nodi $v_1, v_2 \in V$ esiste un cammino da $v_1$ a $v_2$, cioè $\langle v_1, v_2 \rangle_{E^*}$.
 \end{definition}
 
-Possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in sottografi che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
+Possiamo individuare i sottografi massimali (cioè quella ripartizione del grafo in sottografi aventi una qualche caratteristica che consente di minimizzare il numero di sottografi) fortemente connessi (\hspace*{-0.1cm}\cite[Appendice B]{clrs}):
 \begin{definition}
     Le \emph{componenti fortemente connesse} (\emph{strongly connected components}, \emph{SCC}) di un grafo diretto sono i sottografi che compongono la ripartizione (massimale) del grafo in sottografi fortemente connessi.
 \end{definition}
@@ -86,7 +86,7 @@ Possiamo individuare i sottografi massimali (cioè la ripartizione del grafo in 
                 \path [->] (c) edge node {} (e);
             \end{scope}
             \end{tikzpicture}
-        \caption{SCC di un grafo diretto}
+        \caption{Le SCC del grafo rappresentato sono $\{a,b,c,d\}$ e $\{e\}$.}
         \label{fig:graph_cfc_1}
     \end{figure}
     Nel grafo di Figura \ref{fig:graph_cfc_1} le SCC sono rappresentate con forme diverse: $\{a,b,c,d\}, \{e\}$.
@@ -111,7 +111,7 @@ Riportiamo la seguente proprietà immediata:
 \end{proof2}
 
 \begin{example}
-    \begin{figure}[b]
+    \begin{figure}[H]
         \centering
         \begin{subfigure}{.45\textwidth}
           \centering
@@ -186,22 +186,24 @@ Osserviamo infine che la ripartizione in componenti fortemente connesse di un gr
     La ripartizione in SCC di un grafo è unica.
 \end{corollary}
 \begin{proof2}
-    Supponiamo per assurdo che sia possibile ``scegliere'' se mettere $a,b$ oppure $b,c$ nella stessa SCC, e che questo generi una ripartizione differente. Ma allora si ha anche $a \widehat{E} c$, e quindi un'unico partizionamento.
+    Supponiamo per assurdo che sia possibile ``scegliere'' se mettere $a,b$ oppure $b,c$ nella stessa SCC, e che questo generi una ripartizione differente. Ma allora si ha anche $a \widehat{E} c$, e quindi un'unico partizionamento possibile.
 \end{proof2}
 
 Dato un grafo diretto generico possiamo determinare la partizione delle componenti fortemente connesse utilizzando alcuni algoritmi a complessità lineare \cite{sharir} \cite{tarjan}, che non verranno esposti in questo elaborato.
 
 \subsubsection{Visita in profondità}
-Delle due metodologie prevalenti per l'esplorazione di un grafo, \emph{visita in ampiezza} (\emph{Breadth-First-Search}, abbreviato in BFS) e \emph{visita in profondità} (\emph{Depth-First-Search}, abbreviato in DFS), in questo utilizzeremo prevalentemente la seconda. Come dice il nome, questa tecnica consiste nella visita esaustiva di tutti i figli di un nodo, prima di passare agli altri nodi sullo stesso livello.
+Vi sono due metodologie prevalenti per l'esplorazione di un grafo, \emph{visita in ampiezza} (\emph{Breadth-First-Search}, abbreviato in BFS) e \emph{visita in profondità} (\emph{Depth-First-Search}, abbreviato in DFS) \cite{clrs}; in questo lavoro utilizzeremo prevalentemente la seconda.
 
-Riportiamo lo pseudocodice \cite{clrs}, leggermente modificato:\\
+Come dice il nome, questa tecnica consiste nella visita esaustiva di tutti i figli di un nodo, prima di passare agli altri nodi sullo stesso livello.
+
+Riportiamo lo pseudocodice, leggermente modificato:\\
 \begin{algorithm}[H]
     \label{alg:dfs}
     \KwData{$G = (V,E)$}
     \caption{DFS}
     \SetAlgoLined
     \SetKwProg{Fn}{function}{:}{end}
-    \Fn{\textup{dsf-visit}($G = (V,E), n,$ time)}{
+    \Fn{\textup{dfs-visit}($G = (V,E), n,$ time)}{
         n.color = GRAY\;
         \ForAll{$m \mid (\langle n,m \rangle \land m.$color = WHITE)}{
             time = dfs-visit($G, m,$ time)\;
@@ -224,6 +226,8 @@ Riportiamo lo pseudocodice \cite{clrs}, leggermente modificato:\\
 \end{algorithm}
 L'attributo \emph{color} dei nodi del grafo consente di distinguere tra quei nodi che sono già stati visitati in modo esauriente (colore nero), quelli per cui è in corso una visita in profondità (colore grigio) e quelli non ancora esaminati dall'algoritmo (colore bianco). Si osservi che la colorazione dei nodi non è solamente accessoria, ma fornisce un meccanismo per evitare un loop infinito nel caso in cui il grafo contenga un ciclo.
 
-Oltre alla colorazione dei nodi, l'algoritmo imposta l'attributo \emph{finishing-time} per ogni nodo, ovvero l'istante di tempo (a partire da \emph{time} $= 0$) in cui è stata terminata la visita esaustiva in profondità per tale nodo. Nello pseudocodice completo vengono considerati altri due attributi: \emph{starting-time} e \emph{parent}. Questi ultimi tre attributi forniscono alcune importanti proprietà all'algoritmo di visita in profondità, che non saranno approfondite in questo lavoro (si vedano \emph{Parenthesis theorem}, \emph{White-path theorem} \cite{clrs}).
+Oltre alla colorazione dei nodi, l'algoritmo imposta l'attributo \emph{finishing-time} per ogni nodo, ovvero l'istante di tempo (a partire da \emph{time} $= 0$) in cui è stata terminata la visita esaustiva in profondità per tale nodo.
+
+Nello pseudocodice completo (di cui abbiamo fornito un estratto funzionante) vengono considerati altri due attributi: \emph{starting-time} e \emph{parent}. Questi ultimi tre attributi conferiscono alcune importanti proprietà all'algoritmo di visita in profondità, che non saranno approfondite in questo lavoro (si vedano \emph{Parenthesis theorem}, \emph{White-path theorem} \cite{clrs}).
 
 L'attributo \emph{finishing-time} è sufficiente per alcune applicazioni che saranno esposte nelle sezioni seguenti.
