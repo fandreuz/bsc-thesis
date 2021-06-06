@@ -48,7 +48,7 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
 Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'algoritmo di Dovier-Piazza-Policriti è asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene intuitivamente la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è non indifferente, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
 
 \begin{figure}
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
@@ -68,7 +68,7 @@ Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'
         \caption{Alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
         \label{fig:tree_exp_result}
     \end{subfigure}
-    \begin{subfigure}[t]{0.49\textwidth}
+    \begin{subfigure}[t]{0.5\textwidth}
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
@@ -88,7 +88,7 @@ Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'
         \caption{Grafi della tipologia elaborata da Hopcroft, di dimensioni varie.}
         \label{fig:hopcroft_exp_result}
     \end{subfigure}
-    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_tree}) e Paige-Tarjan (\ref*{fig:pta_line_tree}) su alcune tipologie di grafo. L'algoritmo più performante asintoticamente è chiaramente Dovier-Piazza-Policriti in entrambi i casi.}
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_tree}) e Paige-Tarjan (\ref*{fig:pta_line_tree}) su alcune tipologie di grafo. Lungo l'asse delle ascisse varia la quantità $|E|\log|V|$, mentre l'asse delle ordinate corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
 \end{figure}
 
 La seconda tiplogia di grafi che consideriamo è tratta dal paper in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} visualizziamo alcune realizzazioni di questa tipologia di grafo.
@@ -108,7 +108,7 @@ A partire da ogni realizzazzione dell'albero bilanciato aggingiamo i seguenti ar
     \item $\langle L(G), \mathcal{P}^3(L(G))\rangle$;
     \item $\langle L(G), \mathcal{P}^6(L(G))\rangle$;
 \end{enumerate}
-All'arco 1. corrisponde un caso semplice in cui non viene creato un nuovo ciclo, nè è necessario aggiornare alcun rango. Gli altri tre archi invece formano cicli di dimensioni varie, che coinvolgono rispettivamente 2,4 e 7 nodi.
+All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, nè è necessario aggiornare alcun rango. Gli altri tre archi invece formano cicli di dimensioni varie, che coinvolgono rispettivamente 2,4 e 7 nodi.
 
 \begin{figure}[H]
     \centering
@@ -186,7 +186,7 @@ All'arco 1. corrisponde un caso semplice in cui non viene creato un nuovo ciclo,
             \caption{Arco $\langle L(G), \mathcal{P}^6(L(G))\rangle$}
             \label{fig:saha_4_result}
         \end{subfigure}
-    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_saha}) e Saha (\ref*{fig:saha_line_saha}) in seguito all'aggiunta di diversi tipi di arco, su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_saha}) e Saha (\ref*{fig:saha_line_saha}) in seguito all'aggiunta di diversi tipi di arco, su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili. Lungo l'asse delle ascisse varia la quantità $|E|\log|V|$, mentre l'asse delle ordinate corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
 \end{figure}
 
 Risulta evidente che quando la modifica è "leggera" (Figure \ref{fig:saha_1_result}, \ref{fig:saha_2_result}) l'algoritmo incrementale si comporta significativamente meglio rispetto alla categoria di algoritmi che ricalcola la massima bisimulazione da zero. Introducendo modifiche più importanti, con l'apparizione di cicli di cardinalità maggiore e conseguente necessità di ricalcolare il rango di molti nodi, la differenza tra i due algoritmi comincia a ridursi (Figure \ref{fig:saha_3_result}, \ref{fig:saha_4_result}).
@@ -196,8 +196,73 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
 Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica.
 
 \begin{figure}[b!]
-    \makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./sezione3/experimental_results/plots/bisize.png}}
-    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato con il numero di nodi nel grafo.}
+    \makebox[\textwidth][c]{
+        \begin{subfigure}[b]{0.5\textwidth}
+            \caption{$n=10$}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    tick pos=both,
+                    xtick style={color=black},
+                    ytick style={color=black},
+                    grid=both
+                ]
+                \addplot[scatter, scatter/classes={
+                    a={mark=asterisk,blue},
+                    b={mark=diamond,red},
+                    c={mark=square,green},
+                    d={mark=triangle,yellow}
+                    }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result10.txt};
+                \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.5\textwidth}
+            \caption{$n=100$}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    tick pos=both,
+                    xtick style={color=black},
+                    ytick style={color=black},
+                    grid=both
+                ]
+                \addplot[scatter, scatter/classes={
+                    a={mark=asterisk,blue},
+                    b={mark=diamond,red},
+                    c={mark=square,green},
+                    d={mark=triangle,yellow}
+                    }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result100.txt};
+                \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.5\textwidth}
+            \caption{$n=1000$}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    tick pos=both,
+                    xtick style={color=black},
+                    ytick style={color=black},
+                    grid=both
+                ]
+                \addplot[scatter, scatter/classes={
+                    a={mark=asterisk,blue},
+                    b={mark=diamond,red},
+                    c={mark=square,green},
+                    d={mark=triangle,purple}
+                    }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result1000.txt};
+                    \label[a]{fig:bisi_size_1000_p001}
+                    \label[b]{fig:bisi_size_1000_p005}
+                    \label[c]{fig:bisi_size_1000_p01}
+                    \label[d]{fig:bisi_size_1000_p02}
+                \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+    }
+    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale con $p=0.01$ (\ref*{fig:bisi_size_1000_p001}), $p=0.05$ (\ref*{fig:bisi_size_1000_p005}), $p=0.1$ (\ref*{fig:bisi_size_1000_p01}), $p=0.2$ (\ref*{fig:bisi_size_1000_p02}). Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
     \label{fig:bisi_size}
 \end{figure}
 
