@@ -12,13 +12,17 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
 I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
-Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo di esecuzione necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici abbiamo rimpiazzato ad ogni grafo il corrispondente valore di $|V| \log |E|$, ed abbiamo utilizzato questa scala per l'asse delle ascisse, in quanto è lecito supporre che questo ci consenta di avere un andamento abbastanza lineare per gli algoritmi implementati.
+Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici utilizziamo lungo l'asse delle ascisse una scala data dal valore $|E| \log |V|$, che ci consente di visualizzare in modo più omogeneo i risultati lungo l'asse delle ordinate. Entrambi gli assi variano secondo una scala logaritmica.
 
-Cominciamo l'esposizione dei risultati con la categoria dei grafi chiamati ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
+\paragraph{Paige-Tarjan, Dovier-Piazza-Policriti}\mbox{}\\
+Cominciamo confrontando gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti, ci aspettiamo che quest'ultimo risulti asintoticamente più conveniente. Per grafi piccoli invece dovrebbe risultare vincitore l'algoritmo di Paige-Tarjan visto che non richiede l'elaborazione preliminare del rango.
+
+Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
 \begin{itemize}
-    \item \emph{depth}: determina il numero di livelli (senza contare la \emph{root});
-    \item \emph{branching factor}: il numero di successori di ogni nodo, ad eccezione dei nodi dell'ultimo livello.
+    \item \emph{depth}: il numero di livelli (senza contare la \emph{root});
+    \item \emph{branching factor}: il numero di successori di ogni nodo (ad eccezione dei nodi nell'ultimo livello).
 \end{itemize}
+
 Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph{NetworkX}, che appunto prende in input questi due parametri.
 
 \begin{figure}
@@ -45,7 +49,7 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
     \caption{Tipologie di grafi su cui abbiamo testato gli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan.}
 \end{figure}
 
-Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'algoritmo di Dovier-Piazza-Policriti è asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene intuitivamente la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è non indifferente, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
+Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'algoritmo di Dovier-Piazza-Policriti è asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene infatti la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è apprezzabile, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
 
 \begin{figure}
     \begin{subfigure}[t]{0.5\textwidth}
@@ -88,27 +92,34 @@ Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'
         \caption{Grafi della tipologia elaborata da Hopcroft, di dimensioni varie.}
         \label{fig:hopcroft_exp_result}
     \end{subfigure}
-    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_tree}) e Paige-Tarjan (\ref*{fig:pta_line_tree}) su alcune tipologie di grafo. Lungo l'asse delle ascisse varia la quantità $|E|\log|V|$, mentre l'asse delle ordinate corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_tree}) e Paige-Tarjan (\ref*{fig:pta_line_tree}) sulle tipologie di grafo \ref{fig:balanced_tree} (a) e \ref{fig:hopcroft_graph_1}, \ref{fig:hopcroft_graph_2} (b). Lungo l'asse delle ascisse (logaritmico) abbiamo la quantità $|E|\log|V|$, mentre l'asse delle ordinate (logaritmico) corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
 \end{figure}
 
-La seconda tiplogia di grafi che consideriamo è tratta dal paper in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} visualizziamo alcune realizzazioni di questa tipologia di grafo.
+La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} ne visualizziamo alcune realizzazioni.
 
-In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti, mantenendo la quantità $|E| \log |V|$ nell'asse delle ascisse. Possiamo osservare nuovamente un andamento abbastanza lineare dei due algoritmi nella scala che abbiamo adottato, e vediamo che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
+In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
 
-Per testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo considerato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato alcune trasformazioni, che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo. Definiamo innanzitutto la funzione $\mathcal{P} : V \to V$ che restituisce il nodo parente. Nei nostri test l'abbiamo implementata come segue ($b$ è il \emph{branching factor} dell'albero che consideriamo):
-\begin{gather*}
-    \mathcal{P}(v) = \ceil[\Big]{\frac{v}{b}} - 1
-\end{gather*}
-Ricordiamo che i nodi sono numerati a partire da 0 per livello, come in Figura \ref{fig:balanced_tree}. Utilizzeremo anche una versione ``iterata'' di $\mathcal{P}$: $\mathcal{P}^i(v)$ denota il parente di grado $i$ del nodo $v$ ($\mathcal{P}^i(v)$ è il parente del parente di $v$).
+\paragraph{Dovier-Piazza-Policriti, Saha}\mbox{}\\
 
-A partire da ogni realizzazzione dell'albero bilanciato aggingiamo i seguenti archi ($L(G)$ denota l'ultimo nodo dell'ultimo livello dell'albero $G$):
+Al fine di testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo esaminato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato l'aggiunta di alcuni archi che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo.
+
+Definiamo innanzitutto la seguente funzione:
+\begin{align*}
+    L: V \times \mathbb{N} \to V, \qquad L(v, d) = ``&\text{Un nodo scelto casualmente tra i successori di $v$}\\
+    &\text{ad un livello distante $d$ dal livello di $v$}''
+\end{align*}
+
+Abbiamo implementato questa funzione per mezzo di un ciclo, ed abbiamo scelto sempre il nodo più a sinistra tra tutti i candidati allo stesos livello (la scelta è ininfluente ai fini dell'esperimento).
+
+Ad ogni realizzazzione dell'albero bilanciato aggingiamo i seguenti archi:
 \begin{enumerate}
-    \item $\langle 0, L(G)\rangle$;
-    \item $\langle L(G), \mathcal{P}(L(G))\rangle$;
-    \item $\langle L(G), \mathcal{P}^3(L(G))\rangle$;
-    \item $\langle L(G), \mathcal{P}^6(L(G))\rangle$;
+    \item $e_1 = \langle L(1, 2), 1 \rangle$;
+    \item $e_2 = \langle L(1, 3), 1 \rangle$;
+    \item $e_3 = \langle L(1, 4), 1 \rangle$;
+    \item $e_4 = \langle L(1, 5), 1 \rangle$;
 \end{enumerate}
-All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, nè è necessario aggiornare alcun rango. Gli altri tre archi invece formano cicli di dimensioni varie, che coinvolgono rispettivamente 2,4 e 7 nodi.
+
+Si osservi che la sorgente dell'arco si sposta verso il basso all'aumentare dell'indice dell'arco aggiunto. Poichè l'algoritmo di Saha visita ricorsivamente tutta la contro-immagine della sorgente dell'arco, ci aspettiamo di osservare nei risultati sperimentali un peggioramento del tempo di esecuzione all'aumentare dell'indice dell'arco aggiunto.
 
 \begin{figure}[H]
     \centering
@@ -129,7 +140,7 @@ All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, 
                 \label{fig:saha_line_saha}
                 \end{axis}
             \end{tikzpicture}
-            \caption{Arco $\langle 0, L(G)\rangle$}
+            \caption{Arco $e_1$}
             \label{fig:saha_1_result}
         \end{subfigure}
         \begin{subfigure}[b]{0.49\textwidth}
@@ -147,7 +158,7 @@ All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, 
                 \addplot table[x=x,y=y] {experiments/time/tree_saha/sah1.txt};
                 \end{axis}
             \end{tikzpicture}
-            \caption{Arco $\langle L(G), \mathcal{P}(L(G))\rangle$}
+            \caption{Arco $e_2$}
             \label{fig:saha_2_result}
         \end{subfigure}\\
         \begin{subfigure}[b]{0.49\textwidth}
@@ -165,7 +176,7 @@ All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, 
                 \addplot table[x=x,y=y] {experiments/time/tree_saha/sah2.txt};
                 \end{axis}
             \end{tikzpicture}
-            \caption{Arco $\langle L(G), \mathcal{P}^3(L(G))\rangle$}
+            \caption{Arco $e_3$}
             \label{fig:saha_3_result}
         \end{subfigure}
         \begin{subfigure}[b]{0.49\textwidth}
@@ -183,13 +194,64 @@ All'arco 1 corrisponde un caso semplice in cui non viene creato un nuovo ciclo, 
                 \addplot table[x=x,y=y] {experiments/time/tree_saha/sah3.txt};
                 \end{axis}
             \end{tikzpicture}
-            \caption{Arco $\langle L(G), \mathcal{P}^6(L(G))\rangle$}
+            \caption{Arco $e_4$}
             \label{fig:saha_4_result}
         \end{subfigure}
     \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_saha}) e Saha (\ref*{fig:saha_line_saha}) in seguito all'aggiunta di diversi tipi di arco, su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili. Lungo l'asse delle ascisse varia la quantità $|E|\log|V|$, mentre l'asse delle ordinate corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
+    \label{fig:saha_result}
 \end{figure}
 
-Risulta evidente che quando la modifica è "leggera" (Figure \ref{fig:saha_1_result}, \ref{fig:saha_2_result}) l'algoritmo incrementale si comporta significativamente meglio rispetto alla categoria di algoritmi che ricalcola la massima bisimulazione da zero. Introducendo modifiche più importanti, con l'apparizione di cicli di cardinalità maggiore e conseguente necessità di ricalcolare il rango di molti nodi, la differenza tra i due algoritmi comincia a ridursi (Figure \ref{fig:saha_3_result}, \ref{fig:saha_4_result}).
+L'esperimento dunque è stato condotto secondo questi passaggi:
+\begin{itemize}
+    \item Esecuzione dell'algoritmo di Dovier-Piazza-Policriti sul grafo in seguito all'aggiunta di un arco $e_i, i \in \{1,2,3,4\}$;
+    \item Calcolo della massima bisimulazione del grafo prima della modifica;
+    \item Aggiornamento della massima bisimulazione calcolata nel punto 2. dopo l'aggiunta del nuovo arco tramita l'algoritmo incrementale.
+\end{itemize}
+
+I risultati sono visualizzati nella Figura \ref{fig:saha_result}. Si osservi che in tutti i casi che abbiamo considerato l'algoritmo di Dovier-Piazza-Policriti impiega più tempo asintoticamente, come previsto.
+
+Questa visualizzazione non ci consente di controllare la sensibilità dell'algoritmo incrementale alla tipologia di arco considerata. Nella Figura \ref{fig:saha_depends_cycle} è riportato l'andamento per $i \in \{2,3,4\}$ della funzione $T_i(G) - T_1(G)$, con $T_k(G)$ definita come segue:
+\begin{align*}
+    T_k(G) = ``&\text{tempo di esecuzione in secondi dell'algoritmo di Saha}\\
+    &\text{in seguito all'aggiunta di } e_k''
+\end{align*}
+
+\begin{figure}[H]
+    \begin{tikzpicture}
+        \definecolor{color1}{rgb}{0.75,0,0.75}
+        \definecolor{color0}{rgb}{0,0.75,0.75}
+        \begin{axis}[
+            axis on top,
+            width=\textwidth,
+            height=6cm,
+            ytick style={draw=none},
+            xtick style={draw=none},
+            grid=major,
+            legend cell align={left},
+            legend style={font=\small, fill=white,opacity=0.8},
+            legend pos=south west,
+            tick pos=both,
+            xtick style={color=black},
+            ytick style={color=black},
+            xlabel={$|E|\log|V|$},
+            ylabel={Secondi},
+            grid style={line width=.1pt, draw=gray!10},
+            xmode=log,
+            ymode=log
+        ]
+        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff0.txt};
+        \label{fig:saha_diff_0}
+        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff1.txt};
+        \label{fig:saha_diff_1}
+        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff2.txt};
+        \label{fig:saha_diff_2}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Differenza puntuale tra il tempo di esecuzione dell'algoritmo di Saha dopo l'aggiunta dell'arco $e_1$ e gli archi $e_2$ (\ref*{fig:saha_diff_0}), $e_2$ (\ref*{fig:saha_diff_1}), $e_3$ (\ref*{fig:saha_diff_2}).}
+    \label{fig:saha_depends_cycle}
+\end{figure}
+
+\accente evidente che l'arco $e_4$ risulta il più pesante da aggiungere, risultato facilmente prevedibile dalle caratteristiche dell'algoritmo incrementale.
 
 \subsubsection{Dimensione della massima bisimulazione}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Consideriamo l'andamento del numero di classi di equivalenza nella massima bisimulazione per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
