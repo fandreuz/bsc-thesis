@@ -1,5 +1,5 @@
 \subsection{Implementazione}
-Come abbiamo già menzionato, il pacchetto è stato implementato in Python 3. Si è cercato di rendere il package funzionante su quante più versioni di Python 3 ci è stato possibile, rimpiazzando costrutti delle ultime versioni con features retrocompatibili.
+Si è cercato di rendere il package funzionante su quante più versioni di Python 3 ci è stato possibile, rimpiazzando costrutti delle ultime versioni con features retrocompatibili.
 
 Internamente grafi e partizioni sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
 \begin{itemize}
@@ -11,11 +11,11 @@ Le classi contengono attributi utilizzati ampiamente dagli algoritmi per deposit
 
 Nel pacchetto sono stati implementati da zero i seguenti algoritmi, per il calcolo della massima bisimulazione o utilizzati come subroutine:
 \begin{itemize}
-    \item Algoritmo di Paige-Tarjan \ref{alg:pt} (\verb|paige_tarjan/pta.py|);
-    \item Algoritmo di Dovier-Piazza-Policriti \ref{alg:fba} (\verb|dovier_piazza_policriti/fba.py|);
-    \item Algoritmo incrementale di Saha \ref{alg:saha} (\verb|saha/saha.py|);
+    \item Algoritmo di Paige-Tarjan \ref{alg:pt};
+    \item Algoritmo di Dovier-Piazza-Policriti \ref{alg:fba};
+    \item Algoritmo incrementale di Saha \ref{alg:saha};
     \item Depth first search (varie versioni);
-    \item Algoritmo di Kosaraju/Sharir \cite{sharir} (\verb|utilities/kosaraju.py|).
+    \item Algoritmo di Kosaraju/Sharir \cite{sharir}.
 \end{itemize}
 
 Sono state utilizzate le seguenti librerie open source:
