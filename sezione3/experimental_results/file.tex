@@ -6,7 +6,7 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
 \begin{itemize}
     \item Utilizza la più precisa funzione disponibile sulla piattaforma per la misurazione del tempo trascorso;
     \item Disabilita il \emph{garbage collector}, che potrebbe intervenire in un momento casuale della misurazione introducendo rumore nei risultati;
-    \item Esegue lo script preso in esame molte volte (il numero è deciso dall'utilizzatore) in modo da ridurre il rumore dovuto a temporanei sovraccarichi della CPU o della RAM.
+    \item Esegue lo script preso in esame molte volte in modo da ridurre l'imprecisione dovuta a temporanei sovraccarichi della CPU o della RAM.
 \end{itemize}
 
 I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
@@ -257,7 +257,9 @@ Questa visualizzazione non ci consente di controllare la sensibilità dell'algor
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Consideriamo l'andamento del numero di classi di equivalenza nella massima bisimulazione per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
 Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica.
 
-\begin{figure}[b!]
+Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori di \verb|n| (\verb|n=10| nella Figura \ref*{fig:bisi_dim_10}, \verb|n=100| nella Figura \ref*{fig:bisi_dim_100}, \verb|n=1000| nella Figura \ref*{fig:bisi_dim_1000}); inoltre abbiamo considerato quattro valori per \verb|p|: 0.01, 0.05, 0.1, 0.2.
+
+\begin{figure}[H]
     \makebox[\textwidth][c]{
         \begin{subfigure}[b]{0.5\textwidth}
             \caption{$n=10$}
@@ -278,6 +280,7 @@ Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result10.txt};
                 \end{axis}
             \end{tikzpicture}
+            \label{fig:bisi_dim_10}
         \end{subfigure}
         \begin{subfigure}[b]{0.5\textwidth}
             \caption{$n=100$}
@@ -298,6 +301,7 @@ Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result100.txt};
                 \end{axis}
             \end{tikzpicture}
+            \label{fig:bisi_dim_100}
         \end{subfigure}
         \begin{subfigure}[b]{0.5\textwidth}
             \caption{$n=1000$}
@@ -322,16 +326,13 @@ Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo
                     \label[d]{fig:bisi_size_1000_p02}
                 \end{axis}
             \end{tikzpicture}
+            \label{fig:bisi_dim_1000}
         \end{subfigure}
     }
     \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale con $p=0.01$ (\ref*{fig:bisi_size_1000_p001}), $p=0.05$ (\ref*{fig:bisi_size_1000_p005}), $p=0.1$ (\ref*{fig:bisi_size_1000_p01}), $p=0.2$ (\ref*{fig:bisi_size_1000_p02}). Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
     \label{fig:bisi_size}
 \end{figure}
 
-Nella Figura \ref{fig:bisi_size} abbiamo tre diversi valori di \verb|n|, ed in ogni sotto-immagine abbiamo considerato i valori 0.01, 0.05, 0.1, 0.2 per \verb|p|. Per ogni combinazione di \verb|n|,\verb|p| abbiamo generato 100 grafi binomiali con la funzione \verb|fast_gnp_random_graph| del pacchetto \emph{NetworkX}, e ne abbiamo valutata la massima bisimulazione con l'algoritmo di \emph{Dovier-Piazza-Policriti}. Nei grafici abbiamo visualizzato la quantità $\frac{|V / \equiv|}{|V|}$, ovvero il rapporto tra il numero di classi di equivalenza nella massima bisimulazione ed il numero di nodi del grafo: questa quantità potrebbe essere considerata come il fattore di riduzione che otteniamo quanto sostuitiamo al grafo originale la sua contrazione secondo la massima bisimulazione.
+Per ogni combinazione di \verb|n|,\verb|p| abbiamo generato 100 grafi binomiali con la funzione \verb|fast_gnp_random_graph| del pacchetto \emph{NetworkX}, e ne abbiamo calcolata la massima bisimulazione con l'algoritmo di \emph{Dovier-Piazza-Policriti}. Nei grafici abbiamo visualizzato la quantità $\frac{|V / \equiv|}{|V|}$, ovvero il rapporto tra il numero di classi di equivalenza nella massima bisimulazione ed il numero di nodi del grafo: questa quantità potrebbe essere considerata come il fattore di riduzione che otteniamo quanto sostuitiamo al grafo originale la sua contrazione secondo la massima bisimulazione.
 
-Possiamo vedere in modo abbastanza evidente che per \verb|n=10| la quantità che stiamo valutando varia molto tra 1 (10 classi di equivalenza, nessuna riduzione) e 0.1 (tutti i nodi sono bisimili, riduzione massima). Per valori più grandi questa variabilità si riduce, e per \verb|n=1000| il fattore si schiaccia decisamente verso 0.001 (un'unica partizione).
-
-Se la riduzione può essere un risultato positivo, bisogna anche considerare che gran parte dell'informazione veicolata dal grafo originale viene persa. Infatti, se da 1000 nodi passiamo ad un solo nodo non vi può essere che un unico arco. A seconda delle applicazioni questa contrazione potrebbe risultare interessante o scoraggiante; si potrebbe tentare di correggere il risultato assegnando delle etichette ai nodi per imporre un partizionamento preventivo, che dovrà essere rispettato anche dalla massima bisimulazione.
-
-Si ricordi comunque che questo è un caso molto particolare, in quanto appunto generiamo il grafo in modo del tutto casuale. Nelle applicazioni pratiche solitamente è facile individuare una struttura fondamentale: ad esempio, se intendiamo modellizzare un social network, è probabile che si possano individuare ``cluster'' di nodi relativi ad account i cui proprietari vivono geograficamente vicini.
+Per \verb|n=10| la quantità che stiamo valutando varia molto tra 1 (10 classi di equivalenza, nessuna riduzione) e 0.1 (tutti i nodi sono bisimili, riduzione massima). Per valori più grandi la variabilità si riduce, e per \verb|n=1000| il fattore si schiaccia decisamente verso 0.001 (un'unica partizione).
