@@ -1,22 +1,27 @@
-\subsection{Minimizzazione di automi a stati finiti}
-Esaminiamo innanzitutto l'algoritmo risolutivo per una versione semplificata del problema della determinazione della massima bisimulazione, ovvero la minimizzazione di un'automa a stati finiti, presentato in \cite{hopcroft} nel 1971. Sebbene questa soluzione non sia generale, ha fornito alcuni spunti fondamentali per l'ideazione di algoritmi risolutivi più completi, che verranno presentati nel seguito del lavoro.
+\subsection{Algoritmo di Hopcroft}
+Esaminiamo innanzitutto un algoritmo risolutivo per una versione semplificata del problema, ovvero la minimizzazione di un'automa a stati finiti \cite{hopcroft}. La risoluzione di questo caso particolare ha fornito diversi spunti importanti per l'ideazione di algoritmi risolutivi più generali che saranno presentati nel seguito.
 
-\subsubsection{Alcune nozioni fondamentali}
+\newcommand{\automata}{$\mathcal{A} = (\mathcal{S},\mathcal{I},\mathcal{U},\mathcal{F},\delta)$ }
+\newcommand{\argsautomata}{$\mathcal{S},\mathcal{I},\mathcal{U},\mathcal{F},\delta$ }
+
+\subsubsection{Nozioni fondamentali}
 Innanzitutto definiamo il concetto di \emph{automa}, chiaramente centrale nella descrizione del problema:
 \begin{definition}
-    Consideriamo i seguenti oggetti:
+    Consideriamo i seguenti oggetti matematici:
     \begin{itemize}
-        \item Un insieme finito $I$ detto \emph{insieme degli ingressi};
-        \item Un insieme finito $S$ detto \emph{insieme degli stati}, ad ogni stato è associata un'unica uscita;
-        \item Un insieme finito $F \subseteq S$ detto \emph{insieme degli stati finali};
-        \item Una funzione $\delta: S \times I E S$ detta \emph{funzione di trasferimento}.
+        \item Un insieme finito $\mathcal{I}$ detto \emph{insieme degli ingressi};
+        \item Un insieme finito $\mathcal{U}$ detto \emph{insieme delle uscite};
+        \item Un insieme finito $\mathcal{S}$ detto \emph{insieme degli stati}, ad ogni stato è associata un'unica uscita appartenente ad $U$;
+        \item Un insieme $\mathcal{F} \subseteq \mathcal{S}$ detto \emph{insieme degli stati finali};
+        \item Una funzione $\delta: \mathcal{S} \times \mathcal{I} \to \mathcal{S}$ detta \emph{funzione di trasferimento}.
     \end{itemize}
-    Chiameremo $A = (S,I,\delta,F)$ \emph{automa}. Useremo la notazione $Out(x)$ per indicare l'output corrispondente allo stato $x$.
+    Chiameremo $A = (\mathcal{S},\mathcal{I},\mathcal{U},\delta,\mathcal{F})$ \emph{automa}. Useremo la notazione $Out(x)$ per indicare l'output corrispondente allo stato $x$.
 \end{definition}
-Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga rappresenta uno stato, ogni colonna un ingresso, ed ogni cella contiene il nuovo stato del sistema quando, nel momento in cui il sistema si trova nello stato corrispondente alla riga, si inserisce l'ingresso corrispondente alla colonna.In alternativa possiamo utilizzare una rappresentazione grafica, in cui ogni stato è descritto da un cerchio contenente il nome dello stato, e le transizioni tra stati sono descritte da frecce, sulle quali viene specificato l'ingresso che ha innescato la transizione.\\
+Possiamo rappresentare un'automa con una tabella degli stati, in cui ad ogni riga corrisponde uno stato, a ogni colonna un ingresso, e ogni cella contiene il nuovo stato quando, nel momento in cui il sistema si trova nello stato corrispondente alla riga, si inserisce l'ingresso corrispondente alla colonna. In alternativa possiamo utilizzare una rappresentazione grafica, in cui ogni stato è descritto da un cerchio contenente il nome dello stato, e le transizioni tra stati sono rappresentate da frecce sulle quali viene specificato l'ingresso che ha innescato la transizione.
+
 \begin{example}
-    Nella Tabella \ref{fig:tab_automata} è rappresentato un'automa che cambia stato ($A E B$, $B E C$) solamente se l'ingresso è ``1'', e lo stato non è ``$C$''. In qualsiasi altro caso lo stato non cambia.
-    \begin{table}[ht]
+    Nella Tabella \ref{fig:tab_automata} è rappresentato un'automa che cambia stato solamente se l'ingresso è ``1'', e lo stato non è ``$c$''.
+    \begin{table}[t]
         \centering
         \begin{tabular}{ c | c c }
             \hline
@@ -27,14 +32,15 @@ Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga r
             c[1] & c & c \\
             \hline
           \end{tabular}
-        \caption{Rappresentazione tabellare di un'automa}
+        \caption{Rappresentazione tabellare di un'automa.}
         \label{fig:tab_automata}
     \end{table}
     \label{exa:automata_tab}
 \end{example}
+
 \begin{example}
     Nella Figura \ref{fig:automata} è rappresentato lo stesso automa dell'Esempio \ref{exa:automata_tab}.
-    \begin{figure}[hb]
+    \begin{figure}[t]
         \centering
         \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
             scale = 1,transform shape]
@@ -48,19 +54,21 @@ Possiamo rappresentare un'automa con una tabella degli stati, in cui ogni riga r
                   (b) edge [loop above]             node {$0$} (b)
                   (c) edge [loop above]              node {$0/1$} (c);
         \end{tikzpicture}
-        \caption{Rappresentazione grafica di un'automa}
+        \caption{Rappresentazione grafica di un'automa.}
         \label{fig:automata}
     \end{figure}
 \end{example}
-In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente, il sistema si comporta in modo simile quando riceve in input un ingresso qualsiasi, e si trova in uno degli stati presi in esame. Diamo un esempio di questa situazione:
+
+In alcuni automi è possibile individuare stati che ``si comportano in modo simile''. Informalmente possiamo dire che due stati $a,b \in \mathcal{S}$ tali che $Out(a) = Out(b)$ si comportano in modo simile quando i due stati in cui ricade il sistema in seguito ad una transizione innescata da uno stesso input $i$ a partire dagli stati $a$ o $b$ (ovvero i due stati $\delta(a,i), \delta(b,i)$) si comportano in modo simile. In Figura \ref{fig:automata_eq} illustriamo un esempio di questa situazione: consideriamo gli stati dell'automa rappresentato. Supponiamo di accorpare gli stati $b,c$ in un unico stato, che chiamiamo $B'$. Se ci interessiamo solamente alla sequenza di output ed all'eventuale raggiungimento di uno stato finale, il nuovo automa risulta indistinguibile dal primo.
+
 \begin{example}
     \begin{figure}[b]
         \centering
         \begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=3.5cm,
             scale = 1,transform shape]
-            \node[state] (a) {$a[0]$};
-            \node[state] (b) [right of=a] {$b[1]$};
-            \node[state] (c) [right of=b] {$c[1]$};
+            \node[state] (a) {$A[0]$};
+            \node[state] (b) [right of=a] {$B[1]$};
+            \node[state] (c) [right of=b] {$C[1]$};
 
             \path (a) edge              node {$1$} (b)
                   (b) edge [bend right]             node {$1$} (c)
@@ -69,196 +77,215 @@ In alcuni automi è possibile individuare stati che ``si comportano in modo simi
                   (b) edge [loop above]             node {$0$} (b)
                   (c) edge [loop above]             node {$0$} (c);
         \end{tikzpicture}
-        \caption{Automa contenente stati equivalenti}
+        \caption{Automa contenente stati equivalenti.}
         \label{fig:automata_eq}
     \end{figure}
-    Consideriamo gli stati dell'automa rappresentato graficamente nella Figura \ref{fig:automata_eq}. Supponiamo di accorpare gli stati $B,C$ in un unico stato, che chiamiamo $B'$. Se ci interessiamo solamente alla sequenza di output ed all'eventuale raggiungimento di uno stato finale, il nuovo automa risulta indistinguibile dal primo.
+    In questo esempio gli stati $B,C$ sono equivalenti secondo la definizione informale proposta sopra.
 \end{example}
-Proponiamo la definizione formale di equivalenza tra stati che viene utilizzata in \cite{hopcroft}. Nel seguito ne dedurremo un'altra, che consente di stabilire un parallelo con gli argomenti trattati nella Sezione \ref{sec:base}.
+
+Proponiamo una possibile definizione formale di equivalenza tra stati. Nel seguito ne dedurremo una equivalente, che consente di stabilire un parallelo con gli argomenti trattati nella Sezione \ref{sec:base}.
 \begin{definition}
     \label{def:equivalent_states}
-    Sia $I^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : S \times I^*$ la funzione di transizione ``iterata''. Diremo che due stati $x,y$ sono equivalenti (con la notazione ``$x \sim y$'') se e soltanto se valgono congiuntamente le seguenti condizioni:
+    Sia $\mathcal{I}^*$ l'insieme di tutte le sequenze di input di lunghezza finita. Sia $\delta^* : \mathcal{S} \times \mathcal{I}^*$ la funzione di transizione ``iterata''. Due stati $x,y \in \mathcal{S}$ sono equivalenti se e soltanto se valgono congiuntamente le seguenti condizioni:
     \begin{enumerate}
         \item $Out(x) = Out(y)$;
-        \item $\forall i^* \in I^*,\,\, \delta^*(x,i^*) \in F \iff \delta^*(y,i^*) \in F$.
+        \item $\forall i^* \in \mathcal{I}^*,\,\, \delta^*(x,i^*) \in \mathcal{F} \iff \delta^*(y,i^*) \in \mathcal{F}$.
     \end{enumerate}
+    Se le condizioni valgono utilizzermo la notazione ``$x \sim y$''.
 \end{definition}
-\accente evidente che individuare g
-li stati equivalenti consente di minimizzare il sistema, preservando al tempo stesso i risultati ottenuti. In questo lavoro non illustreremo cosa comporta questa definizione, e perchè è importante che per qualsiasi stringa di lunghezza finita si giunga ad uno stato finale partendo da due stati supposti equivalenti.
+
 \begin{observation}
-    La relazione ``$\sim$'' così definita è una relazione di equivalenza sull'insieme degli stati di un'automa.
+    La relazione ``$\sim$'' è una relazione di equivalenza sull'insieme degli stati di un'automa.
 \end{observation}
+
 La seguente proposizione sarà utile per formulare il problema con la terminologia esposta nella Sezione \ref{sec:rscp}:
 \begin{proposition}
     \label{prop:equivalent_states}
     Due stati $x,y$ sono equivalenti nel senso della definizione \ref{def:equivalent_states} se e solo se
-    \begin{gather}
-        \forall i \in I, \quad \delta(x,i) \sim \delta(y,i)
+    \begin{gather}\label{hop:alternative_sim}
+        \forall i \in \mathcal{I}, \quad \delta(x,i) \sim \delta(y,i)
     \end{gather}
     e $Out(x) = Out(y)$.
 \end{proposition}
 \begin{proof2}
-    Supponiamo che $\exists i \in I : \delta(x,i) \not\sim \delta(y,i)$. Allora, ad esempio:
+    Supponiamo che $\exists i \in \mathcal{I} : \delta(x,i) \not\sim \delta(y,i)$. Allora, ad esempio:
     \begin{gather*}
-        \exists i^* \in I^* : \delta^*(\delta(x,i),i^*) = \delta^*(x,ii^*) \in F, \,\, \delta^*(\delta(y,i),i^*) = \delta^*(y,ii^*) \notin F
+        \exists i^* \in \mathcal{I}^* : \delta^*(\delta(x,i),i^*) = \delta^*(x,ii^*) \in \mathcal{F}, \,\, \delta^*(\delta(y,i),i^*) = \delta^*(y,ii^*) \notin \mathcal{F}
     \end{gather*}
-    Quindi, per l'esistenza della stringa $ii^*$ si ha $x \not\sim y$. La dimostrazione è speculare se $\exists i^* \in I^* : \delta^*(x,ii^*) \notin F, \delta^*(y,ii^*) \in F$.\\
-    Ora supponiamo che valga la (1). \accente chiaro che $\forall i^* \in I^*, \forall i \in I$ si ha che
+    Quindi, per l'esistenza della stringa $ii^*$ si ha $x \not\sim y$. La dimostrazione è speculare se $\exists i^* \in \mathcal{I}^* : \delta^*(x,ii^*) \notin \mathcal{F}, \delta^*(y,ii^*) \in \mathcal{F}$.
+
+    Ora supponiamo che valga la \ref{hop:alternative_sim}. \accente chiaro che $\forall i^* \in \mathcal{I}^*$ si ha:
     \begin{gather*}
-        \delta^*(x,ii^*) \sim \delta^*(y,ii^*)
+        \delta^*(x,ii^*) \sim \delta^*(y,ii^*) \forall i \in \mathcal{I}
     \end{gather*}
     e quindi $x \sim y$.
 \end{proof2}
+
 \begin{proposition}
-    La relazione ``$\sim$'' con la formulazione dell'Osservazione \ref{prop:equivalent_states} è una bisimulazione sull'insieme degli stati di un'automa, se si considera la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in I, x \in S} \{(x,\delta(x,i))\}$.
+    La relazione ``$\sim$'' è una bisimulazione sull'insieme $\mathcal{S}$, con la relazione binaria $\displaystyle E \,\,\coloneqq \bigcup_{i \in \mathcal{I}, x \in \mathcal{S}} \{(x,\delta(x,i))\}$.
 \end{proposition}
 \begin{proof2}
-    Supponiamo che $x \sim y$. Sia $x E x'$, cioè $\exists i \in I : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies y E y'$. Allora, per l'Osservazione \ref{prop:equivalent_states}, $x' \sim y'$.\\
-    Chiaramente lo stesso argomento vale in modo speculare.
+    Supponiamo che $x \sim y$. Sia $\langle x, x'\rangle \in E$, cioè $\exists i \in \mathcal{I} : x' = \delta(x,i)$. Sia $y' = \delta(y,i) \implies \langle y, y'\rangle$. Allora, per la Proposizione \ref{prop:equivalent_states}, $x' \sim y'$. Lo stesso argomento vale in modo speculare.
 \end{proof2}
-Osserviamo che nella definizione di ``$E$'' si perde un'informazione importante, cioè il fatto che per $i \in I$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in S$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa proprietà nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.\\
-Possiamo definire la \emph{minimizzazione per stati equivalenti} di un'automa a stati finiti:
+
+Osserviamo che nella definizione di $E$ si perde un'informazione importante, cioè il fatto che per $i \in \mathcal{I}$ fissato $\delta_i(x) \coloneqq \delta(x,i)$ è una funzione, ovvero l'insieme immagine di ogni $x \in \mathcal{S}$ ha cardinalità 1. L'algoritmo di Hopcroft sfrutta questa ipotesi nel procedimento che consente di migliorare l'algoritmo banale che verrà discusso nel seguito del lavoro.
+
+Possiamo ora definire la \emph{minimizzazione per stati equivalenti} di un'automa a stati finiti:
 \begin{definition}\label{def:minim_eq_states}
-    Sia $A = (S,I,\delta,F)$ un'automa. Chiameremo \emph{minimizzazione per stati equivalenti} l'automa $A = (\widetilde{S}, I, \widetilde{\delta}, \widetilde{F})$ dove
+    Sia \automata un'automa a stati finiti. Chiameremo \emph{minimizzazione per stati equivalenti} l'automa $(\mathfrak{S}, \mathcal{I}, \mathcal{U}, \delta_\mathfrak{S}, \mathcal{F}_\mathfrak{S})$ dove
     \begin{itemize}
-        \item $\widetilde{S} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $S$'';
-        \item $\widetilde{\delta} : (\widetilde{S} \times I) E \widetilde{S}, \quad \delta(i, x) = y \implies \widetilde{\delta}(i,\widetilde{x}) = \widetilde{y}$, dove $x,y \in S, i \in I$, e $\widetilde{x}, \widetilde{y} \in \widetilde{S}$ sono rispettivamente le classi di equivalenza di ``$\sim$'' a cui appartengono $x,y$;
-        \item $\widetilde{F} =$ ``l'insieme delle classi di equivalenza di $\sim$ su $F$'';
+        \item $\mathfrak{S} = \mathcal{S} / \sim$;
+        \item $\delta_\mathfrak{S} : (\mathfrak{S} \times \mathcal{I}) \to \mathfrak{S} \mid \delta(i, x) = y \implies \delta_\mathfrak{S}(i,[x]_\mathfrak{S}) = [y]_\mathfrak{S}$;
+        \item $\mathcal{F}_\mathfrak{S} = \mathcal{F} / \sim$.
     \end{itemize}
 \end{definition}
+Si rammenta che con la notazione $A / \mathcal{R}$ ci riferiamo all'insieme delle classi di equivalenza indotte da una relazione di equivalenza $\mathcal{R} : A \times A$ su un insieme $A$, e che con la notazione $[a]_\mathfrak{X}$ ci riferiamo al blocco di una partizione $\mathfrak{X}$ in cui viene posto $a$.
+
 Prima di concludere l'esposizione delle nozioni preliminari è necessario dimostrare un risultato interessante che lega il problema della minimizzazzione di un'automa a stati finiti con quanto è stato presentato nella sezione \ref{sec:rscp}. A questo scopo dimostriamo i seguenti lemmi, che consentono di dimostrare tale legame in modo agevole:
 \begin{lemma}
     \label{lem:part_stab_stesso_blocco}
-    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Allora $\forall (x,y) \in S \times S$ tali che $[x]_{\widehat{S}} = [y]_{\widehat{S}}$ si ha che $\forall i^* \in I^*$
+    Sia \automata un'automa a stati finiti. Sia $\mathfrak{S}$ una partizione di $\mathcal{S}$ stabile rispetto alla famiglia di funzioni $\delta_i, i \in \mathcal{I}$. Allora $\forall (x,y) \in \mathcal{S} \times \mathcal{S}$ tali che $[x]_{\mathfrak{S}} = [y]_{\mathfrak{S}}$ si ha che $\forall i^* \in \mathcal{I}^*$:
     \begin{gather*}
-        [\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}
+        [\delta^*(x,i^*)]_{\mathfrak{S}} = [\delta^*(y,i^*)]_{\mathfrak{S}}
     \end{gather*}
 \end{lemma}
 \begin{proof2}
-    Procediamo per induzione su $i^*$. Inizialmente i due stati si trovano nello stesso blocco. Ora supponiamo che dopo l'inserimento dell' $(n-1)$-esimo simbolo di $i^*$ i due stati $x_{n-1}, y_{n-1}$ in cui si trova l'automa appartengano ancora allo stesso blocco. La partizione è stabile rispetto alla funzione $\delta_i$, dove $i$ è l' $n$-esimo simbolo di $i^*$, quindi tutto il blocco $[x_{n-1}]_{\widehat{S}} = [y_{n-1}]_{\widehat{S}}\,\,$ è contenuto all'interno dell'insieme $\delta_i^{-1}([\delta_i(x_{n-1})]_{\widehat{S}}) = \delta_i^{-1}([x_n]_{\widehat{S}})$. Quindi $\delta_i(y_{n-1}) \in \delta_i^{-1}([x_n]_{\widehat{S}})$, e dunque si ha anche $[x_n]_{\widehat{S}} = [y_n]_{\widehat{S}}$.
+    Procediamo per induzione su $i^*$. Inizialmente i due stati si trovano nello stesso blocco di $\mathfrak{S}$. Ora supponiamo che dopo l'inserimento dell' $(n-1)$-esimo simbolo di $i^*$ i due stati $x_{n-1}, y_{n-1}$ in cui si trova l'automa appartengano ancora allo stesso blocco. La partizione è stabile rispetto alla funzione $\delta_i$, dove $i$ è l' $n$-esimo simbolo di $i^*$, quindi tutto il blocco $[x_{n-1}]_{\mathfrak{S}} = [y_{n-1}]_{\mathfrak{S}}\,\,$ è contenuto all'interno dell'insieme $\delta_i^{-1}([\delta_i(x_{n-1})]_{\mathfrak{S}}) = \delta_i^{-1}([x_n]_{\mathfrak{S}})$. Quindi $\delta_i(y_{n-1}) \in \delta_i^{-1}([x_n]_{\mathfrak{S}})$, e dunque e si ha anche $[x_n]_{\widehat{S}} = [y_n]_{\mathfrak{S}}$.
 \end{proof2}
+
 \begin{lemma}
     \label{lem:part_stab_equiv}
-    Sia $A = (S,I,F,\delta)$ un'automa. Sia $\widehat{S}$ una partizione di $S$ stabile rispetto alle funzioni $\delta_i, \forall i \in I$. Supponiamo inoltre che per $\widehat{S}$ valga la segente condizione:
+    Sia \automata un'automa a stati finiti. Sia $\mathfrak{S}$ una partizione di $\mathcal{S}$ stabile rispetto alla famiglia di funzioni $\delta_i, i \in \mathcal{I}$. Supponiamo inoltre che per $\mathfrak{S}$ valga la segente condizione:
     \begin{gather*}
-        \forall (x,f) \in S \times F, \quad [x]_{\widetilde{S}} = [f]_{\widetilde{S}} \implies x \in F
+        \forall (x,F) \in \mathcal{S} \times \mathcal{F}, \quad [x]_{\mathfrak{S}} = [F]_{\mathfrak{S}} \implies x \in \mathcal{F}
     \end{gather*}
-    Allora $\forall X \in \widehat{S}, \,\,\forall (x,y) \in X \times X$ si ha $x \sim y$.
+    Allora $\forall \mathfrak{p} \in \mathfrak{S}, \,\,\forall (x,y) \in \mathfrak{p} \times \mathfrak{p}$ si ha $x \sim y$.
 \end{lemma}
 \begin{proof2}
-    Supponiamo per assurdo che in un blocco $X \in \widehat{S}$ esistano due stati $x,y$ non equivalenti. Allora deve esistere una stringa $i^* \in I^*$ tale che, ad esempio, $\delta^*(x,i^*) \in F \land \delta^*(y,i^*) \not\in F$. Ma per il Lemma \ref{lem:part_stab_stesso_blocco} $[\delta^*(x,i^*)]_{\widehat{S}} = [\delta^*(y,i^*)]_{\widehat{S}}$. Chiaramente questo è assurdo per la condizione supposta nell'ipotesi, quindi non possono esistere nello stesso blocco due stati non equivalenti.
+    Supponiamo per assurdo che in un blocco di $\mathfrak{S}$ esistano due stati $x,y$ non equivalenti. Allora deve esistere una stringa $i^* \in \mathcal{I}^*$ tale che, ad esempio, $\delta^*(x,i^*) \in \mathcal{F} \land \delta^*(y,i^*) \not\in \mathcal{F}$. Ma per il Lemma \ref{lem:part_stab_stesso_blocco} $[\delta^*(x,i^*)]_{\mathfrak{S}} = [\delta^*(y,i^*)]_{\mathfrak{S}}$. Chiaramente questo è assurdo per la condizione assunta nell'ipotesi, quindi non possono esistere nello stesso blocco due stati non equivalenti.
 \end{proof2}
-Possiamo dimostrare il seguente risultato:
+A questo punto abbiamo gli ingredienti necessari per dimostrare un risultato interessante su una tipologia particolare di automi così definita:
+\begin{definition}
+    \label{def:automi_ben_posti}
+    Un'automa a stati finiti \automata è \emph{ben posto} se $x \in \mathcal{F}, y \not\in \mathcal{F} \implies Out(x) \neq Out(y)$, ovvero l'output assegnato a stati finali è sempre diverso dall'output corrispondente a stati non finali.
+\end{definition}
 \begin{theorem}
     \label{theo:auto_mini_rscp}
-    Sia $A$ un'automa a stati finiti. Supponiamo che in tale automa ad uno stato finale ed uno non finale non possa essere assegnato un output identico. La minimizzazione per stati equivalenti proposta nella Definizione \ref{def:minim_eq_states} è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$.
+    Sia \automata un'automa a stati finiti. La minimizzazione per stati equivalenti $(\mathfrak{S}, \mathcal{I}, \mathcal{U}, \delta_\mathfrak{S}, \mathcal{F}_\mathfrak{S})$ (Definizione \ref{def:minim_eq_states}) è l'automa avente per stati i blocchi della partizione più grossolana stabile rispetto alla famiglia di funzioni $\delta_i, i \in \mathcal{I}$.
 \end{theorem}
 \begin{proof2}
-    Dimostriamo che la minimizzazione proposta nella Definizione \ref{def:minim_eq_states} è una partizione stabile rispetto alle funzioni $\delta_i$. Supponiamo per assurdo che $\exists i \in I : \widetilde{S}$ non è stabile rispetto a $\delta_i$. Quindi $\exists S_1, S_2 \in S :$
+    Dimostriamo che $\mathfrak{S}$ è una partizione di $\mathcal{S}$ stabile rispetto alle funzioni $\delta_i$. Supponiamo per assurdo che $\exists i \in \mathcal{I} \mid \mathfrak{S}$ non è stabile rispetto a $\delta_i$. Quindi esistono $\mathfrak{s}_1, \mathfrak{s}_2 \in \mathfrak{S}$ tali che:
     \begin{gather*}
-        S_1 \not\subseteq \delta_i^{-1}(S_2) \,\, \land \,\, S_1 \,\cap \,\delta_i^{-1}(S_2) \neq \emptyset
+        \mathfrak{s}_1 \not\subseteq \delta_i^{-1}(\mathfrak{s}_2) \,\, \land \,\, \mathfrak{s}_1 \,\cap \,\delta_i^{-1}(\mathfrak{s}_2) \neq \emptyset
     \end{gather*}
-    La prima porzione dell'espressione implica che $\exists s \in S_1 : \delta_i(s) \not\in S_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{prop:equivalent_states}, perchè $\forall (u,v) \in S_1 \times S_1$ deve valere $\delta_i(u) \sim \delta_i(v)$, mentre è evidente che, poichè $S_1 \,\cap\, \delta_i^{-1}(S_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.\\
-    Ora supponiamo che la partizione $\widetilde{S}$ non sia la più grossolana stabile rispetto alle funzioni $\delta_i : S E S, \forall i \in I$. Ne deve esistere, quindi, una (stabile) più grossolana, che chiamiamo $\widetilde{S}$. Chiaramente si ha $|\widehat{S}| < |\widetilde{S}|$, e quindi devono esistere almeno due blocchi $S_1,S_2 \in \widetilde{S}$ ed un blocco $X \in \widehat{S}$ tali che
-    \begin{gather*}
-        S_1 \cap X \neq \emptyset \,\,\land\,\, S_2 \cap X \neq \emptyset
-    \end{gather*}
-    Ma questo è chiaramente in contrasto con il Lemma \ref{lem:part_stab_equiv} per come è stata costruita la partizione $\widetilde{S}$, in quanto esistono coppie di stati $(x,y) \in X \times X$ per cui vale $x \in S_1, y \in S_2$, cioè $x \not\sim y$.
-\end{proof2}
-Osserviamo che la condizione richiesta nell'ipotesi del Teorema \ref{theo:auto_mini_rscp}, che impone l'assegnazione di un output diverso a stati finali e non finali, è estremamente leggera: dato un'automa qualsiasi è sempre possibile costruirne un altro, che soddisfa tale condizione, in tempo lineare rispetto al numero di stati.
+    La prima porzione dell'espressione implica che $\exists x \in \mathfrak{s}_1 : \delta_i(x) \not\in \mathfrak{s}_2$. Ma questo è chiaramente in contrasto con l'Osservazione \ref{prop:equivalent_states}, perchè $\forall (y,Z) \in \mathfrak{s}_1 \times \mathfrak{s}_1$ deve valere $\delta_i(y) \sim \delta_i(Z)$, mentre è evidente che, poichè $\mathfrak{s}_1 \,\cap\, \delta_i^{-1}(\mathfrak{s}_2) \neq \emptyset$, c'è almeno una coppia che non soddisfa questa condizione.
 
-\subsubsection{L'algoritmo naive}
-Innanzitutto, con i risultati della sezione precedente, possiamo progettare il seguente algoritmo banale:\\
-\begin{algorithm}[H]
+    Ora supponiamo che la partizione $\mathfrak{S}$ non sia la più grossolana stabile rispetto a tutte le funzioni $\delta_i : i \in \mathcal{I}$. Ne deve esistere quindi una stabile più grossolana, che chiamiamo $\mathfrak{S}_2$. Chiaramente si ha $|\mathfrak{S}_2| < |\mathfrak{S}|$, e quindi devono esistere almeno due blocchi $\mathfrak{s}_1, \mathfrak{s}_2 \in \mathfrak{S}$ ed un blocco $\mathfrak{s}_3 \in \mathfrak{S}_2$ tali che
+    \begin{gather*}
+        \mathfrak{s}_1 \cap \mathfrak{s}_3 \neq \emptyset \,\,\land\,\, \mathfrak{s}_2 \cap \mathfrak{s}_3 \neq \emptyset
+    \end{gather*}
+    Ma questo è chiaramente in contrasto con il Lemma \ref{lem:part_stab_equiv} per come è stata costruita la partizione $\mathfrak{S}$, in quanto non possono esistere coppie di stati nello stesso blocco di $\mathcal{S}_2$ ma in un blocco diverso di $\mathcal{S}$, in quanto da quest'ultima condizione segue che $x \not\sim y$.
+\end{proof2}
+Osserviamo che la condizione richiesta nell'ipotesi del Teorema \ref{theo:auto_mini_rscp}, che impone l'assegnazione di un output diverso a stati finali e non finali, è estremamente debole: dato un'automa qualsiasi è sempre possibile costruirne un altro che soddisfa tale condizione, in tempo lineare rispetto al numero di stati.
+
+\subsubsection{L'algoritmo di Hopcroft}
+Il problema della minimizzazione di automi a stati finiti è stato risolto da John Hopcroft nel 1971, che ha proposto un algoritmo efficiente sfruttando un'osservazione che sarà discussa nel seguito. Presenteremo innanzitutto un algoritmo immediato, che sarà utile per un primo approccio al lato algoritmico del problema; dopodichè esamineremo lo pseudocodice dell'algoritmo di Hopcroft, e commenteremo l'intuizione che ha consentito di migliorare l'algoritmo immediato.
+
+\paragraph{Un primo algoritmo triviale} Utilizzando i risultati della sezione precedente possiamo progettare il seguente algoritmo, il cui funzionamento è sostanzialmente lineare: per ogni ingresso $i \in \mathcal{I}$ si rifinisce la partizione iniziale (data dagli output assegnati ai vari stati) finchè non diventa stabile rispetto a $\delta_i$; dopodichè si procede con l'ingresso seguente.
+
+\begin{algorithm}[t]
+    \caption{Algoritmo triviale per la minimizzazzione di automi a stati finiti.}
     \label{alg:hop_banale}
     \SetAlgoLined
-    \KwData{$S,I,\delta$}
+    \KwData{\argsautomata}
     \tcp*[h]{Partizione iniziale contenente un unico blocco}
     \nl$\widetilde{S} \coloneqq \{\{s_1, \dots, s_n\}\}$\;
     \tcc*[h]{Separiamo gli stati non equivalenti in base all'output}\\
-    $\widetilde{S} = $ PartizionaPerOutput($\widetilde{S}$)\;\label{alg:hop_banale_partiziona_output}
+    $\mathfrak{S} = \{\mathfrak{s}_k \in \mathcal{P}(\mathcal{S}) \mid Out(x) = k, \forall x \in \mathfrak{s}_k\}$\;\label{alg:hop_banale_partiziona_output}
     \ForEach{$i \in I$} {
         \label{alg:hop_banale_for_ingressi}
-        \For{$NS = $ BlocchiNonStabili(S,$\delta_i$)), $NS \neq \emptyset$}{
+        \While{($\mathfrak{s}_1, \mathfrak{s}_2 =$ BlocchiNonStabili($\mathfrak{S}, \delta_i)) \neq$ None}{
             \label{alg:hop_banale_for_ns}
-            \tcc*[h]{Estraiamo casualmente una coppia di blocchi non stabili}\\
-            $(X,Y) = NS[0]$\;
-            $X_1 \coloneqq X - \delta_i^{-1}({Y})$\;
-            $X_2 \coloneqq X \cap \delta_i^{-1}({Y})$\;
+            \tcc*[h]{Estraiamo una coppia di blocchi che trasgredisce la condizione di stabilità.}\\
+            $\widetilde{\mathfrak{s}}_1 \coloneqq \mathfrak{s}_1 - \delta_i^{-1}(\mathfrak{s}_2)$\;
+            $\widehat{\mathfrak{s}}_1 \coloneqq \mathfrak{s}_1 \cap \delta_i^{-1}(\mathfrak{s}_2)$\;
             \tcp*[h]{Aggiorniamo $S$}\\
-            $\widetilde{S} = (\widetilde{S} - \{X\}) \cup \{X_1,X_2\}$\;
+            $\mathfrak{S} = (\mathfrak{S} - \{\mathfrak{s}_1\}) \cup \{\widetilde{\mathfrak{s}}_1,\widehat{\mathfrak{s}}_1\}$\;
         }
     }
     \Return{$S$}
-    \caption{Procedimento banale per la minimizzazzione}
 \end{algorithm}
-L'algoritmo termina, perchè la condizione del ciclo diventa sicuramente falsa quando la partizione $S$ è composta da $n$ blocchi, uno per ogni stato, ed ad ogni iterazione un blocco viene diviso in due blocchi distinti e non vuoti. \\
-Inoltre la risposta fornita è corretta, perchè l'algoritmo si ferma appena viene trovata una partizione stabile. Poichè ad ogni iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ns} il numero di blocchi aumenta di 1, il risultato è la partizione stabile più grossolana rispetto alle funzioni $\delta_i$. Osserviamo inoltre che, se la partizione è stabile rispetto a $\delta_i$ dopo una certa iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ingressi}, allora resta stabile fino alla fine dell'esecuzione.\\
-Consideriamo la complessità dell'algoritmo:
+La funzione ``BlocchiNonStabili'' restituisce una coppia $\mathfrak{s}_1, \mathfrak{s}_2$ di blocchi di $\mathfrak{S}$ che trasgredisce la condizione di stabilità rispetto alla funzione $\delta_i$, o ``None'' quando una tale coppia non esiste. L'algoritmo termina, perchè la condizione del ciclo diventa sicuramente falsa quando la partizione $\mathfrak{S}$ è composta da $n$ blocchi, uno per ogni stato, ed ad ogni iterazione un blocco viene diviso in due blocchi distinti e non vuoti.
+
+Inoltre la risposta fornita è corretta, perchè l'algoritmo si ferma appena viene trovata una partizione stabile. Poichè ad ogni iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ns} il numero di blocchi aumenta di 1, il risultato è la partizione stabile più grossolana rispetto alle funzioni $\delta_i$. Osserviamo inoltre che, se la partizione è stabile rispetto a $\delta_i$ dopo una certa iterazione del ciclo definito nella Riga \ref{alg:hop_banale_for_ingressi}, allora resta stabile fino alla fine dell'esecuzione per la Proposizione \ref{prop:rifi_stabile}.
+
+Verifichiamo la complessità dell'algoritmo:
 \begin{itemize}
     \item La Riga \ref{alg:hop_banale_partiziona_output} ha complessità $\Theta(|S|)$;
-    \item Il ciclo della Riga \ref{alg:hop_banale_for_ingressi} viene eseguito $\Theta(|I|)$ volte;
+    \item Il ciclo alla Riga \ref{alg:hop_banale_for_ingressi} viene eseguito $\Theta(|I|)$ volte;
     \item La funzione ``BlocchiNonStabili'' ha complessità $O(|S|^2)$;
-    \item Il ciclo nella Riga \ref{alg:hop_banale_for_ns} viene eseguito $O(|S|)$ volte;
-    \item Il contenuto del ciclo nella Riga \ref{alg:hop_banale_for_ns} ha complessità $O(|S|)$ (con gli opportuni accorgimenti).
+    \item Il ciclo alla Riga \ref{alg:hop_banale_for_ns} viene eseguito $O(|S|)$ volte;
+    \item Il contenuto del ciclo alla Riga \ref{alg:hop_banale_for_ns} ha complessità $O(|S|)$ (con gli opportuni accorgimenti).
 \end{itemize}
 Quindi la complessità dell'algoritmo è \begin{gather*}
-    T_{alg_{\ref{alg:hop_banale}}}(|S|,|I|) = \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
+    T(|S|,|I|) = \Theta|I|\left[O(|S|^2 + O(|S|) * O(|S|))\right] = \Theta(I)O(|S|^2)
 \end{gather*}
-Se consideriamo costante il numero di ingressi: $T_{alg_{\ref{alg:hop_banale}}}(|S|) = O(|S|^2)$.
+Se consideriamo costante il numero di ingressi: $T(|S|) = O(|S|^2)$. Seppur di facile comprensione, l'algoritmo triviale è poco efficiente a causa dei numerosi controlli per la stabilità.
 
-\subsubsection{L'algoritmo di Hopcroft}
-Riportiamo l'algoritmo di Hopcroft, presentato in \cite{hopcroft} nel 1971. Esso migliora la procedura presentata nella sezione precedente, in quanto ha complessità \emph{loglineare}. Forniremo un commento allo pseudocodice, in modo da spiegare il procedimento in modo dettagliato. In seguito analizzeremo formalmente l'algoritmo, proporremo e commenteremo la dimostrazione della correttezza e della complessità.\\
-\begin{algorithm}[H]
-    \thispagestyle{empty}
-    \label{alg:hop}
-    \KwData{$S,I,\delta,F$}
-    \caption{Algoritmo di Hopcroft}
-    \Begin{
-        \ForEach{$(s,i) \in S \times I$}{
-            $\delta^{-1}(s,i) \coloneqq \{t : \delta(t,i) = s\}$\;\label{alg:hop_deltainverso}
-        }
-        $B(1) \coloneqq F, B(2) \coloneqq S - F$\;
-        \tcc*[h]{$\forall i \in I$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}\\
-        \ForEach{$j \in \{1,2\}$}{
-            \ForEach{$i \in I$}{
-                $i(j) = \{s : s \in B(j) \land \delta^{-1}(s,i) \neq \emptyset\}$\;\label{alg:hop_stati_delta_nonvuoto}
+\paragraph{Algoritmo di Hopcroft} Presentiamo un algoritmo che migliora la procedura triviale presentata nella sezione precedente, portando la complessità relativa alla risoluzione del problema della minimizzazione di automi a stati finiti a \emph{loglineare} \cite{hopcroft}. Forniremo un commento allo pseudocodice, in modo da spiegare il procedimento in modo dettagliato. In seguito analizzeremo formalmente l'algoritmo, proporremo e commenteremo la dimostrazione della correttezza e della complessità.\\
+\afterpage{
+    \begin{algorithm}[H]
+        \thispagestyle{empty}
+        \caption{Algoritmo di Hopcroft}
+        \label{alg:hop}
+        \KwData{\argsautomata}
+        \Begin{
+            \ForEach{$(s,i) \in \mathcal{S} \times \mathcal{I}$}{
+                $\delta^{-1}(s,i) \coloneqq \{t : \delta(t,i) = s\}$\;\label{alg:hop_deltainverso}
             }
-        }
-        \tcc*[h]{$k$ è il numero di blocchi della partizione. Aumenta dopo le rifiniture}\\
-        $k \coloneqq 2$\;
-        \tcc*[h]{Per ogni ingresso $i$ creiamo un insieme $L(i)$ contenente l'indice $j$ che minimizza $|i(j)|$}\\
-        \ForEach{$i \in I$}{
-            \label{alg:hop_splitters}
-            \eIf{$|i(1)| \leq |i(2)|$}{
-                $L(i) = \{1\}$\;
-            }{
-                $L(i) = \{2\}$\;
-            }
-        }
-        \While{$\exists i \in I : L(i) \neq \emptyset$}{
-            \label{alg:hop_ciclo_infinito}
-            Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
-            \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}}\\
-            \ForEach{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
-                $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
-                $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
-                $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
-                \ForEach{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
-                    $a(m) = \{s : s \in B(m) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
-                    $a(k+1) \coloneqq \{s : s \in B(k+1) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
-                    \eIf{$|a(m)| \leq |a(k+1)|$}{
-                        $L(a) = L(a) \cup \{m\}$\;
-                    }{
-                        $L(a) = L(a) \cup \{k+1\}$\;
-                    }
+            $B(1) \coloneqq \mathcal{F}, B(2) \coloneqq \mathcal{S} - \mathcal{F}$\;
+            \ForEach{$j \in \{1,2\}$}{
+                \tcc*[h]{$\forall i \in \mathcal{I}$ costruiamo l'insieme degli stati in $B(j)$ aventi controimmagine non vuota rispetto  a $\delta_i$}.\\
+                \ForEach{$i \in \mathcal{I}$}{
+                    $i(j) = \{s : s \in B(j) \land \delta^{-1}(s,i) \neq \emptyset\}$\;\label{alg:hop_stati_delta_nonvuoto}
                 }
-                $k = k + 1$\;
+            }
+            \tcc*[h]{$k$ è il numero di blocchi della partizione, aumenta in seguito alle rifiniture.}\\
+            $k \coloneqq 2$\;
+            \tcc*[h]{Per ogni ingresso $i$ creiamo un insieme $L(i)$ contenente l'indice $j$ che minimizza $|i(j)|$.}\\
+            \ForEach{$i \in \mathcal{I}$}{
+                \label{alg:hop_splitters}
+                \eIf{$|i(1)| \leq |i(2)|$}{
+                    $L(i) = \{1\}$\;
+                }{
+                    $L(i) = \{2\}$\;
+                }
+            }
+            \While{$\exists i \in \mathcal{I} : L(i) \neq \emptyset$}{
+                \label{alg:hop_ciclo_infinito}
+                Seleziona un $j \in L(i)$. $L(i) = L(i) - \{j\}$\;
+                \tcc*[h]{Per ogni blocco $B(m)$ per cui il procedimento ha senso, usiamo $i(j)$ come \emph{splitter}.}\\
+                \ForEach{$m \leq k : \exists t \in B(m) : \delta(t,i) \in i(j)$}{\label{alg:hop_ciclo_blocchi_preimmagine}
+                    $B^{'}(m) \coloneqq \{u \in B(m) : \delta(u,i) \in i(j)\}$\;\label{alg:hop_split}
+                    $B^{''}(m) \coloneqq B(m) - B^{'}(m)$\;
+                    $B(m) = B^{'}(m)$, $B(k+1) \coloneqq B^{''}(m)$\;
+                    \ForEach{$a \in I$}{\label{alg:hop_aggiorna_dopo_split}
+                        $a(m) = \{s : s \in B(m) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
+                        $a(k+1) \coloneqq \{s : s \in B(k+1) \land \delta^{-1}(s,a) \neq \emptyset\}$\;
+                        \eIf{$|a(m)| \leq |a(k+1)|$}{
+                            $L(a) = L(a) \cup \{m\}$\;
+                        }{
+                            $L(a) = L(a) \cup \{k+1\}$\;
+                        }
+                    }
+                    $k = k + 1$\;
+                }
             }
         }
-    }
-    \thispagestyle{empty}
-\end{algorithm}
+        \thispagestyle{empty}
+    \end{algorithm}
+    \clearpage
+}
 Nella Riga \ref{alg:hop_deltainverso} definiamo $\delta^{-1}$, che consente l'accesso in tempo costante all'insieme degli stati che conducono ad un determinato stato conseguentemente ad un determinato ingresso.\\
 Inizialmente la partizione contiene due blocchi: gli stati finali e quelli non finali. Di conseguenza le rifiniture successive della partizione manterranno sempre separati stati finali e non finali.\\
 Per evitare accessi inutili (che incrementerebbero i termini costanti dell'algoritmo) nella Riga \ref{alg:hop_stati_delta_nonvuoto} definiamo $i(j)$ per $i \in I, j \in \{1,2\}$ come l'insieme degli stati $s$ nel blocco $B(j)$ per cui esiste qualche stato $t$ tale che $\delta(t,i) = s$.\\
