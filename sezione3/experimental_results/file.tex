@@ -14,8 +14,7 @@ I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzan
 \subsubsection{Performance}
 Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici utilizziamo lungo l'asse delle ascisse una scala data dal valore $|E| \log |V|$, che ci consente di visualizzare in modo più omogeneo i risultati lungo l'asse delle ordinate. Entrambi gli assi variano secondo una scala logaritmica.
 
-\paragraph{Paige-Tarjan, Dovier-Piazza-Policriti}\mbox{}\\
-Cominciamo confrontando gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti, ci aspettiamo che quest'ultimo risulti asintoticamente più conveniente. Per grafi piccoli invece dovrebbe risultare vincitore l'algoritmo di Paige-Tarjan visto che non richiede l'elaborazione preliminare del rango.
+\paragraph{Paige-Tarjan, Dovier-Piazza-Policriti} Cominciamo confrontando gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti: ci aspettiamo che quest'ultimo risulti asintoticamente più conveniente. Per grafi piccoli invece dovrebbe risultare vincitore l'algoritmo di Paige-Tarjan visto che non richiede l'elaborazione preliminare del rango.
 
 Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
 \begin{itemize}
@@ -99,9 +98,7 @@ La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui vie
 
 In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
 
-\paragraph{Dovier-Piazza-Policriti, Saha}\mbox{}\\
-
-Al fine di testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo esaminato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato l'aggiunta di alcuni archi che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo.
+\paragraph{Dovier-Piazza-Policriti, Saha} Al fine di testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo esaminato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato l'aggiunta di alcuni archi che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo.
 
 Definiamo innanzitutto la seguente funzione:
 \begin{align*}
