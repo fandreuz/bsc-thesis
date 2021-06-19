@@ -4,7 +4,7 @@ Esaminiamo innanzitutto un algoritmo risolutivo per una versione semplificata de
 \newcommand{\automata}{$\mathcal{A} = (\mathcal{S},\mathcal{I},\mathcal{U},\mathcal{F},\delta)$ }
 \newcommand{\argsautomata}{$\mathcal{S},\mathcal{I},\mathcal{U},\mathcal{F},\delta$ }
 
-\subsubsection{Nozioni fondamentali}
+\subsubsection{Nozioni preliminari}
 Innanzitutto definiamo il concetto di \emph{automa}, chiaramente centrale nella descrizione del problema:
 \begin{definition}
     Consideriamo i seguenti oggetti matematici:
@@ -313,7 +313,7 @@ Insistiamo sul fatto che le deduzioni della Proposizione \ref{prop:process_small
 
 Possiamo ora proseguire con l'analisi dello pseudocodice. Dalla Riga \ref{alg:hop_split} alla Riga \ref{alg:hop_aggiorna_dopo_split} viene operato lo ``Split''. Nel ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} vengono aggiornate le strutture dati relative ai nuovi blocchi creati. Osserviamo che ad ogni iterazione del ciclo della Riga \ref{alg:hop_aggiorna_dopo_split} viene creato un nuovo blocco (posto all'indirizzo $k+1$ della struttura $B$) ed un blocco già esistente viene ``smembrato''. Di questi due blocchi se ne sceglie uno da usare come \emph{splitter} seguendo il criterio illustrato sopra. Queste operazioni vengono ripetute finchè in $L(i)$ per qualche $i \in \mathcal{I}$ resta un blocco da usare come \emph{splitter}.
 
-\paragraph{Correttezza e complessità dell'Algoritmo di Hopcroft} Ad ogni iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito} viene rimosso un elemento in $L(i)$, e solamente in seguito alla rifinitura della partizione ne viene inserito un altro. Poichè non è possibile rifinire all'infinito, l'algoritmo termina.
+\subsubsection{Correttezza e complessità dell'Algoritmo di Hopcroft} Ad ogni iterazione del ciclo della Riga \ref{alg:hop_ciclo_infinito} viene rimosso un elemento in $L(i)$, e solamente in seguito alla rifinitura della partizione ne viene inserito un altro. Poichè non è possibile rifinire all'infinito, l'algoritmo termina.
 
 Dimostriamo la correttezza dell'Algoritmo \ref{alg:hop} con il seguente Teorema:
 \begin{theorem}
