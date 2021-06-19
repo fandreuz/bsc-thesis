@@ -1,99 +1,116 @@
 \subsection{Algoritmo di Dovier-Piazza-Policriti}
 \label{sec:dovier_piazza_policriti}
-In questa sezione trattiamo l'Algoritmo risolutivo presentato in \cite{dovier}, che chiameremo anche ``FBA''. Non c'è un miglioramento generale per quanto riguarda la complessità, che resta $O(|E| \log |N|)$ come per l'Algoritmo \ref{alg:pt}; tuttavia è possibile integrare alcune strategie euristiche che consentono di ridurre drasticamente questo upper-bound, avvicinandolo in aluni casi ad una computazione lineare.
+In questa sezione presenteremo l'algoritmo di Dovier-Piazza-Policriti \cite{dovier}, più recente rispetto all'algoritmo di Paige-Tarjan. La differenza fondamentale è l'introduzione di un ordinamento parziale tra i nodi del grafo, il \emph{rango}, che quantifica sostanzialmente la distanza di un nodo dal \emph{pozzo} più lontano raggiungibile percorrendo gli archi (si ricordi che un \emph{pozzo} è un nodo da cui non escono archi). Utilizzando questo ordinamento è possibile rifinire la partizione in modo più oculato, arrivando al risultato con meno chiamate a $\splitfunc$. La complessità computazionale resta la stessa dell'algoritmo di Paige-Tarjan, ma come vedremo nei risultati sperimentali in molti casi l'algoritmo di Dovier-Piazza-Policriti risulta più economico del suo predecessore.
 
-Prima di presentare e commentare lo pseudocodice, proponiamo delle definizioni fondamentali, insieme ad alcune osservazioni. In seguito proporremo la dimostrazione della correttezza e della complessità dell'Algoritmo FBA nel caso peggiore, e discuteremo alcune delle euristiche menzionate sopra.
+La sezione è organizzata come segue: innanzitutto daremo alcune nozioni fondamentali per la comprensione dell'algoritmo, e alcuni risultati che risulteranno utili nel seguito; dopodichè esamineremo lo pseudocodice, ed analizzeremo la complessità e la correttezza dell'algoritmo.
 
 \subsubsection{Nozioni preliminari}
-Iniziamo con la seguente definizione fondamentale:
+Consideriamo la seguente definizione, che ci consentirà di esprimere in modo più compatto alcune espressioni nel seguito:
 \begin{definition}
     \label{def:grafo_restr}
-    Sia $G = (V,E)$ un grafo diretto. Sia $n \in V$. Il grafo $\restr{G}{n}$, cioè il \emph{sottografo di $G$ raggiungibile da $n$}, è definito come segue:
+    Sia $G = (V,E)$ un grafo diretto. Sia $n \in V$. Il grafo $\restr{G}{n}$, letto ``\emph{il sottografo di $G$ raggiungibile da $n$}'', è definito come segue:
     \begin{gather*}
         \restr{G}{n} = \left(\restr{N}{n}, E \cap \left(\restr{N}{n} \times \restr{N}{n}\right)\right)
     \end{gather*}
     dove $\restr{N}{n}$ è il sottoinsieme di $V$ dei nodi raggiungibili da $n$.
 \end{definition}
-Nel seguito useremo la notazione ``$[n]$'' per intendere il blocco di $V^{\superscc}$ in cui viene inserito il vertice $n$, coerentemente con quando asserito nella Definizione \ref{def:scc_partition}.
 
-Sulla base dell'ultima definizione possiamo distinguere una porzione del grafo per una caratteristica importante:
+Procediamo con un concetto fondamentale per la definizione del \emph{rango}, l'ordinamento parziale sull'insieme dei nodi menzionato nell'introduzione della sezione:
 \begin{definition}
     La parte \emph{ben fondata} (\emph{well founded} in inglese) di un grafo diretto $G = (V,E)$ è:
     \begin{gather*}
-        WF(G) \coloneqq \left\{n \in V \mid \restr{G}{n} \text{ è aciclico}\right\}
+        \texttt{WF}(G) = \left\{n \in V \mid \restr{G}{n} \text{ è aciclico}\right\}.
+    \end{gather*}
+    La parte \emph{non ben fondata} è definita chiaramente come:
+    \begin{gather*}
+        \texttt{NWF}(G) = V - \texttt{WF}(G).
     \end{gather*}
 \end{definition}
+
+Vale il seguente risultato immediato (si ricordi che con la notazione $[v], v \in V$ ci riferiamo alla SCC di $V$ cui appartiene il nodo $v$):
 \begin{observation}
     Condizione necessaria affinchè un vertice $n$ possa appartenere a $WF(G)$ è che $|[n]| = 1$.
 \end{observation}
 \begin{proof2}
-    Supponiamo che $n \in WF(G)$. Questo vuol dire che da tutti i nodi raggiungibili da $n$ non si può ritornare in $n$ (perchè non si hanno cicli). Ma allora non ci può essere un altro nodo nella SCC di $n$.
+    Supponiamo che $n \in \texttt{WF}(G)$. Questo vuol dire che da tutti i nodi raggiungibili da $n$ non si può ritornare in $n$ (perchè non si hanno cicli). Ma allora non ci può essere un altro nodo nella SCC di $n$.
 \end{proof2}
 
-Introduciamo la funzione ``\rankfunc'', che ricopre un ruolo primario nell'Algoritmo BFA:
+Introduciamo la funzione \texttt{rank}, che ricopre un ruolo primario nell'Algoritmo BFA:
 \begin{definition}
-    Sia $G = (V,E)$ un grafo diretto. Per comodità definiamo le seguenti funzioni:
-    \begin{align*}
-        &\mathcal{N}_{\scalebox{0.5}{WF}}(n) = \{m \in WF(G) \mid [n] \sccto [m]\}\\
-        &\mathcal{N}_{\scalebox{0.5}{NWF}}(n) = \{m \in V - WF(G) \mid [n] \sccto [m]\}
-    \end{align*}
-    Esse associano ad un nodo $n \in V$ l'insieme delle SCC raggiungibili da $[n]$, rispettivamente contenute in $WF(G), V - WF(G)$.
-    La funzione $\rankfunc: V \to \mathbb{N} \cup \{0, -\infty\}$ è definita come segue:
+    \label{def:rank}
+    Sia $G = (V,E)$ un grafo diretto. La funzione $\texttt{rank}: V \to \mathbb{N} \cup \{0, -\infty\}$ è definita come segue:
     \begin{gather*}
-        \rankfunc(n) = \begin{cases}
+        \texttt{rank}(n) = \begin{cases}
             0 &\text{se $n$ è un pozzo di $G$}\\
-            -\infty &\text{se $[n]$ è un pozzo di $G^{\scalebox{.5}{SCC}}$, $n$ non è un pozzo di $G$}\\
-            \max(\{1 + \rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
-            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{\rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
+            -\infty &\parbox[t]{.32\textwidth}{se $[n]$ è un pozzo di $G^{\scalebox{.5}{SCC}}$,
+                        e $n$ non è un pozzo di $G$}\\
+            \max(\{1 + \texttt{rank}(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
+            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{\texttt{rank}(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
         \end{cases}
     \end{gather*}
+    Abbiamo utilizzato per comodità le funzioni $\mathcal{N}_{\scalebox{0.5}{WF}}(n), \mathcal{N}_{\scalebox{0.5}{NWF}}(n)$ definite come segue:
+    \begin{align*}
+        &\mathcal{N}_{\scalebox{0.5}{WF}}(n) = \{m \in \texttt{WF}(G) \mid [n] \sccto [m]\}\\
+        &\mathcal{N}_{\scalebox{0.5}{NWF}}(n) = \{m \in V - \texttt{WF}(G) \mid [n] \sccto [m]\}
+    \end{align*}
+    Esse associano ad un nodo $n \in V$ l'insieme delle SCC raggiungibili da $[n]$, rispettivamente contenute in $\texttt{WF}(G), V - \texttt{WF}(G)$.
 \end{definition}
 \begin{observation}
     Sia $n \in V$, e supponiamo $\rankfunc(n) = k$. Allora:
     \begin{gather*}
-        \rankfunc(m) = k \,\,\forall m \in [n]
+        \texttt{rank}(m) = k \,\,\forall m \in [n]
     \end{gather*}
 \end{observation}
 \begin{proof2}
-    Se $k = 0$ $n$ è una pozzo, per cui la sua SCC ha cardinalità 1, quindi la tesi vale banalmente. Se $k = -\infty$, nessuno dei nodi in $[n]$ può essere un pozzo di $G$, per cui hanno tutti rango $-\infty$. Quest'ultima argomentazione si può applicare anche al caso in cui $k > 0$, osservando che la definizione della funzione \rankfunc \, non distingue tra nodi appartenenti alla stessa SCC.
+    Se $k = 0$ allora $n$ è una pozzo, per cui $[n]$ ha cardinalità 1, quindi la tesi vale banalmente. Se $k = -\infty$, nessuno dei nodi in $[n]$ può essere un pozzo di $G$, per cui hanno tutti rango $-\infty$. Infine se $k > 0$ basta osservare che il rango massimo si ``propaga'' tra nodi della stessa SCC, com'è evidente dalla Definizione \ref{def:rank}.
 \end{proof2}
+
 Se un grafo è \emph{ben fondato}, o se restringiamo il dominio ad un sottografo \emph{ben fondato}, possiamo dare una formulazione alternativa della funzione rank:
 \begin{gather*}
-        \rankfunc(n) = \begin{cases}
+        \texttt{rank}(n) = \begin{cases}
             0 &\text{se $n$ è un pozzo di $G$}\\
-            1 + \max\{\rankfunc(m) \mid n E m\} &\text{altrimenti}
+            1 + \max\{\texttt{rank}(m) \mid n E m\} &\text{altrimenti}
         \end{cases}
 \end{gather*}
 Questa forma sarà utile per semplificare alcune delle dimostrazioni che seguono.
 
-Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'analisi successiva:
+Riportiamo e dimostriamo alcuni risultati \cite{dovier} che renderanno più agile l'analisi successiva. Il motivo per cui troviamo interessante introdurre il rango nella trattazione algoritmica della massima bisimulazione è sintetizzato dal seguente risultato:
+\begin{theorem}
+    \label{theo:bisi_rank}
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in V$. Allora
+    \begin{gather*}
+        m \equiv n \implies \rankfunc(m) = \rankfunc(n)
+    \end{gather*}
+\end{theorem}
+La dimostrazione del Teorema \ref{theo:bisi_rank} è piuttosto lunga, per cui abbiamo preferito riportarla a pezzi. Cominciamo con la prima parte:
 \begin{proposition} \label{prop:rank_bisi_imp_wf}
-    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in \texttt{WF}(G)$. Allora $m \equiv n \implies \verb|rank|(m) = \verb|rank|(n)$.
 \end{proposition}
 \begin{proof2}
-    Procediamo per induzione su $\rankfunc(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} gli APG aventi origine in $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\rankfunc(n) = 0$.
+    Procediamo per induzione su $\texttt{rank}(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} gli APG aventi origine in $m,n$ rappresentano lo stesso insieme. Se $\texttt{rank}(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\texttt{rank}(n) = 0$.
 
-    Supponiamo (ipotesi induttiva) che due nodi bisimili di rango minore o uguale a $k-1$ debbano necessariamente avere rango uguale. Sia $\rankfunc(m) = k$, e sia $m' \in V$ tale che $m E m', \rankfunc(m') = k-1$. Allora deve esistere un nodo $n'$ tale che $n E n', m' \equiv n'$, e quindi $\rankfunc(m') = \rankfunc(n')$. Ma allora $\rankfunc(n) \geq k-1 + 1 = k$, per la formulazione alternativa di rank. Analogamente si dimostra che $\rankfunc(m) \geq k$, per cui si ha la tesi.
+    Supponiamo (ipotesi induttiva) che due nodi bisimili di rango minore o uguale a $k-1$ abbiano sempre rango uguale. Sia $\texttt{rank}(m) = k$, e sia $m' \in V$ tale che $\langle m, m'\rangle \in E, \texttt{rank}(m') = k-1$. Allora deve esistere un nodo $n'$ tale che $\langle n, n'\rangle \in E, m' \equiv n'$, e quindi $\texttt{rank}(m') = \texttt{rank}(n')$. Ma allora $\texttt{rank}(n) \geq k-1 + 1 = k$, per la formulazione alternativa di \texttt{rank}. Analogamente si dimostra che $\texttt{rank}(m) \geq k$, per cui si ha la tesi.
 \end{proof2}
+
+La seconda parte del Teorema \ref{theo:bisi_rank} richiede un certo numero di sotto-risultati preliminari:
 \begin{proposition}
     \label{prop:omega_rank}
-    Sia $G = (V,E)$. Sia $m \in V$. Allora:
-    \begin{gather*}
-        \rankfunc(m) = -\infty \iff \text{l'APG } \restr{G}{m} \text{rappresenta l'insieme } \Omega
-    \end{gather*}
+    Sia $G = (V,E)$. Sia $m \in V$. Allora $\verb|rank|(m) = -\infty$ se e solo se l'APG $\restr{G}{m}$ rappresenta l'insieme $\Omega$.
 \end{proposition}
 \begin{proof2}
-    Supponiamo che $\rankfunc(m) = - \infty$. Si ricordi la caratterizzazione dell'insieme $\Omega$ (cioè un insieme che contiene solamente se stesso) fornita in \cite{aczel}: un APG rappresenta $\Omega$ se e solo se ogni nodo ha almeno un arco uscente. Dalle ipotesi fatte si deduce che $[m]$ non contiene solamente $m$ (altrimenti $m$ sarebbe un pozzo di $G$). Possiamo dimostrare che ogni nodo in $[m]$ deve avere almeno un arco uscente: infatti, supponendo che non sia così, tale nodo non avrebbe modo di tornare in $[m]$, per cui non potrebbero stare nella stessa SCC.
+    Supponiamo che $\texttt{rank}(m) = - \infty$. Si ricordi la caratterizzazione dell'insieme $\Omega$ (cioè l'insieme che contiene solamente se stesso \cite{aczel}): un APG rappresenta $\Omega$ se e solo se ogni nodo ha almeno un arco uscente. Dalle ipotesi fatte si deduce che $[m]$ non contiene solamente $m$ (altrimenti $m$ sarebbe un pozzo di $G$). Possiamo dimostrare che ogni nodo in $[m]$ deve avere almeno un arco uscente: se così non fosse il nodo non avrebbe modo di tornare all'interno della SCC $[m]$, per cui non potrebbe stare nella stessa SCC di $m$.
 
     Supponiamo ora che l'APG $\restr{G}{m}$ rappresenti l'insieme $\Omega$. Chiaramente $m$ non può essere un pozzo di $G$, altrimenti non rispetterebbe la caratterizzazione. Supponiamo per assurdo che $[m]$ non sia un pozzo di $G^{\superscc}$, cioè da un nodo di $[m]$ parte un arco verso un nodo $x \not\in [m]$. Si presentano quattro possibilità:
     \begin{enumerate}
         \item Da $x$ non esce alcun nodo: impossibile per la caratterizzazione di $\Omega$;
-        \item Da $x$ esce un unico nodo che ha per destinazione $x$ stesso: $[x]$ contiene solamente $x$, ed è una foglia di $G^{\superscc}$, per cui ha rango $-\infty$;
+        \item Da $x$ esce un unico nodo che ha per destinazione $x$ stesso: $[x]$ contiene solamente $x$, ed è un pozzo di $G^{\superscc}$, per cui ha rango $-\infty$;
         \item Da $x$ esce un nodo che ha per destinazione un nodo di $[m]$: impossibile perchè si è supposto $x \not\in [m]$;
         \item Da $x$ esce un nodo che ha per destinazione un nodo $x' \not\in [m]$.
     \end{enumerate}
-    Per cui è evidente che le uniche opzioni valide sono la 2. \hspace{-0.4cm} e la 4. Possiamo dimostrare che il blocco di $G^{\superscc}$ contenente una sequenza di nodi connessi secondo queste due regole è necessariamente un pozzo di $G^{\superscc}$: è possibile aggiungere un numero arbitrario di nodi che le rispettino, ma l'ultimo nodo dovrà avere un \emph{self loop}, oppure tornare in un nodo precedente della sequenza. In entrambi i casi i nodi coinvolti ottengono rango $-\infty$, per cui a cascata (per il terzo caso nella definizione di \rankfunc) i nodi precedenti della sequenza hanno sempre rango $-\infty$.
+    Per cui è evidente che le uniche opzioni valide sono la 2. \hspace{-0.4cm} e la 4. Possiamo dimostrare che il blocco di $G^{\superscc}$ contenente una sequenza di nodi connessi secondo queste due regole è necessariamente un pozzo di $G^{\superscc}$: è possibile aggiungere un numero arbitrario di nodi che le rispettino, ma l'ultimo nodo dovrà avere un \emph{self loop}, oppure tornare in un nodo precedente della sequenza. In entrambi i casi i nodi coinvolti ottengono rango $-\infty$, per cui a cascata (per il terzo caso nella definizione di \rankfunc) i nodi precedenti della sequenza hanno tutti rango $-\infty$.
 \end{proof2}
+
+La seguente osservazione è una riformulazione di una deduzione proposta nella Sezione \ref{sec:base}:
 \begin{observation}
     Sia $G = (V,E)$. Siano $m,n \in V$. Allora:
     \begin{gather*}
@@ -103,51 +120,44 @@ Riportiamo i seguenti risultati da \cite{dovier}, che renderanno più agile l'an
 \begin{proof2}
     $m,n$ sono pozzi di $G$, per cui rappresentano l'insieme $\emptyset$. Allora $m,n$ sono bisimili per il Teorema \ref{theo:bisi_iff_eqsets}.
 \end{proof2}
+
+Possiamo dunque enunciare e dimostrare la parte mancante della dimostrazione:
 \begin{proposition}
-    Con le stesse ipotesi della Proposizione \ref{prop:rank_bisi_imp_wf}, supponiamo che $m,n \in V - WF(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
+    \label{prop:bisi_rank_nwf}
+    Con le stesse ipotesi della Proposizione \ref{prop:rank_bisi_imp_wf}, supponiamo che $m,n \in V - \texttt{WF}(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
 \end{proposition}
 \begin{proof2}
     Sempre per il Teorema \ref{theo:bisi_iff_eqsets}, $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = -\infty$, per la Proposizione \ref{prop:omega_rank} $m$ rappresenta $\Omega$, per cui anche $n$ rappresenta $\Omega$. Ma allora $\rankfunc(n) = -\infty$.
 
-    Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione rank deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in WF(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
-\end{proof2}
-\begin{theorem}
-    \label{theo:bisi_rank}
-    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in V$. Allora
-    \begin{gather*}
-        m \equiv n \implies \rankfunc(m) = \rankfunc(n)
-    \end{gather*}
-\end{theorem}
-\begin{proof2}
-    Perchè i nodi possano essere bisimili devono essere entrambi \emph{ben fondati} o entrambi \emph{non ben fondati}. La tesi segue dalle proposizioni appena dimostrate.
+    Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione rank deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in \texttt{WF}(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
 \end{proof2}
 
-Proponiamo di seguito un algoritmo per la computazione del rango dei nodi di un grafo diretto. Sarebbe ragionevole determinare prima le SCC del grafo (con due visite in profondità su $G$ e $G^{-1}$), per poi effettuare una visita in profondità su $G^{\superscc}$ ed una ulteriore su $G$. Nonostante questo sia il metodo più lineare, è anche poco performante: un'implementazione dell'algoritmo FBA che sfrutta questo procedimento risulta quasi sempre più lenta dell'algoritmo FBA.
+\begin{proof2}[Teorema \ref{theo:bisi_rank}\,]
+    Due nodi bisimili devono essere entrambi \emph{ben fondati} oppure entrambi \emph{non ben fondati}. La tesi segue dunque dalle Proposizioni \ref{prop:rank_bisi_imp_wf}, \ref{prop:bisi_rank_nwf}.
+\end{proof2}
 
-Per questo motivo useremo l'implementazione proposta in \cite{dovier}:\\
-\begin{algorithm}[H]
+Dal Teorema \ref{theo:bisi_rank} deduciamo che due nodi aventi rango differente sono sicuramente \textbf{non} bisimili. Inoltre nodi a basso rango non sono influenzati da quanto avviene ai nodi ad alto rango; per cui, invece di procedere in modo randomico, possiamo utilizzare la funzione \texttt{split} sui blocchi in ordine crescente di rango. Ci aspettiamo con molta probabilità un risparmio di qualche tipo in termini di tempo di esecuzione rispetto all'algoritmo di Paige-Tarjan, in particolare su grafi che mostrano una struttura di qualche tipo; grafi generati in modo randomico, invece, hanno più probabilità di mostrare una varianza del rango poco significativa, per cui è possibile che l'algoritmo di Dovier-Piazza-Policriti impieghi più tempo.
+
+Riportiamo un algoritmo per il calcolo del rango dei nodi di un grafo diretto \cite{dovier}. Ne analizziamo brevemente le caratteristiche discutendo alcuni semplici risultati:
+\begin{algorithm}[t!]
+    \caption{Compute-Rank}
     \label{alg:rank}
     \KwData{$G = (V,E)$}
-    \caption{Compute-Rank}
     \SetKwProg{Fn}{function}{:}{end}
-    \Fn{\textup{dsf-rank-visit}($G = (V,E), n$)}{
+    \Fn{\textup{dfs-rank-visit}($G = (V,E), n$)}{
         n.color = GRAY\;
-
         \If{$|E(n)| == 0$}{
             n.rank = 0\;
         } \Else{
             max-rank = $-\infty$\;
-            \BlankLine
-            \BlankLine
+            \tcp*[h]{Visitiamo $E(n)$ in ordine decrescente di \emph{ft}.}\\
             \ForEach{$v \in E(n)$}{
                 \If{v.color == WHITE or v.color == GRAY or !v.wf}{
                     n.wf = false\;
                 }
-                \BlankLine
                 \If{v.color == WHITE}{
                     dfs-rank-visit($G, v$)\;
                 }
-                \BlankLine
                 \If{v.rank != None}{ \label{alg:set_rank}
                     \If{v.wf}{
                         n.rank = max(n.rank, v.rank + 1)\;
@@ -157,24 +167,15 @@ Per questo motivo useremo l'implementazione proposta in \cite{dovier}:\\
                 }
             }
         }
-
         n.color = BLACK\;
     }
     \Begin{
         DFS($G^{-1}$)\;\label{alg:rank_inverse_dfs}
-        \BlankLine
-        \BlankLine
-        Ordina $V$ in ordine decrescente di \emph{finishing-time}\;
-        \ForEach{$v \in V$}{
-            Ordina $E(v)$ in ordine decrescente di \emph{finishing-time}\;
-        }
-        \BlankLine
-        \BlankLine
+        \tcp*[h]{Resettiamo i colori prima della seconda DFS.}\\
         \ForEach{$n \in V$}{
             n.color = WHITE\;
         }
-        \BlankLine
-        \BlankLine
+        \tcp*[h]{Visitiamo $V$ in ordine decrescente di \emph{ft}.}\\
         \ForEach{$n \in V$}{
             \If{n.color == WHITE}{
                 dfs-rank-visit($G,n$)\;
@@ -183,38 +184,41 @@ Per questo motivo useremo l'implementazione proposta in \cite{dovier}:\\
     }
 \end{algorithm}
 
-Valgono i seguenti risultati sull'algoritmo appena proposto:
 \begin{observation}
     L'Algoritmo \ref{alg:rank} termina, essendo una DFS. Inoltre, per lo stesso motivo, l'algoritmo ha complessità $O(|V| + |E|)$.
 \end{observation}
-Nel seguito indicheremo con ``$v$.\emph{rank}'' il rango del nodo $v$ impostato dall'algoritmo, e con ``$\rankfunc(v)$'' il rango corretto. Inoltre useremo la notazione ``$v$.ft'' per indicare il \emph{finishing-time} per la DFS su $G^{-1}$ del nodo $v$.
+Nell'analisi dell'Algoritmo \ref{alg:rank} indicheremo con ``$v$.rank'' il rango del nodo $v$ impostato dall'algoritmo, e con ``\texttt{rank}$(v)$'' il rango corretto. Inoltre useremo la notazione ``$v$.\emph{ft}'' per indicare il \emph{finishing-time} del nodo $v$ relativo alla DFS su $G^{-1}$ (Riga \ref{alg:rank_inverse_dfs}).
 \begin{theorem}
     \label{theo:rank_correct}
-    Dopo l'esecuzione dell'Algoritmo \ref{alg:rank} il rango di ogni nodo di $G$ è corretto, cioè $\forall v \in V\, \rankfunc(v) = v$.\emph{rank}.
+    Dopo l'esecuzione dell'Algoritmo \ref{alg:rank} il rango di ogni nodo di $G$ è corretto, cioè $\forall v \in V$ vale $\verb|rank|(v) = v$.\emph{rank}.
 \end{theorem}
-\accente importante ricordare che la DFS di $G$ procede secondo l'ordine indotto dalla DFS di $G^{-1}$.
 
-Proponiamo innanzitutto alcuni risultati preliminari che consentono di semplificare la trattazione. La seguente osservazione è riferita alla seconda DFS nell'Algoritmo \ref{alg:rank}, cioè quella su $G$:
+Proponiamo innanzitutto alcuni risultati preliminari che consentono di semplificare la trattazione:
 \begin{observation}
     \label{obs:rank_img_scc}
-    Se $\langle v,u\rangle \in E$ e $v$.ft $> u$.ft, allora $u \in [v]$.
+    Se $\langle v,u\rangle \in E$ e $v$.\emph{ft} $> u$.\emph{ft}, allora $u \in [v]$.
 \end{observation}
 \begin{proof2}
     Chiaramente da $v$ è possibile raggiungere $u$ per ipotesi. Consideriamo la DFS su $G^{-1}$: ovviamente si avrà $\langle u, v\rangle \in E^{-1}$. Ma se $v$ fosse stato raggiunto per la prima volta durante la visita in profondità di $u$, avremmo $u$.ft $> v$.ft. Allora $v$ viene raggiunto \emph{prima} di $u$, e l'unica possibilità per cui si possa avere $v$.ft $> u$.ft è che esista un percorso da $v$ a $u$ (in $G^{-1}$). Procedendo al contrario lungo questo cammino si verifica che da $u$ è possibile raggiungere $v$.
 \end{proof2}
+
 L'osservazione può essere riformulata in modo più esplitito:
 \begin{corollary}
     Se durante la visita dell'immagine $v$ si incontra un vertice $u$ di colore bianco, $v$ è raggiungibile da $u$ e viceversa.
 \end{corollary}
-E può essere anche generalizzata:
+
+E generalizzata:
 \begin{corollary}
     \label{cor:scc_minore_inglobamento}
     Se $v$.ft $> u$.ft, e $u$ è raggiungibile da $v$, allora $u \in [v]$.
 \end{corollary}
-Possiamo dedurre alcuni risultati interessanti:
+
+Dall'Osservazione \ref{obs:rank_img_scc} possiamo dedurre ancora alcuni risultati immediati:
 \begin{corollary}
-    Se $\langle v,u\rangle \in E$ e $v$.ft $> u$.ft, $u,v \in NWF(G)$. Quindi il criterio usato dall'Algoritmo \ref{alg:rank} per impostare il campo ``\emph{wf}'' dei nodi è corretto.
+    Se $\langle v,u\rangle \in E$ e $v$.ft $> u$.ft, allora $u,v \in \texttt{NWF}(G)$.
 \end{corollary}
+
+Si osservi che da quest'ultimo corollario si deduce che il criterio usato dall'Algoritmo \ref{alg:rank} per impostare il campo ``\emph{wf}'' dei nodi è corretto.
 \begin{corollary}
     \label{cor:no_buchi_scc}
     Il \emph{finishing-time} dei nodi di una SCC è un intervallo di interi senza buchi.
@@ -222,32 +226,34 @@ Possiamo dedurre alcuni risultati interessanti:
 \begin{proof2}
     Supponiamo per assurdo che esista un nodo $x$ che trasgredisca questa proprietà ($x$.\emph{ft} $= i$). Supponiamo che $v_1, \dots, v_n \in [v]$ (in ordine decrescente di \emph{finishing-time}), e che $v_n$.\emph{ft} $= i-1$. Inoltre supponiamo che ci siano altri nodi in $[v]$, tutti con \emph{finishing-time} minore di $v_n$.\emph{ft}. Chiaramente deve valere $\langle v_n,x \rangle \in E^{-1}$, o equivalentemente $\langle x,v_n \rangle \in E$. Allora $x \in [v]$ per l'Osservazione \ref{obs:rank_img_scc}.
 \end{proof2}
+
 Per comodità, nel seguito adotteremo la seguente notazione:
 \begin{align*}
     [v].\emph{ft}^* &\coloneqq \max_{x \in [v]} x.\emph{ft}\\
     [v].\emph{ft}_* &\coloneqq \min_{x \in [v]} x.\emph{ft}
 \end{align*}
+
 Deduciamo il seguente risultato:
 \begin{proposition}
     \label{prop:rank_independent}
-    $\rankfunc(v)$ dipende esclusivamente dal rango dei nodi $u$ che soddisfano la seguente proprietà:
+    \verb|rank|$(v)$ dipende esclusivamente dal rango dei nodi $u$ che soddisfano la seguente proprietà:
     \begin{gather}
         u \in [v] \lor u.ft > [v].ft^* \label{rank_independency_formula}
     \end{gather}
 \end{proposition}
 \begin{proof2}
-    Sia un nodo $x$ per cui non vale nessuna delle due condizioni, quindi $u$.\emph{ft} $< [v].\emph{ft}_*$. Allora dai nodi di $[v]$ non è possibile raggiungere $u$ (nemmeno con cammini più lunghi di un arco): se per assurdo fosse possibile, per il Corollario \ref{cor:scc_minore_inglobamento} si avrebbe $u \in [v]$; allora, per la definizione di \rankfunc, si ha la tesi.
+    Sia $x$  un nodo per cui non vale nessuna delle due condizioni, quindi $u$.\emph{ft} $< [v].\emph{ft}_*$. Allora dai nodi di $[v]$ non è possibile raggiungere $u$ (nemmeno con cammini più lunghi di un arco): se per assurdo fosse possibile, per il Corollario \ref{cor:scc_minore_inglobamento} si avrebbe $u \in [v]$; allora, per la definizione di \rankfunc, si ha la tesi.
 \end{proof2}
 Abbiamo spiegato perchè risulta conveniente operare la DFS su $G$ in ordine decrescente di \emph{finishing-time}: ad ogni passo saranno già disponibili le uniche informazioni necessarie, cioè il rango dei nodi con \emph{finishing-time} maggiore.
 
-Possiamo ora dimostrare il Teorema \ref{theo:rank_correct}:
-\begin{proof2}
-    Sia $v$ un nodo. Se $v$.\emph{rank} $= 0$, $v$ è una foglia.
+A questo punto abbiamo tutti gli ingredienti necessari per dimostrare il teorema che avevamo lasciato in sospeso, relativo alla correttezza dell'Algoritmo \ref{alg:rank}:
+\begin{proof2}[Teorema \ref{theo:rank_correct}\,]
+    Sia $v$ un nodo. Se $v$.\emph{rank} $= 0$, allora $v$ è un pozzo.
 
-    Se $v$.\emph{rank} $\neq 0$, poichè il rango viene calcolato come da definizione, è sufficiente dimostrare che al momento della visita di $E(v)$ si ha $u$.\emph{rank} $= \rankfunc(u) \,\forall u \in E(v)$. Chiaramente gli unici nodi problematici sono quelli di colore grigio al momento della visita, in quanto l'esplorazione della loro immagine non è ancora terminata. Questi nodi stanno in $[v]$, e per il Corollario \ref{cor:no_buchi_scc} non ci sono nodi esterni alla SCC nell'intervallo, se si considera il \emph{finishing-time}. Ma allora tutti i nodi il cui rango è rilevante sono già stati visitati (Proposizione \ref{prop:rank_independent}).
+    Se $v$.\emph{rank} $\neq 0$, poichè il rango viene calcolato come da definizione, è sufficiente dimostrare che al momento della visita di $E(v)$ si ha $u$.\emph{rank} $= \verb|rank|(u), \,\forall u \in E(v)$. Chiaramente gli unici nodi problematici sono quelli di colore grigio al momento della visita, in quanto l'esplorazione della loro immagine non è ancora terminata. Questi nodi stanno in $[v]$, e per il Corollario \ref{cor:no_buchi_scc} non ci sono nodi esterni alla SCC nell'intervallo, se si considera il \emph{finishing-time}. Ma allora tutti i nodi il cui rango è rilevante sono già stati visitati (Proposizione \ref{prop:rank_independent}).
 \end{proof2}
 
-\subsubsection{L'algoritmo FBA}
+\subsubsection{L'algoritmo}
 Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo Dovier-Piazza-Policriti:\\
 \begin{algorithm}[H]
     \label{alg:fba}
@@ -305,7 +311,7 @@ Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisim
 
 In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo PTA a questo sottografo, in modo da calcolarne la RSCP. I blocchi di questa nuova partizione vengono ``collassati'', ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità.
 
-\subsubsection{Correttezza e complessità}
+\subsubsection{Analisi}
 Presentiamo i seguenti risultati, che costituiscono un analisi completa dell'Algoritmo \ref{alg:fba}, sulla base della discussione proposta in \cite{dovier}:
 \begin{theorem}
     Due nodi $m,n$ vengono ``collassati'' in un unico nodo durante l'esecuzione dell'Algoritmo \ref{alg:fba} se e solo se sono bisimili.
