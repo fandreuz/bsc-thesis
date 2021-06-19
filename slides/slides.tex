@@ -1,0 +1,75 @@
+\documentclass{beamer}
+\usepackage{tikz}
+
+%Information to be included in the title page:
+\title{\texttt{BisPy}}
+\subtitle{un pacchetto Python per il calcolo della massima bisimulazione di grafi diretti.}
+
+\author{Francesco Andreuzzi}
+\institute{Università degli Studi di Trieste,\\Dipartimento di Ingegneria e Architettura}
+\date{14 Luglio 2021}
+
+\begin{document}
+\beamertemplatenavigationsymbolsempty
+
+{\usebackgroundtemplate{%
+    \parbox[c][\paperheight][c]{\paperwidth}{\centering \tikz\node[opacity=0.08] {\includegraphics[width=8cm,height=8cm]{../imgs/logo.png}};}}
+    \begin{frame}
+        \maketitle
+        {\scriptsize Anno accademico 2020-2021 \hfill Relatore: Prof. Alberto Casagrande}
+    \end{frame}
+}
+
+\begin{frame}
+    \frametitle{Grafi}
+    \begin{itemize}
+        \item Cosa sono
+        \item A cosa servono (modelli, social network)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Massima bisimulazione}
+    \begin{itemize}
+        \item Definizione intuitiva
+        \item Equivalenza di nodi
+        \item Applicazioni
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Algoritmi}
+    \begin{itemize}
+        \item Paige-Tarjan
+        \item Dovier-Piazza-Policriti
+        \item Saha
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{BisPy}
+    \begin{itemize}
+        \item Python
+        \item Open source
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Risultati sperimentali}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sviluppi futuri}
+    \begin{itemize}
+        \item Incremental delete
+        \item Labeled edges
+        \item NetworkX
+        \item Cython
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
+    Grazie per l'attenzione
+\end{frame}
+
+\end{document}
