@@ -5,6 +5,7 @@ In questa sezione presenteremo l'algoritmo di Dovier-Piazza-Policriti \cite{dovi
 La sezione è organizzata come segue: innanzitutto daremo alcune nozioni fondamentali per la comprensione dell'algoritmo, e alcuni risultati che risulteranno utili nel seguito; dopodichè esamineremo lo pseudocodice, ed analizzeremo la complessità e la correttezza dell'algoritmo.
 
 \subsubsection{Nozioni preliminari}
+\label{sec:fba_preliminari}
 Consideriamo la seguente definizione, che ci consentirà di esprimere in modo più compatto alcune espressioni nel seguito:
 \begin{definition}
     \label{def:grafo_restr}
@@ -254,82 +255,87 @@ A questo punto abbiamo tutti gli ingredienti necessari per dimostrare il teorema
 \end{proof2}
 
 \subsubsection{L'algoritmo}
-Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo lo pseudocodice per l'Algoritmo Dovier-Piazza-Policriti:\\
+Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\infty, 0\}$. Presentiamo e commentiamo lo pseudocodice dell'Algoritmo di Dovier-Piazza-Policriti:
+
 \begin{algorithm}[H]
     \label{alg:fba}
     \KwData{$G = (V,E)$}
-    \caption{Algoritmo FBA}
+    \caption{Algoritmo di Dovier-Piazza-Policriti}
     \SetKwProg{Fn}{function}{:}{end}
-    \Fn{\textup{collapse}($G = (V,E), B \subseteq V$)}{
-        Sia $u \in V$ scelto casualmente\;
-        \ForEach{$v \in B$}{
-            \ForEach{$e \in E \mid$ ``$e$ è incidente a $v$''}{
-                \tcp*[h]{$e'$ è l'arco $e$ se si sostuisce $u$ al posto di $v$}\\
-                $E = (E - \{e\}) \cup \{e'\}$\;
+    \Fn{\funcname{collapse}($G = (V,E), B \subseteq V$)}{
+        Sia $u \in B$ scelto casualmente\;
+        \ForEach{$v \in B - \{u\}$}{
+            \ForEach{$z \in E(v)$}{
+                $E = (E - \{\langle v,z\rangle\}) \cup \{\langle u,z\rangle\}$\;
+            }
+            \ForEach{$z \in E^{-1}(v)$}{
+                $E = (E - \{\langle z,v\rangle\}) \cup \{\langle z,u\rangle\}$\;
             }
             $V = V - \{v\}$\;
         }
         \Return{$u$}\;
     }
-    \Fn{\textup{Split2}($G = (V,E), P, u, \widehat{B}$)} {
+    \Fn{\funcname{split2}($G = (V,E), P, u, \widehat{B}$)} {
         \ForEach{$B \in P \mid B \in \widehat{B}$}{
-            $P = (P - \{B\}) \cup \{\{v \in B \mid v E u\}, \{v \in B \mid \neg (v E u)\}\}$\;
+            $P = P - \{B\} \cup \{\{v \in B \mid \langle v, u\rangle \in E\},$\\
+                $\qquad \{v \in B \mid \langle v, u \rangle \not\in E\}\}$\;
         }
     }
     \Begin{
-        Compute-Rank($G$)\;
-        $\rho \coloneqq \max\{\rankfunc(n) \mid n \in V\}$\;
-        $B_k \coloneqq \{n \in V \mid \rankfunc(n) = k\}, \,\, k \in \mathbb{N}^*$\;
+        \funcname{compute-rank}($G$)\;
+        $\rho \coloneqq \max\{\funcname{rank}(n) \mid n \in V\}$\;
+        $B_k \coloneqq \{n \in V \mid \funcname{rank}(n) = k\}, \,\, k \in \mathbb{N}^*$\;
         $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\; \label{alg:partizione_rudimentale}
 
-        \tcp*[h]{$u$ è il nodo di $B_{-\infty}$ preservato da collapse}\\
-        $u  \coloneqq$ collapse($G,B_{-\infty}$)\; \label{alg:impunemente_omega}
-        Split2($G, P, u, \bigcup_{i=0}^\rho B_i$)\; \label{alg:split_post_omega}
+        \tcp*[h]{$u$ è il nodo di $B_{-\infty}$ preservato da \funcname{collapse}.}\\
+        $u  \coloneqq$ \funcname{collapse}($G,B_{-\infty}$)\; \label{alg:impunemente_omega}
+        \funcname{split2}($G, P, u, \bigcup_{i=0}^\rho B_i$)\; \label{alg:split_post_omega}
 
         \ForEach{$i = 0, \dots, \rho$}{
             \label{alg:fba_principal_loop}
-            \tcp*[h]{I blocchi di $P$ aventi rango $i$}\\
+            \tcp*[h]{Selezioniamo i blocchi di $P$ aventi rango $i$.}\\
             $D_i \coloneqq \{B \in P \mid B \subseteq B_i\}$\;
-            \tcp*[h]{Il sottografo di $G$ dei nodi di rango $i$}\\
+            \tcp*[h]{Il sottografo di $G$ dei nodi di rango $i$.}\\
             $G_i = (B_i, (B_i \times B_i) \cap E)$\;
-            \tcp*[h]{$D_i$ è una partizione di $G_i$}\\
-            $D_i =$ Paige-Tarjan($G_i, D_i$)\;
+            \tcp*[h]{$D_i$ è una partizione di $G_i$.}\\
+            $D_i =$ \funcname{Paige-Tarjan}($G_i, D_i$)\;
 
             \ForEach{$B \in D_i$}{
-                $u \coloneqq$ collapse($G,B$)\; \label{alg:collapse_rank}
-                Split2($G, P, u, \bigcup_{j=i+1}^\rho B_j$)\;
+                $u \coloneqq$ \funcname{collapse}($G,B$)\; \label{alg:collapse_rank}
+                \funcname{split2}($G, P, u, \bigcup_{j=i+1}^\rho B_j$)\;
             }
         }
     }
 \end{algorithm}
 
-La funzione ``collapse'' rimuove dal grafo tutti i nodi all'interno di un blocco, ad eccezione di un nodo scelto in modo casuale. Dopodichè sostituisce il nodo mantenuto nel ruolo dei nodi rimossi in ogni arco incidente ad un nodo rimosso. Questa funzione viene usata per contrarre i nodi in un blocco per cui si è già stabilito che siano tutti bisimili. La funzione ``Split2'' è analoga alla funzione ``\splitfunc'', ma consente di specificare i blocchi che possono essere divisi (cioè solo quelli in $\widehat{B}$), e prende in considerazione un unico vertice (cioè $u$) come destinazione degli archi partenti dai blocchi in $\widehat{B}$.
+La funzione \funcname{collapse} rimuove dal grafo tutti i nodi all'interno di un blocco, ad eccezione di un nodo scelto in modo casuale; dopodichè sostituisce il nodo mantenuto in ogni arco incidente ad uno dei nodi rimossi. Viene utilizzata per ridurre ad un solo vertice un blocco per cui si è già stabilito che tutti i nodi sono bisimili.
 
-L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} sarà sicuramente necessario rifinire questa partizione per determinare la massima bisimulazione: non è possibile infatti che vi siano due nodi bisimili che vengono sistemati in due blocchi differenti a questo punto.
+La funzione \funcname{split2} è analoga alla funzione \funcname{split}, ma consente di specificare i blocchi che possono essere modificati, solo quelli in $\widehat{B}$, e di ignorare quelli non appartenenti a $\widehat{B}$; inoltre lo \texttt{split} viene effettuato rispetto ad un unico vertice, infatti ogni $B \in \widehat{B}$ viene rimpiazzato in $P$ da due blocchi $\{v \in B \mid \langle v, u\rangle \in E\}$ e $\{v \in B \mid \langle v, u \rangle \not\in E\}\}$, che sono rispettivamente la notazione non insiemistica degli insiemi $B \cap E^{-1}(\{u\}), B - E^{-1}(\{u\})$. Ci si aspetta che $u$ sia il nodo ``soppravvissuto'' da una chiamata a \texttt{collapse}.
 
-Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene ``collassato'' il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}).
+L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} la \texttt{RSCP} sarà sicuramente una rifinitura di questa partizione.
 
-In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo PTA a questo sottografo, in modo da calcolarne la RSCP. I blocchi di questa nuova partizione vengono ``collassati'', ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità.
+Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene collassato il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}).
+
+In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo di Paige-Tarjan a questo sottografo, al fine di calcolarne la RSCP. I blocchi di questa nuova partizione vengono collassati, ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità. Si nodi che ad ogni iterazione il numero di blocchi e nodi influenzati dalla chiamata a \texttt{split2} si riduce, coerentemente con quanto abbiamo anticipato nella Sezione \ref{sec:fba_preliminari}.
 
 \subsubsection{Analisi}
-Presentiamo i seguenti risultati, che costituiscono un analisi completa dell'Algoritmo \ref{alg:fba}, sulla base della discussione proposta in \cite{dovier}:
+Come abbiamo fatto per gli algoritmi di Hopcroft e Paige-Tarjan, verifichiamo la correttezza e la complessità dell'Algoritmo \ref{alg:fba}.
 \begin{theorem}
-    Due nodi $m,n$ vengono ``collassati'' in un unico nodo durante l'esecuzione dell'Algoritmo \ref{alg:fba} se e solo se sono bisimili.
+    Due nodi $m,n$ vengono collassati in un unico nodo durante l'esecuzione dell'Algoritmo \ref{alg:fba} se e solo se sono bisimili.
 \end{theorem}
 \begin{proof2}
-    Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno ``collassati'' in un unico nodo.
+    Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno collassati in un unico nodo.
 
-    Se $\rankfunc(m) = \rankfunc(n) = -\infty$ il blocco contenente questi due nodi viene ``collassato'' alla Riga \ref{alg:impunemente_omega}.
+    Se \texttt{rank}$(m) = \verb|rank|(n) = -\infty$ il blocco contenente questi due nodi viene collassato alla Riga \ref{alg:impunemente_omega}.
 
-    Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene ``collassato'' alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $m E m' \implies \exists n' \mid n E n' \land m' E n'$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo PTA, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene ``collassato'', allora sono necessariamente bisimili.
+    Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene collassato alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $\langle m, m' \rangle \in E \implies \exists n' \mid \langle n, n' \rangle \in E \land \langle m', n' \rangle \in E$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo di Paige-Tarjan, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene collassato, allora sono necessariamente bisimili.
 \end{proof2}
-
-Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie:
+Quest'ultimo risultato dimostra chiaramente la correttezza dell'algoritmo di Dovier-Piazza-Policriti. Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie:
 \begin{observation}
-    Un'implementazione efficiente congiunta delle funzioni ``collapse'' e ``Split2'' ha complessità $\Theta(|E^{-1}(B)|)$, dove $B$ è il blocco su cui sono chiamate in sequenza.
+    Un'implementazione efficiente congiunta delle funzioni \texttt{collapse} e \texttt{Split2} ha complessità $\Theta(|E^{-1}(B)|)$, dove $B$ è il blocco su cui sono chiamate una dopo l'altra.
 \end{observation}
 \begin{proof2}
-    \accente sufficiente creare inizialmente l'insieme $E^{-1}(\{v\}) \, \forall v \in V$, cioè la contro-immagine di $v$ rispetto alla relazione binaria $E$. Per ``collassare'' il blocco $B$ e ricalcolare la partizione, cioè per eseguire le due seguenti righe di pseudocodice:
+    \accente sufficiente creare inizialmente l'insieme $E^{-1}(\{v\}) \, \forall v \in V$, cioè la contro-immagine di $v$ rispetto alla relazione binaria $E$. Per collassare il blocco $B$ e ricalcolare la partizione, cioè per eseguire le due seguenti righe di pseudocodice:
     \begin{align*}
         &u \coloneqq \textup{collapse}(G,B);\\
         &\textup{Split2}(G, P, u, \bigcup_{j=i+1}^\rho B_j);
@@ -340,7 +346,7 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
     L'Algoritmo \ref{alg:fba} ha complessità $O(|E| \log |V|)$.
 \end{theorem}
 \begin{proof2}
-    Il rango dei nodi del grafo si può calcolare con l'Algoritmo \ref{alg:rank}, che ha complessità $O(|V|+|E|)$. Per l'osservazione precedente le operazioni alle Righe \ref{alg:impunemente_omega}, \ref{alg:split_post_omega} hanno un'implementazione lineare.
+    Il rango dei nodi del grafo si calcola con l'Algoritmo \ref{alg:rank}, che ha complessità $O(|V|+|E|)$. Per l'osservazione precedente le operazioni alle Righe \ref{alg:impunemente_omega}, \ref{alg:split_post_omega} hanno un'implementazione lineare.
 
     Il ciclo alla Riga \ref{alg:fba_principal_loop} è composto da tre elementi:
     \begin{enumerate}
@@ -348,7 +354,7 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
         \item La chiamata all'Algoritmo PTA;
         \item Il ciclo sui blocchi appartenenti all'insieme $D_i$.
     \end{enumerate}
-    Gli elementi di tipo 1 sono chiaramente dominati dagli elementi di tipo 2, in quanto determinare il sottografo $\restr{G}{i}$ ha complessità $O(|B_i| + |E \cap (B_i \times B_i)|)$. La complessità degli elementi di tipo 2 invece è $O(|E \cap (B_i \times B_i)| \log |B_i|)$, come abbiamo già dimostrato.  Per lo stesso motivo, vista l'osservazione precedente, anche gli elementi di tipo 3 sono dominati dagli elementi di tipo 2.
+    Gli elementi di tipo 1 sono chiaramente dominati dagli elementi di tipo 2, in quanto determinare il sottografo $\restr{G}{i}$ ha complessità $O(|B_i| + |E \cap (B_i \times B_i)|)$, e lo stesso vale per gli elementi di tipo 3. La complessità degli elementi di tipo 2 invece è $O(|E \cap (B_i \times B_i)| \log |B_i|)$, come abbiamo già dimostrato (Teorema \ref{theo:pta_complex}).
 
     Ne segue che la complessità dell'algoritmo è:
     \begin{align*}
@@ -358,3 +364,5 @@ Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie
         &= O(|E| \log |V|)
     \end{align*}
 \end{proof2}
+
+Come abbiamo anticipato sopra, la complessità identica all'algoritmo di Paige-Tarjan non rende l'algoritmo di Dovier-Piazza-Policriti poco interessante: quest'ultimo infatti dovrebbe risultare molto più performante qualora la partizione iniziale $P = \{B_k \mid k \in \mathbb{N}\}$ contenga molti blocchi di piccola dimensione. \accente quello che succede ad esempio con gli alberi bilanciati. \accente necessario comunque tenere in considerazione il calcolo preliminare del rango, che potrebbe rendere l'algoritmo più performante solo asintoticamente.
