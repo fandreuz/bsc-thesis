@@ -2,7 +2,32 @@
 \label{sec:bispy}
 Abbiamo implementato gli algoritmi presentati nella Sezione \ref{sec:algs} nel pacchetto Python \texttt{BisPy}, il cui codice sorgente è disponibile su GitHub con licenza \href{https://github.com/fAndreuzzi/BisPy/blob/master/LICENSE}{MIT} all'indirizzo \href{https://github.com/fAndreuzzi/BisPy}{https://github.com/fAndreuzzi/BisPy}.
 
-In questa sezione forniremo alcuni dettagli sull'implementazione, sugli strumenti utilizzati durante lo sviluppo, e presenteremo alcuni risultati sperimentali.
+\begin{wrapfigure}{r}{0.4\textwidth}
+    \vspace{-1cm}
+    \begin{center}
+        \includegraphics[width=0.4\textwidth]{albero_bilanciato_grande.png}
+    \end{center}
+    \caption{}
+    \label{fig:api_img}
+\end{wrapfigure}
+Esaminiamo un brevissimo caso di utilizzo della libreria per la determinazione della bisimulazione massima. Creiamo il grafo rappresentato in Figura \ref{fig:api_img}, ovvero un albero bilanciato con \emph{branching factor} 2 e \emph{profondità} 3. Utilizzeremo \texttt{BisPy} per calcolarne la bisimulazione massima, utilizzando come partizione iniziale la partizione banale di $V$:
+\begin{verbatim}
+import networkx as nx
+from bispy import paige_tarjan
+
+# creazione del grafo
+graph = nx.balanced_tree(2,3, create_using=nx.DiGraph)
+
+print(paige_tarjan(graph))
+\end{verbatim}
+Lo script restituisce il seguente output:
+\begin{verbatim}
+>>> [(7, 8, 9, 10, 11, 12, 13, 14), (3, 4, 5, 6),
+    (1, 2), (0,)]
+\end{verbatim}
+Chiaramente tutti i nodi sullo stesso livello risultano bisimili, per verificarlo è sufficiente applicare la definizione. Come si può osservare l'interfaccia di \texttt{BisPy} è molto semplice, i grafi in ingresso possono essere rappresentati utilizzando uno strumento molto diffuso come la libreria \emph{NetworkX}, e per calcolare una massima bisimulazione sono sufficienti poche righe di codice.
+
+Nel resto di questa sezione forniremo alcuni dettagli sull'implementazione di \texttt{BisPy}, sugli strumenti utilizzati durante lo sviluppo, e presenteremo alcuni risultati sperimentali.
 
 \input{sezione3/implementation/file}
 \input{sezione3/tools/file}
