@@ -1,15 +1,11 @@
 \subsection{Implementazione}
-Si è cercato di rendere il package funzionante su quante più versioni di Python 3 ci è stato possibile, rimpiazzando costrutti delle ultime versioni con features retrocompatibili.
-
-Internamente grafi e partizioni sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
+Grafi e partizioni sono rappresentati con classi apposite all'interno del file \verb|graph_entities.py|, di cui forniamo un breve glossario:
 \begin{itemize}
     \item \verb|_Vertex|: un nodo del grafo;
     \item \verb|_Edge|: un arco del grafo;
     \item \verb|_QBlock|, \verb|_XBlock|: rappresentano rispettivamente i blocchi di tipo \verb|Q|,\verb|X| dell'algoritmo di Paige-Tarjan, negli algoritmi successivi solo la prima classe viene utilizzata, in quanto è più flessibile e contiene diverse funzioni utili (come \verb|_QBlock.mitosis(_Vertex[])|, che consente di dividere il blocco in due in tempo lineare, data una lista di nodi da estrarre).
 \end{itemize}
-Le classi contengono attributi utilizzati ampiamente dagli algoritmi per depositare informazioni utili.
-
-Nel pacchetto sono stati implementati da zero i seguenti algoritmi, per il calcolo della massima bisimulazione o utilizzati come subroutine:
+Le classi contengono attributi utilizzati ampiamente dagli algoritmi per depositare temporaneamente informazioni che verranno recuperate in seguito. Oltre agli algoritmi per il calcolo della massima bisimulazione, nel pacchetto sono stati implementati da zero alcune \emph{subroutine} che abbiamo menzionato durante l'analisi degli pseudocodici nella Sezione \ref{sec:algs}. Riportiamo un elenco degli algoritmi implementati:
 \begin{itemize}
     \item Algoritmo di Paige-Tarjan \ref{alg:pt};
     \item Algoritmo di Dovier-Piazza-Policriti \ref{alg:fba};
@@ -18,7 +14,7 @@ Nel pacchetto sono stati implementati da zero i seguenti algoritmi, per il calco
     \item Algoritmo di Kosaraju/Sharir \cite{sharir}.
 \end{itemize}
 
-Sono state utilizzate le seguenti librerie open source:
+Infine, elenchiamo le librerie open source non standard utilizzate all'interno del pacchetto:
 \begin{itemize}
     \item \emph{NetworkX}, per la rappresentazione dei grafi presi in input dall'utente;
     \item \emph{llist}, per un'implementazione delle \emph{doubly linked list}, fondamentali per una corretta stesura dell'algoritmo di Paige-Tarjan.
