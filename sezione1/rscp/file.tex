@@ -1,6 +1,6 @@
 \subsection{Relational stable coarsest partition}
 \label{sec:rscp}
-In questa sezione introdurremo il concetto di \emph{Relational Stable Coarsest Partition} (nel seguito abbreviato in \emph{RSCP}). Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della massima bisimulazione, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.
+In questa sezione introdurremo il concetto di \emph{Relational Stable Coarsest Partition} (abbreviato in \rscp). Nel seguito del lavoro evidenzieremo il legame tra questo problema e quello della determinazione della massima bisimulazione, sfruttato ampiamente dagli algoritmi che tratteremo nel seguito in quanto la formulazione del primo lo rende un problema più facilmente approcciabile dal punto di vista algoritmico.
 
 Cominciamo con alcune definizioni di base:
 \begin{definition}
@@ -69,18 +69,18 @@ Vale il seguente risultato:
 
 \accente evidente che l'ultimo punto può essere esteso in modo molto semplice all'unione di più sottoinsiemi di $S$. In altre parole, se $\mathfrak{S}$ è stabile rispetto alle coppie $(\mathcal{R},S_i), S_i \subset S, i = 1, \dots, n$, allora è stabile anche rispetto alla coppia $(\mathcal{R}, \bigcup_{i=1}^{n} S_i)$.
 
-Con queste premesse possiamo definire il problema della determinazione della \emph{RSCP}:
+Con queste premesse possiamo definire il problema della determinazione della \rscp:
 \begin{definition}
-    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\mathfrak{S}$ una partizione di $S$. La $\emph{RSCP}(\mathfrak{S},\mathcal{R})$ di $S$ è la partizione di $S$ stabile rispetto ad $\mathcal{R}$, che rifinisce $\mathfrak{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
+    Sia $S$ un insieme, sia $R$ una relazione binaria su $S$. Sia $\mathfrak{S}$ una partizione di $S$. La $\rscp(\mathfrak{S},\mathcal{R})$ di $S$ è la partizione di $S$ stabile rispetto ad $\mathcal{R}$, che rifinisce $\mathfrak{S}$ e che contiene il minor numero di blocchi (per questo motivo si dice che è la \emph{più rozza}).
 
-    Si usa la notazione ``$\emph{RSCP}(\mathcal{R})$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
+    Si usa la notazione ``$\rscp(\mathcal{R})$'' se la partizione iniziale è quella banale proposta nella Definizione \ref{obs:part_banale}.
 \end{definition}
 \begin{example}
-    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\emph{RSCP}(\mathcal{R})$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La \emph{RSCP} è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
+    Riprendendo l'Esempio \ref*{exa:set_partition_stable}, è evidente che la $\rscp(\mathcal{R})$ deve avere almeno due blocchi: infatti ``6'' non è in relazione con nessun elemento, dunque deve essere posto in un blocco a parte. La \rscp è quindi $\{\{0,1,2,3,4,5\},\{6\}\}$.
 \end{example}
 
-\subsubsection{Insiemi \emph{splitter}, e la funzione Split}
-La seguente definizione ha grande importanza pratica per il problema della determinazione della RSCP:
+\subsubsection{Insiemi \emph{splitter}, e la funzione \splitfunc}
+La seguente definizione ha grande importanza pratica per il problema della determinazione della \rscp:
 \begin{definition}
     \label{def:funz_split}
     Sia $\mathfrak{S} = \{S_1,\dots,S_n\}$ una partizione qualsiasi di un insieme finito $S$. Sia $\mathcal{R}: S \to S$, e sia $A \subset S$. $A$ è uno \emph{splitter} di $\mathfrak{S}$ rispetto a $\mathcal{R}$ se
@@ -97,34 +97,34 @@ La seguente definizione ha grande importanza pratica per il problema della deter
     Si osservi che la definizione di \splitfunc dipende anche dal parametro ``$\mathcal{R}$''. Siccome solitamente non c'è ambiguità sulla relazione presa in considerazione nella maggior parte dei casi non metteremo in evidenza questa dipendenza.
 \end{definition}
 
-Valgono i seguenti risultati sulla funzione Split appena introdotta:
+Valgono i seguenti risultati sulla funzione \splitfunc appena introdotta:
 \begin{observation}
     Se $A$ non è uno \emph{splitter} di $\mathfrak{S}$ si ha $\mathfrak{S} = \splitfunc(A,\mathfrak{S})$.
 \end{observation}
 
 \begin{proposition}
     \label{prop:split_eredita}
-    Se $\mathfrak{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\mathfrak{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione Split preserva la stabilità.
+    Se $\mathfrak{S}$ è stabile rispetto ad un insieme $A, \splitfunc(B,\mathfrak{S})$ è stabile rispetto ad $A,B$. In altre parole la funzione \splitfunc preserva la stabilità.
 \end{proposition}
 \begin{proof2}
-    Split può solamente dividere i blocchi, e non mescolarli.
+    \splitfunc può solamente dividere i blocchi, e non mescolarli.
 \end{proof2}
 
 Dimostriamo il seguente risultato che utilizzeremo nel seguito \cite{dovier}:
 \begin{theorem}
     \label{theo:split_properties}
-    Consideriamo la funzione Split proposta nella Definizione \ref{def:funz_split}:
+    Consideriamo la funzione \splitfunc proposta nella Definizione \ref{def:funz_split}:
     \begin{enumerate}
         \item La funzione è monotona rispetto al secondo argomento, cioè se $\mathfrak{S}$ rifinisce $\mathfrak{S}_2$, allora $\splitfunc(A,\mathfrak{S})$ rifinisce $\mathfrak(A,\mathfrak{S}_2)$;
         \item La funzione è commutativa rispetto al primo argomento:
 
-        \splitfunc$(A,\splitfunc(B,\mathfrak{S})) = \splitfunc(B, \splitfunc(A,\mathfrak{S}))$.
+        $\splitfunc(A,\splitfunc(B,\mathfrak{S})) = \splitfunc(B, \splitfunc(A,\mathfrak{S}))$.
     \end{enumerate}
 \end{theorem}
 \begin{proof2}
     Dimostriamo separatamente gli enunciati:
     \begin{enumerate}
-        \item I blocchi di \splitfunc$(A,\mathfrak{S})$ sono del tipo $x - \mathcal{R}^{-1}(A)$ oppure $x \cap \mathcal{R}^{-1}(A)$, dove $x$ è un blocco di $\mathfrak{S}$. I blocchi di \splitfunc$(A,\mathfrak{S}_2)$ sono del tipo $y - \mathcal{R}^{-1}(A)$ oppure $y \cap \mathcal{R}^{-1}(A)$, dove $y$ è un blocco di $\mathcal{S}_2$.
+        \item I blocchi di $\splitfunc(A,\mathfrak{S})$ sono del tipo $x - \mathcal{R}^{-1}(A)$ oppure $x \cap \mathcal{R}^{-1}(A)$, dove $x$ è un blocco di $\mathfrak{S}$. I blocchi di $\splitfunc(A,\mathfrak{S}_2)$ sono del tipo $y - \mathcal{R}^{-1}(A)$ oppure $y \cap \mathcal{R}^{-1}(A)$, dove $y$ è un blocco di $\mathcal{S}_2$.
 
         Poichè $\forall x \in \mathfrak{S} \,\,\exists y \in \mathfrak{S}_2 \mid x \subseteq y$ si ha $x - \mathcal{R}^{-1}(A) \subseteq y - \mathcal{R}^{-1}(A)$ e $x \cap \mathcal{R}^{-1}(A) \subseteq y \cap \mathcal{R}^{-1}(A)$;
         \item Conseguenza delle proprietà delle operazioni insiemistiche ``$-$'' e ``$\cap$''.

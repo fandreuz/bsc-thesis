@@ -1,23 +1,23 @@
 \subsection{Algoritmo incrementale di Saha}
 \label{sec:saha}
-Gli algoritmi trattati finora consentono di determinare la RSCP (e quindi la massima bisimulazione) a partire da un grafo e da una eventuale partizione iniziale. Una modifica di tale grafo, ad esempio l'aggiunta di un arco, comporta necessariamente una nuova esecuzione dell'algoritmo al fine di calcolare la nuova RSCP, senza che venga utilizzata in qualche modo la conoscenza della RSCP prima della modifica. L'algoritmo di Saha \cite{saha} consente di ridurre (in alcuni casi) la complessità del ricalcolo della \rscpnomath, qualora sia nota la \rscpnomath del grafo prima della modifica.
+Gli algoritmi trattati finora consentono di determinare la \rscp (e quindi la massima bisimulazione) a partire da un grafo e da una eventuale partizione iniziale. Una modifica di tale grafo, ad esempio l'aggiunta di un arco, comporta necessariamente una nuova esecuzione dell'algoritmo al fine di calcolare la nuova \rscp, senza che venga utilizzata in qualche modo la conoscenza della \rscp prima della modifica. L'algoritmo di Saha \cite{saha} consente di ridurre (in alcuni casi) la complessità del ricalcolo della \rscp, qualora sia nota la \rscp del grafo prima della modifica.
 
-Nel seguito useremo la seguente notazione: posponendo un apice singolo ad un simbolo ($G', X', \dots$) si intende designare l'oggetto matematico rappresentato dal simbolo senza apice, dopo l'applicazione della modifica. Ad esempio, $G'$ è il grafo $G$ con l'aggiunta di un nuovo arco. Inoltre, per mantenere la notazione proposta nell'articolo, indicheremo con $X$ la \rscpnomath di $G$ (e dunque con $X'$ la \rscpnomath del grafo in seguito alla modifica).
+Nel seguito useremo la seguente notazione: posponendo un apice singolo ad un simbolo ($G', X', \dots$) si intende designare l'oggetto matematico rappresentato dal simbolo senza apice, dopo l'applicazione della modifica. Ad esempio, $G'$ è il grafo $G$ con l'aggiunta di un nuovo arco. Inoltre, per mantenere la notazione proposta nell'articolo, indicheremo con $X$ la \rscp di $G$ (e dunque con $X'$ la \rscp del grafo in seguito alla modifica).
 
 Scriveremo inoltre ``$A \implies B$'' se $A,B$ sono blocchi di una stessa partizione e $\exists a \in A, b \in B \mid \langle a, b\rangle \in E$; in questo caso diremo che $A$ è un \emph{predecessore} di $B$, e che $B$ è un \emph{successore} di $A$. Usiamo la notazione $\prefunc_{\Sigma}(A)$ per denotare l'insieme dei \emph{predecessori} di $A$ appartenenti alla partizione $\Sigma$. Qualora la partizione cui questi blocchi appartengono possa essere omessa senza ambiguità non aggiungeremo il subscritto per alleggerire la notazione. In modo analogo useremo la notazione $\succfunc_{\Sigma}(A)$.
 
 L'algoritmo si compone di tre fasi. Indicheremo con $X_i$ la partizione ottenuta dopo la fase $i$-esima:
 \begin{enumerate}
-    \item \texttt{split}: Ha lo scopo di dividere i nodi appartenenti ad uno stesso blocco di $X$ che non sono più bisimili dopo la modifica;
+    \item \splitfunc: Ha lo scopo di dividere i nodi appartenenti ad uno stesso blocco di $X$ che non sono più bisimili dopo la modifica;
     \item \texttt{merge}: Si tenta di unire in un unico blocco i blocchi di $X_1$ che contengono nodi diventati bisimili in seguito alla modifica tentando di minimizzare l'errore. Come vedremo infatti il metodo utilizzato per operare questa fase non garantisce risultati corretti, e dunque potremmo avere nodi non bisimili che vengono a trovarsi nello stesso blocco;
-    \item \texttt{split}: Si rifinisce la partizione $X_2$ rimuovendo l'errore introdotto nella seconda fase.
+    \item \splitfunc: Si rifinisce la partizione $X_2$ rimuovendo l'errore introdotto nella seconda fase.
 \end{enumerate}
 Nella sezione seguente esporremo nel dettaglio il funzionamento delle singole fasi.
 
 \subsubsection{Risultati preliminari e idea fondante}
 Innanzitutto motiviamo le varie fasi dell'algoritmo, evidenziando i problemi risolti da ognuna e chiarendo le necessarie differenze nell'approccio in base a come si integra il nuovo arco all'interno del grafo iniziale. Possiamo individuare due casi, che vanno gestiti in modo sostanzialmente diverso. Nel seguito chiameremo $u,v \in V$ i due nodi coinvolti dall'inserimento in $G = (V,E)$ del nuovo arco $\langle u,v \rangle \in E'$.
 
-La prima fase, comune ad entrambi i casi, consiste nell applicazione di una variante dell'algoritmo di Paige-Tarjan. La differenza rispetto all'algoritmo originale consiste nella scelta dei blocchi \emph{splitter}, che vengono scelti in ordine crescente di rango. Inoltre prima dell'avvio dell'algoritmo la partizione $X$ viene rifinita con l'applicazione della procedura \texttt{split}$([v]_X, X)$, dove $v$ è il nodo destinazione del nuovo arco. Come evidenziamo nello pseudocodice che proporremo tra alcune pagine, a questo punto il nuovo arco $\langle u,v \rangle$ è già stato inserito, sicchè la chiamata a \texttt{split}$([v]_X, X)$ in generale può modificare la partizione $X$ (ad esempio, $[u] \cap E^{-1}([v])$ è non vuoto). Nel seguito ci riferiremo alla versione modificata dell'algoritmo di Paige-Tarjan che abbiamo appena caratterizzato con il nome ``\texttt{ranked\_split}($B,P$)'', dove $P$ è la partizione rifinita e $B$ il blocco utilizzato come \emph{splitter}.
+La prima fase, comune ad entrambi i casi, consiste nell applicazione di una variante dell'algoritmo di Paige-Tarjan. La differenza rispetto all'algoritmo originale consiste nella scelta dei blocchi \emph{splitter}, che vengono scelti in ordine crescente di rango. Inoltre prima dell'avvio dell'algoritmo la partizione $X$ viene rifinita con l'applicazione della procedura $\splitfunc([v]_X, X)$, dove $v$ è il nodo destinazione del nuovo arco. Come evidenziamo nello pseudocodice che proporremo tra alcune pagine, a questo punto il nuovo arco $\langle u,v \rangle$ è già stato inserito, sicchè la chiamata a $\splitfunc([v]_X, X)$ in generale può modificare la partizione $X$ (ad esempio, $[u] \cap E^{-1}([v])$ è non vuoto). Nel seguito ci riferiremo alla versione modificata dell'algoritmo di Paige-Tarjan che abbiamo appena caratterizzato con il nome ``\texttt{ranked\_split}($B,P$)'', dove $P$ è la partizione rifinita e $B$ il blocco utilizzato come \emph{splitter}.
 
 Vale la seguente caratterizzazione di $X_1$:
 \begin{proposition}
@@ -29,7 +29,7 @@ Ricordiamo che $X_1$ è la partizione ottenuta al termine della prima fase di \e
     Segue dalla correttezza dell'Algoritmo di Paige-Tarjan (Teorema \ref{teo:pta_corretto}).
 \end{proof2}
 
-Non possiamo fermarci ad $X_1$ per ovvi motivi: essa è la \rscpnomath di $G'$ con partizione iniziale $X$, e quest'ultima è una rifinitura della ``vera'' partizione iniziale. In altre parole, $X_1$ è la \rscpnomath per una partizione iniziale più ``restrittiva'': per questo motivo possiamo sperare che la soluzione effettiva sia in realtà \emph{più grossolana} rispetto ad $X_1$.
+Non possiamo fermarci ad $X_1$ per ovvi motivi: essa è la \rscp di $G'$ con partizione iniziale $X$, e quest'ultima è una rifinitura della ``vera'' partizione iniziale. In altre parole, $X_1$ è la \rscp per una partizione iniziale più ``restrittiva'': per questo motivo possiamo sperare che la soluzione effettiva sia in realtà \emph{più grossolana} rispetto ad $X_1$.
 
 Durante la seconda fase cerchiamo appunto di riformare questa partizione più grossolana unendo alcuni dei blocchi di $X_1$. Dimostreremo il seguente risultato:
 \begin{proposition}
@@ -44,11 +44,11 @@ Come abbiamo anticipato sopra, a partire da questo punto l'algoritmo prevede due
 \end{enumerate}
 Li affrontiamo separatamente, evidenziando le differenze e le motivazioni alla base degli approcci adottati per attaccare, algoritmicamente parlando, il problema. Si noti che per determinare l'esistenza di un nuovo ciclo è sufficiente una DFS su $G^{-1}$ a partire da $u$. Nel caso in cui questa visita raggiunga $v$ possiamo concludere che è stato formato un nuovo ciclo. Per motivi che esamineremo nel seguito risulta conveniente lasciar proseguire la visita finchè non si arresta spontaneamente, e non fermare l'esecuzione appena $v$ viene raggiunto come sarebbe più logico.
 
-Supponiamo dapprima che il nuovo arco non generi un nuovo ciclo. In questo caso utilizziamo per la seconda fase l'algoritmo implementato nella funzione \texttt{merge\_phase}, il cui pseudo-codice verrà proposto tra alcune pagine. Ne spieghiamo brevemente il funzionamento: supponiamo che durante il primo calcolo della RSCP, a causa dell'assenza dell'arco $\langle u, v \rangle$, i blocchi $U,U_1$ siano stati divisi durante un'applicazione di \texttt{split}; l'aggiunta dell'arco sana questa mancanza, per cui possiamo riformare il blocco originale. Si noti che questo potrebbe portare all'unione a cascata di altre coppie di blocchi, che sono state divise in $X$ perchè $U,U_1$ erano divisi.
+Supponiamo dapprima che il nuovo arco non generi un nuovo ciclo. In questo caso utilizziamo per la seconda fase l'algoritmo implementato nella funzione \texttt{merge\_phase}, il cui pseudo-codice verrà proposto tra alcune pagine. Ne spieghiamo brevemente il funzionamento: supponiamo che durante il primo calcolo della \rscp, a causa dell'assenza dell'arco $\langle u, v \rangle$, i blocchi $U,U_1$ siano stati divisi durante un'applicazione di \splitfunc; l'aggiunta dell'arco sana questa mancanza, per cui possiamo riformare il blocco originale. Si noti che questo potrebbe portare all'unione a cascata di altre coppie di blocchi, che sono state divise in $X$ perchè $U,U_1$ erano divisi.
 
 L'algoritmo inizia dunque con una visita di tutti i \emph{predecessori} di $[v]_{X_1}$: se in questo insieme è presente un blocco che possa essere unito a $[u]_{X_1}$, i due blocchi vengono uniti; ricorsivamente poi si verifica se per una coppia di \emph{predecessori} della coppia unita l'unione è diventata possibile.
 
-Si osservi che in questo modo vengono presi in considerazione tutti i blocchi la cui unione diventa possibile in seguito all'aggiunta del nuovo arco: se per assurdo esistesse un blocco che teoricamente dovrebbe essere unito ad un altro, ma che non viene raggiunto dall'algoritmo che implementa la fase di \emph{merging}, esso non sarebbe \emph{predecessore} (nemmeno indiretto) di $[u]_{X_1}, [v]_{X_1}$, nè potrebbe essere unito a un \emph{predecessore} di uno di quei due blocchi. \accente chiaro che una tale perturbazione nella \rscpnomath non può, dunque, essere stata causata dall'aggiunta dell'arco $\langle u,v \rangle$. Da questa considerazione segue la validità della Proposizione \ref{prop:saha_after_second_phase} per questo primo caso.
+Si osservi che in questo modo vengono presi in considerazione tutti i blocchi la cui unione diventa possibile in seguito all'aggiunta del nuovo arco: se per assurdo esistesse un blocco che teoricamente dovrebbe essere unito ad un altro, ma che non viene raggiunto dall'algoritmo che implementa la fase di \emph{merging}, esso non sarebbe \emph{predecessore} (nemmeno indiretto) di $[u]_{X_1}, [v]_{X_1}$, nè potrebbe essere unito a un \emph{predecessore} di uno di quei due blocchi. \accente chiaro che una tale perturbazione nella \rscp non può, dunque, essere stata causata dall'aggiunta dell'arco $\langle u,v \rangle$. Da questa considerazione segue la validità della Proposizione \ref{prop:saha_after_second_phase} per questo primo caso.
 
 A questo punto necessitiamo di una condizione operativa per verificare se due blocchi possano o meno essere uniti. Omettiamo due condizioni banali, che è comunque bene tenere presenti, ovvero l'appartenenza allo stesso blocco della partizione iniziale, e l'avere lo stesso rango. Diamo innanzitutto la seguente definizione, che come si vedrà nel seguito avrà un ruolo fondamentale all'interno dell'algoritmo:
 
@@ -80,7 +80,7 @@ Un \emph{causal splitter} di due blocchi $B_1,B_2$ è intuitivamente uno dei blo
     Siano $B,B' \in X_1$. Se esiste un \emph{causal splitter}, allora i nodi di $B$ e $B'$ non sono bisimili.
 \end{corollary}
 
-La prima richiesta nella Definizione \ref{def:causal_splitter} è un punto estremamente critico: considerare come \emph{causal splitter} un blocco che non siamo sicuri faccia effettivamente parte di $X'$ (che, ricordiamo, è la RSCP del grafo dopo l'aggiunta del nuovo arco) significa rinunciare ad unire due blocchi. Se in un passaggio successivo della seconda fase tale \emph{causal splitter} fosse unito ad un altro blocco, la condizione 2. potrebbe non essere più valida.
+La prima richiesta nella Definizione \ref{def:causal_splitter} è un punto estremamente critico: considerare come \emph{causal splitter} un blocco che non siamo sicuri faccia effettivamente parte di $X'$ (che, ricordiamo, è la \rscp del grafo dopo l'aggiunta del nuovo arco) significa rinunciare ad unire due blocchi. Se in un passaggio successivo della seconda fase tale \emph{causal splitter} fosse unito ad un altro blocco, la condizione 2. potrebbe non essere più valida.
 
 Per questo motivo, nel caso in cui non fossimo sicuri dell'effettiva appartenenza di un blocco ad $X'$ questo verrà escluso dall' insieme dei \emph{causal splitter}, ragion per cui si rende necessaria la terza fase: ignorare un \emph{causal splitter} equivale a considerare possibile l'unione di due blocchi senza essere sicuri che essi soddisfino effettivamente il criterio fornito dal Corollario \ref{cor:criterio_causal_splitter}.
 
@@ -97,7 +97,7 @@ Abbiamo allora il seguente risultato fondamentale:
     Nel caso in cui il nuovo arco non generi un nuovo ciclo all'interno del grafo, si ha $X_2 = X'$.
 \end{proposition}
 \begin{proof2}
-    Per la Proposizione \ref{prop:no_ciclo_no_split} per ogni coppia $(A,B) \in P$ di blocchi incontrati durante la fase di \emph{merging} tutti i successori di $A,B$ sono blocchi di $X'$ (ed in generale non di $X$, in quanto potrebbero essere stati modificati). Ciò significa che non viene introdotta alcuna approssimazione nella seconda fase, e dunque se due blocchi vengono uniti (secondo il criterio esposto sopra) ciò avviene perchè niente impedisce (o impedirà) questa operazione. Poichè i blocchi vengono uniti in modo esaustivo la partizione risultante è la RSCP.
+    Per la Proposizione \ref{prop:no_ciclo_no_split} per ogni coppia $(A,B) \in P$ di blocchi incontrati durante la fase di \emph{merging} tutti i successori di $A,B$ sono blocchi di $X'$ (ed in generale non di $X$, in quanto potrebbero essere stati modificati). Ciò significa che non viene introdotta alcuna approssimazione nella seconda fase, e dunque se due blocchi vengono uniti (secondo il criterio esposto sopra) ciò avviene perchè niente impedisce (o impedirà) questa operazione. Poichè i blocchi vengono uniti in modo esaustivo la partizione risultante è la \rscp.
 \end{proof2}
 
 Chiaramente da questo segue la Proposizione \ref{prop:saha_after_second_phase}, ed anche il seguente corollario che chiude la trattazione del primo caso:
@@ -130,7 +130,7 @@ Nel caso in cui l'ipotesi dell'Osservazione \ref{obs:hard_case_causal_splitter_c
 La fase di \emph{splitting} è delegata ancora una volta alla procedura \texttt{ranked\_split} presentata sopra. Tutti i blocchi visitati durante la seconda fase vengono inseriti in una partizione $Y$; questo sotto-grafo di $G'$ viene rifinito tramite l'algoritmo di Paige-Tarjan. Teniamo traccia dei blocchi di $X_2$ rifiniti durante l'esecuzione, e poi propaghiamo ogni modifica al grafo intero utilizzando \texttt{ranked\_split}. Per la correttezza dell'algoritmo di Paige-Tarjan, e per la natura esaustiva del procedimento adottato, abbiamo $X_3 = X'$.
 
 \subsubsection{L'algoritmo}
-L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $u,v$ agli estremi del nuovo arco e la RSCP $S$ del grafo originale. Poichè in questo algoritmo sono presenti numerosi accorgimenti tecnici si è preferito uno pseudocodice più naturale rispetto a quello usato per gli algoritmi presentati precedentemente. Per i dettagli si rimanda all'implementazione in Python.
+L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $u,v$ agli estremi del nuovo arco e la \rscp $S$ del grafo originale. Poichè in questo algoritmo sono presenti numerosi accorgimenti tecnici si è preferito uno pseudocodice più naturale rispetto a quello usato per gli algoritmi presentati precedentemente. Per i dettagli si rimanda all'implementazione in Python.
 
 \begin{algorithm}
     \caption{Algoritmo incrementale di Saha}
@@ -138,44 +138,44 @@ L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $
     \KwData{$G = (V,E), \langle u,v \rangle, S$}
     \Begin{
         \If{$[u]_S \implies [v]_S$}{\label{alg:saha_check_nothing_todo}
-            \tcp*[h]{La RSCP non cambia}\\
+            \tcp*[h]{La \rscp non cambia}\\
             \Return $S$\;
         }
 
-        \tcp*[h]{Prima fase: \funcname{split}}\\
+        \tcp*[h]{Prima fase: \splitfunc}\\
         \funcname{ranked-split}($S, [v]_S$)\;
 
         \eIf{$!u$.\funcname{wf} \,and\, $v$.\funcname{wf}}{\label{saha:unotwf_vwf}
-            \If{\funcname{rank}$(v) + 1 >$ \funcname{rank}$(u)$}{
-                \funcname{rank}$(u) =$ \texttt{rank}$(v)+1$\;
+            \If{$\rankfunc(v) + 1 > \rankfunc(u)$}{
+                $\rankfunc(u) = \rankfunc(v)+1$\;
                 \funcname{propagate-nwf}($u$)\;
             }
             \funcname{merge-phase}($[u]_S, [v]_S$)\;
         }{
-            \eIf{\funcname{rank}$(u) >$ \funcname{rank}$(v)$}{\label{alg:saha_urank_greater}
+            \eIf{$\rankfunc(u) > \rankfunc(v)$}{\label{alg:saha_urank_greater}
                 \funcname{merge-phase}($[u]_S, [v]_S$)\;
             } {
                 DFS su $G^{-1}$ da $u$. Salva i nodi in ordine crescente di \emph{finishing-time}. Imposta a \funcname{True} la flag \funcname{visited} dei blocchi raggiunti\label{alg:saha_check_cycle}\;
                 \eIf{$v$.\funcname{visited}}{
                     \tcp*[h]{\accente stato formato un ciclo}\\
                     $u$.\funcname{wf} = \funcname{False}\;
-                    \funcname{rank}$(u) =$ \funcname{rank}$(v)$\;
+                    $\rankfunc(u) = \rankfunc(v)$\;
                     \funcname{propagate-nwf}($u$)\;
                     \funcname{merge-split-phase}(finishing\_time)\;
                 } {\label{alg:saha_no_new_cycle}
                     \eIf{$u$.\funcname{wf}}{
                         \eIf{$v$.\funcname{wf}}{
-                            \funcname{rank}$(u) = $\funcname{rank}$(v)+1$\;
+                            $\rankfunc(u) = \rankfunc(v)+1$\;
                             \funcname{propagate-wf}($u$)\;
                         } {
-                            \If{\funcname{rank}$(u) <$ \funcname{rank}$(v)$}{
-                                \funcname{rank}$(u) =$ \funcname{rank}$(v)$\;
+                            \If{$\rankfunc(u) < \rankfunc(v)$}{
+                                $\rankfunc(u) = \rankfunc(v)$\;
                                 \funcname{propagate-nwf}($u$)\;
                             }
                         }
                     } {
-                        \If{\funcname{rank}$(u) \neq$ \funcname{rank}$(v)$}{
-                            \funcname{rank}$(u) =$ \funcname{rank}$(v)$\;
+                        \If{$\rankfunc(u) \neq \rankfunc(v)$}{
+                            $\rankfunc(u) = \rankfunc(v)$\;
                             \funcname{propagate-nwf}($u$)\;
                         }
                     }
@@ -191,7 +191,7 @@ L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $
     \SetKwProg{Fn}{function}{:}{end}
     \Fn{\funcname{ranked-split}($P, B \in P$)}{
         $X=Q=P$\;
-        \funcname{split}($B,P$)\label{alg:primo_split}\;
+        \splitfunc($B,P$)\label{alg:primo_split}\;
         Applichiamo l'Algoritmo \ref{alg:pt}, \emph{splitter} scelti in ordine crescente di rango.
     }
     \Fn{\funcname{propagate-wf}($a \in V$)}{\label{alg:saha_propage_wf}
@@ -201,14 +201,14 @@ L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $
     \Fn{\funcname{propagate-nwf}($a \in V$)}{\label{alg:kosaraju}
         SCCs = \funcname{kosaraju}($G_nwf$)\;
         \ForEach{$b \in$ SCC$[a]$}{
-            $b.\funcname{rank} = a.\funcname{rank}$\;
+            $b.\rankfunc = a.\rankfunc$\;
             \funcname{propagate-nwf}($b$)\;
         }
     }
     \Fn{\funcname{merge-condition}($A,B$, check\_visited)}{
         \If{$A$.\funcname{initial\_partition} $\neq B$.\funcname{initial\_partition}}{\Return{\funcname{False}}\;}
         \If{$A == B$}{\Return{\funcname{False}}\;}
-        \If{$A$.\funcname{rank} \,$\neq B$.\funcname{rank}}{\Return{\funcname{False}}\;}
+        \If{$A$.\rankfunc \,$\neq B$.\rankfunc}{\Return{\funcname{False}}\;}
         CS = \funcname{causal-splitters}($A,B$)\;
         \If{\emph{check\_visited}}{
             \Return{$|\{C \in CS \mid C.\funcname{visited}\}| == 0$}\;
@@ -239,11 +239,11 @@ L'algoritmo incrementale di Saha riceve in ingresso il grafo originale, i nodi $
             }
         }
         $X = \{C \in P \mid C$ raggiunto dalla \funcname{DFS}\}\;
-        Applica l'Algoritmo \ref{alg:pt} su $X$, e propaga gli split a tutto $G$ con \funcname{ranked-split}.
+        Applica l'Algoritmo \ref{alg:pt} su $X$, e propaga gli \splitfunc a tutto $G$ con \funcname{ranked-split}.
     }
 \end{algorithm}
 
-Innanzitutto (Riga \ref{alg:saha_check_nothing_todo}) verifichiamo se $[u]_X$ era già \emph{predecessore} di $[v]_X$ prima dell'inserimento del nuovo arco: in questo caso non è necessario fare nulla, in quanto la \rscpnomath non risulta modificata dall'aggiunta. Se il controllo fallisce eseguiamo la prima fase con le modalità descritte sopra.
+Innanzitutto (Riga \ref{alg:saha_check_nothing_todo}) verifichiamo se $[u]_X$ era già \emph{predecessore} di $[v]_X$ prima dell'inserimento del nuovo arco: in questo caso non è necessario fare nulla, in quanto la \rscp non risulta modificata dall'aggiunta. Se il controllo fallisce eseguiamo la prima fase con le modalità descritte sopra.
 
 A questo punto è necessario distinguere diversi sotto-casi, in quanto ognuno va trattato in modo leggermente diverso. Oltre alla distinzione relativa all'introduzione del nuovo ciclo, che determina quale tipo di seconda fase adoperare e se eseguire la terza fase, è necessario anche considerare se $u,v$ sono \emph{well-founded}. Questa verifica si rende necessaria per decidere quale procedura utilizzare per il ri-calcolo del rango, un aspetto che abbiamo omesso nella trattazione della sezione precedente, ma che in realtà risulta fondamentale per tutte le procedure che intervengono nell'algoritmo di Saha. Utilizzeremo due procedure differenti per propagare un cambiamento di rango in un nodo a seconda che esso sia o meno \emph{well-founded}, ovvero \texttt{propagate\_wf} e \texttt{propagate\_nwf}.
 
@@ -261,12 +261,12 @@ Descriviamo ora i vari sotto-casi (mutuamente esclusivi) seguendo l'ordine in cu
         Perchè sia possibile generare un ciclo dovrebbe essere possibile, tornare ad $u$ partendo da $v$. Ma se così fosse anche $v$ sarebbe \emph{non-well-founded}.
     \end{proof2}
     Concludiamo dunque che ci troviamo nel caso 1. (si veda la trattazione della sotto-sezione precedente per i dettagli).
-    \item Se $u.\verb|rank| > v.\verb|rank|$ (Riga \ref{alg:saha_urank_greater}) non è necessario modificare il rango di $u$. Vale inoltre questo semplice risultato:
+    \item Se $u.\rankfunc > v.\rankfunc$ (Riga \ref{alg:saha_urank_greater}) non è necessario modificare il rango di $u$. Vale inoltre questo semplice risultato:
     \begin{observation}
-        Se $u.\verb|rank| > v.\verb|rank|$, l'aggiunta di un nuovo arco $\langle u,v \rangle$ non può generare un nuovo ciclo.
+        Se $u.\rankfunc > v.\rankfunc$, l'aggiunta di un nuovo arco $\langle u,v \rangle$ non può generare un nuovo ciclo.
     \end{observation}
     \begin{proof2}
-        Come sopra, dovrebbe essere possibile raggiungere $u$ partendo da $v$. Ma se così fosse avremmo $v.\verb|rank| \geq u.\verb|rank|$.
+        Come sopra, dovrebbe essere possibile raggiungere $u$ partendo da $v$. Ma se così fosse avremmo $v.\rankfunc \geq u.\rankfunc$.
     \end{proof2}
     Sicchè valgono ancora le considerazioni fatte sopra per il caso 1.
 \end{itemize}
@@ -277,10 +277,10 @@ In caso contrario (Riga \ref{alg:saha_no_new_cycle}) verifichiamo le varie combi
 \subsubsection{Complessità}
 La complessità dell'algoritmo incrementale di Saha è data chiaramente dalla somma dei contributi delle tre fasi:
 \begin{enumerate}
-    \item[1.] \funcname{split}: La complessità della versione modificata dell'Algoritmo \ref{alg:pt} è $O(|E_1|\log |V_1|)$, dove $G_1=(E_1, V_1)$ è il sotto-grafo di $G$ che viene modificato dalla prima chiamata a \funcname{split} alla Riga \ref{alg:primo_split};
-    \item[1b.] \funcname{rank}: Per tutti i casi possibili, un upper-bound per il ri-calcolo è $O(|\{\langle x,y\rangle \in E \mid x \in \Delta_{wf}\}| + |E_{nwf}| + |V_{nwf}|)$, dove $\Delta_{WF}$ è l'insieme dei nodi \emph{well-founded} il cui rango cambia in seguito all'aggiunta del nuovo arco, mentre il secondo termine è dato dalla complessità dell'Algoritmo di Sharir \cite{sharir} (supponiamo di avere già pronto il sotto-grafo \emph{non-well-founded});
+    \item[1.] \splitfunc: La complessità della versione modificata dell'Algoritmo \ref{alg:pt} è $O(|E_1|\log |V_1|)$, dove $G_1=(E_1, V_1)$ è il sotto-grafo di $G$ che viene modificato dalla prima chiamata a \splitfunc alla Riga \ref{alg:primo_split};
+    \item[1b.] \rankfunc: Per tutti i casi possibili, un upper-bound per il ri-calcolo è $O(|\{\langle x,y\rangle \in E \mid x \in \Delta_{wf}\}| + |E_{nwf}| + |V_{nwf}|)$, dove $\Delta_{WF}$ è l'insieme dei nodi \emph{well-founded} il cui rango cambia in seguito all'aggiunta del nuovo arco, mentre il secondo termine è dato dalla complessità dell'Algoritmo di Sharir \cite{sharir} (supponiamo di avere già pronto il sotto-grafo \emph{non-well-founded});
     \item[2.] \funcname{merge}: Per tutti i casi possibili possiamo maggiorare la complessità di questo step con $O(|E^*||V^*|)$, dove $G^*=(V^*,E^*)$ è il sottografo dei nodi che si trovano in blocchi modificati durante la fase di \emph{merging} (questo termine tiene conto anche della ricerca dei \emph{causal splitter} per tutte le possibili coppie di blocchi);
-    \item[3.] \funcname{split}: La complessità dell'Algoritmo di Paige-Tarjan sul sotto-grafo $G^*$ a cui viene applicato durante l'esecuzione della terza fase, ovvero $O(|E^*| \log |V^*|)$.
+    \item[3.] \splitfunc: La complessità dell'Algoritmo di Paige-Tarjan sul sotto-grafo $G^*$ a cui viene applicato durante l'esecuzione della terza fase, ovvero $O(|E^*| \log |V^*|)$.
 \end{enumerate}
 
-Nel complesso possiamo supporre ragionevolmente che in alcuni casi questa somma sia sensibilmente inferiore di $O(|E| \log |V|)$, ovvero la complessità degli Algoritmi \ref{alg:pt}, \ref{alg:fba} che ri-calcolano la massima bisimulazione senza sfruttare le informazioni di cui siamo a disposizione. \accente comunque necessaria una valutazione a grandi linee della probabilità che il nuovo arco turbi in modo considerevole la massima bisimulazione: se fosse così gli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan potrebbero risultare più performanti, in virtù della dipendenza della complessità dell'algoritmo incrementale rispetto al numero di blocchi di $X, X_1$ modificati durante le fasi di \funcname{split} e \funcname{merge}.
+Nel complesso possiamo supporre ragionevolmente che in alcuni casi questa somma sia sensibilmente inferiore di $O(|E| \log |V|)$, ovvero la complessità degli Algoritmi \ref{alg:pt}, \ref{alg:fba} che ri-calcolano la massima bisimulazione senza sfruttare le informazioni di cui siamo a disposizione. \accente comunque necessaria una valutazione a grandi linee della probabilità che il nuovo arco turbi in modo considerevole la massima bisimulazione: se fosse così gli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan potrebbero risultare più performanti, in virtù della dipendenza della complessità dell'algoritmo incrementale rispetto al numero di blocchi di $X, X_1$ modificati durante le fasi di \splitfunc e \funcname{merge}.
