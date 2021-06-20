@@ -252,22 +252,24 @@ Questa visualizzazione non ci consente di controllare la sensibilità dell'algor
 
 \subsubsection{Dimensione della massima bisimulazione}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Consideriamo l'andamento del numero di classi di equivalenza nella massima bisimulazione per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
-Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica.
-
-Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori di \verb|n| (\verb|n=10| nella Figura \ref*{fig:bisi_dim_10}, \verb|n=100| nella Figura \ref*{fig:bisi_dim_100}, \verb|n=1000| nella Figura \ref*{fig:bisi_dim_1000}); inoltre abbiamo considerato quattro valori per \verb|p|: 0.01, 0.05, 0.1, 0.2.
+Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
 
 \begin{figure}[H]
-    \makebox[\textwidth][c]{
-        \begin{subfigure}[b]{0.5\textwidth}
-            \caption{$n=10$}
-            \begin{tikzpicture}
+    \begin{center}
+        \begin{subfigure}[b]{0.3\textwidth}
+            \begin{tikzpicture}[scale=1.3]
                 \begin{axis}[
                     axis on top,
                     width=\textwidth,
+                    legend columns=-1,
+                    legend style={/tikz/every even column/.append style={column sep=0.5cm}},
+                    legend entries={$p=0.01$, $p=0.05$, $p=0.1$, $p=0.2$},
+                    legend to name=named,
                     tick pos=both,
                     xtick style={color=black},
                     ytick style={color=black},
-                    grid=both
+                    grid=both,
+                    title={$n=10$}
                 ]
                 \addplot[scatter, scatter/classes={
                     a={mark=asterisk,blue},
@@ -277,18 +279,17 @@ Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori di \verb
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result10.txt};
                 \end{axis}
             \end{tikzpicture}
-            \label{fig:bisi_dim_10}
         \end{subfigure}
-        \begin{subfigure}[b]{0.5\textwidth}
-            \caption{$n=100$}
-            \begin{tikzpicture}
+        \begin{subfigure}[b]{0.3\textwidth}
+            \begin{tikzpicture}[scale=1.3]
                 \begin{axis}[
                     axis on top,
                     width=\textwidth,
                     tick pos=both,
                     xtick style={color=black},
                     ytick style={color=black},
-                    grid=both
+                    grid=both,
+                    title={$n=100$}
                 ]
                 \addplot[scatter, scatter/classes={
                     a={mark=asterisk,blue},
@@ -298,18 +299,17 @@ Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori di \verb
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result100.txt};
                 \end{axis}
             \end{tikzpicture}
-            \label{fig:bisi_dim_100}
         \end{subfigure}
-        \begin{subfigure}[b]{0.5\textwidth}
-            \caption{$n=1000$}
-            \begin{tikzpicture}
+        \begin{subfigure}[b]{0.3\textwidth}
+            \begin{tikzpicture}[scale=1.3]
                 \begin{axis}[
                     axis on top,
                     width=\textwidth,
                     tick pos=both,
                     xtick style={color=black},
                     ytick style={color=black},
-                    grid=both
+                    grid=both,
+                    title={$n=1000$}
                 ]
                 \addplot[scatter, scatter/classes={
                     a={mark=asterisk,blue},
@@ -323,10 +323,10 @@ Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori di \verb
                     \label[d]{fig:bisi_size_1000_p02}
                 \end{axis}
             \end{tikzpicture}
-            \label{fig:bisi_dim_1000}
         \end{subfigure}
-    }
-    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale con $p=0.01$ (\ref*{fig:bisi_size_1000_p001}), $p=0.05$ (\ref*{fig:bisi_size_1000_p005}), $p=0.1$ (\ref*{fig:bisi_size_1000_p01}), $p=0.2$ (\ref*{fig:bisi_size_1000_p02}). Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
+        \ref*{named}
+    \end{center}
+    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale. Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
     \label{fig:bisi_size}
 \end{figure}
 
