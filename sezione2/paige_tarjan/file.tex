@@ -31,7 +31,7 @@ Il corpo del procedimento è formato da un ciclo che ripete le seguenti istruzio
     \item Viene scelto casualmente un blocco $S \in X$ non appartenente a $Q$;
     \item Viene scelto casualmente un blocco $B \in Q \mid B \subset S$, e la cui cardinalità sia inferiore a $|S|/2$;
     \item In $X$ il blocco $S$ viene sostituito da $\{B, S-B\}$;
-    \item Si sostituisce la partizione $Q$ con \splitfunc$(S-B,$ \splitfunc$(B,Q))$.
+    \item Si sostituisce la partizione $Q$ con $\splitfunc(S-B, \splitfunc(B,Q))$.
 \end{enumerate}
 
 Quando $Q$ e $X$ coincidono, viene restituita la partizione $Q$.
@@ -56,7 +56,7 @@ La correttezza dell'algoritmo di Paige-Tarjan si basa sul mantenimento di un'inv
     \begin{itemize}
         \item[1/2.] Prima della prima iterazione $Q$ è stabile rispetto a $X$ per l'operazione eseguita alla Riga \ref{alg:pta_rifi_iniziale}. Inoltre $Q$ rifinisce $X$ perchè quest'ultima è la partizione banale di $V$.
 
-        Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi: durante l'iterazione successiva in $X$ viene sostituito il blocco $S$ con i blocchi $S-B, B$, mentre $Q$ viene modificato da sue applicazioni successive della funzione Split. \accente evidente che $Q$ deve essere stabile rispetto a $S-B, B$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva (si ricordi la Proposizione \ref{prop:rifi_stabile}). Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = S$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dall'applicazione dei due Split ai blocchi $\{C_1, \dots, C_n\} - B$ è $S-B$, mentre l'unione dei due nuovi blocchi (di cui uno eventualmente vuoto) generati dalla divisione di $B$ è chiaramente $B$. Per cui $Q$ rifinisce ancora $X$.
+        Ora supponiamo che l'invariante sia valida prima di un'iterazione qualsiasi: durante l'iterazione successiva in $X$ viene sostituito il blocco $S$ con i blocchi $S-B, B$, mentre $Q$ viene modificato da sue applicazioni successive della funzione \splitfunc. \accente evidente che $Q$ deve essere stabile rispetto a $S-B, B$, ed anche a tutti gli altri blocchi di $X$ per l'ipotesi induttiva (si ricordi la Proposizione \ref{prop:rifi_stabile}). Inoltre, sempre per l'ipotesi induttiva, devono esistere (prima della modifica) dei blocchi $C_1, \dots, C_n \mid \bigcup_{i=1}^n C_i = S$. Dopo la modifica di $Q$ l'unione dei nuovi blocchi generati dalle due chiamate di \splitfunc sui blocchi $\{C_1, \dots, C_n\} - B$ è $S-B$, mentre l'unione dei due nuovi blocchi (di cui uno eventualmente vuoto) generati dalla divisione di $B$ è chiaramente $B$. Per cui $Q$ rifinisce ancora $X$.
         \item[3.] La proprietà è vera banalmente prima della prima iterazione.
 
         Supponiamo che l'invariante sia valida prima dell'iterazione $i$-esima: durante l'iterazione successiva la
@@ -79,6 +79,7 @@ Dal Lemma \ref{lem:pt_qx} possiamo dedurre direttamente il seguente risultato:
 
 A questo punto possiamo dimostrare in modo molto agevole la correttezza dell'algoritmo di Paige-Tarjan, utilizzando gli ingredienti proposti sopra:
 \begin{proposition}
+    \label{teo:pta_corretto}
     Al termine dell'Algoritmo \ref{alg:pt} vale l'uguaglianza:
     \begin{gather*}
         Q = \rscp(E,\mathfrak{V}).
@@ -89,7 +90,6 @@ A questo punto possiamo dimostrare in modo molto agevole la correttezza dell'alg
 \end{proof2}
 
 L'efficienza dell'algoritmo esposto all'inizio della sezione presente è garantita da un dettaglio implementativo che non abbiamo ancora reso esplicito. Introduciamo l'intuizione alla base tramite il seguente risultato \cite{paigetarjan}:
-
 \begin{lemma}
     \label{lem:pt_lemma3}
     Valgono le seguenti uguaglianze insiemistiche per la doppia chiamata alla funzione $\splitfunc$ alla Riga \ref{alg:pt_doublesplit}:

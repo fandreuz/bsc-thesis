@@ -1,6 +1,6 @@
 \subsection{Algoritmo di Dovier-Piazza-Policriti}
 \label{sec:dovier_piazza_policriti}
-In questa sezione presenteremo l'algoritmo di Dovier-Piazza-Policriti \cite{dovier}, più recente rispetto all'algoritmo di Paige-Tarjan. La differenza fondamentale è l'introduzione di un ordinamento parziale tra i nodi del grafo, il \emph{rango}, che quantifica sostanzialmente la distanza di un nodo dal \emph{pozzo} più lontano raggiungibile percorrendo gli archi (si ricordi che un \emph{pozzo} è un nodo da cui non escono archi). Utilizzando questo ordinamento è possibile rifinire la partizione in modo più oculato, arrivando al risultato con meno chiamate a $\splitfunc$. La complessità computazionale resta la stessa dell'algoritmo di Paige-Tarjan, ma come vedremo nei risultati sperimentali in molti casi l'algoritmo di Dovier-Piazza-Policriti risulta più economico del suo predecessore.
+In questa sezione presenteremo l'algoritmo di Dovier-Piazza-Policriti \cite{dovier}, più recente rispetto all'algoritmo di Paige-Tarjan. La differenza fondamentale è l'introduzione di un ordinamento parziale tra i nodi del grafo, il \emph{rango}, che quantifica sostanzialmente la distanza di un nodo dal \emph{pozzo} più lontano raggiungibile percorrendo gli archi (si ricordi che un \emph{pozzo} è un nodo da cui non escono archi). Utilizzando questo ordinamento è possibile rifinire la partizione in modo più oculato, arrivando al risultato con meno chiamate a \splitfunc. La complessità computazionale resta la stessa dell'algoritmo di Paige-Tarjan, ma come vedremo nei risultati sperimentali in molti casi l'algoritmo di Dovier-Piazza-Policriti risulta più economico del suo predecessore.
 
 La sezione è organizzata come segue: innanzitutto daremo alcune nozioni fondamentali per la comprensione dell'algoritmo, e alcuni risultati che risulteranno utili nel seguito; dopodichè esamineremo lo pseudocodice, ed analizzeremo la complessità e la correttezza dell'algoritmo.
 
@@ -36,17 +36,17 @@ Vale il seguente risultato immediato (si ricordi che con la notazione $[v], v \i
     Supponiamo che $n \in \texttt{WF}(G)$. Questo vuol dire che da tutti i nodi raggiungibili da $n$ non si può ritornare in $n$ (perchè non si hanno cicli). Ma allora non ci può essere un altro nodo nella SCC di $n$.
 \end{proof2}
 
-Introduciamo la funzione \texttt{rank}, che ricopre un ruolo primario nell'Algoritmo BFA:
+Introduciamo la funzione \rankfunc, che ricopre un ruolo primario nell'Algoritmo BFA:
 \begin{definition}
     \label{def:rank}
-    Sia $G = (V,E)$ un grafo diretto. La funzione $\texttt{rank}: V \to \mathbb{N} \cup \{0, -\infty\}$ è definita come segue:
+    Sia $G = (V,E)$ un grafo diretto. La funzione $\rankfunc: V \to \mathbb{N} \cup \{0, -\infty\}$ è definita come segue:
     \begin{gather*}
-        \texttt{rank}(n) = \begin{cases}
+        \rankfunc(n) = \begin{cases}
             0 &\text{se $n$ è un pozzo di $G$}\\
             -\infty &\parbox[t]{.32\textwidth}{se $[n]$ è un pozzo di $G^{\scalebox{.5}{SCC}}$,
                         e $n$ non è un pozzo di $G$}\\
-            \max(\{1 + \texttt{rank}(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
-            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{\texttt{rank}(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
+            \max(\{1 + \rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{WF}}}(n)\}\\
+            \,\,\,\,\,\,\,\,\,\,\,\,\,\, \cup \,\, \{\rankfunc(m) \mid m \in \mathcal{N_{\scalebox{0.5}{NWF}}}(n)\}) &\text{altrimenti}
         \end{cases}
     \end{gather*}
     Abbiamo utilizzato per comodità le funzioni $\mathcal{N}_{\scalebox{0.5}{WF}}(n), \mathcal{N}_{\scalebox{0.5}{NWF}}(n)$ definite come segue:
@@ -59,18 +59,18 @@ Introduciamo la funzione \texttt{rank}, che ricopre un ruolo primario nell'Algor
 \begin{observation}
     Sia $n \in V$, e supponiamo $\rankfunc(n) = k$. Allora:
     \begin{gather*}
-        \texttt{rank}(m) = k \,\,\forall m \in [n]
+        \rankfunc(m) = k \,\,\forall m \in [n]
     \end{gather*}
 \end{observation}
 \begin{proof2}
     Se $k = 0$ allora $n$ è una pozzo, per cui $[n]$ ha cardinalità 1, quindi la tesi vale banalmente. Se $k = -\infty$, nessuno dei nodi in $[n]$ può essere un pozzo di $G$, per cui hanno tutti rango $-\infty$. Infine se $k > 0$ basta osservare che il rango massimo si ``propaga'' tra nodi della stessa SCC, com'è evidente dalla Definizione \ref{def:rank}.
 \end{proof2}
 
-Se un grafo è \emph{ben fondato}, o se restringiamo il dominio ad un sottografo \emph{ben fondato}, possiamo dare una formulazione alternativa della funzione rank:
+Se un grafo è \emph{ben fondato}, o se restringiamo il dominio ad un sottografo \emph{ben fondato}, possiamo dare una formulazione alternativa della funzione \rankfunc:
 \begin{gather*}
-        \texttt{rank}(n) = \begin{cases}
+        \rankfunc(n) = \begin{cases}
             0 &\text{se $n$ è un pozzo di $G$}\\
-            1 + \max\{\texttt{rank}(m) \mid n E m\} &\text{altrimenti}
+            1 + \max\{\rankfunc(m) \mid n E m\} &\text{altrimenti}
         \end{cases}
 \end{gather*}
 Questa forma sarà utile per semplificare alcune delle dimostrazioni che seguono.
@@ -85,21 +85,21 @@ Riportiamo e dimostriamo alcuni risultati \cite{dovier} che renderanno più agil
 \end{theorem}
 La dimostrazione del Teorema \ref{theo:bisi_rank} è piuttosto lunga, per cui abbiamo preferito riportarla a pezzi. Cominciamo con la prima parte:
 \begin{proposition} \label{prop:rank_bisi_imp_wf}
-    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in \texttt{WF}(G)$. Allora $m \equiv n \implies \verb|rank|(m) = \verb|rank|(n)$.
+    Sia $G = (V,E)$. Sia ``\,$\equiv$'' la massima bisimulazione su $G$. Siano $m,n \in \texttt{WF}(G)$. Allora $m \equiv n \implies \rankfunc(m) = \rankfunc(n)$.
 \end{proposition}
 \begin{proof2}
-    Procediamo per induzione su $\texttt{rank}(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} gli APG aventi origine in $m,n$ rappresentano lo stesso insieme. Se $\texttt{rank}(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\texttt{rank}(n) = 0$.
+    Procediamo per induzione su $\rankfunc(m)$. Si ricordi che per il Teorema \ref{theo:bisi_iff_eqsets} gli APG aventi origine in $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = 0, m$ rappresenta l'insieme vuoto. Ma allora lo stesso vale per $n$, per cui anche $\rankfunc(n) = 0$.
 
-    Supponiamo (ipotesi induttiva) che due nodi bisimili di rango minore o uguale a $k-1$ abbiano sempre rango uguale. Sia $\texttt{rank}(m) = k$, e sia $m' \in V$ tale che $\langle m, m'\rangle \in E, \texttt{rank}(m') = k-1$. Allora deve esistere un nodo $n'$ tale che $\langle n, n'\rangle \in E, m' \equiv n'$, e quindi $\texttt{rank}(m') = \texttt{rank}(n')$. Ma allora $\texttt{rank}(n) \geq k-1 + 1 = k$, per la formulazione alternativa di \texttt{rank}. Analogamente si dimostra che $\texttt{rank}(m) \geq k$, per cui si ha la tesi.
+    Supponiamo (ipotesi induttiva) che due nodi bisimili di rango minore o uguale a $k-1$ abbiano sempre rango uguale. Sia $\rankfunc(m) = k$, e sia $m' \in V$ tale che $\langle m, m'\rangle \in E, \rankfunc(m') = k-1$. Allora deve esistere un nodo $n'$ tale che $\langle n, n'\rangle \in E, m' \equiv n'$, e quindi $\rankfunc(m') = \rankfunc(n')$. Ma allora $\rankfunc(n) \geq k-1 + 1 = k$, per la formulazione alternativa di \rankfunc. Analogamente si dimostra che $\rankfunc(m) \geq k$, per cui si ha la tesi.
 \end{proof2}
 
 La seconda parte del Teorema \ref{theo:bisi_rank} richiede un certo numero di sotto-risultati preliminari:
 \begin{proposition}
     \label{prop:omega_rank}
-    Sia $G = (V,E)$. Sia $m \in V$. Allora $\verb|rank|(m) = -\infty$ se e solo se l'APG $\restr{G}{m}$ rappresenta l'insieme $\Omega$.
+    Sia $G = (V,E)$. Sia $m \in V$. Allora $\rankfunc(m) = -\infty$ se e solo se l'APG $\restr{G}{m}$ rappresenta l'insieme $\Omega$.
 \end{proposition}
 \begin{proof2}
-    Supponiamo che $\texttt{rank}(m) = - \infty$. Si ricordi la caratterizzazione dell'insieme $\Omega$ (cioè l'insieme che contiene solamente se stesso \cite{aczel}): un APG rappresenta $\Omega$ se e solo se ogni nodo ha almeno un arco uscente. Dalle ipotesi fatte si deduce che $[m]$ non contiene solamente $m$ (altrimenti $m$ sarebbe un pozzo di $G$). Possiamo dimostrare che ogni nodo in $[m]$ deve avere almeno un arco uscente: se così non fosse il nodo non avrebbe modo di tornare all'interno della SCC $[m]$, per cui non potrebbe stare nella stessa SCC di $m$.
+    Supponiamo che $\rankfunc(m) = - \infty$. Si ricordi la caratterizzazione dell'insieme $\Omega$ (cioè l'insieme che contiene solamente se stesso \cite{aczel}): un APG rappresenta $\Omega$ se e solo se ogni nodo ha almeno un arco uscente. Dalle ipotesi fatte si deduce che $[m]$ non contiene solamente $m$ (altrimenti $m$ sarebbe un pozzo di $G$). Possiamo dimostrare che ogni nodo in $[m]$ deve avere almeno un arco uscente: se così non fosse il nodo non avrebbe modo di tornare all'interno della SCC $[m]$, per cui non potrebbe stare nella stessa SCC di $m$.
 
     Supponiamo ora che l'APG $\restr{G}{m}$ rappresenti l'insieme $\Omega$. Chiaramente $m$ non può essere un pozzo di $G$, altrimenti non rispetterebbe la caratterizzazione. Supponiamo per assurdo che $[m]$ non sia un pozzo di $G^{\superscc}$, cioè da un nodo di $[m]$ parte un arco verso un nodo $x \not\in [m]$. Si presentano quattro possibilità:
     \begin{enumerate}
@@ -130,14 +130,14 @@ Possiamo dunque enunciare e dimostrare la parte mancante della dimostrazione:
 \begin{proof2}
     Sempre per il Teorema \ref{theo:bisi_iff_eqsets}, $m,n$ rappresentano lo stesso insieme. Se $\rankfunc(m) = -\infty$, per la Proposizione \ref{prop:omega_rank} $m$ rappresenta $\Omega$, per cui anche $n$ rappresenta $\Omega$. Ma allora $\rankfunc(n) = -\infty$.
 
-    Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione rank deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in \texttt{WF}(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
+    Se $\rankfunc(m) = h > 0$, per come è stato definita la funzione \rankfunc deve esistere un nodo \emph{ben fondato} $m'$ raggiungibile da $m$, non necessariamente in modo diretto, tale che $\rankfunc(m') = h-1$ (il rango aumenta solo in corrispondenza di archi verso nodi \emph{ben fondati}). Poichè $m \equiv n$ deve esistere un nodo \emph{ben fondato} $n'$ raggiungibile da $n$ tale che $m' \equiv n'$. Ma allora ($m',n' \in \texttt{WF}(G)$) $\rankfunc(n') = \rankfunc(m') = h-1$, e quindi $\rankfunc(n) \geq \rankfunc(m) = h$. Analogamente si dimostra che $\rankfunc(m) \geq \rankfunc(n)$, per cui si ha la tesi.
 \end{proof2}
 
 \begin{proof2}[Teorema \ref{theo:bisi_rank}\,]
     Due nodi bisimili devono essere entrambi \emph{ben fondati} oppure entrambi \emph{non ben fondati}. La tesi segue dunque dalle Proposizioni \ref{prop:rank_bisi_imp_wf}, \ref{prop:bisi_rank_nwf}.
 \end{proof2}
 
-Dal Teorema \ref{theo:bisi_rank} deduciamo che due nodi aventi rango differente sono sicuramente \textbf{non} bisimili. Inoltre nodi a basso rango non sono influenzati da quanto avviene ai nodi ad alto rango; per cui, invece di procedere in modo randomico, possiamo utilizzare la funzione \texttt{split} sui blocchi in ordine crescente di rango. Ci aspettiamo con molta probabilità un risparmio di qualche tipo in termini di tempo di esecuzione rispetto all'algoritmo di Paige-Tarjan, in particolare su grafi che mostrano una struttura di qualche tipo; grafi generati in modo randomico, invece, hanno più probabilità di mostrare una varianza del rango poco significativa, per cui è possibile che l'algoritmo di Dovier-Piazza-Policriti impieghi più tempo.
+Dal Teorema \ref{theo:bisi_rank} deduciamo che due nodi aventi rango differente sono sicuramente \textbf{non} bisimili. Inoltre nodi a basso rango non sono influenzati da quanto avviene ai nodi ad alto rango; per cui, invece di procedere in modo randomico, possiamo utilizzare la funzione \splitfunc sui blocchi in ordine crescente di rango. Ci aspettiamo con molta probabilità un risparmio di qualche tipo in termini di tempo di esecuzione rispetto all'algoritmo di Paige-Tarjan, in particolare su grafi che mostrano una struttura di qualche tipo; grafi generati in modo randomico, invece, hanno più probabilità di mostrare una varianza del rango poco significativa, per cui è possibile che l'algoritmo di Dovier-Piazza-Policriti impieghi più tempo.
 
 Riportiamo un algoritmo per il calcolo del rango dei nodi di un grafo diretto \cite{dovier}. Ne analizziamo brevemente le caratteristiche discutendo alcuni semplici risultati:
 \begin{algorithm}[t!]
@@ -188,10 +188,10 @@ Riportiamo un algoritmo per il calcolo del rango dei nodi di un grafo diretto \c
 \begin{observation}
     L'Algoritmo \ref{alg:rank} termina, essendo una DFS. Inoltre, per lo stesso motivo, l'algoritmo ha complessità $O(|V| + |E|)$.
 \end{observation}
-Nell'analisi dell'Algoritmo \ref{alg:rank} indicheremo con ``$v$.rank'' il rango del nodo $v$ impostato dall'algoritmo, e con ``\texttt{rank}$(v)$'' il rango corretto. Inoltre useremo la notazione ``$v$.\emph{ft}'' per indicare il \emph{finishing-time} del nodo $v$ relativo alla DFS su $G^{-1}$ (Riga \ref{alg:rank_inverse_dfs}).
+Nell'analisi dell'Algoritmo \ref{alg:rank} indicheremo con ``$v$.rank'' il rango del nodo $v$ impostato dall'algoritmo, e con ``$\rankfunc(v)$'' il rango corretto. Inoltre useremo la notazione ``$v$.\emph{ft}'' per indicare il \emph{finishing-time} del nodo $v$ relativo alla DFS su $G^{-1}$ (Riga \ref{alg:rank_inverse_dfs}).
 \begin{theorem}
     \label{theo:rank_correct}
-    Dopo l'esecuzione dell'Algoritmo \ref{alg:rank} il rango di ogni nodo di $G$ è corretto, cioè $\forall v \in V$ vale $\verb|rank|(v) = v$.\emph{rank}.
+    Dopo l'esecuzione dell'Algoritmo \ref{alg:rank} il rango di ogni nodo di $G$ è corretto, cioè $\forall v \in V$ vale $\rankfunc(v) = v$.\emph{rank}.
 \end{theorem}
 
 Proponiamo innanzitutto alcuni risultati preliminari che consentono di semplificare la trattazione:
@@ -200,7 +200,7 @@ Proponiamo innanzitutto alcuni risultati preliminari che consentono di semplific
     Se $\langle v,u\rangle \in E$ e $v$.\emph{ft} $> u$.\emph{ft}, allora $u \in [v]$.
 \end{observation}
 \begin{proof2}
-    Chiaramente da $v$ è possibile raggiungere $u$ per ipotesi. Consideriamo la DFS su $G^{-1}$: ovviamente si avrà $\langle u, v\rangle \in E^{-1}$. Ma se $v$ fosse stato raggiunto per la prima volta durante la visita in profondità di $u$, avremmo $u$.ft $> v$.ft. Allora $v$ viene raggiunto \emph{prima} di $u$, e l'unica possibilità per cui si possa avere $v$.ft $> u$.ft è che esista un percorso da $v$ a $u$ (in $G^{-1}$). Procedendo al contrario lungo questo cammino si verifica che da $u$ è possibile raggiungere $v$.
+    Chiaramente da $v$ è possibile raggiungere $u$ per ipotesi. Consideriamo la DFS su $G^{-1}$: ovviamente si avrà $\langle u, v\rangle \in E^{-1}$. Ma se $v$ fosse stato raggiunto per la prima volta durante la visita in profondità di $u$, avremmo $u$.\emph{ft} $> v$.\emph{ft}. Allora $v$ viene raggiunto \emph{prima} di $u$, e l'unica possibilità per cui si possa avere $v$.ft $> u$.ft è che esista un percorso da $v$ a $u$ (in $G^{-1}$). Procedendo al contrario lungo questo cammino si verifica che da $u$ è possibile raggiungere $v$.
 \end{proof2}
 
 L'osservazione può essere riformulata in modo più esplitito:
@@ -237,7 +237,7 @@ Per comodità, nel seguito adotteremo la seguente notazione:
 Deduciamo il seguente risultato:
 \begin{proposition}
     \label{prop:rank_independent}
-    \verb|rank|$(v)$ dipende esclusivamente dal rango dei nodi $u$ che soddisfano la seguente proprietà:
+    $\rankfunc(v)$ dipende esclusivamente dal rango dei nodi $u$ che soddisfano la seguente proprietà:
     \begin{gather}
         u \in [v] \lor u.ft > [v].ft^* \label{rank_independency_formula}
     \end{gather}
@@ -251,7 +251,7 @@ A questo punto abbiamo tutti gli ingredienti necessari per dimostrare il teorema
 \begin{proof2}[Teorema \ref{theo:rank_correct}\,]
     Sia $v$ un nodo. Se $v$.\emph{rank} $= 0$, allora $v$ è un pozzo.
 
-    Se $v$.\emph{rank} $\neq 0$, poichè il rango viene calcolato come da definizione, è sufficiente dimostrare che al momento della visita di $E(v)$ si ha $u$.\emph{rank} $= \verb|rank|(u), \,\forall u \in E(v)$. Chiaramente gli unici nodi problematici sono quelli di colore grigio al momento della visita, in quanto l'esplorazione della loro immagine non è ancora terminata. Questi nodi stanno in $[v]$, e per il Corollario \ref{cor:no_buchi_scc} non ci sono nodi esterni alla SCC nell'intervallo, se si considera il \emph{finishing-time}. Ma allora tutti i nodi il cui rango è rilevante sono già stati visitati (Proposizione \ref{prop:rank_independent}).
+    Se $v$.\emph{rank} $\neq 0$, poichè il rango viene calcolato come da definizione, è sufficiente dimostrare che al momento della visita di $E(v)$ si ha $u$.\emph{rank} $= \rankfunc(u), \,\forall u \in E(v)$. Chiaramente gli unici nodi problematici sono quelli di colore grigio al momento della visita, in quanto l'esplorazione della loro immagine non è ancora terminata. Questi nodi stanno in $[v]$, e per il Corollario \ref{cor:no_buchi_scc} non ci sono nodi esterni alla SCC nell'intervallo, se si considera il \emph{finishing-time}. Ma allora tutti i nodi il cui rango è rilevante sono già stati visitati (Proposizione \ref{prop:rank_independent}).
 \end{proof2}
 
 \subsubsection{L'algoritmo}
@@ -283,8 +283,8 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
     }
     \Begin{
         \funcname{compute-rank}($G$)\;
-        $\rho \coloneqq \max\{\funcname{rank}(n) \mid n \in V\}$\;
-        $B_k \coloneqq \{n \in V \mid \funcname{rank}(n) = k\}, \,\, k \in \mathbb{N}^*$\;
+        $\rho \coloneqq \max\{\rankfunc(n) \mid n \in V\}$\;
+        $B_k \coloneqq \{n \in V \mid \rankfunc(n) = k\}, \,\, k \in \mathbb{N}^*$\;
         $P \coloneqq \{B_i \mid i \in \mathbb{N}^*\}$\; \label{alg:partizione_rudimentale}
 
         \tcp*[h]{$u$ è il nodo di $B_{-\infty}$ preservato da \funcname{collapse}.}\\
@@ -310,13 +310,13 @@ Per comodità di notazione poniamo $\mathbb{N}^* \coloneqq \mathbb{N} \cup \{-\i
 
 La funzione \funcname{collapse} rimuove dal grafo tutti i nodi all'interno di un blocco, ad eccezione di un nodo scelto in modo casuale; dopodichè sostituisce il nodo mantenuto in ogni arco incidente ad uno dei nodi rimossi. Viene utilizzata per ridurre ad un solo vertice un blocco per cui si è già stabilito che tutti i nodi sono bisimili.
 
-La funzione \funcname{split2} è analoga alla funzione \funcname{split}, ma consente di specificare i blocchi che possono essere modificati, solo quelli in $\widehat{B}$, e di ignorare quelli non appartenenti a $\widehat{B}$; inoltre lo \texttt{split} viene effettuato rispetto ad un unico vertice, infatti ogni $B \in \widehat{B}$ viene rimpiazzato in $P$ da due blocchi $\{v \in B \mid \langle v, u\rangle \in E\}$ e $\{v \in B \mid \langle v, u \rangle \not\in E\}\}$, che sono rispettivamente la notazione non insiemistica degli insiemi $B \cap E^{-1}(\{u\}), B - E^{-1}(\{u\})$. Ci si aspetta che $u$ sia il nodo ``soppravvissuto'' da una chiamata a \texttt{collapse}.
+La funzione \funcname{split2} è analoga alla funzione \splitfunc, ma consente di specificare i blocchi che possono essere modificati, solo quelli in $\widehat{B}$, e di ignorare quelli non appartenenti a $\widehat{B}$; inoltre lo \splitfunc viene effettuato rispetto ad un unico vertice, infatti ogni $B \in \widehat{B}$ viene rimpiazzato in $P$ da due blocchi $\{v \in B \mid \langle v, u\rangle \in E\}$ e $\{v \in B \mid \langle v, u \rangle \not\in E\}\}$, che sono rispettivamente la notazione non insiemistica degli insiemi $B \cap E^{-1}(\{u\}), B - E^{-1}(\{u\})$. Ci si aspetta che $u$ sia il nodo ``soppravvissuto'' da una chiamata a \funcname{collapse}.
 
-L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} la \texttt{RSCP} sarà sicuramente una rifinitura di questa partizione.
+L'algoritmo inizia con il calcolo del rango dei nodi del grafo. Alla Riga \ref{alg:partizione_rudimentale} viene creata una partizione iniziale, da rifinire, i cui blocchi sono composti dai nodi aventi lo stesso rango. Per il Teorema \ref{theo:bisi_rank} la \rscp sarà sicuramente una rifinitura di questa partizione.
 
 Per la Proposizione \ref{prop:omega_rank} possiamo impunemente considerare bisimili tutti i nodi di rango $-\infty$. Per questo motivo alla Riga \ref{alg:impunemente_omega} viene collassato il blocco $B_\infty$. Si noti che un'assunzione del genere non è valida per altri valori del rango, in quanto nodi non bisimili possono avere lo stesso rango. A questo punto è necessario aggiornare la partizione e dividere ogni blocco che non rispetta la condizione di stabilità (Riga \ref{alg:split_post_omega}).
 
-In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo di Paige-Tarjan a questo sottografo, al fine di calcolarne la RSCP. I blocchi di questa nuova partizione vengono collassati, ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità. Si nodi che ad ogni iterazione il numero di blocchi e nodi influenzati dalla chiamata a \texttt{split2} si riduce, coerentemente con quanto abbiamo anticipato nella Sezione \ref{sec:fba_preliminari}.
+In seguito, per ogni rango a partire 0, si considerano i blocchi di rango $i$ e si isola il sottografo contenente solamente nodi composti dai nodi che vi sono contenuti. Si applica l'algoritmo di Paige-Tarjan a questo sottografo, al fine di calcolarne la \rscp. I blocchi di questa nuova partizione vengono collassati, ed analogamente a quanto fatto in precedenza si impone ai blocchi di rango superiore la condizione di stabilità. Si nodi che ad ogni iterazione il numero di blocchi e nodi influenzati dalla chiamata a \funcname{split2} si riduce, coerentemente con quanto abbiamo anticipato nella Sezione \ref{sec:fba_preliminari}.
 
 \subsubsection{Analisi}
 Come abbiamo fatto per gli algoritmi di Hopcroft e Paige-Tarjan, verifichiamo la correttezza e la complessità dell'Algoritmo \ref{alg:fba}.
@@ -326,19 +326,19 @@ Come abbiamo fatto per gli algoritmi di Hopcroft e Paige-Tarjan, verifichiamo la
 \begin{proof2}
     Siano $m,n \in V \mid m \equiv n$. Per il Teorema \ref{theo:bisi_rank} $m,n$ devono necessariamente stare all'interno dello stesso blocco nella partizione iniziale creata alla Riga \ref{alg:partizione_rudimentale}. Dimostriamo ora che durante l'esecuzione dell'algoritmo $m,n$ verranno collassati in un unico nodo.
 
-    Se \texttt{rank}$(m) = \verb|rank|(n) = -\infty$ il blocco contenente questi due nodi viene collassato alla Riga \ref{alg:impunemente_omega}.
+    Se $\rankfunc(m) = \rankfunc(n) = -\infty$ il blocco contenente questi due nodi viene collassato alla Riga \ref{alg:impunemente_omega}.
 
-    Per i valori positivi del rango, procediamo per induzione. Se $rank(m) = rank(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da Split2 alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene collassato alla Riga \ref{alg:collapse_rank}. Se $rank(m) = rank(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $\langle m, m' \rangle \in E \implies \exists n' \mid \langle n, n' \rangle \in E \land \langle m', n' \rangle \in E$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo di Paige-Tarjan, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene collassato, allora sono necessariamente bisimili.
+    Per i valori positivi del rango, procediamo per induzione. Se $\rankfunc(m) = \rankfunc(n) = 0$ inizialmente appartengono entrambi a $B_0$. Sicuramente non vengono divisi da \funcname{split2} alla Riga \ref{alg:split_post_omega}, e l'intero blocco $B_0$ viene collassato alla Riga \ref{alg:collapse_rank}. Se $\rankfunc(m) = \rankfunc(n) = k > 0$, poichè abbiamo supposto che $m \equiv n$, si ha che $\langle m, m' \rangle \in E \implies \exists n' \mid \langle n, n' \rangle \in E \land \langle m', n' \rangle \in E$ (e lo stesso vale partendo da $n$). Questo significa che l'esistenza di un arco uscente da uno dei due nodi implica l'esistenza di un altro arco, uscente dall'altro nodo, e che le due destinazioni sono bisimili. Ma allora $m,n$ non possono essere stati divisi nei passaggi precedenti, perchè per l'ipotesi induttiva i nodi bisimili tra loro di rango inferiore a $k$ appartengono allo stesso blocco all'inizio dell'iterazione $i$-esima del ciclo alla Riga \ref{alg:fba_principal_loop}. Non c'è ancora stata alcuna divisione di blocchi indotta da nodi di rango uguale a $k$ (gli unici verso cui un nodo di rango $k$ può avere un arco, oltre ai nodi di rango strettamente minore di $k$), per cui $m,n$ sono necessariamente nello stesso blocco all'inizio dell'iterazione $i$-esima. Per la correttezza dell'Algoritmo di Paige-Tarjan, $m,n$ appartengono ancora allo stesso blocco quando questo viene collassato alla Riga \ref{alg:collapse_rank}. In modo analogo si dimostra che se due nodi appartengono allo stesso blocco quando questo viene collassato, allora sono necessariamente bisimili.
 \end{proof2}
 Quest'ultimo risultato dimostra chiaramente la correttezza dell'algoritmo di Dovier-Piazza-Policriti. Prima di valutare la complessità, discutiamo il costo delle funzioni ausiliarie:
 \begin{observation}
-    Un'implementazione efficiente congiunta delle funzioni \texttt{collapse} e \texttt{Split2} ha complessità $\Theta(|E^{-1}(B)|)$, dove $B$ è il blocco su cui sono chiamate una dopo l'altra.
+    Un'implementazione efficiente congiunta delle funzioni \funcname{collapse} e \funcname{split2} ha complessità $\Theta(|E^{-1}(B)|)$, dove $B$ è il blocco su cui sono chiamate una dopo l'altra.
 \end{observation}
 \begin{proof2}
     \accente sufficiente creare inizialmente l'insieme $E^{-1}(\{v\}) \, \forall v \in V$, cioè la contro-immagine di $v$ rispetto alla relazione binaria $E$. Per collassare il blocco $B$ e ricalcolare la partizione, cioè per eseguire le due seguenti righe di pseudocodice:
     \begin{align*}
         &u \coloneqq \textup{collapse}(G,B);\\
-        &\textup{Split2}(G, P, u, \bigcup_{j=i+1}^\rho B_j);
+        &\funcname{split2}(G, P, u, \bigcup_{j=i+1}^\rho B_j);
     \end{align*}
     è sufficiente visitare in modo esaustivo l'insieme $E^{-1}(B)$ e per ogni blocco $C$ della partizione iniziale (tra quelli contenuti in $\bigcup_{j=i+1}^\rho B_j$) raggiunto da questa visita rimuovere da $C$ i nodi che rientrano nella contro-immagine di $B$, ed inserirli in un nuovo blocco.
 \end{proof2}

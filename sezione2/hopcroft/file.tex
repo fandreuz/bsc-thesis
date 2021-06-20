@@ -292,15 +292,15 @@ Si può dimostrare che, limitatamente al caso particolare a cui si applica l'alg
 
     Allora vale la seguente espressione:
     \begin{center}
-        Split$(\mathfrak{p},\mathfrak{X})$ = Split$(Q - \mathfrak{p}, $Split$(B,\mathfrak{P}))$.
+        $\splitfunc(\mathfrak{p},\mathfrak{X}) = \splitfunc(Q - \mathfrak{p}, \splitfunc(B,\mathfrak{P}))$.
     \end{center}
 \end{proposition}
 \begin{proof2}
-    Vogliamo dimostrare che $Q - \mathfrak{p}$ non è uno \emph{splitter} di Split$(B,\mathfrak{P})$, cioè che $\forall s_x \in $ Split$(B,\mathfrak{P})$ si ha:
+    Vogliamo dimostrare che $Q - \mathfrak{p}$ non è uno \emph{splitter} di $\splitfunc(B,\mathfrak{P})$, cioè che $\forall s_x \in \splitfunc(B,\mathfrak{P})$ si ha:
     \begin{gather*}
         s_x \subseteq f^{-1}(Q - \mathfrak{p}) \,\,\lor\,\, s_x \cap f^{-1}(Q - \mathfrak{p}) = \emptyset.
     \end{gather*}
-    Rammentando che $\mathfrak{P}$ è stabile rispetto a $Q$, $\mathfrak{P}_2 \coloneqq$ Split$(B,\mathfrak{P})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref{prop:split_eredita}. Di conseguenza per ogni blocco $s_x \in \mathfrak{P}_2$ si ha:
+    Rammentando che $\mathfrak{P}$ è stabile rispetto a $Q$, $\mathfrak{P}_2 \coloneqq \splitfunc(B,\mathfrak{P})$ è stabile rispetto a $Q$ e a $B$, per l'Osservazione \ref{prop:split_eredita}. Di conseguenza per ogni blocco $s_x \in \mathfrak{P}_2$ si ha:
     \begin{gather*}
         s_x \subseteq f^{-1}(\mathfrak{p}) \lor s_x \cap f^{-1}(\mathfrak{p}) = \emptyset\\
         \land\\
