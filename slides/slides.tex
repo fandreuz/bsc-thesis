@@ -1,5 +1,7 @@
 \documentclass{beamer}
 \usepackage{tikz}
+\usepackage{caption}
+\usepackage{subcaption}
 
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
@@ -20,21 +22,136 @@
     \end{frame}
 }
 
+% I grafi diretti sono strutture matematiche composte da un insieme V di nodi e da un insieme E di archi. Sono oggetti interessanti
+% perchè consentono di creare un modello matematico di sistemi di vario genere (social network, impianti industriali, catene logistiche).
+% Per questo motivo lo studio della teoria dei grafi è trasversale rispetto a molti ambiti.
 \begin{frame}
-    \frametitle{Grafi}
-    \begin{itemize}
-        \item Cosa sono
-        \item A cosa servono (modelli, social network)
-    \end{itemize}
+    \frametitle{Grafi diretti}
+
+    \begin{figure}[t]
+        \centering
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+                \node (c) at (2.5,4) {c};
+                \node (d) at (2.5,1) {d};
+                \node (e) at (5,3) {e};
+            \end{scope}
+
+            \begin{scope}
+                \path [->] (a) edge node {} (b);
+                \path [->] (b) edge node {} (c);
+                \path [->] (a) edge node {} (d);
+                \path [->] (d) edge node {} (c);
+                \path [->] (d) edge node {} (e);
+                \path [->] (c) edge node {} (e);
+            \end{scope}
+            \end{tikzpicture}
+    \end{figure}
+
+    \begin{gather*}
+        V = \{a,b,c,d,e\}\\
+        E = \{\langle a,b\rangle, \langle b,c\rangle, \langle a,d\rangle, \langle c,e\rangle, \langle d,e\rangle\}
+    \end{gather*}
+\end{frame}
+
+% Per alcune applicazioni può essere utile avere a disposizione una nozione di equivalenza tra nodi. Il mio lavoro di tesi si è
+% focalizzato su una possibile definizione di equivalenza, la massima bisimulazione. Due nodi sono bisimili quando preso uno qualsiasi
+% dei due, per ogni suo figlio esiste un figlio dell'altro nodo bisimile al primo figlio scelto.
+% slide 1, vediamo un esempio. E' chiaro che due pozzi sono bisimili per la definizione.
+% slide 2, anche in questo caso è facile verificare la definizione.
+% slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
+\begin{frame}
+    \frametitle{Massima bisimulazione}
+    \begin{gather*}
+        \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+        \end{cases}\\
+        \implies a,b \text{ sono bisimili.}
+    \end{gather*}
+
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+            \end{scope}
+            \end{tikzpicture}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
     \frametitle{Massima bisimulazione}
-    \begin{itemize}
-        \item Definizione intuitiva
-        \item Equivalenza di nodi
-        \item Applicazioni
-    \end{itemize}
+    \begin{gather*}
+        \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+        \end{cases}\\
+        \implies a,b \text{ sono bisimili.}
+    \end{gather*}
+
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+                \node (c) at (-2,1.5) {c};
+                \node (d) at (2,1.5) {d};
+            \end{scope}
+
+            \begin{scope}
+                \path [->] (c) edge node {} (a);
+                \path [->] (d) edge node {} (b);
+            \end{scope}
+            \end{tikzpicture}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Massima bisimulazione}
+    \begin{gather*}
+        \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+        \end{cases}\\
+        \implies a,b \text{ sono bisimili.}
+    \end{gather*}
+
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.5]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node (a) at (0,0) {a};
+                \node (b) at (0,3) {b};
+                \node (c) at (-2,1.5) {c};
+                \node (d) at (2,1.5) {d};
+                \node (e) at (-4,1.5) {e};
+                \node (f) at (-5,3) {f};
+                \node (g) at (-5,0) {g};
+                \node (h) at (3,0) {h};
+                \node (i) at (4,3) {i};
+                \node (j) at (5,0) {j};
+            \end{scope}
+
+            \begin{scope}
+                \path [->] (c) edge node {} (a);
+                \path [->] (d) edge node {} (b);
+
+                \path [->] (f) edge node {} (c);
+                \path [->] (f) edge node {} (e);
+                \path [->] (g) edge node {} (a);
+                \path [->] (g) edge [loop below] node {} (g);
+                \path [->] (e) edge node {} (g);
+
+                \path [->] (h) edge node {} (a);
+                \path [->] (h) edge node {} (d);
+                \path [->] (i) edge [bend right] node {} (j);
+                \path [->] (j) edge node {} (i);
+                \path [->] (h) edge node {} (j);
+            \end{scope}
+            \end{tikzpicture}
+    \end{figure}
 \end{frame}
 
 \begin{frame}
