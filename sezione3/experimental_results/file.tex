@@ -1,4 +1,5 @@
 \subsection{Risultati sperimentali}
+\label{sec:results}
 Proponiamo alcuni risultati sperimentali ottenuti dal package Python contenente gli algoritmi per il calcolo della massima bisimulazione che abbiamo presentato nelle sezioni precedenti. Innanzitutto illustreremo brevemente l'ambiente e gli strumenti con cui sono state prese le misurazioni. Dopodichè presenteremo i risultati in forma di grafici, e tenteremo di evidenziare le differenze tra i vari algoritmi.
 
 \subsubsection{Hardware e strumenti per le misura}
@@ -98,157 +99,14 @@ La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui vie
 
 In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
 
-\paragraph{Dovier-Piazza-Policriti, Saha} Al fine di testare il tempo di esecuzione della nostra implementazione dell'algoritmo incrementale abbiamo esaminato una famiglia di alberi bilanciati del tipo mostrato nella Figura \ref{fig:balanced_tree}, per alcuni valori dei parametri \emph{depth}, \emph{branching factor}. Per questi grafi abbiamo considerato l'aggiunta di alcuni archi che riteniamo essere un valido insieme di \emph{test case} per l'algoritmo.
-
-Definiamo innanzitutto la seguente funzione:
+\paragraph{Dovier-Piazza-Policriti, Saha} Proseguiamo l'esposizione dei risultati sperimentali ottenuti utilizzando il pacchetto \texttt{BisPy} con un confronto tra gli algoritmi di Dovier-Piazza-Policriti (Sezione \ref{sec:dovier_piazza_policriti}) e l'algoritmo incrementale di Saha (Sezione \ref{sec:saha}). L'obiettivo di questo confronto è verificare che l'algoritmo incrementale risulti più efficiente nel ricalcolare la massima bisimulazione in seguito all'aggiunta di un nuovo arco, rispetto ad un algoritmo che non sfrutti le informazioni relative alla massima bisimulazione prima della modifica. Rammentiamo la complessità dell'algoritmo incrementale, calcolata nella Sezione \ref{sec:saha_complexity}:
 \begin{align*}
-    L: V \times \mathbb{N} \to V, \qquad L(v, d) = ``&\text{Un nodo scelto casualmente tra i successori di $v$}\\
-    &\text{ad un livello distante $d$ dal livello di $v$}''
+    T_{\text{Saha}} = O(|E_1|\log|V_1|) &+ O(|\Delta_{\wf}\log|\Delta_{\wf}|) + O(|E_{\nwf}| + |V_{\nwf}|)\\
+    &+ O(|E_2||V_2|) + O(|E_2|\log|V_2|)
 \end{align*}
+$\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambiato in seguito all'inserimento del nuovo arco; $E_1,V_1$ e $E_2,V_2$ sono rispettivamente nodi e archi appartenenti al sottografo di $G$ composto dai nodi modificati durante le fasi 1. (\funcname{split}) e 2. (\funcname{merge}); $E_{\nwf}$, $V_{\nwf}$ sono rispettivamente archi e nodi del sottografo \emph{non-well-founded} di $G$.
 
-Abbiamo implementato questa funzione per mezzo di un ciclo, ed abbiamo scelto sempre il nodo più a sinistra tra tutti i candidati allo stesos livello (la scelta è ininfluente ai fini dell'esperimento).
-
-Ad ogni realizzazzione dell'albero bilanciato aggingiamo i seguenti archi:
-\begin{enumerate}
-    \item $e_1 = \langle L(1, 2), 1 \rangle$;
-    \item $e_2 = \langle L(1, 3), 1 \rangle$;
-    \item $e_3 = \langle L(1, 4), 1 \rangle$;
-    \item $e_4 = \langle L(1, 5), 1 \rangle$;
-\end{enumerate}
-
-Si osservi che la sorgente dell'arco si sposta verso il basso all'aumentare dell'indice dell'arco aggiunto. Poichè l'algoritmo di Saha visita ricorsivamente tutta la contro-immagine della sorgente dell'arco, ci aspettiamo di osservare nei risultati sperimentali un peggioramento del tempo di esecuzione all'aumentare dell'indice dell'arco aggiunto.
-
-\begin{figure}[H]
-    \centering
-        \begin{subfigure}[b]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    grid=major,
-                    xmode=log,
-                    ymode=log
-                ]
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/fba0.txt};
-                \label{fig:fba_line_saha}
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/sah0.txt};
-                \label{fig:saha_line_saha}
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Arco $e_1$}
-            \label{fig:saha_1_result}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    grid=major,
-                    xmode=log,
-                    ymode=log%
-                ]
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/fba1.txt};
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/sah1.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Arco $e_2$}
-            \label{fig:saha_2_result}
-        \end{subfigure}\\
-        \begin{subfigure}[b]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    grid=major,
-                    xmode=log,
-                    ymode=log
-                ]
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/fba2.txt};
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/sah2.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Arco $e_3$}
-            \label{fig:saha_3_result}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    grid=major,
-                    xmode=log,
-                    ymode=log
-                ]
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/fba3.txt};
-                \addplot table[x=x,y=y] {experiments/time/tree_saha/sah3.txt};
-                \end{axis}
-            \end{tikzpicture}
-            \caption{Arco $e_4$}
-            \label{fig:saha_4_result}
-        \end{subfigure}
-    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_saha}) e Saha (\ref*{fig:saha_line_saha}) in seguito all'aggiunta di diversi tipi di arco, su alberi bilanciati con \emph{depth} e \emph{branching factor} variabili. Lungo l'asse delle ascisse varia la quantità $|E|\log|V|$, mentre l'asse delle ordinate corrisponde al tempo di esecuzione dell'algoritmo in secondi.}
-    \label{fig:saha_result}
-\end{figure}
-
-L'esperimento dunque è stato condotto secondo questi passaggi:
-\begin{itemize}
-    \item Esecuzione dell'algoritmo di Dovier-Piazza-Policriti sul grafo in seguito all'aggiunta di un arco $e_i, i \in \{1,2,3,4\}$;
-    \item Calcolo della massima bisimulazione del grafo prima della modifica;
-    \item Aggiornamento della massima bisimulazione calcolata nel punto 2. dopo l'aggiunta del nuovo arco tramita l'algoritmo incrementale.
-\end{itemize}
-
-I risultati sono visualizzati nella Figura \ref{fig:saha_result}. Si osservi che in tutti i casi che abbiamo considerato l'algoritmo di Dovier-Piazza-Policriti impiega più tempo asintoticamente, come previsto.
-
-Questa visualizzazione non ci consente di controllare la sensibilità dell'algoritmo incrementale alla tipologia di arco considerata. Nella Figura \ref{fig:saha_depends_cycle} è riportato l'andamento per $i \in \{2,3,4\}$ della funzione $T_i(G) - T_1(G)$, con $T_k(G)$ definita come segue:
-\begin{align*}
-    T_k(G) = ``&\text{tempo di esecuzione in secondi dell'algoritmo di Saha}\\
-    &\text{in seguito all'aggiunta di } e_k''
-\end{align*}
-
-\begin{figure}[H]
-    \begin{tikzpicture}
-        \definecolor{color1}{rgb}{0.75,0,0.75}
-        \definecolor{color0}{rgb}{0,0.75,0.75}
-        \begin{axis}[
-            axis on top,
-            width=\textwidth,
-            height=6cm,
-            ytick style={draw=none},
-            xtick style={draw=none},
-            grid=major,
-            legend cell align={left},
-            legend style={font=\small, fill=white,opacity=0.8},
-            legend pos=south west,
-            tick pos=both,
-            xtick style={color=black},
-            ytick style={color=black},
-            xlabel={$|E|\log|V|$},
-            ylabel={Secondi},
-            grid style={line width=.1pt, draw=gray!10},
-            xmode=log,
-            ymode=log
-        ]
-        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff0.txt};
-        \label{fig:saha_diff_0}
-        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff1.txt};
-        \label{fig:saha_diff_1}
-        \addplot table[x=x,y=y] {experiments/time/tree_saha/saha_diff2.txt};
-        \label{fig:saha_diff_2}
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Differenza tra il tempo di esecuzione dell'algoritmo di Saha dopo l'aggiunta dell'arco $e_1$ e gli archi $e_2$ (\ref*{fig:saha_diff_0}), $e_3$ (\ref*{fig:saha_diff_1}), $e_4$ (\ref*{fig:saha_diff_2}).}
-    \label{fig:saha_depends_cycle}
-\end{figure}
-
-\accente evidente che l'arco $e_4$ risulta il più pesante da aggiungere, risultato facilmente prevedibile dalle caratteristiche dell'algoritmo incrementale.
+Si osservi che numerosi termini possono diventare molto facilmente ``problematici'', e rendere quindi l'algoritmo incrementale meno efficiente del ricalcolo da zero della massima bisimulazione. In questa breve analisi presenteremo i risultati su alcune tipologie di grafo, e ne verificheremo la coerenza con l'analisi proposta nelle sezioni precedenti.
 
 \subsubsection{Dimensione della massima bisimulazione}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Consideriamo l'andamento del numero di classi di equivalenza nella massima bisimulazione per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
