@@ -104,15 +104,127 @@ In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagl
     T_{\text{Saha}} = O(|E_1|\log|V_1|) &+ O(|\Delta_{\wf}\log|\Delta_{\wf}|) + O(|E_{\nwf}| + |V_{\nwf}|)\\
     &+ O(|E_2||V_2|) + O(|E_2|\log|V_2|)
 \end{align*}
-$\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambiato in seguito all'inserimento del nuovo arco; $E_1,V_1$ e $E_2,V_2$ sono rispettivamente nodi e archi appartenenti al sottografo di $G$ composto dai nodi modificati durante le fasi 1. (\funcname{split}) e 2. (\funcname{merge}); $E_{\nwf}$, $V_{\nwf}$ sono rispettivamente archi e nodi del sottografo \emph{non-well-founded} di $G$.
 
-Si osservi che numerosi termini possono diventare molto facilmente ``problematici'', e rendere quindi l'algoritmo incrementale meno efficiente del ricalcolo da zero della massima bisimulazione. In questa breve analisi presenteremo i risultati su alcune tipologie di grafo, e ne verificheremo la coerenza con l'analisi proposta nelle sezioni precedenti.
+$\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambiato in seguito all'inserimento del nuovo arco; $E_1,V_1$ e $E_2,V_2$ sono rispettivamente nodi e archi appartenenti al sottografo di $G$ composto dai nodi modificati durante le fasi 1. (\funcname{split}) e 2. (\funcname{merge}); $E_{\nwf}$, $V_{\nwf}$ sono rispettivamente archi e nodi del sottografo \emph{non-well-founded} di $G$. Si osservi che numerosi termini possono diventare molto facilmente ``problematici'', e rendere quindi l'algoritmo incrementale meno efficiente del ricalcolo da zero della massima bisimulazione. In questa breve analisi presenteremo i risultati su alcune tipologie di grafo, e ne verificheremo la coerenza con l'analisi proposta nelle sezioni precedenti.
 
-\subsubsection{Dimensione della massima bisimulazione}
-Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Consideriamo l'andamento del numero di classi di equivalenza nella massima bisimulazione per grafi di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$.
-Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis on top,
+                width=\textwidth,
+                legend columns=-1,
+                legend style={/tikz/every even column/.append style={column sep=0.5cm}},
+                legend entries={Paige-Tarjan, Dovier-Piazza-Policriti, Saha},
+                legend to name=named,
+                ytick style={draw=none},
+                xtick style={draw=none},
+                xlabel={\texttt{n}},
+                xlabel style={font=\large},
+                ylabel={Secondi},
+                ylabel style={font=\large},
+                xmode=log,
+                ymode=log,
+                grid=major,
+                title={\texttt{p}$=0.0001$}
+            ]
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_0_0.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_0_1.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_0_2.txt};
+        \end{axis}
+        \end{tikzpicture}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis on top,
+                width=\textwidth,
+                ytick style={draw=none},
+                xtick style={draw=none},
+                xlabel={\texttt{n}},
+                xlabel style={font=\large},
+                ylabel={Secondi},
+                ylabel style={font=\large},
+                xmode=log,
+                ymode=log,
+                grid=major,
+                title={\texttt{p}$=0.0005$}
+            ]
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_1_0.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_1_1.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/mean_1_2.txt};
+        \end{axis}
+        \end{tikzpicture}
+    \end{subfigure}
+    \ref*{named}
+    \caption{Tempo medio in secondi (su un campione di 100 grafi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico. Lungo l'asse delle ascisse varia il numero di nodi del grafo binomiale.}
+    \label{fig:saha_results_random}
+\end{figure}
+
+Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \emph{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per i tre algoritmi presentati in questo lavoro (Figura \ref{fig:saha_results_random}).
 
 \begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis on top,
+                width=\textwidth,
+                legend columns=-1,
+                legend style={/tikz/every even column/.append style={column sep=0.5cm}},
+                legend entries={Paige-Tarjan, Dovier-Piazza-Policriti, Saha},
+                legend to name=named,
+                ytick style={draw=none},
+                xtick style={draw=none},
+                xlabel={\texttt{n}},
+                xlabel style={font=\large},
+                ylabel={Secondi},
+                ylabel style={font=\large},
+                xmode=log,
+                ymode=log,
+                grid=major,
+                title={\texttt{p}$=0.0001$}
+            ]
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_0.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_1.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_2.txt};
+        \end{axis}
+        \end{tikzpicture}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.48\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                axis on top,
+                width=\textwidth,
+                ytick style={draw=none},
+                xtick style={draw=none},
+                xlabel={\texttt{n}},
+                xlabel style={font=\large},
+                ylabel={Secondi},
+                ylabel style={font=\large},
+                xmode=log,
+                ymode=log,
+                grid=major,
+                title={\texttt{p}$=0.0005$}
+            ]
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_0.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_1.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_2.txt};
+        \end{axis}
+        \end{tikzpicture}
+    \end{subfigure}
+    \ref*{named}
+    \caption{Tempo medio in secondi (su un campione di 100 grafi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico. Lungo l'asse delle ascisse varia il numero di nodi del grafo binomiale.}
+    \label{fig:saha_results_random}
+\end{figure}
+
+\subsubsection{Dimensione della massima bisimulazione}
+Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Verificheremo l'andamento del numero di classi di equivalenza nella massima bisimulazione per i grafi randomici di Erdős-Rényi considerati poco sopra. Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
+
+\begin{figure}[b!]
     \begin{center}
         \begin{subfigure}[b]{0.3\textwidth}
             \begin{tikzpicture}[scale=1.3]
