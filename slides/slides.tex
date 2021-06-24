@@ -1,7 +1,10 @@
 \documentclass{beamer}
 \usepackage{tikz}
+\usepackage{scalerel}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{mathtools}
+\usepackage{amsmath}
 
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
@@ -63,13 +66,13 @@
 % slide 2, anche in questo caso è facile verificare la definizione.
 % slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
 \begin{frame}
-    \frametitle{Massima bisimulazione}
+    \frametitle{Bisimulazione I}
     \begin{gather*}
+        a \equiv b \implies
         \begin{cases}
             \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
             \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}\\
-        \implies a,b \text{ sono bisimili.}
+        \end{cases}
     \end{gather*}
 
     \begin{figure}
@@ -83,13 +86,13 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Massima bisimulazione}
+    \frametitle{Bisimulazione II}
     \begin{gather*}
+        a \equiv b \implies
         \begin{cases}
             \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
             \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}\\
-        \implies a,b \text{ sono bisimili.}
+        \end{cases}
     \end{gather*}
 
     \begin{figure}
@@ -110,13 +113,13 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Massima bisimulazione}
+    \frametitle{Bisimulazione III}
     \begin{gather*}
+        a \equiv b \implies
         \begin{cases}
             \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
             \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}\\
-        \implies a,b \text{ sono bisimili.}
+        \end{cases}
     \end{gather*}
 
     \begin{figure}
@@ -155,6 +158,22 @@
 \end{frame}
 
 \begin{frame}
+    \frametitle{Bisimulazione massima}
+
+
+    \begin{gather*}
+        \equiv_\mathcal{M} \,\,\,\coloneqq \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
+    \end{gather*}
+
+    \begin{itemize}
+        \item $\equiv_\mathcal{M}$ è una \emph{relazione di equivalenza}
+
+        $\implies$ induce un partizionamento su $V$;
+        \item Determinare $\equiv_\mathcal{M}$ è equivalente a determinare la \texttt{RSCP} di $V,E$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}
     \frametitle{Algoritmi}
     \begin{itemize}
         \item Paige-Tarjan
@@ -178,11 +197,19 @@
 \begin{frame}
     \frametitle{Sviluppi futuri}
     \begin{itemize}
-        \item Incremental delete
-        \item Labeled edges
-        \item NetworkX
-        \item Cython
+        \item Incremental delete: ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
+        \item Labeled edges;
+        \item Migliore integrazione con altre librerie (\emph{NetworkX});
+        \item Riscrittura in \textbf{Cython} di parti critiche del codice.
     \end{itemize}
+
+    \begin{gather*}
+        a \equiv b \implies
+        \begin{cases}
+            \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \equiv b'\\
+            \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \equiv a'
+        \end{cases}
+    \end{gather*}
 \end{frame}
 
 \begin{frame}
