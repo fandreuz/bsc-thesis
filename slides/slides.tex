@@ -29,8 +29,7 @@
 % I grafi diretti sono strutture matematiche composte da un insieme V di nodi e da un insieme E di archi. Sono oggetti interessanti
 % perchè consentono di creare un modello matematico di sistemi di vario genere (social network, impianti industriali, catene logistiche).
 % Per questo motivo lo studio della teoria dei grafi è trasversale rispetto a molti ambiti.
-\begin{frame}
-    \frametitle{Grafi diretti}
+\begin{frame}\frametitle{Grafi diretti}
 
     \begin{figure}[t]
         \centering
@@ -66,8 +65,7 @@
 % slide 1, vediamo un esempio. E' chiaro che due pozzi sono bisimili per la definizione.
 % slide 2, anche in questo caso è facile verificare la definizione.
 % slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
-\begin{frame}
-    \frametitle{Bisimulazione I}
+\begin{frame}\frametitle{Bisimulazione I}
     \begin{gather*}
         a \equiv b \implies
         \begin{cases}
@@ -86,8 +84,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Bisimulazione II}
+\begin{frame}\frametitle{Bisimulazione II}
     \begin{gather*}
         a \equiv b \implies
         \begin{cases}
@@ -113,8 +110,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Bisimulazione III}
+\begin{frame}\frametitle{Bisimulazione III}
     \begin{gather*}
         a \equiv b \implies
         \begin{cases}
@@ -158,10 +154,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Bisimulazione massima}
-
-
+\begin{frame}\frametitle{Bisimulazione massima}
     \begin{gather*}
         \equiv_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
     \end{gather*}
@@ -174,8 +167,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Algoritmi}
+\begin{frame}\frametitle{Algoritmi}
     \begin{itemize}
         \item Algoritmo di Paige-Tarjan
         \item Algoritmo di Dovier-Piazza-Policriti
@@ -183,8 +175,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]
-    \frametitle{BisPy}
+\begin{frame}[fragile]\frametitle{BisPy}
     \begin{itemize}
         \item Python 3
         \item Open source (\url{https://github.com/fAndreuzzi/BisPy})
@@ -204,12 +195,10 @@
     \end{verbatim}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Risultati sperimentali}
+\begin{frame}\frametitle{Risultati sperimentali}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Sviluppi futuri}
+\begin{frame}\frametitle{Sviluppi futuri}
     \begin{itemize}
         \item Incremental delete: ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
         \item Labeled edges;
