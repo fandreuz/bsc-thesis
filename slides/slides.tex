@@ -4,6 +4,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{mathtools}
+\usepackage{hyperref}
 \usepackage{amsmath}
 
 %Information to be included in the title page:
@@ -176,18 +177,31 @@
 \begin{frame}
     \frametitle{Algoritmi}
     \begin{itemize}
-        \item Paige-Tarjan
-        \item Dovier-Piazza-Policriti
-        \item Saha
+        \item Algoritmo di Paige-Tarjan
+        \item Algoritmo di Dovier-Piazza-Policriti
+        \item Algoritmo incrementale di Saha
     \end{itemize}
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
     \frametitle{BisPy}
     \begin{itemize}
-        \item Python
-        \item Open source
+        \item Python 3
+        \item Open source (\url{https://github.com/fAndreuzzi/BisPy})
     \end{itemize}
+
+    \begin{verbatim}
+    import networkx as nx
+    from bispy import paige_tarjan
+    # creazione del grafo
+    graph = nx.balanced_tree(2,3, create_using=nx.DiGraph)
+    print(paige_tarjan(graph))
+    \end{verbatim}
+    Lo script restituisce il seguente output:
+    \begin{verbatim}
+    >>> [(7, 8, 9, 10, 11, 12, 13, 14), (3, 4, 5, 6),
+        (1, 2), (0,)]
+    \end{verbatim}
 \end{frame}
 
 \begin{frame}
