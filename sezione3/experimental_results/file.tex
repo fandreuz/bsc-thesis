@@ -23,7 +23,7 @@ Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciat
     \item \emph{branching factor}: il numero di successori di ogni nodo (ad eccezione dei nodi nell'ultimo livello).
 \end{itemize}
 
-Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph{NetworkX}, che appunto prende in input questi due parametri.
+\noindent Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph{NetworkX}, che appunto prende in input questi due parametri.
 
 \begin{figure}
     \centering
@@ -50,16 +50,22 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
 \end{figure}
 
 \begin{figure}[b!]
-    \begin{subfigure}[t]{0.5\textwidth}
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
                 width=\textwidth,
                 ytick style={draw=none},
                 xtick style={draw=none},
+                legend columns=-1,
+                legend style={/tikz/every even column/.append style={column sep=0.5cm}},
+                legend entries={Paige-Tarjan, Dovier-Piazza-Policriti},
+                legend to name=named2,
                 xmode=log,
                 ymode=log,
-                grid=major
+                grid=major,
+                title={Alberi bilanciati}
             ]
             \addplot table[x=x,y=y] {experiments/time/tree/pta.txt};
             \label{fig:pta_line_tree}
@@ -67,10 +73,9 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
             \label{fig:fba_line_tree}
             \end{axis}
         \end{tikzpicture}
-        \caption{Alberi bilanciati con \emph{depth} e \emph{branching factor} variabili.}
-        \label{fig:tree_exp_result}
     \end{subfigure}
-    \begin{subfigure}[t]{0.5\textwidth}
+    \hfill
+    \begin{subfigure}[t]{0.49\textwidth}
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
@@ -79,31 +84,28 @@ Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph
                 xtick style={draw=none},
                 grid=major,
                 xmode=log,
-                ymode=log
+                ymode=log,
+                title={Grafi di Hopcroft}
             ]
             \addplot table[x=x,y=y] {experiments/time/hopcroft/pta.txt};
-            \label{fig:pta_line_hopcroft}
             \addplot table[x=x,y=y] {experiments/time/hopcroft/fba.txt};
-            \label{fig:fba_line_hopcroft}
             \end{axis}
         \end{tikzpicture}
-        \caption{Grafi della tipologia elaborata da Hopcroft, di dimensioni varie.}
-        \label{fig:hopcroft_exp_result}
     \end{subfigure}
-    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti (\ref*{fig:fba_line_tree}) e Paige-Tarjan (\ref*{fig:pta_line_tree}) sulle tipologie di grafo \ref{fig:balanced_tree} (a) e \ref{fig:hopcroft_graph_1}, \ref{fig:hopcroft_graph_2} (b). Lungo l'asse delle ascisse (logaritmico) abbiamo la quantità $|E|\log|V|$, mentre sull'asse delle ordinate (logaritmico) è riportato il tempo di esecuzione dell'algoritmo in secondi.}
+    \ref*{named2}
+    \caption{Tempo di esecuzione degli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan su alberi bilanciati (destra) e automi proposti da Hopcroft (sinistra). Lungo l'asse delle ascisse (logaritmico) varia la quantità $|E|\log|V|$, mentre sull'asse delle ordinate (logaritmico) è riportato il tempo di esecuzione dell'algoritmo in secondi.}
+    \label{fig:pta_vs_fba}
 \end{figure}
 
-Dalla Figura \ref{fig:tree_exp_result} possiamo osservare che asintoticamente l'algoritmo di Dovier-Piazza-Policriti è asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene infatti la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è apprezzabile, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
+Dal grafico rappresentato nella parte sinistra della Figura \ref{fig:pta_vs_fba} possiamo osservare che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene infatti la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è apprezzabile, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
 
-La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} ne visualizziamo alcune realizzazioni.
+La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} ne visualizziamo alcune realizzazioni. Nella parte destra della Figura \ref{fig:pta_vs_fba} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente.
 
-In Figura \ref{fig:hopcroft_exp_result} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente anche in questo caso.
-
-\paragraph{Dovier-Piazza-Policriti, Saha} Proseguiamo l'esposizione dei risultati sperimentali ottenuti utilizzando il pacchetto \texttt{BisPy} con un confronto tra gli algoritmi di Dovier-Piazza-Policriti (Sezione \ref{sec:dovier_piazza_policriti}) e l'algoritmo incrementale di Saha (Sezione \ref{sec:saha}). L'obiettivo di questo confronto è verificare che l'algoritmo incrementale risulti più efficiente nel ricalcolare la massima bisimulazione in seguito all'aggiunta di un nuovo arco, rispetto ad un algoritmo che non sfrutti le informazioni relative alla massima bisimulazione prima della modifica. Rammentiamo la complessità dell'algoritmo incrementale, calcolata nella Sezione \ref{sec:saha_complexity}:
-\begin{align*}
+\paragraph{Algoritmo incrementale} Proseguiamo l'esposizione dei risultati sperimentali ottenuti utilizzando il pacchetto \texttt{BisPy} con un confronto tra gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti (cui ci riferiremo in questa sezione con ``algoritmi \emph{from scratch}'', in quanto ricalcolano da zero la massima bisimulazione) e l'algoritmo incrementale di Saha. L'obiettivo di questo confronto è verificare di quanto e in quali casi l'algoritmo incrementale risulti più efficiente nel ricalcolare la massima bisimulazione in seguito all'aggiunta di un nuovo arco, rispetto ad un algoritmo che non sfrutti le informazioni relative alla massima bisimulazione prima della modifica. Rammentiamo la complessità dell'algoritmo di Saha, ottenuta nella Sezione \ref{sec:saha_complexity} come la somma delle varie fasi di cui si compone il procedimento:
+\begin{align}\label{eq:saha}
     T_{\text{Saha}} = O(|E_1|\log|V_1|) &+ O(|\Delta_{\wf}\log|\Delta_{\wf}|) + O(|E_{\nwf}| + |V_{\nwf}|)\\
     &+ O(|E_2||V_2|) + O(|E_2|\log|V_2|)
-\end{align*}
+\end{align}
 
 $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambiato in seguito all'inserimento del nuovo arco; $E_1,V_1$ e $E_2,V_2$ sono rispettivamente nodi e archi appartenenti al sottografo di $G$ composto dai nodi modificati durante le fasi 1. (\funcname{split}) e 2. (\funcname{merge}); $E_{\nwf}$, $V_{\nwf}$ sono rispettivamente archi e nodi del sottografo \emph{non-well-founded} di $G$. Si osservi che numerosi termini possono diventare molto facilmente ``problematici'', e rendere quindi l'algoritmo incrementale meno efficiente del ricalcolo da zero della massima bisimulazione. In questa breve analisi presenteremo i risultati su alcune tipologie di grafo, e ne verificheremo la coerenza con l'analisi proposta nelle sezioni precedenti.
 
@@ -163,7 +165,13 @@ $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambi
     \label{fig:saha_results_random}
 \end{figure}
 
-Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $< 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \emph{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per i tre algoritmi presentati in questo lavoro (Figura \ref{fig:saha_results_random}).
+Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $\leq 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \emph{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per gli algoritmi di Paige-Tarjan, Dovier-Piazza-Policriti e Saha (Figura \ref{fig:saha_results_random}). L'algoritmo incrementale risulta mediamente più conveniente per entrambi i valori di \texttt{p} considerati, ma è evidente che con l'aumento di questo parametri la convenienza si riduce in modo significativo. Questo comportamento è coerente con \eqref{eq:saha}.
+
+Per il secondo esperimento abbiamo ritenuto interessante esaminare grafi con una certa struttura considerato degli \emph{alberi bilanciati}, una tipologia di grafi che abbiamo già descritto sommariamente nel paragrafo precedente. Abbiamo generato 100 archi in modo randomico (escludendo quelli già presenti) ed abbiamo utilizzato i tre algoritmi presentati in questo lavoro per aggiornare la massima bisimulazione, al fine di confrontare il tempo di esecuzione degli algoritmi \emph{from scratch} e l'algoritmo incrementale. I risultati sono rappresentati nella parte sinistra della Figura \ref{fig:saha_results_tree}. Ad una prima analisi del grafico sembra che non vi sia una particolare convenienza nell'utilizzo dell'algoritmo di Saha; questa impressione è però in parte sbagliata, è necessario ricordate che gli archi sono generati in modo randomico e che il tempo di esecuzione è estremamente suscettibile alla tipologia di arco in cui consiste la modifica. La situazione è rappresentata meglio nella parte destra della Figura \ref{fig:saha_results_tree}, in cui abbiamo diviso gli archi in categorie in base alla seguente funzione:
+\begin{gather*}
+    \Delta v(\langle x,y \rangle) = \texttt{Depth}(x) - \texttt{Depth}(y)
+\end{gather*}
+dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si oosservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la bisimulazione massima viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
 
 \begin{figure}[H]
     \centering
@@ -172,24 +180,25 @@ Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{
             \begin{axis}[
                 axis on top,
                 width=\textwidth,
-                legend columns=-1,
-                legend style={/tikz/every even column/.append style={column sep=0.5cm}},
-                legend entries={Paige-Tarjan, Dovier-Piazza-Policriti, Saha},
-                legend to name=named,
                 ytick style={draw=none},
                 xtick style={draw=none},
+                legend style={fill=white,opacity=0.8, at={(0,0.58)},anchor=south west, legend columns=1},
                 xlabel={\texttt{n}},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
-                xmode=log,
+                xtick={5.0,6.0,7.0,8.0,9.0,10.0},
+                xticklabels={5,6,7,8,9,10},
                 ymode=log,
                 grid=major,
-                title={\texttt{p}$=0.0001$}
+                title={Tempo medio su \emph{balanced tree}}
             ]
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_0.txt};
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_1.txt};
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/mean_0_2.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_0.txt};
+            \addlegendentry{Paige-Tarjan}
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
+            \addlegendentry{DPP}
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_2.txt};
+            \addlegendentry{Saha}
         \end{axis}
         \end{tikzpicture}
     \end{subfigure}
@@ -199,32 +208,44 @@ Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{
             \begin{axis}[
                 axis on top,
                 width=\textwidth,
-                ytick style={draw=none},
-                xtick style={draw=none},
+                legend style={fill=white,opacity=0.8, at={(0,0.45)},anchor=south west, legend columns=1},
                 xlabel={\texttt{n}},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
-                xmode=log,
+                yminorticks=false,
+                xtick={5.0,6.0,7.0,8.0,9.0,10.0},
+                xticklabels={5,6,7,8,9,10},
                 ymode=log,
                 grid=major,
-                title={\texttt{p}$=0.0005$}
+                title={Raggruppamento per tipo di arco}
             ]
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_0.txt};
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_1.txt};
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/max_0_2.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_0.txt};
+            \addlegendentry{Paige-Tarjan}
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data1.txt};
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data2.txt};
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/second/data3.txt};
+            \addlegendentry{Saha $\Delta v = \hphantom{-}3$}
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam0.txt};
+            \addlegendentry{Saha $\Delta v = \hphantom{-}0$}
+            \addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam1.txt};
+            \addlegendentry{Saha $\Delta v = -1$}
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam2.txt};
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam3.txt};
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam4.txt};
+            %\addlegendentry{Saha $\Delta v = -4$}
         \end{axis}
         \end{tikzpicture}
     \end{subfigure}
-    \ref*{named}
-    \caption{Tempo medio in secondi (su un campione di 100 grafi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico. Lungo l'asse delle ascisse varia il numero di nodi del grafo binomiale.}
-    \label{fig:saha_results_random}
+    \caption{Tempo medio in secondi (su un campione di 100 archi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico, su \emph{balanced tree} con \emph{depth} variabile e \emph{branching factor} fissato a 2. Nell'immagine a sinistra (l'algoritmo di Dovier-Piazza-Policriti è stato abbreviato in ``DPP'') abbiamo rappresentato i risultati complessivi, nell'immagine a destra abbiamo diviso gli archi in categorie a seconda della distanza (in livelli) tra i due nodi corrispondenti, ed abbiamo poi preso il tempo medio di questi ``cluster''.}
+    \label{fig:saha_results_tree}
 \end{figure}
 
 \subsubsection{Dimensione della massima bisimulazione}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Verificheremo l'andamento del numero di classi di equivalenza nella massima bisimulazione per i grafi randomici di Erdős-Rényi considerati poco sopra. Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
 
-\begin{figure}[b!]
+\begin{figure}[t!]
     \begin{center}
         \begin{subfigure}[b]{0.3\textwidth}
             \begin{tikzpicture}[scale=1.3]
