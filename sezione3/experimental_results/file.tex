@@ -10,7 +10,7 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
     \item Esegue lo script preso in esame molte volte in modo da ridurre l'imprecisione dovuta a temporanei sovraccarichi della CPU o della RAM.
 \end{itemize}
 
-I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \emph{NetworkX} \cite{networkx}.
+I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \texttt{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
 Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici utilizziamo lungo l'asse delle ascisse una scala data dal valore $|E| \log |V|$, che ci consente di visualizzare in modo più omogeneo i risultati lungo l'asse delle ordinate. Entrambi gli assi variano secondo una scala logaritmica.
@@ -23,7 +23,7 @@ Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciat
     \item \emph{branching factor}: il numero di successori di ogni nodo (ad eccezione dei nodi nell'ultimo livello).
 \end{itemize}
 
-\noindent Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \emph{NetworkX}, che appunto prende in input questi due parametri.
+\noindent Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \texttt{NetworkX}, che appunto prende in input questi due parametri.
 
 \begin{figure}[t!]
     \centering
@@ -165,7 +165,7 @@ $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambi
     \label{fig:saha_results_random}
 \end{figure}
 
-Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $\leq 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \emph{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per gli algoritmi di Paige-Tarjan, Dovier-Piazza-Policriti e Saha (Figura \ref{fig:saha_results_random}). L'algoritmo incrementale risulta mediamente più conveniente per entrambi i valori di \texttt{p} considerati, ma è evidente che con l'aumento di questo parametri la convenienza si riduce in modo significativo. Tale comportamento è coerente con \eqref{eq:saha}. Nella Figura \ref{fig:saha_scatter_random} sono riportati i 100 risultati per due coppie (\texttt{n,p}). Questa visualizzazzione ci consente di osservare che non sempre l'algoritmo incrementale è il più conveniente: per i valori considerati viene saltuariamente superato dall'algoritmo di Paige-Tarjan.
+Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $\leq 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \texttt{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per gli algoritmi di Paige-Tarjan, Dovier-Piazza-Policriti e Saha (Figura \ref{fig:saha_results_random}). L'algoritmo incrementale risulta mediamente più conveniente per entrambi i valori di \texttt{p} considerati, ma è evidente che con l'aumento di questo parametri la convenienza si riduce in modo significativo. Tale comportamento è coerente con \eqref{eq:saha}. Nella Figura \ref{fig:saha_scatter_random} sono riportati i 100 risultati per due coppie (\texttt{n,p}). Questa visualizzazzione ci consente di osservare che non sempre l'algoritmo incrementale è il più conveniente: per i valori considerati viene saltuariamente superato dall'algoritmo di Paige-Tarjan.
 
 \begin{figure}[t!]
     \centering
@@ -440,6 +440,6 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
     \label{fig:bisi_size}
 \end{figure}
 
-Per ogni combinazione di \verb|n|,\verb|p| abbiamo generato 100 grafi binomiali con la funzione \verb|fast_gnp_random_graph| del pacchetto \emph{NetworkX}, e ne abbiamo calcolata la massima bisimulazione con l'algoritmo di \emph{Dovier-Piazza-Policriti}. Nei grafici abbiamo visualizzato la quantità $\frac{|V / \equiv|}{|V|}$, ovvero il rapporto tra il numero di classi di equivalenza nella massima bisimulazione ed il numero di nodi del grafo: questa quantità potrebbe essere considerata come il fattore di riduzione che otteniamo quanto sostuitiamo al grafo originale la sua contrazione secondo la massima bisimulazione.
+Per ogni combinazione di \verb|n|,\verb|p| abbiamo generato 100 grafi binomiali con la funzione \verb|fast_gnp_random_graph| del pacchetto \texttt{NetworkX}, e ne abbiamo calcolata la massima bisimulazione con l'algoritmo di \emph{Dovier-Piazza-Policriti}. Nei grafici abbiamo visualizzato la quantità $\frac{|V / \equiv|}{|V|}$, ovvero il rapporto tra il numero di classi di equivalenza nella massima bisimulazione ed il numero di nodi del grafo: questa quantità potrebbe essere considerata come il fattore di riduzione che otteniamo quanto sostuitiamo al grafo originale la sua contrazione secondo la massima bisimulazione.
 
 Per \verb|n=10| la quantità che stiamo valutando varia molto tra 1 (10 classi di equivalenza, nessuna riduzione) e 0.1 (tutti i nodi sono bisimili, riduzione massima). Per valori più grandi la variabilità si riduce, e per \verb|n=1000| il fattore si schiaccia decisamente verso 0.001 (un'unica partizione).
