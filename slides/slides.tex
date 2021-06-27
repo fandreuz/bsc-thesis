@@ -72,10 +72,10 @@
 \begin{frame}\frametitle{Bisimulazione I}
     \begin{block}{Definizione: Bisimulazione}
         \begin{gather*}
-            a \equiv b \implies
+            a \mathcal{B} b \implies
             \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
             \end{cases}
         \end{gather*}
     \end{block}
@@ -93,10 +93,10 @@
 \begin{frame}\frametitle{Bisimulazione II}
     \begin{block}{Definizione: Bisimulazione}
         \begin{gather*}
-            a \equiv b \implies
+            a \mathcal{B} b \implies
             \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
             \end{cases}
         \end{gather*}
     \end{block}
@@ -121,10 +121,10 @@
 \begin{frame}\frametitle{Bisimulazione III}
     \begin{block}{Definizione: Bisimulazione}
         \begin{gather*}
-            a \equiv b \implies
+            a \mathcal{B} b \implies
             \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
             \end{cases}
         \end{gather*}
     \end{block}
@@ -167,12 +167,12 @@
 \begin{frame}\frametitle{Massima bisimulazione}
     \begin{block}{Definizione: Massima bisimulazione}
         \begin{gather*}
-            \equiv_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
+            \mathcal{B}_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
         \end{gather*}
     \end{block}
     \begin{itemize}
-        \item $\equiv_\mathcal{M}$ è ancora una \emph{bisimulazione};
-        \item $\equiv_\mathcal{M}$ è una \emph{relazione di equivalenza}
+        \item $\mathcal{B}_\mathcal{M}$ è ancora una \emph{bisimulazione};
+        \item $\mathcal{B}_\mathcal{M}$ è una \emph{relazione di equivalenza}
 
         $\implies$ induce un partizionamento su $V$.
     \end{itemize}
@@ -393,10 +393,10 @@
 
     \begin{block}{Definizione: Bisimulazione con \emph{labeled edges}}
         \begin{gather*}
-            a \equiv b \implies
+            a \mathcal{B} b \implies
             \begin{cases}
-                \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \equiv b'\\
-                \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \equiv a'
+                \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \mathcal{B} b'\\
+                \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \mathcal{B} a'
             \end{cases}
         \end{gather*}
     \end{block}
