@@ -6,6 +6,7 @@
 \usepackage{mathtools}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usetheme{Madrid}
 
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
@@ -66,13 +67,15 @@
 % slide 2, anche in questo caso è facile verificare la definizione.
 % slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
 \begin{frame}\frametitle{Bisimulazione I}
-    \begin{gather*}
-        a \equiv b \implies
-        \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}
-    \end{gather*}
+    \begin{block}{Definizione: Bisimulazione}
+        \begin{gather*}
+            a \equiv b \implies
+            \begin{cases}
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+            \end{cases}
+        \end{gather*}
+    \end{block}
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
@@ -85,13 +88,15 @@
 \end{frame}
 
 \begin{frame}\frametitle{Bisimulazione II}
-    \begin{gather*}
-        a \equiv b \implies
-        \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}
-    \end{gather*}
+    \begin{block}{Definizione: Bisimulazione}
+        \begin{gather*}
+            a \equiv b \implies
+            \begin{cases}
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+            \end{cases}
+        \end{gather*}
+    \end{block}
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
@@ -111,13 +116,15 @@
 \end{frame}
 
 \begin{frame}\frametitle{Bisimulazione III}
-    \begin{gather*}
-        a \equiv b \implies
-        \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
-        \end{cases}
-    \end{gather*}
+    \begin{block}{Definizione: Bisimulazione}
+        \begin{gather*}
+            a \equiv b \implies
+            \begin{cases}
+                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \equiv b'\\
+                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \equiv a'
+            \end{cases}
+        \end{gather*}
+    \end{block}
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
@@ -155,9 +162,11 @@
 \end{frame}
 
 \begin{frame}\frametitle{Massima bisimulazione}
-    \begin{gather*}
-        \equiv_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
-    \end{gather*}
+    \begin{block}{Definizione: Massima bisimulazione}
+        \begin{gather*}
+            \equiv_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
+        \end{gather*}
+    \end{block}
     \begin{itemize}
         \item $\equiv_\mathcal{M}$ è ancora una \emph{bisimulazione};
         \item $\equiv_\mathcal{M}$ è una \emph{relazione di equivalenza}
@@ -180,19 +189,22 @@
         \item Open source (\url{https://github.com/fAndreuzzi/BisPy})
     \end{itemize}
 
-    \begin{verbatim}
-    import networkx as nx
-    from bispy import paige_tarjan
 
-    # creazione del grafo
-    graph = nx.balanced_tree(2,3)
+    \begin{example}
+        \begin{verbatim}
+        import networkx as nx
+        from bispy import paige_tarjan
 
-    # calcolo della massima bisimulazione
-    print(paige_tarjan(graph))
+        # creazione del grafo
+        graph = nx.balanced_tree(2,3)
 
-    >>> [(7, 8, 9, 10, 11, 12, 13, 14), (3, 4, 5, 6),
-        (1, 2), (0,)]
-    \end{verbatim}
+        # calcolo della massima bisimulazione
+        print(paige_tarjan(graph))
+
+        >>> [(7, 8, 9, 10, 11, 12, 13, 14), (3, 4, 5, 6),
+            (1, 2), (0,)]
+        \end{verbatim}
+    \end{example}
 \end{frame}
 
 \begin{frame}\frametitle{Risultati sperimentali}
@@ -206,13 +218,16 @@
         \item Riscrittura in \texttt{Cython} di parti critiche del codice.
     \end{itemize}
 
-    \begin{gather*}
-        a \equiv b \implies
-        \begin{cases}
-            \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \equiv b'\\
-            \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \equiv a'
-        \end{cases}
-    \end{gather*}
+
+    \begin{block}{Definizione: Bisimulazione con etichetta}
+        \begin{gather*}
+            a \equiv b \implies
+            \begin{cases}
+                \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \equiv b'\\
+                \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \equiv a'
+            \end{cases}
+        \end{gather*}
+    \end{block}
 \end{frame}
 
 \begin{frame}

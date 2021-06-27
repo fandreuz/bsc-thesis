@@ -20,7 +20,8 @@ Chiaramente aumentando il numero di nodi e archi questo tipo di analisi non si p
 ### Massima bisimulazione
 Le relazioni binarie che mostrano la proprietà caratteristica della bisimulazione su un grafo si chiamano appunto bisimulazioni. L'unione di tutte le bisimulazioni su un grafo dà la *massima bisimulazione*. Si può dimostrare che è ancora una *bisimulazione* e che è una *relazione di equivalenza*.
 
-### VI
+### Algoritmi
+Per la risoluzione del problema della *massima bisimulazione* abbiamo considerato tre algoritmi: il primo e più celebre, l'algoritmo di **Paige-Tarjan**, che si basa sull'algoritmo di Hopcroft per la minimizzazione di automi a stati finiti; il più recente algoritmo di **Dovier-Piazza-Policriti**, che rifinisce l'approccio di Paige-Tarjan utilizzando un'euristica che consente di ordinare i nodi in base alla distanza dal pozzo raggiungibile più distante; infine l'algoritmo **incrementale di Saha**, che consente di aggiornare la massima bisimulazione dopo l'aggiunta di un nuovo arco, partendo dalla massima bisimulazione precedente alla modifica del grafo, evitando il ricalcolo da zero.
 
 ### VII
 
