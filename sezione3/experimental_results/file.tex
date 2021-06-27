@@ -187,13 +187,15 @@ Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
+                ymode=log,
+                enlargelimits=false,
                 grid=major,
                 title={\texttt{n}=2000, \texttt{p}=0.0001},
                 only marks
             ]
-            \addplot+[mark=o,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_0.txt};
+            \addplot+[mark=x,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_0.txt};
             \addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_1.txt};
-            \addplot+[mark=square,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_2.txt};
+            \addplot+[mark=+,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_2.txt};
             \addplot+[
                 domain=0:100,
                 samples=100,
@@ -241,13 +243,15 @@ Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
+                ymode=log,
+                enlargelimits=false,
                 grid=major,
                 title={\texttt{n}=2000, \texttt{p}=0.0005},
                 only marks
             ]
-            \addplot+[mark=o,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_0.txt};
+            \addplot+[mark=x,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_0.txt};
             \addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_1.txt};
-            \addplot+[mark=square,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_2.txt};
+            \addplot+[mark=+,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_2.txt};
             \addplot+[
                 domain=0:100,
                 samples=100,
@@ -382,10 +386,10 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
                     title={$n=10$}
                 ]
                 \addplot[scatter, scatter/classes={
-                    a={mark=asterisk,blue},
-                    b={mark=diamond,red},
-                    c={mark=square,green},
-                    d={mark=triangle,yellow}
+                        a={mark=asterisk,blue},
+                        b={mark=+,red},
+                        c={mark=x,green},
+                        d={mark=*,orange, mark size=0.5pt}
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result10.txt};
                 \end{axis}
             \end{tikzpicture}
@@ -402,10 +406,10 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
                     title={$n=100$}
                 ]
                 \addplot[scatter, scatter/classes={
-                    a={mark=asterisk,blue},
-                    b={mark=diamond,red},
-                    c={mark=square,green},
-                    d={mark=triangle,yellow}
+                        a={mark=asterisk,blue},
+                        b={mark=+,red},
+                        c={mark=x,green},
+                        d={mark=*,orange, mark size=0.5pt}
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result100.txt};
                 \end{axis}
             \end{tikzpicture}
@@ -422,10 +426,10 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
                     title={$n=1000$}
                 ]
                 \addplot[scatter, scatter/classes={
-                    a={mark=asterisk,blue},
-                    b={mark=diamond,red},
-                    c={mark=square,green},
-                    d={mark=triangle,purple}
+                        a={mark=asterisk,blue},
+                        b={mark=+,red},
+                        c={mark=x,green},
+                        d={mark=*,orange, mark size=0.5pt}
                     }, only marks, scatter src=explicit symbolic] table[y=y,meta=label] {experiments/dimension/dim/result1000.txt};
                     \label[a]{fig:bisi_size_1000_p001}
                     \label[b]{fig:bisi_size_1000_p005}
