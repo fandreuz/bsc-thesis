@@ -1,5 +1,7 @@
 \documentclass{beamer}
 \usepackage{tikz}
+\usepackage{tikzsymbols}
+\usepackage{pgfplots}
 \usepackage{scalerel}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -208,6 +210,73 @@
 \end{frame}
 
 \begin{frame}\frametitle{Risultati sperimentali}
+    \begin{figure}
+        \centering
+        \begin{subfigure}[t]{0.49\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    legend style={nodes={scale=0.7, transform shape}, fill=white,opacity=0.8, at={(0,0.68)},anchor=south west, legend columns=1},
+                    legend cell align={left},
+                    ytick style={draw=none},
+                    xtick style={draw=none},
+                    xlabel={\texttt{n}},
+                    xlabel style={font=\large},
+                    ylabel={Secondi},
+                    ylabel style={font=\large},
+                    xmode=log,
+                    ymode=log,
+                    grid=major,
+                    title={Grafi di Erdős-Rényi}
+                ]
+                \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_0.txt};
+                \addlegendentry{Paige-Tarjan}
+                \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_1.txt};
+                \addlegendentry{DPP}
+                \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_2.txt};
+                \addlegendentry{Saha}
+            \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{0.49\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    legend style={nodes={scale=0.7, transform shape}, fill=white,opacity=0.8, at={(0,0.49)},anchor=south west, legend columns=1},
+                    legend cell align={left},
+                    xlabel={\texttt{depth}},
+                    xlabel style={font=\large},
+                    ylabel style={font=\large},
+                    yminorticks=false,
+                    xtick={5.0,6.0,7.0,8.0,9.0,10.0},
+                    xticklabels={5,6,7,8,9,10},
+                    ymode=log,
+                    grid=major,
+                    title={Alberi bilanciati}
+                ]
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/first/mean_0_0.txt};
+                \addlegendentry{Paige-Tarjan}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/first/mean_0_1.txt};
+                \addlegendentry{DPP}
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data1.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data2.txt};
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/data3.txt};
+                \addlegendentry{Saha $\Delta v = \hphantom{-}3$}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/datam0.txt};
+                \addlegendentry{Saha $\Delta v = \hphantom{-}0$}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/datam1.txt};
+                \addlegendentry{Saha $\Delta v = -1$}
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam2.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam3.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam4.txt};
+                %\addlegendentry{Saha $\Delta v = -4$}
+            \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+    \end{figure}
 \end{frame}
 
 \begin{frame}\frametitle{Conclusioni e viluppi futuri}
@@ -217,7 +286,6 @@
         \item Migliore integrazione con altre librerie (\texttt{NetworkX});
         \item Riscrittura in \texttt{Cython} di parti critiche del codice.
     \end{itemize}
-
 
     \begin{block}{Definizione: Bisimulazione con etichetta}
         \begin{gather*}
