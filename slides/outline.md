@@ -29,7 +29,3 @@ Gli algoritmi sono stati implementati in Python e pubblicati su GitHub sotto for
 ### Risultati sperimentali
 
 ### Conclusioni e sviluppi futuri
-
-### IX
-
-### X

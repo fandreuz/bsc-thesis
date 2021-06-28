@@ -337,7 +337,7 @@ Quest'ultimo risultato dimostra chiaramente la correttezza dell'algoritmo di Dov
 \begin{proof2}
     \accente sufficiente creare inizialmente l'insieme $E^{-1}(\{v\}) \, \forall v \in V$, cioè la contro-immagine di $v$ rispetto alla relazione binaria $E$. Per collassare il blocco $B$ e ricalcolare la partizione, cioè per eseguire le due seguenti righe di pseudocodice:
     \begin{align*}
-        &u \coloneqq \textup{collapse}(G,B);\\
+        &u \coloneqq \funcname{collapse}(G,B);\\
         &\funcname{split2}(G, P, u, \bigcup_{j=i+1}^\rho B_j);
     \end{align*}
     è sufficiente visitare in modo esaustivo l'insieme $E^{-1}(B)$ e per ogni blocco $C$ della partizione iniziale (tra quelli contenuti in $\bigcup_{j=i+1}^\rho B_j$) raggiunto da questa visita rimuovere da $C$ i nodi che rientrano nella contro-immagine di $B$, ed inserirli in un nuovo blocco.
