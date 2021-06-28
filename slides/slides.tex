@@ -13,7 +13,7 @@
 
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
-\subtitle{un pacchetto Python per il calcolo della massima bisimulazione di grafi diretti.}
+\subtitle{un pacchetto Python per il calcolo\\ della massima bisimulazione di grafi diretti.}
 
 \author{Francesco Andreuzzi}
 \institute{Università degli Studi di Trieste,\\Dipartimento di Ingegneria e Architettura}
@@ -90,13 +90,11 @@
 % slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
 \begin{frame}\frametitle{Bisimulazione I}
     \begin{block}{Definizione: Bisimulazione}
-        \begin{gather*}
-            a \mathcal{B} b \implies
-            \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-            \end{cases}
-        \end{gather*}
+        \centering
+        $a \mathcal{B} b \implies \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
+        \end{cases}$
     \end{block}
 
     \bigskip\bigskip
@@ -113,13 +111,11 @@
 
 \begin{frame}\frametitle{Bisimulazione II}
     \begin{block}{Definizione: Bisimulazione}
-        \begin{gather*}
-            a \mathcal{B} b \implies
-            \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-            \end{cases}
-        \end{gather*}
+        \centering
+        $a \mathcal{B} b \implies \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
+        \end{cases}$
     \end{block}
 
     \bigskip\bigskip
@@ -143,13 +139,11 @@
 
 \begin{frame}\frametitle{Bisimulazione III}
     \begin{block}{Definizione: Bisimulazione}
-        \begin{gather*}
-            a \mathcal{B} b \implies
-            \begin{cases}
-                \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-                \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-            \end{cases}
-        \end{gather*}
+        \centering
+        $a \mathcal{B} b \implies \begin{cases}
+            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
+        \end{cases}$
     \end{block}
 
     \bigskip\bigskip
