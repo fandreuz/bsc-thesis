@@ -11,6 +11,11 @@
 \usepackage{amsmath}
 \usetheme{Boadilla}
 
+\newcommand{\bisimulation}{$a \mathcal{B} b \implies \begin{cases}
+    \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
+    \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
+\end{cases}$}
+
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
 \subtitle{un pacchetto Python per il calcolo\\ della massima bisimulazione di grafi diretti.}
@@ -91,10 +96,7 @@
 \begin{frame}\frametitle{Bisimulazione I}
     \begin{block}{Definizione: Bisimulazione}
         \centering
-        $a \mathcal{B} b \implies \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-        \end{cases}$
+        \bisimulation
     \end{block}
 
     \bigskip\bigskip
@@ -112,10 +114,7 @@
 \begin{frame}\frametitle{Bisimulazione II}
     \begin{block}{Definizione: Bisimulazione}
         \centering
-        $a \mathcal{B} b \implies \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-        \end{cases}$
+        \bisimulation
     \end{block}
 
     \bigskip\bigskip
@@ -140,10 +139,7 @@
 \begin{frame}\frametitle{Bisimulazione III}
     \begin{block}{Definizione: Bisimulazione}
         \centering
-        $a \mathcal{B} b \implies \begin{cases}
-            \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-            \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-        \end{cases}$
+        \bisimulation
     \end{block}
 
     \bigskip\bigskip
