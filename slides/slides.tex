@@ -12,7 +12,7 @@
 \usepackage{amsmath}
 \usetheme{Boadilla}
 
-\newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \in V \times V$}
+\newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
     \centering
     Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo figlio di $a$ che sia in relazione con uno dei nodi figli di $b$, e viceversa.
 \end{block}}
@@ -59,10 +59,15 @@
 % perchè consentono di creare un modello matematico di sistemi di vario genere (social network, impianti industriali, catene logistiche).
 % Per questo motivo lo studio della teoria dei grafi è trasversale rispetto a molti ambiti.
 \begin{frame}\frametitle{Grafi orientati}
+    \vspace{-1cm}
+    \begin{gather*}
+        V = \{a,b,c,d,e\}\\
+        E = \{\langle a,b\rangle, \langle b,c\rangle, \langle a,d\rangle, \langle c,e\rangle, \langle d,e\rangle\}
+    \end{gather*}
 
     \begin{figure}[t]
         \centering
-        \begin{tikzpicture}[scale=0.9]
+        \begin{tikzpicture}[scale=0.7]
             \begin{scope}[every node/.style={circle,thick,draw}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
@@ -83,10 +88,11 @@
             \end{tikzpicture}
     \end{figure}
 
-    \begin{gather*}
-        V = \{a,b,c,d,e\}\\
-        E = \{\langle a,b\rangle, \langle b,c\rangle, \langle a,d\rangle, \langle c,e\rangle, \langle d,e\rangle\}
-    \end{gather*}
+    \bigskip
+
+    \begin{block}{Definizione: Nodo figlio}
+        Se $\langle a,b \rangle \in E \implies b$ è un nodo figlio di $a$.
+    \end{block}
 \end{frame}
 
 % Per alcune applicazioni può essere utile avere a disposizione una nozione di equivalenza tra nodi. Il mio lavoro di tesi si è
