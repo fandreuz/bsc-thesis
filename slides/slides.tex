@@ -417,23 +417,18 @@
     \ref*{named5}
 \end{frame}
 
-\begin{frame}\frametitle{Conclusioni e sviluppi futuri}
+\begin{frame}\frametitle{Conclusione}
+    Il software sviluppato ha consentito di osservare ed analizzare il comportamento degli algoritmi per varie tipologie di grafi.
+
+    \bigskip\bigskip
+
+    \textbf{Sviluppi futuri}
     \begin{itemize}
         \item Ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
         \item Massima bisimulazione con \emph{labeled edges};
         \item Migliore integrazione con altre librerie (\texttt{NetworkX});
-        \item Riscrittura in \texttt{Cython} di parti critiche del codice.
+        \item Utilizzare \texttt{Cython} per parti critiche del codice.
     \end{itemize}
-
-    \begin{block}{Definizione: Bisimulazione con \emph{labeled edges}}
-        \begin{gather*}
-            a \mathcal{B} b \implies
-            \begin{cases}
-                \langle a, a' \rangle^\ell \in E \implies \exists b' \mid \langle b, b' \rangle^\ell \in E \land a' \mathcal{B} b'\\
-                \langle b, b' \rangle^\ell \in E \implies \exists a' \mid \langle a, a' \rangle^\ell \in E \land b' \mathcal{B} a'
-            \end{cases}
-        \end{gather*}
-    \end{block}
 \end{frame}
 
 \begin{frame}
