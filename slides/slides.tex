@@ -430,7 +430,35 @@
 \end{frame}
 
 \begin{frame}
-    Grazie per l'attenzione
+    Appendice
+\end{frame}
+
+\begin{frame}\frametitle{Bisimulazione non simmetrica}
+    \begin{figure}[t]
+        \centering
+        \begin{tikzpicture}[scale=0.9]
+            \begin{scope}[every node/.style={circle,thick,draw}]
+                \node[fill=red] (a) at (0,3) {a};
+                \node[fill=red] (b) at (0,0) {b};
+                \node[fill=green] (c) at (2.5,0) {c};
+                \node[fill=green] (d) at (2.5,3) {d};
+                \node (e) at (5,1.5) {e};
+            \end{scope}
+
+            \begin{scope}[>={Stealth[black]},,
+                every edge/.style={draw=black,very thick}]
+                \path [->] (b) edge node {} (c);
+                \path [->] (a) edge node {} (d);
+                \path [->] (d) edge node {} (e);
+                \path [->] (c) edge node {} (e);
+            \end{scope}
+            \end{tikzpicture}
+    \end{figure}
+
+    \begin{align*}
+        &\mathcal{R} = \{(a,b), (c,d), (d,c)\}\\
+        &(b,a) \not\in \mathcal{R}
+    \end{align*}
 \end{frame}
 
 \begin{frame}\frametitle{Risultati sperimentali: Paige-Tarjan, Dovier-Piazza-Policriti}
@@ -479,5 +507,7 @@
         \ref*{named2}
     \end{figure}
 \end{frame}
+
+
 
 \end{document}
