@@ -182,15 +182,18 @@
 \end{frame}
 
 \begin{frame}\frametitle{Massima bisimulazione}
-    \begin{block}{Definizione: Massima bisimulazione}
+    \begin{block}{Definizione}
+        La \emph{massima bisimulazione} su $G = (V,E)$ è la relazione $\mathcal{B}_\mathcal{M}$ tale che:
         \begin{gather*}
-            \mathcal{B}_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}.
+            \mathcal{R} \subseteq \mathcal{B}_\mathcal{M} \quad \text{ per ogni bisimulazione } \mathcal{R} \text{ su } G.
         \end{gather*}
     \end{block}
 
     \bigskip\bigskip
 
+    Si può dimostrare che:
     \begin{itemize}
+        \item $\displaystyle \mathcal{B}_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}$;
         \item $\mathcal{B}_\mathcal{M}$ è ancora una \emph{bisimulazione};
         \item $\mathcal{B}_\mathcal{M}$ è una \emph{relazione di equivalenza}
 
