@@ -12,6 +12,8 @@
 \usepackage{amsmath}
 \usetheme{Boadilla}
 
+\newcommand{\nodesize}{.7cm}
+
 \newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
     \centering
     Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo figlio di $a$ che sia in relazione con uno dei nodi figli di $b$, e viceversa.
@@ -68,7 +70,7 @@
     \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.7]
-            \begin{scope}[every node/.style={circle,thick,draw}]
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
                 \node (c) at (2.5,4) {c};
@@ -108,7 +110,7 @@
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw}]
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
             \end{scope}
@@ -123,14 +125,15 @@
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw}]
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
                 \node (c) at (-2,1.5) {c};
                 \node (d) at (2,1.5) {d};
             \end{scope}
 
-            \begin{scope}
+            \begin{scope}[>={Stealth[black]},,
+                every edge/.style={draw=black,very thick}]
                 \path [->] (c) edge node {} (a);
                 \path [->] (d) edge node {} (b);
             \end{scope}
@@ -145,20 +148,21 @@
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw}]
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
                 \node (c) at (-2,1.5) {c};
                 \node (d) at (2,1.5) {d};
-                \node (e) at (-4,1.5) {e};
-                \node (f) at (-5,3) {f};
+                \node (e) at (-7,1.5) {e};
+                \node (f) at (-5,4) {f};
                 \node (g) at (-5,0) {g};
-                \node (h) at (3,0) {h};
+                \node (h) at (3,-2) {h};
                 \node (i) at (4,3) {i};
                 \node (j) at (5,0) {j};
             \end{scope}
 
-            \begin{scope}
+            \begin{scope}[>={Stealth[black]},,
+                every edge/.style={draw=black,very thick}]
                 \path [->] (c) edge node {} (a);
                 \path [->] (d) edge node {} (b);
 
@@ -436,7 +440,7 @@
     \begin{figure}[t]
         \centering
         \begin{tikzpicture}[scale=0.9]
-            \begin{scope}[every node/.style={circle,thick,draw}]
+            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                 \node[fill=red] (a) at (0,3) {a};
                 \node[fill=red] (b) at (0,0) {b};
                 \node[fill=green] (c) at (2.5,0) {c};
