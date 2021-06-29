@@ -6,6 +6,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{mathtools}
+\usetikzlibrary{arrows.meta}
 \usepackage{hyperref}
 \usetikzlibrary{backgrounds}
 \usepackage{amsmath}
@@ -57,11 +58,11 @@
 % I grafi diretti sono strutture matematiche composte da un insieme V di nodi e da un insieme E di archi. Sono oggetti interessanti
 % perchè consentono di creare un modello matematico di sistemi di vario genere (social network, impianti industriali, catene logistiche).
 % Per questo motivo lo studio della teoria dei grafi è trasversale rispetto a molti ambiti.
-\begin{frame}\frametitle{Grafi diretti}
+\begin{frame}\frametitle{Grafi orientati}
 
     \begin{figure}[t]
         \centering
-        \begin{tikzpicture}[scale=0.5]
+        \begin{tikzpicture}[scale=0.9]
             \begin{scope}[every node/.style={circle,thick,draw}]
                 \node (a) at (0,0) {a};
                 \node (b) at (0,3) {b};
@@ -70,7 +71,8 @@
                 \node (e) at (5,3) {e};
             \end{scope}
 
-            \begin{scope}
+            \begin{scope}[>={Stealth[black]},,
+                every edge/.style={draw=black,very thick}]
                 \path [->] (a) edge node {} (b);
                 \path [->] (b) edge node {} (c);
                 \path [->] (a) edge node {} (d);
