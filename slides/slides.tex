@@ -196,7 +196,7 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Algoritmi}
+\begin{frame}\frametitle{Algoritmi per il calcolo della massima bisimulazione}
     \begin{itemize}
         \item Algoritmo di Paige-Tarjan;
         \item Algoritmo di Dovier-Piazza-Policriti;
@@ -215,14 +215,13 @@
 
     \begin{example}
         \begin{verbatim}
-        import networkx as nx
         from bispy import paige_tarjan
 
         # creazione del grafo
-        graph = nx.balanced_tree(2,3)
+        graph = networkx.balanced_tree(2,3)
 
         # calcolo della massima bisimulazione
-        print(paige_tarjan(graph))
+        paige_tarjan(graph)
 
         >>> [(7, 8, 9, 10, 11, 12, 13, 14), (3, 4, 5, 6),
             (1, 2), (0,)]
@@ -408,7 +407,7 @@
 
 \begin{frame}\frametitle{Conclusioni e sviluppi futuri}
     \begin{itemize}
-        \item Incremental delete: ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
+        \item Ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
         \item Massima bisimulazione con \emph{labeled edges};
         \item Migliore integrazione con altre librerie (\texttt{NetworkX});
         \item Riscrittura in \texttt{Cython} di parti critiche del codice.
