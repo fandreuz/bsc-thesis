@@ -12,10 +12,10 @@
 \usepackage{amsmath}
 \usetheme{Boadilla}
 
-\newcommand{\bisimulation}{$a \mathcal{B} b \implies \begin{cases}
-    \langle a, a' \rangle \in E \implies \exists b' \mid \langle b, b' \rangle \in E \land a' \mathcal{B} b'\\
-    \langle b, b' \rangle \in E \implies \exists a' \mid \langle a, a' \rangle \in E \land b' \mathcal{B} a'
-\end{cases}$}
+\newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \in V \times V$}
+    \centering
+    Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo figlio di $a$ che sia in relazione con uno dei nodi figli di $b$, e viceversa.
+\end{block}}
 
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
@@ -96,10 +96,7 @@
 % slide 2, anche in questo caso è facile verificare la definizione.
 % slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
 \begin{frame}\frametitle{Bisimulazione I}
-    \begin{block}{Definizione: Bisimulazione}
-        \centering
-        \bisimulation
-    \end{block}
+    \bisimulation
 
     \bigskip\bigskip
 
@@ -114,10 +111,7 @@
 \end{frame}
 
 \begin{frame}\frametitle{Bisimulazione II}
-    \begin{block}{Definizione: Bisimulazione}
-        \centering
-        \bisimulation
-    \end{block}
+    \bisimulation
 
     \bigskip\bigskip
 
@@ -139,10 +133,7 @@
 \end{frame}
 
 \begin{frame}\frametitle{Bisimulazione III}
-    \begin{block}{Definizione: Bisimulazione}
-        \centering
-        \bisimulation
-    \end{block}
+    \bisimulation
 
     \bigskip
 
