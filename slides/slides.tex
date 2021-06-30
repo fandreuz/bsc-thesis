@@ -108,9 +108,9 @@
                     \node[fill=orange] (a) at (0,6) {a};
                     \node[fill=green] (c) at (2,3) {c};
                     \node[fill=green] (b) at (-2,3) {b};
-                    \node (d) at (-4,0) {d};
+                    \node[fill=yellow] (d) at (-4,0) {d};
                     \node[fill=red] (e) at (-2,0) {e};
-                    \node (f) at (2,0) {f};
+                    \node[fill=yellow] (f) at (2,0) {f};
                     \node[fill=red] (g) at (4,0) {g};
                 \end{scope}
 
@@ -129,7 +129,9 @@
         \end{subfigure}
         \hfill
         \begin{subfigure}{0.44\textwidth}
-            \scalebox{1.2}{$\mathcal{B} = \{(a,a), (b,c), (e,g)\}$}
+            \begin{align*}
+                \mathcal{B} = &\{(a,a), (b,c), (e,g), (d,f)\}
+            \end{align*}
         \end{subfigure}
     \end{figure}
 \end{frame}
