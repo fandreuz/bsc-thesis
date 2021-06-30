@@ -5,6 +5,7 @@
 \usepackage{scalerel}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{graphicx}
 \usepackage{mathtools}
 \usetikzlibrary{arrows.meta}
 \usepackage{hyperref}
@@ -100,7 +101,7 @@
     \bigskip
 
     \begin{figure}
-        \begin{subfigure}{0.6\textwidth}
+        \begin{subfigure}{0.55\textwidth}
             \centering
             \begin{tikzpicture}[scale=0.5]
                 \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
@@ -127,9 +128,8 @@
             \end{tikzpicture}
         \end{subfigure}
         \hfill
-        \begin{subfigure}{0.38\textwidth}
-            \centering
-            $\mathcal{B} = \{(a,a), (b,c), (e,g)\}$
+        \begin{subfigure}{0.44\textwidth}
+            \scalebox{1.2}{$\mathcal{B} = \{(a,a), (b,c), (e,g)\}$}
         \end{subfigure}
     \end{figure}
 \end{frame}
