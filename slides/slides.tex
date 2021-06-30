@@ -195,6 +195,64 @@
     \end{example}
 \end{frame}
 
+\begin{frame}\frametitle{Risultati sperimentali: Paige-Tarjan, Dovier-Piazza-Policriti}
+    \begin{figure}[b!]
+        \centering
+        \captionsetup[subfigure]{labelformat=empty}
+        \begin{subfigure}{0.49\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    ytick style={draw=none},
+                    xtick style={draw=none},
+                    legend cell align={left},
+                    legend style={fill=white,opacity=0.8, at={(0,0.69)},anchor=south west, legend columns=1},
+                    xmode=log,
+                    ymode=log,
+                    ylabel={Secondi},
+                    xlabel={Numero di nodi},
+                    grid=major,
+                    title={Alberi bilanciati}
+                ]
+                \addplot table[x=x,y=y] {../experiments/time/tree/pta.txt};
+                \addlegendentry{PT}
+                \addplot table[x=x,y=y] {../experiments/time/tree/fba.txt};
+                \addlegendentry{DPP}
+                \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.49\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.5]
+                \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
+                    \node (a) at (0,6) {a};
+                    \node (c) at (2,3) {c};
+                    \node (b) at (-2,3) {b};
+                    \node (d) at (-4,0) {d};
+                    \node (e) at (-2,0) {e};
+                    \node (f) at (2,0) {f};
+                    \node (g) at (4,0) {g};
+                \end{scope}
+
+                \begin{scope}[>={Stealth[black]},
+                    every edge/.style={draw=black,very thick}]
+                    \path [->] (a) edge node {} (b);
+                    \path [->] (a) edge node {} (c);
+
+                    \path [->] (b) edge node {} (d);
+                    \path [->] (b) edge node {} (e);
+
+                    \path [->] (c) edge node {} (f);
+                    \path [->] (c) edge node {} (g);
+                \end{scope}
+            \end{tikzpicture}
+            \caption{Un albero bilanciato.}
+        \end{subfigure}
+    \end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Risultati sperimentali I}
     \begin{figure}
         \centering
@@ -384,58 +442,5 @@
         \item Utilizzare \texttt{Cython} per parti critiche del codice.
     \end{itemize}
 \end{frame}
-
-\begin{frame}
-    Appendice
-\end{frame}
-
-\begin{frame}\frametitle{Risultati sperimentali: Paige-Tarjan, Dovier-Piazza-Policriti}
-    \begin{figure}[b!]
-        \centering
-        \begin{subfigure}[t]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    legend columns=-1,
-                    legend style={/tikz/every even column/.append style={column sep=0.5cm}},
-                    legend entries={Paige-Tarjan, Dovier-Piazza-Policriti},
-                    legend to name=named2,
-                    xmode=log,
-                    ymode=log,
-                    ylabel={Secondi},
-                    grid=major,
-                    title={Alberi bilanciati}
-                ]
-                \addplot table[x=x,y=y] {../experiments/time/tree/pta.txt};
-                \addplot table[x=x,y=y] {../experiments/time/tree/fba.txt};
-                \end{axis}
-            \end{tikzpicture}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[t]{0.49\textwidth}
-            \begin{tikzpicture}
-                \begin{axis}[
-                    axis on top,
-                    width=\textwidth,
-                    ytick style={draw=none},
-                    xtick style={draw=none},
-                    grid=major,
-                    xmode=log,
-                    ymode=log,
-                    title={Automi di Hopcroft}
-                ]
-                \addplot table[x=x,y=y] {../experiments/time/hopcroft/pta.txt};
-                \addplot table[x=x,y=y] {../experiments/time/hopcroft/fba.txt};
-                \end{axis}
-            \end{tikzpicture}
-        \end{subfigure}
-        \ref*{named2}
-    \end{figure}
-\end{frame}
-
-
 
 \end{document}
