@@ -16,7 +16,7 @@
 
 \newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
     \centering
-    Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo figlio di $a$ che sia in relazione con uno dei nodi figli di $b$, e viceversa.
+    Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo \emph{figlio} di $a$ che sia in relazione con un nodo \emph{figlio} di $b$, e viceversa.
 \end{block}}
 
 %Information to be included in the title page:
@@ -57,9 +57,6 @@
     \end{frame}
 }
 
-% I grafi diretti sono strutture matematiche composte da un insieme V di nodi e da un insieme E di archi. Sono oggetti interessanti
-% perchè consentono di creare un modello matematico di sistemi di vario genere (social network, impianti industriali, catene logistiche).
-% Per questo motivo lo studio della teoria dei grafi è trasversale rispetto a molti ambiti.
 \begin{frame}\frametitle{Grafi orientati}
     \vspace{-1cm}
     \begin{gather*}
@@ -97,88 +94,43 @@
     \end{block}
 \end{frame}
 
-% Per alcune applicazioni può essere utile avere a disposizione una nozione di equivalenza tra nodi. Il mio lavoro di tesi si è
-% focalizzato su una possibile definizione di equivalenza, la massima bisimulazione. Due nodi sono bisimili quando preso uno qualsiasi
-% dei due, per ogni suo figlio esiste un figlio dell'altro nodo bisimile al primo figlio scelto.
-% slide 1, vediamo un esempio. E' chiaro che due pozzi sono bisimili per la definizione.
-% slide 2, anche in questo caso è facile verificare la definizione.
-% slide 3, è chiaro che aumentando la complessità del grafo diventa impossibile trovare la massima bisimulazione ad occhio.
-\begin{frame}\frametitle{Bisimulazione I}
-    \bisimulation
-
-    \bigskip\bigskip
-
-    \begin{figure}
-        \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
-                \node (a) at (0,0) {a};
-                \node (b) at (0,3) {b};
-            \end{scope}
-            \end{tikzpicture}
-    \end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Bisimulazione II}
-    \bisimulation
-
-    \bigskip\bigskip
-
-    \begin{figure}
-        \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
-                \node (a) at (0,0) {a};
-                \node (b) at (0,3) {b};
-                \node (c) at (-2,1.5) {c};
-                \node (d) at (2,1.5) {d};
-            \end{scope}
-
-            \begin{scope}[>={Stealth[black]},,
-                every edge/.style={draw=black,very thick}]
-                \path [->] (c) edge node {} (a);
-                \path [->] (d) edge node {} (b);
-            \end{scope}
-            \end{tikzpicture}
-    \end{figure}
-\end{frame}
-
-\begin{frame}\frametitle{Bisimulazione III}
+\begin{frame}\frametitle{Bisimulazione}
     \bisimulation
 
     \bigskip
 
     \begin{figure}
-        \begin{tikzpicture}[scale=0.5]
-            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
-                \node (a) at (0,0) {a};
-                \node (b) at (0,3) {b};
-                \node (c) at (-2,1.5) {c};
-                \node (d) at (2,1.5) {d};
-                \node (e) at (-7,1.5) {e};
-                \node (f) at (-5,4) {f};
-                \node (g) at (-5,0) {g};
-                \node (h) at (3,-2) {h};
-                \node (i) at (4,3) {i};
-                \node (j) at (5,0) {j};
-            \end{scope}
+        \begin{subfigure}{0.6\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.5]
+                \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
+                    \node[fill=orange] (a) at (0,6) {a};
+                    \node[fill=green] (c) at (2,3) {c};
+                    \node[fill=green] (b) at (-2,3) {b};
+                    \node (d) at (-4,0) {d};
+                    \node[fill=red] (e) at (-2,0) {e};
+                    \node (f) at (2,0) {f};
+                    \node[fill=red] (g) at (4,0) {g};
+                \end{scope}
 
-            \begin{scope}[>={Stealth[black]},,
-                every edge/.style={draw=black,very thick}]
-                \path [->] (c) edge node {} (a);
-                \path [->] (d) edge node {} (b);
+                \begin{scope}[>={Stealth[black]},
+                    every edge/.style={draw=black,very thick}]
+                    \path [->] (a) edge node {} (b);
+                    \path [->] (a) edge node {} (c);
 
-                \path [->] (f) edge node {} (c);
-                \path [->] (f) edge node {} (e);
-                \path [->] (g) edge node {} (a);
-                \path [->] (g) edge [loop below] node {} (g);
-                \path [->] (e) edge node {} (g);
+                    \path [->] (b) edge node {} (d);
+                    \path [->] (b) edge node {} (e);
 
-                \path [->] (h) edge node {} (a);
-                \path [->] (h) edge node {} (d);
-                \path [->] (i) edge [bend right] node {} (j);
-                \path [->] (j) edge node {} (i);
-                \path [->] (h) edge node {} (j);
-            \end{scope}
+                    \path [->] (c) edge node {} (f);
+                    \path [->] (c) edge node {} (g);
+                \end{scope}
             \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.38\textwidth}
+            \centering
+            $\mathcal{B} = \{(a,a), (b,c), (e,g)\}$
+        \end{subfigure}
     \end{figure}
 \end{frame}
 
@@ -435,34 +387,6 @@
 
 \begin{frame}
     Appendice
-\end{frame}
-
-\begin{frame}\frametitle{Bisimulazione non simmetrica}
-    \begin{figure}[t]
-        \centering
-        \begin{tikzpicture}[scale=0.9]
-            \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
-                \node[fill=red] (a) at (0,3) {a};
-                \node[fill=red] (b) at (0,0) {b};
-                \node[fill=green] (c) at (2.5,0) {c};
-                \node[fill=green] (d) at (2.5,3) {d};
-                \node (e) at (5,1.5) {e};
-            \end{scope}
-
-            \begin{scope}[>={Stealth[black]},,
-                every edge/.style={draw=black,very thick}]
-                \path [->] (b) edge node {} (c);
-                \path [->] (a) edge node {} (d);
-                \path [->] (d) edge node {} (e);
-                \path [->] (c) edge node {} (e);
-            \end{scope}
-            \end{tikzpicture}
-    \end{figure}
-
-    \begin{align*}
-        &\mathcal{R} = \{(a,b), (c,d), (d,c)\}\\
-        &(b,a) \not\in \mathcal{R}
-    \end{align*}
 \end{frame}
 
 \begin{frame}\frametitle{Risultati sperimentali: Paige-Tarjan, Dovier-Piazza-Policriti}
