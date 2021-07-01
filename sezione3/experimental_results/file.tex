@@ -13,17 +13,11 @@ I risultati sono stati misurati su un computer con sistema operativo \emph{CentO
 I dataset su cui abbiamo effettuato le misurazioni sono stati generati utilizzando alcune funzioni del package Python \texttt{NetworkX} \cite{networkx}.
 
 \subsubsection{Performance}
-Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo necessario per l'esecuzione degli algoritmi che abbiamo implementato. Nei grafici utilizziamo lungo l'asse delle ascisse una scala data dal valore $|E| \log |V|$, che ci consente di visualizzare in modo più omogeneo i risultati lungo l'asse delle ordinate. Entrambi gli assi variano secondo una scala logaritmica.
+Consideriamo alcune tipologie differenti di grafi, e valutiamo il tempo necessario per l'esecuzione degli algoritmi che abbiamo implementato nel pacchetto \texttt{BisPy}. Chiaramente i risultati che presenteremo non determinano in modo definitivo che un algoritmo sia più o meno veloce rispetto ad un altro: ad esempio, per grafi molto strutturati in cui la relazione ``stesso rango'' approssima bene la massima bisimulazione ci aspettiamo che, asintoticamente, l'algoritmo di Dovier-Piazza-Policriti risulti molto più conveniente dell'algoritmo di Paige-Tarjan. La scelta dell'algoritmo più opportuno per il calcolo della massima bisimulazione va quindi ponderata in base ai dati di cui si è in possesso sulla struttura del grafo. Come vedremo non è nemmeno garantito che l'algoritmo incrementale risulti sempre il più conveniente in seguito all'aggiunta di un arco, in particolare nei casi in cui la massima bisimulazione cambia molto. Questo avviene ad esempio quando ad una catena di nodi (tutti aventi un unico arco uscente ed un unico arco entrante, eccetto il primo e l'ultimo che hanno rispettivamente solo un arco uscente ed uno entrante) si aggiunge un arco dall'ultimo al primo nodo. In questo caso la massima bisimulazione collassa da $|V|$ blocchi ad uno solo.
 
-\paragraph{Paige-Tarjan, Dovier-Piazza-Policriti} Cominciamo confrontando gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti: ci aspettiamo che quest'ultimo risulti asintoticamente più conveniente. Per grafi piccoli invece dovrebbe risultare vincitore l'algoritmo di Paige-Tarjan visto che non richiede l'elaborazione preliminare del rango.
+Il primo confronto che considereremo riguarda gli algoritmi di Paige-Tarjan e Dovier-Piazza-Policriti: verificheremo che vi sia effettivamente una convenienza (almeno asintotica) nell'utilizzo di quest'ultimo per grafi strutturati. Il secondo confronto coinvolge tutti gli algoritmi che abbiamo considerato, ed il suo scopo è mostrare che l'algoritmo incrementale può risultare molto vantaggioso rispetto per l'aggiornamento della massima bisimulazione rispetto al ricalcolo da zero, ma che talvolta questa convenienza può venire meno. Nei grafici adotteremo una scala data dal valore $|E| \log |V|$ lungo l'asse delle ascisse, che ci consente di visualizzare in modo più regolare l'andamento asintotico delle quantità che considereremo durante gli esperimenti.
 
-Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
-\begin{itemize}
-    \item \emph{depth}: il numero di livelli (senza contare la \emph{root});
-    \item \emph{branching factor}: il numero di successori di ogni nodo (ad eccezione dei nodi nell'ultimo livello).
-\end{itemize}
-
-\noindent Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \texttt{NetworkX}, che appunto prende in input questi due parametri.
+\paragraph{Paige-Tarjan, Dovier-Piazza-Policriti} Ci aspettiamo che l'algoritmo di Dovier-Piazza-Policriti risulti asintoticamente più conveniente per grafi che mostrano una qualche struttura. Per grafi piccoli invece dovrebbe risultare vincitore l'algoritmo di Paige-Tarjan in quanto non richiede l'elaborazione preliminare del rango (che ricordiamo aggiunge un termine $O(|V| + |E|)$).
 
 \begin{figure}[t!]
     \centering
@@ -49,7 +43,7 @@ Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciat
     \caption{Tipologie di grafi su cui abbiamo testato gli algoritmi di Dovier-Piazza-Policriti e Paige-Tarjan.}
 \end{figure}
 
-\begin{figure}[b!]
+\begin{figure}[t!]
     \centering
     \begin{subfigure}[t]{0.49\textwidth}
         \begin{tikzpicture}
@@ -85,7 +79,7 @@ Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciat
                 grid=major,
                 xmode=log,
                 ymode=log,
-                title={Grafi di Hopcroft}
+                title={Automi di Hopcroft}
             ]
             \addplot table[x=x,y=y] {experiments/time/hopcroft/pta.txt};
             \addplot table[x=x,y=y] {experiments/time/hopcroft/fba.txt};
@@ -97,7 +91,12 @@ Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciat
     \label{fig:pta_vs_fba}
 \end{figure}
 
-Dal grafico rappresentato nella parte sinistra della Figura \ref{fig:pta_vs_fba} possiamo osservare che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene infatti la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è apprezzabile, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
+Cominciamo l'esposizione dei risultati con la categoria degli ``alberi bilanciati'', ovvero grafi che possono essere rappresentati nella forma esposta nella Figura \ref{fig:balanced_tree}. Essi sono caratterizzati da due parametri:
+\begin{itemize}
+    \item \emph{depth}: il numero di livelli (senza contare la \emph{root});
+    \item \emph{branching factor}: il numero di successori di ogni nodo (ad eccezione dei nodi nell'ultimo livello).
+\end{itemize}
+Generiamo grafi di questo tipo tramite la funzione \verb|balanced_tree| di \texttt{NetworkX}, che appunto prende in input questi due parametri. Dal grafico rappresentato nella parte sinistra della Figura \ref{fig:pta_vs_fba} possiamo osservare che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più efficiente, a partire da un certo valore di $|E| \log |V|$. Sebbene infatti la metodologia sia più ``rifinita'' dell'approccio di Paige-Tarjan, lo sforzo iniziale per il calcolo del rango è apprezzabile, soprattutto se consideriamo il linguaggio in cui l'algoritmo è stato implementato. Abbiamo però la conferma che per valori alti di $|E| \log |V|$, per questa tipologia di grafo, si ottengono i risultati previsti.
 
 La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui viene presentato l'algoritmo di Dovier-Piazza-Policriti, ed è un esempio di automa proposto originariamente da Hopcroft \cite{hopcroft}. Nelle Figure \ref{fig:hopcroft_graph_1} e \ref{fig:hopcroft_graph_2} ne visualizziamo alcune realizzazioni. Nella parte destra della Figura \ref{fig:pta_vs_fba} sono riportati i risultati ottenuti dagli algoritmi. Osserviamo nuovamente che l'algoritmo di Dovier-Piazza-Policriti risulta asintoticamente più conveniente.
 
