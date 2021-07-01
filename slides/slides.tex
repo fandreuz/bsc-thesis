@@ -105,7 +105,7 @@
             \centering
             \begin{tikzpicture}[scale=0.5]
                 \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
-                    \node[fill=orange] (a) at (0,6) {a};
+                    \node (a) at (0,6) {a};
                     \node[fill=green] (c) at (2,3) {c};
                     \node[fill=green] (b) at (-2,3) {b};
                     \node[fill=yellow] (d) at (-4,0) {d};
@@ -129,9 +129,10 @@
         \end{subfigure}
         \hfill
         \begin{subfigure}{0.44\textwidth}
-            \begin{align*}
-                \mathcal{B} = &\{(a,a), (b,c), (e,g), (d,f)\}
-            \end{align*}
+            \Large
+            \begin{gather*}
+                \mathcal{B} = \{(b,c), (e,g), (d,f)\}
+            \end{gather*}
         \end{subfigure}
     \end{figure}
 \end{frame}
@@ -300,15 +301,16 @@
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                ybar stacked,
                 axis on top,
+                ybar,
                 bar width=3pt,
                 width=\textwidth,
                 legend cell align={left},
                 height=7cm,
                 ytick style={draw=none},
                 xtick style={draw=none},
-                enlargelimits=0.01,
+                enlarge x limits=0.025,
+                enlarge y limits=false,
                 xlabel={Indice esperimento},
                 xlabel style={font=\large},
                 ylabel={Secondi},
@@ -317,7 +319,7 @@
             ]
             \addplot table[x=x,y=y] {../experiments/time/saha/random/scatter_1_0.txt};
             \addlegendentry{Paige-Tarjan}
-            \addplot table[x=x,y=y] {../experiments/time/saha/random/scatter_1_2.txt};
+            \addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/random/scatter_1_2.txt};
             \addlegendentry{Saha}
         \end{axis}
         \end{tikzpicture}
@@ -329,27 +331,28 @@
     \begin{figure}
         \begin{tikzpicture}
             \begin{axis}[
-                ybar stacked,
+                ybar,
                 axis on top,
                 width=\textwidth,
                 legend cell align={left},
                 height=7cm,
                 bar width=3pt,
+                enlarge x limits=0.025,
+                enlarge y limits=false,
                 xticklabels={,,},
                 ytick style={draw=none},
                 xtick style={draw=none},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
-                enlargelimits=0.01,
                 xlabel={Indice esperimento},
                 title={Aggiunta di un arco randomico ad alberi bilanciati}
             ]
             \addplot table[x=x,y=y] {../experiments/time/saha/tree/scatter_0.txt};
             \addlegendentry{Paige-Tarjan}
-            \addplot table[x=x,y=y] {../experiments/time/saha/tree/scatter_1.txt};
-            \addlegendentry{Dovier-Piazza-Policriti}
-            \addplot table[x=x,y=y] {../experiments/time/saha/tree/scatter_2.txt};
+            %\addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/tree/scatter_1.txt};
+            %\addlegendentry{Dovier-Piazza-Policriti}
+            \addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/tree/scatter_2.txt};
             \addlegendentry{Saha}
             \begin{scope}[on background layer]
                 \fill[green,opacity=0.1] ({rel axis cs:0,0}) rectangle ({rel axis cs:0.04,1});
