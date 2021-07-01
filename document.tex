@@ -1,106 +1,6 @@
 \documentclass[11pt]{article}
 
-\usepackage{amsthm}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{cite}
-\usepackage{hyperref}
-\usepackage{mathtools}
-\usepackage{subcaption}
-\usepackage{tikz}
-\usepackage{tikzsymbols}
-\usepackage{pgfplots}
-\usepackage{wrapfig}
-\usepackage{xspace}
-\usepackage{float}
-\usepackage{caption}
-\usepackage[nottoc]{tocbibind}
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-\usepackage{venndiagram}
-\usepackage{xspace}
-\usepackage{centernot}
-\usepackage{afterpage}
-\usepackage[linesnumbered,ruled,lined,boxed,vlined,noend]{algorithm2e}
-\usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
-\usepackage{mathtools}
-
-\pgfplotsset{compat=1.11,
-                /pgfplots/ybar legend/.style={
-                /pgfplots/legend image code/.code={%
-                \draw[##1,/tikz/.cd,yshift=-0.25em]
-                    (0cm,0cm) rectangle (3pt,0.8em);},
-                },
-}
-
-\numberwithin{equation}{section}
-
-\newsavebox{\largestimage}
-
-\newcommand{\accente}{\`E }
-
-\DeclareMathOperator*{\argmax}{arg\,max}
-\DeclareMathOperator*{\argmin}{arg\,min}
-
-\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
-
-\newcommand{\funcname}[1]{\texttt{\textup{#1}}}
-\newcommand{\splitfunc}{\funcname{split}\xspace}
-\newcommand{\rankfunc}{\funcname{rank}\xspace}
-\newcommand{\rscp}{\textup{RSCP}\xspace}
-\newcommand{\prefunc}{\funcname{Pre}\xspace}
-\newcommand{\succfunc}{\funcname{Succ}\xspace}
-\newcommand{\wf}{\funcname{WF}\xspace}
-\newcommand{\nwf}{\funcname{NWF}\xspace}
-
-\makeatletter
-\renewcommand{\boxed}[1]{\text{\fboxsep=.2em\fbox{\m@th$\displaystyle#1$}}}
-\makeatother
-
-\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
-  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
-  #1 % the function
-  \vphantom{\big|} % pretend it's a little taller at normal size
-  \right|_{#2} % this is the delimiter
-  }}
-
-\newcommand\sccto{\stackrel{\mathclap{\normalfont\mbox{\tiny{SCC}}}}{\to}}
-\newcommand\superscc{\scalebox{.5}{SCC}}
-
-\definechangesauthor[name=Alberto Casagrande, color=red]{ac}
-
-\usetikzlibrary{arrows,automata,patterns,shapes,snakes,arrows.meta}
-
-\graphicspath{ {imgs/} }
-
-\captionsetup[figure]{name=Figura}
-\captionsetup[table]{name=Tabella}
-\renewcommand{\algorithmcfname}{Algoritmo}
-\renewcommand\labelitemi{--}
-
-\SetArgSty{textnormal}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definizione}[section]
-\newtheorem{example}{Esempio}[section]
-\newtheorem{axiom}{Assioma}[section]
-\newtheorem*{axiom*}{Assioma}
-\newtheorem{observation}{Osservazione}[section]
-\newtheorem*{observation*}{Osservazione}
-
-\theoremstyle{plain}
-\newtheorem{proposition}{Proposizione}[section]
-\newtheorem{lemma}{Lemma}[section]
-\newtheorem{theorem}{Teorema}[section]
-\newtheorem{corollary}{Corollario}[section]
-
-\newcommand{\notimplies}{\mathrel{{\ooalign{\hidewidth$\not\phantom{=}$\hidewidth\cr$\implies$}}}}
-
-\newenvironment{proof2}
-{
-  \begin{proof}[Dimostrazione]
-}
-{\end{proof}}
+\input{preamble.tex}
 
 \begin{document}
 
@@ -128,10 +28,10 @@
 
       \makebox[\textwidth][c]{\rule{\textwidth}{.4pt}}
       \Large
-      \textbf{\texttt{BisPy},}
+      \textbf{\texttt{BisPy}}
 
       \large
-      \textsc{un package Python per il calcolo della massima bisimulazione di grafi diretti.}
+      \textsc{un package Python per il calcolo della massima bisimulazione di grafi diretti}
       \makebox[\textwidth][c]{\rule{\textwidth}{.4pt}}
       \vspace{1.5cm}
 
