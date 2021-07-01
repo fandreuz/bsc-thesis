@@ -13,6 +13,14 @@
 \usepackage{amsmath}
 \usetheme{Boadilla}
 
+\pgfplotsset{compat=1.11,
+                /pgfplots/ybar legend/.style={
+                /pgfplots/legend image code/.code={%
+                \draw[##1,/tikz/.cd,yshift=-0.25em]
+                    (0cm,0cm) rectangle (3pt,0.8em);},
+                },
+}
+
 \newcommand{\nodesize}{.7cm}
 
 \newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
