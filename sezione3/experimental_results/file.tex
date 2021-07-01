@@ -108,7 +108,7 @@ La seconda tiplogia di grafi che consideriamo è tratta dall'articolo in cui vie
 
 $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambiato in seguito all'inserimento del nuovo arco; $E_1,V_1$ e $E_2,V_2$ sono rispettivamente nodi e archi appartenenti al sottografo di $G$ composto dai nodi modificati durante le fasi 1. (\funcname{split}) e 2. (\funcname{merge}); $E_{\nwf}$, $V_{\nwf}$ sono rispettivamente archi e nodi del sottografo \emph{non-well-founded} di $G$. Si osservi che numerosi termini possono diventare molto facilmente ``problematici'', e rendere quindi l'algoritmo incrementale meno efficiente del ricalcolo da zero della massima bisimulazione. In questa breve analisi presenteremo i risultati su alcune tipologie di grafo, e ne verificheremo la coerenza con l'analisi proposta nelle sezioni precedenti.
 
-\begin{figure}[t!]
+\begin{figure}[b!]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \begin{tikzpicture}
@@ -121,7 +121,7 @@ $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambi
                 legend to name=named,
                 ytick style={draw=none},
                 xtick style={draw=none},
-                xlabel={\texttt{n}},
+                xlabel={Numero di nodi},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
@@ -144,7 +144,7 @@ $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambi
                 width=\textwidth,
                 ytick style={draw=none},
                 xtick style={draw=none},
-                xlabel={\texttt{n}},
+                xlabel={Numero di nodi},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
@@ -164,67 +164,33 @@ $\Delta_\nwf$ è l'insieme di nodi \emph{non-well-founded} il cui rango è cambi
     \label{fig:saha_results_random}
 \end{figure}
 
-Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $\leq 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \texttt{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo di esecuzione per gli algoritmi di Paige-Tarjan, Dovier-Piazza-Policriti e Saha (Figura \ref{fig:saha_results_random}). L'algoritmo incrementale risulta mediamente più conveniente per entrambi i valori di \texttt{p} considerati, ma è evidente che con l'aumento di questo parametri la convenienza si riduce in modo significativo. Tale comportamento è coerente con \eqref{eq:saha}. Nella Figura \ref{fig:saha_scatter_random} sono riportati i 100 risultati per due coppie (\texttt{n,p}). Questa visualizzazzione ci consente di osservare che non sempre l'algoritmo incrementale è il più conveniente: per i valori considerati viene saltuariamente superato dall'algoritmo di Paige-Tarjan.
-
-\begin{figure}[t!]
+\begin{figure}[b!]
     \centering
     \begin{subfigure}[t]{\textwidth}
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
+                ybar,
+                bar width=3pt,
+                legend cell align={left},
+                enlarge x limits=0.025,
+                enlarge y limits=false,
+                xticklabels={,,},
                 width=\textwidth,
                 height=6cm,
-                legend columns=-1,
-                legend style={/tikz/every even column/.append style={column sep=0.5cm}},
-                legend entries={Paige-Tarjan, Dovier-Piazza-Policriti, Saha},
-                legend to name=named5,
                 ytick style={draw=none},
                 xtick style={draw=none},
-                xtick={0.0,20.0,40.0,60.0,80.0,100.0},
-                xticklabels={0,20,40,60,80,100},
-                xlabel={\texttt{n}},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
-                ymode=log,
-                enlargelimits=false,
                 grid=major,
-                title={\texttt{n}=2000, \texttt{p}=0.0001},
-                only marks
+                title={\texttt{n}=2000, \texttt{p}=0.0001}
             ]
-            \addplot+[mark=x,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_0.txt};
-            \addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_1.txt};
-            \addplot+[mark=+,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_2.txt};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=blue,
-                line width=1pt,
-                solid
-            ]
-            {0.02367323};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=red,
-                line width=1pt,
-                solid
-            ]
-            {0.05305607};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=brown,
-                line width=1pt,
-                solid
-            ]
-            {0.01112568};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/scatter_0_0.txt};
+            \addlegendentry{Paige-Tarjan}
+            %\addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_0_1.txt};
+            \addplot+[xshift=-0.1cm] table[x=x,y=y] {experiments/time/saha/random/scatter_0_2.txt};
+            \addlegendentry{Saha}
         \end{axis}
         \end{tikzpicture}
     \end{subfigure}
@@ -232,70 +198,37 @@ Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{
         \begin{tikzpicture}
             \begin{axis}[
                 axis on top,
+                ybar,
+                bar width=3pt,
+                legend cell align={left},
+                enlarge x limits=0.025,
+                enlarge y limits=false,
+                xticklabels={,,},
                 width=\textwidth,
                 height=6cm,
                 ytick style={draw=none},
                 xtick style={draw=none},
-                xtick={0.0,20.0,40.0,60.0,80.0,100.0},
-                xticklabels={0,20,40,60,80,100},
-                xlabel={\texttt{n}},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
-                ymode=log,
-                enlargelimits=false,
                 grid=major,
                 title={\texttt{n}=2000, \texttt{p}=0.0005},
-                only marks
             ]
-            \addplot+[mark=x,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_0.txt};
-            \addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_1.txt};
-            \addplot+[mark=+,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_2.txt};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=blue,
-                line width=1pt,
-                solid
-            ]
-            {0.06129174};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=red,
-                line width=1pt,
-                solid
-            ]
-            {0.07297469};
-            \addplot+[
-                domain=0:100,
-                samples=100,
-                no marks,
-                sharp plot,
-                color=brown,
-                line width=1pt,
-                solid
-            ]
-            {0.03012856};
+            \addplot table[x=x,y=y] {experiments/time/saha/random/scatter_1_0.txt};
+            \addlegendentry{Paige-Tarjan}
+            %\addplot+[mark=asterisk,ultra thin,mark options={scale=1}] table[x=x,y=y] {experiments/time/saha/random/scatter_1_1.txt};
+            \addplot+[xshift=-0.1cm] table[x=x,y=y] {experiments/time/saha/random/scatter_1_2.txt};
+            \addlegendentry{Saha}
         \end{axis}
         \end{tikzpicture}
     \end{subfigure}
-    \ref*{named5}
-    \caption{Tempo di esecuzione per i tre algoritmi considerati per i 100 grafi generati in modo randomico menzionati nel primo esperimento, per due coppie (\texttt{n,p}) = (2000,0.0001) (sopra), (2000,0.0005) (sotto). Le linee continue rappresentano la media registrata da ognuno dei tre algoritmi.}
+    \caption{Tempo di esecuzione degli algoritmi di Saha e Paige-Tarjan sui 100 grafi generati in modo randomico menzionati nel primo esperimento, per due coppie (\texttt{n,p}) = (2000,0.0001) (sopra), (2000,0.0005) (sotto).}
     \label{fig:saha_scatter_random}
 \end{figure}
 
-Per il secondo esperimento abbiamo ritenuto interessante esaminare i risultati ottenuti su grafi con una certa struttura. Per quest motivo sono stati considerati degli \emph{alberi bilanciati}, una tipologia di grafi che abbiamo già descritto sommariamente nel paragrafo precedente. Abbiamo generato 100 archi in modo randomico (escludendo quelli già presenti) ed abbiamo utilizzato i tre algoritmi presentati in questo lavoro per aggiornare la massima bisimulazione, al fine di confrontare il tempo di esecuzione degli algoritmi \emph{from scratch} e l'algoritmo incrementale. I risultati sono rappresentati nella parte sinistra della Figura \ref{fig:saha_results_tree}. Ad una prima analisi del grafico sembra che non vi sia una particolare convenienza nell'utilizzo dell'algoritmo di Saha; questa impressione è però in parte sbagliata, è necessario ricordate che gli archi sono generati in modo randomico e che il tempo di esecuzione è estremamente suscettibile alla tipologia di arco in cui consiste la modifica. La situazione è rappresentata meglio nella parte destra della Figura \ref{fig:saha_results_tree}, in cui abbiamo diviso gli archi in categorie in base alla seguente funzione:
-\begin{gather*}
-    \Delta v(\langle x,y \rangle) = \texttt{Depth}(x) - \texttt{Depth}(y)
-\end{gather*}
-dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si oosservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la bisimulazione massima viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
+Per il primo esperimento consideriamo grafi randomici di Erdős-Rényi (o \emph{grafi binomiali}), ovvero grafi contenenti un numero arbitrario \verb|n| di nodi, per cui presa una coppia qualsiasi $u,v \in V$ si ha $\langle u,v\rangle \in E$ con probabilità \verb|p| $\leq 1$. Sono stati generati 100 grafi tramite la funzione \verb|fast_gnp_random_graph| di \texttt{NetworkX}, che prende in ingresso i parametri \texttt{n,p}, e per ognuno è stato aggiunto un arco scelto randomicamente tra quelli non esistenti. Infine si è verificato il tempo medio di esecuzione sul campione ottenuto, per gli algoritmi di Paige-Tarjan e Saha (Figura \ref{fig:saha_results_random}). Naturalmente per l'algoritmo incrementale si è supposto di avere già a disposizione la massima bisimulazione precedente all'aggiunta dell'arco, mentre l'algoritmo di Paige-Tarjan è stato eseguito direttamente sul grafo modifcato. L'algoritmo di Saha risulta mediamente più conveniente per entrambi i valori di \texttt{p} considerati, ma è evidente che con l'aumento di questo parametri la convenienza si riduce in modo significativo. Tale comportamento è coerente con l'Equazione \eqref{eq:saha}. Nella Figura \ref{fig:saha_scatter_random} sono riportati i 100 risultati per due coppie (\texttt{n,p}). Questa visualizzazzione ci consente di osservare che non sempre l'algoritmo incrementale è il più conveniente: per i valori considerati viene saltuariamente superato dall'algoritmo di Paige-Tarjan.
 
-\begin{figure}[t!]
+\begin{figure}[b!]
     \centering
     \begin{subfigure}[t]{0.48\textwidth}
         \begin{tikzpicture}
@@ -305,7 +238,8 @@ dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. 
                 ytick style={draw=none},
                 xtick style={draw=none},
                 legend style={fill=white,opacity=0.8, at={(0,0.58)},anchor=south west, legend columns=1},
-                xlabel={\texttt{n}},
+                legend cell align={left},
+                xlabel={Profondità dell'albero},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
@@ -313,12 +247,12 @@ dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. 
                 xticklabels={5,6,7,8,9,10},
                 ymode=log,
                 grid=major,
-                title={Tempo medio su \emph{balanced tree}}
+                title={Alberi bilanciati}
             ]
             \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_0.txt};
             \addlegendentry{Paige-Tarjan}
-            \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
-            \addlegendentry{DPP}
+            %\addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
+            %\addlegendentry{DPP}
             \addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_2.txt};
             \addlegendentry{Saha}
         \end{axis}
@@ -331,7 +265,8 @@ dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. 
                 axis on top,
                 width=\textwidth,
                 legend style={fill=white,opacity=0.8, at={(0,0.45)},anchor=south west, legend columns=1},
-                xlabel={\texttt{n}},
+                legend cell align={left},
+                xlabel={Profondità dell'albero},
                 xlabel style={font=\large},
                 ylabel={Secondi},
                 ylabel style={font=\large},
@@ -360,9 +295,15 @@ dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. 
         \end{axis}
         \end{tikzpicture}
     \end{subfigure}
-    \caption{Tempo medio in secondi (su un campione di 100 archi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico, su \emph{balanced tree} con \emph{depth} variabile e \emph{branching factor} fissato a 2. Nell'immagine a sinistra (l'algoritmo di Dovier-Piazza-Policriti è stato abbreviato in ``DPP'') abbiamo rappresentato i risultati complessivi, nell'immagine a destra abbiamo diviso gli archi in categorie a seconda della distanza (in livelli) tra i due nodi corrispondenti, ed abbiamo poi preso il tempo medio di questi ``cluster''.}
+    \caption{Tempo medio in secondi (su un campione di 100 archi) impiegato per l'aggiornamento della massima bisimulazione in seguito all'aggiunta di un arco generato in modo randomico, su alberi bilanciati con \emph{depth} variabile e \emph{branching factor}=2. Nell'immagine a sinistra abbiamo rappresentato i risultati complessivi, nell'immagine a destra abbiamo diviso gli archi in categorie a seconda della distanza (in livelli) tra sorgente e destinazione dell'arco aggiunto, ed abbiamo poi preso il tempo medio di ognuno di questi ``cluster''.}
     \label{fig:saha_results_tree}
 \end{figure}
+
+Per il secondo esperimento abbiamo ritenuto interessante esaminare i risultati ottenuti su grafi con una certa struttura. Per questo motivo sono stati considerati degli \emph{alberi bilanciati}, una tipologia di grafi che abbiamo già descritto sommariamente nel paragrafo precedente. Presi alcuni alberi bilanciati di dimensioni varie, per ognuno abbiamo generato 100 archi in modo randomico (escludendo quelli già presenti); in seguito sono stati eseguiti gli algoritmi di Paige-Tarjan, Dovier-Piazza-Policriti e Saha per aggiornare la massima bisimulazione (i primi due sul grafo modificato, l'ultimo supponendo di avere a disposizione la massima bisimulazione prima dell'aggiunta dell'arco). I risultati sono rappresentati nella parte sinistra della Figura \ref{fig:saha_results_tree}. Ad una prima analisi del grafico sembra che non vi sia una particolare convenienza nell'utilizzo dell'algoritmo di Saha; questa impressione è però in parte sbagliata, è necessario ricordate che gli archi sono generati in modo randomico e che il tempo di esecuzione è estremamente suscettibile alla tipologia di arco in cui consiste la modifica. La situazione è rappresentata meglio nella parte destra della Figura \ref{fig:saha_results_tree}, in cui abbiamo diviso gli archi in categorie in base alla seguente funzione:
+\begin{gather*}
+    \Delta v(\langle x,y \rangle) = \texttt{Depth}(x) - \texttt{Depth}(y)
+\end{gather*}
+dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si osservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la bisimulazione massima viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
 
 \subsubsection{Dimensione della massima bisimulazione}
 Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Verificheremo l'andamento del numero di classi di equivalenza nella massima bisimulazione per i grafi randomici di Erdős-Rényi considerati poco sopra. Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
