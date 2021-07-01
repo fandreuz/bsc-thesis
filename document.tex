@@ -25,6 +25,14 @@
 \usepackage[[deletedmarkup=xout, commentmarkup=footnote]{changes}
 \usepackage{mathtools}
 
+\pgfplotsset{compat=1.11,
+                /pgfplots/ybar legend/.style={
+                /pgfplots/legend image code/.code={%
+                \draw[##1,/tikz/.cd,yshift=-0.25em]
+                    (0cm,0cm) rectangle (3pt,0.8em);},
+                },
+}
+
 \numberwithin{equation}{section}
 
 \newsavebox{\largestimage}
