@@ -306,9 +306,7 @@ Per il secondo esperimento abbiamo ritenuto interessante esaminare i risultati o
 dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si osservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la bisimulazione massima viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
 
 \subsubsection{Dimensione della massima bisimulazione}
-Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Verificheremo l'andamento del numero di classi di equivalenza nella massima bisimulazione per i grafi randomici di Erdős-Rényi considerati poco sopra. Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
-
-\begin{figure}[t!]
+\begin{figure}[b!]
     \begin{center}
         \begin{subfigure}[b]{0.3\textwidth}
             \begin{tikzpicture}[scale=1.3]
@@ -383,6 +381,8 @@ Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi c
     \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale. Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
     \label{fig:bisi_size}
 \end{figure}
+
+Terminiamo la sezione relativa ai risultati sperimentali con un'ultima analisi che potrebbe essere di qualche interesse nella prospettiva di ciò che abbiamo presentato nella Sezione \ref{sec:applications}. Verificheremo l'andamento del numero di classi di equivalenza nella massima bisimulazione per i grafi randomici di Erdős-Rényi considerati poco sopra. Considereremo valori piccoli di \verb|p|, in quanto avvicinandoci ad 1 otteniamo grafi sempre più ``completi'' di interesse molto basso nella pratica. Nella Figura \ref{fig:bisi_size} abbiamo considerato tre diversi valori per il parametro \verb|n|, e quattro valori per il parametro \verb|p|.
 
 Per ogni combinazione di \verb|n|,\verb|p| abbiamo generato 100 grafi binomiali con la funzione \verb|fast_gnp_random_graph| del pacchetto \texttt{NetworkX}, e ne abbiamo calcolata la massima bisimulazione con l'algoritmo di \emph{Dovier-Piazza-Policriti}. Nei grafici abbiamo visualizzato la quantità $\frac{|V / \equiv|}{|V|}$, ovvero il rapporto tra il numero di classi di equivalenza nella massima bisimulazione ed il numero di nodi del grafo: questa quantità potrebbe essere considerata come il fattore di riduzione che otteniamo quanto sostuitiamo al grafo originale la sua contrazione secondo la massima bisimulazione.
 
