@@ -206,7 +206,7 @@
     \end{example}
 \end{frame}
 
-\begin{frame}\frametitle{Risultati sperimentali I}
+\begin{frame}\frametitle{Risultati sperimentali I -{}- {\normalsize Paige-Tarjan, Dovier-Piazza-Policriti}}
     \begin{figure}[b!]
         \centering
         \captionsetup[subfigure]{labelformat=empty}
@@ -264,7 +264,7 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Risultati sperimentali II}
+\begin{frame}\frametitle{Risultati sperimentali II -{}- {\normalsize Paige-Tarjan, Saha}}
     \begin{figure}
         \centering
         \begin{subfigure}{0.48\textwidth}
@@ -272,7 +272,7 @@
                 \begin{axis}[
                     axis on top,
                     width=\textwidth,
-                    legend style={nodes={scale=0.7, transform shape}, fill=white,opacity=0.8, at={(0,0.68)},anchor=south west, legend columns=1},
+                    legend style={nodes={scale=0.7, transform shape}, fill=white,opacity=0.8, at={(0,0.76)},anchor=south west, legend columns=1},
                     legend cell align={left},
                     ytick style={draw=none},
                     xtick style={draw=none},
@@ -284,8 +284,8 @@
                 ]
                 \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_0.txt};
                 \addlegendentry{Paige-Tarjan}
-                \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_1.txt};
-                \addlegendentry{DPP}
+                %\addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_1.txt};
+                %\addlegendentry{DPP}
                 \addplot table[x=x,y=y] {../experiments/time/saha/random/mean_0_2.txt};
                 \addlegendentry{Saha}
             \end{axis}
@@ -298,13 +298,13 @@
                 \item Generazione grafo \emph{randomico};
                 \item Calcolo massima bisimulazione (per l'algoritmo di Saha);
                 \item Aggiunta arco \emph{randomico};
-                \item \textbf{Aggiornamento} massima bisimulazione (con \emph{PT}, \emph{DPP}, \emph{Saha}).
+                \item \textbf{Aggiornamento} massima bisimulazione (con \emph{PT}, \emph{Saha}).
             \end{enumerate}
         \end{subfigure}
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Risultati sperimentali III}
+\begin{frame}\frametitle{Risultati sperimentali III -{}- {\normalsize Paige-Tarjan, Saha}}
     \begin{figure}
         \centering
         \begin{tikzpicture}
@@ -334,47 +334,74 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Risultati sperimentali IV}
+\begin{frame}\frametitle{Risultati sperimentali IV -{}- {\normalsize Paige-Tarjan, Saha}}
     \centering
-    \begin{figure}
-        \begin{tikzpicture}
-            \begin{axis}[
-                ybar,
-                axis on top,
-                width=\textwidth,
-                legend cell align={left},
-                height=7cm,
-                bar width=3pt,
-                enlarge x limits=0.025,
-                enlarge y limits=false,
-                xticklabels={,,},
-                ytick style={draw=none},
-                xtick style={draw=none},
-                xlabel style={font=\large},
-                ylabel={Secondi},
-                ylabel style={font=\large},
-                xlabel={Indice esperimento},
-                title={Aggiunta di un arco randomico ad alberi bilanciati}
-            ]
-            \addplot table[x=x,y=y] {../experiments/time/saha/tree/scatter_0.txt};
-            \addlegendentry{Paige-Tarjan}
-            %\addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/tree/scatter_1.txt};
-            %\addlegendentry{Dovier-Piazza-Policriti}
-            \addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/tree/scatter_2.txt};
-            \addlegendentry{Saha}
-            \begin{scope}[on background layer]
-                \fill[green,opacity=0.2] ({rel axis cs:0,0}) rectangle ({rel axis cs:0.04,1});
-                \fill[cyan,opacity=0.2] ({rel axis cs:0.04,0}) rectangle ({rel axis cs:0.09,1});
-                \fill[lightgray,opacity=0.2] ({rel axis cs:0.09,0}) rectangle ({rel axis cs:0.14,1});
-                \fill[magenta,opacity=0.2] ({rel axis cs:0.14,0}) rectangle ({rel axis cs:0.26,1});
-                \fill[lime,opacity=0.2] ({rel axis cs:0.26,0}) rectangle ({rel axis cs:0.68,1});
-                \fill[orange,opacity=0.2] ({rel axis cs:0.68,0}) rectangle ({rel axis cs:0.81,1});
-                \fill[pink,opacity=0.2] ({rel axis cs:0.81,0}) rectangle ({rel axis cs:0.89,1});
-                \fill[teal,opacity=0.2] ({rel axis cs:0.89,0}) rectangle ({rel axis cs:0.92,1});
-                \fill[teal,opacity=0.2] ({rel axis cs:0.92,0}) rectangle ({rel axis cs:1,1});
-            \end{scope}
+    \begin{figure}[b!]
+        \centering
+        \begin{subfigure}[t]{0.48\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    ytick style={draw=none},
+                    xtick style={draw=none},
+                    legend style={fill=white,opacity=0.8, at={(0,0.68)},anchor=south west, legend columns=1},
+                    legend cell align={left},
+                    xlabel={Profondità dell'albero},
+                    xlabel style={font=\large},
+                    ylabel={Secondi},
+                    ylabel style={font=\large},
+                    xtick={5.0,6.0,7.0,8.0,9.0,10.0},
+                    xticklabels={5,6,7,8,9,10},
+                    ymode=log,
+                    grid=major,
+                    title={Alberi bilanciati}
+                ]
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/first/mean_0_0.txt};
+                \addlegendentry{Paige-Tarjan}
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
+                %\addlegendentry{DPP}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/first/mean_0_2.txt};
+                \addlegendentry{Saha}
             \end{axis}
-        \end{tikzpicture}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{0.48\textwidth}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    axis on top,
+                    width=\textwidth,
+                    legend style={fill=white,opacity=0.8, at={(0,0.41)},anchor=south west, legend columns=1},
+                    legend cell align={left},
+                    xlabel={Profondità dell'albero},
+                    xlabel style={font=\large},
+                    ylabel style={font=\large},
+                    yminorticks=false,
+                    xtick={5.0,6.0,7.0,8.0,9.0,10.0},
+                    xticklabels={5,6,7,8,9,10},
+                    ymode=log,
+                    grid=major,
+                    title={Raggruppamento per tipo di arco}
+                ]
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/first/mean_0_0.txt};
+                \addlegendentry{Paige-Tarjan}
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/first/mean_0_1.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data1.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/data2.txt};
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/data3.txt};
+                \addlegendentry{Saha $\Delta v = \hphantom{-}3$}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/datam0.txt};
+                \addlegendentry{Saha $\Delta v = \hphantom{-}0$}
+                \addplot table[x=x,y=y] {../experiments/time/saha/tree/second/datam1.txt};
+                \addlegendentry{Saha $\Delta v = -1$}
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam2.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam3.txt};
+                %\addplot table[x=x,y=y] {experiments/time/saha/tree/second/datam4.txt};
+                %\addlegendentry{Saha $\Delta v = -4$}
+            \end{axis}
+            \end{tikzpicture}
+        \end{subfigure}
     \end{figure}
 \end{frame}
 
