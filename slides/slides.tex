@@ -25,11 +25,6 @@
 
 \newcommand{\nodesize}{.7cm}
 
-\newcommand{\bisimulation}{\begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
-    \centering
-    Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo \emph{figlio} di $a$ che sia in relazione con un nodo \emph{figlio} di $b$, e viceversa.
-\end{block}}
-
 %Information to be included in the title page:
 \title{\texttt{BisPy}}
 \subtitle{un pacchetto Python per il calcolo\\ della massima bisimulazione di grafi diretti}
@@ -106,7 +101,10 @@
 \end{frame}
 
 \begin{frame}\frametitle{Bisimulazione}
-    \bisimulation
+    \begin{block}{Definizione: Bisimulazione $\mathcal{B} \subseteq V \times V$}
+        \centering
+        Se $(a,b) \in \mathcal{B}$, allora da $a$ è possibile spostarsi verso un nodo \emph{figlio} di $a$ che sia in relazione con un nodo \emph{figlio} di $b$, e viceversa.
+    \end{block}
 
     \bigskip
 
@@ -145,6 +143,11 @@
             \end{gather*}
         \end{subfigure}
     \end{figure}
+
+    \begin{block}{Definizione: Nodi bisimili}
+        \centering
+        I nodi $a,b$ sono \emph{bisimili} se esiste una bisimulazione $\mathcal{B}$ tale che $(a,b) \in \mathcal{B}$.
+    \end{block}
 \end{frame}
 
 \begin{frame}\frametitle{Massima bisimulazione}
