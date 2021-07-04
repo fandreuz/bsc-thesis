@@ -302,7 +302,7 @@ Per il secondo esperimento abbiamo ritenuto interessante esaminare i risultati o
 \begin{gather*}
     \Delta v(\langle x,y \rangle) = \texttt{Depth}(x) - \texttt{Depth}(y)
 \end{gather*}
-dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si osservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la bisimulazione massima viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
+dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. Per chiarezza abbiamo rappresentato solamente l'andamento temporale dell'algoritmo di Paige-Tarjan, e dell'algoritmo di Saha per gli archi con $\Delta v \in \{-1,0,3\}$. Si osservi che per $\Delta v = -1$ il tempo di esecuzione è molto basso in quanto non viene introdotto alcun cambiamento. Per $\Delta v = 0$ invece il tempo medio di esecuzione è addirittura peggiore di quello registrato dall'algoritmo di Paige-Tarjan, in quanto la massima bisimulazione viene cambiata in modo molto significativo. Questo esperimento mostra come una valutazione probabilistica della tipologia di arco in cui consiste la modifica del grafo sia fondamentale per decidere quale algoritmo utilizzare nelle applicazioni pratiche.
 
 \subsubsection{Dimensione della massima bisimulazione}
 \begin{figure}[b!]
@@ -377,7 +377,7 @@ dove \texttt{Depth}$(x)$ è il livello dell'albero in cui si trova il nodo $x$. 
         \end{subfigure}
         \ref*{named}
     \end{center}
-    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale. Lungo l'asse delle ordinate è riportato il numero di blocchi della bisimulazione massima.}
+    \caption{Numero di classi di equivalenza della massima bisimulazione per grafi generati in modo casuale, normalizzato rispetto al numero di nodi nel grafo. Ad ogni \emph{tick} sull'asse delle ascisse corrisponde un grafo generato in modo casuale. Lungo l'asse delle ordinate è riportato il numero di blocchi della massima bisimulazione.}
     \label{fig:bisi_size}
 \end{figure}
 
