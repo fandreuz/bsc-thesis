@@ -168,9 +168,9 @@
     \end{itemize}
 \end{frame}
 
-\begin{frame}\frametitle{Massima bisimulazione -{}- {\normalsize Applicazioni pratiche}}
+\begin{frame}\frametitle{Massima bisimulazione -{}- {\normalsize Esempio e applicazioni pratiche}}
     \begin{figure}
-        \begin{subfigure}{0.47\textwidth}
+        \begin{subfigure}{0.35\textwidth}
             \centering
             \begin{tikzpicture}[scale=0.5]
                 \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
@@ -196,8 +196,19 @@
                 \end{scope}
             \end{tikzpicture}
         \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.08\textwidth}
+        \begin{subfigure}{0.45\textwidth}
+            \scriptsize
+            \begin{align*}
+                \mathcal{B}_\mathcal{M} = \big\{&\colorbox{yellow}{$(a,a)$}, \colorbox{green}{$(b,c), (c,b)$},\\
+                &\colorbox{green}{$(b,b), (c,c)$}, \colorbox{orange}{$(d,d)$},\\
+                &\colorbox{orange}{$(e,e), (f,f), (g,g)$},\\
+                &\colorbox{orange}{$(d,e), (e,d), (d,f)$},\\
+                &\colorbox{orange}{$(f,d), (d,g), (g,d)$},\\
+                &\colorbox{orange}{$(e,f), (f,e), (e,g)$},\\
+                &\colorbox{orange}{$(g,e), (f,g), (g,f)$}\big\}
+            \end{align*}
+        \end{subfigure}
+        \begin{subfigure}{0.1\textwidth}
             \begin{tikzpicture}[scale=0.5]
                 \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
                     \node[fill=yellow] (A) at (0,6) {A};
@@ -211,19 +222,6 @@
                     \path [->] (B) edge node {} (C);
                 \end{scope}
             \end{tikzpicture}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}{0.43\textwidth}
-            \scriptsize
-            \begin{align*}
-                \mathcal{B}_\mathcal{M} = \big\{&\colorbox{yellow}{$(a,a)$}, \colorbox{green}{$(b,c), (c,b)$},\\
-                &\colorbox{green}{$(b,b), (c,c)$}, \colorbox{orange}{$(d,d)$},\\
-                &\colorbox{orange}{$(e,e), (f,f), (g,g)$},\\
-                &\colorbox{orange}{$(d,e), (e,d), (d,f)$},\\
-                &\colorbox{orange}{$(f,d), (d,g), (g,d)$},\\
-                &\colorbox{orange}{$(e,f), (f,e), (e,g)$},\\
-                &\colorbox{orange}{$(g,e), (f,g), (g,f)$}\big\}
-            \end{align*}
         \end{subfigure}
     \end{figure}
 
