@@ -3,6 +3,7 @@
 \usepackage{tikzsymbols}
 \usepackage{pgfplots}
 \usepackage{scalerel}
+\usepackage{multicol}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{graphicx}
@@ -164,6 +165,64 @@
 
         $\implies$ induce un partizionamento su $V$.
     \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Massima bisimulazione -{}- {\normalsize Applicazioni pratiche}}
+    \begin{figure}
+        \begin{subfigure}{0.55\textwidth}
+            \centering
+            \begin{tikzpicture}[scale=0.5]
+                \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
+                    \node[fill=yellow] (a) at (0,6) {a};
+                    \node[fill=green] (c) at (2,3) {c};
+                    \node[fill=green] (b) at (-2,3) {b};
+                    \node[fill=red] (d) at (-4,0) {d};
+                    \node[fill=red] (e) at (-2,0) {e};
+                    \node[fill=red] (f) at (2,0) {f};
+                    \node[fill=red] (g) at (4,0) {g};
+                \end{scope}
+
+                \begin{scope}[>={Stealth[black]},
+                    every edge/.style={draw=black,very thick}]
+                    \path [->] (a) edge node {} (b);
+                    \path [->] (a) edge node {} (c);
+
+                    \path [->] (b) edge node {} (d);
+                    \path [->] (b) edge node {} (e);
+
+                    \path [->] (c) edge node {} (f);
+                    \path [->] (c) edge node {} (g);
+                \end{scope}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}{0.20\textwidth}
+            \begin{tikzpicture}[scale=0.5]
+                \begin{scope}[every node/.style={circle,thick,draw,minimum size=\nodesize}]
+                    \node[fill=yellow] (A) at (0,6) {A};
+                    \node[fill=green] (B) at (0,3) {B};
+                    \node[fill=red] (C) at (0,0) {C};
+                \end{scope}
+
+                \begin{scope}[>={Stealth[black]},
+                    every edge/.style={draw=black,very thick}]
+                    \path [->] (A) edge node {} (B);
+                    \path [->] (B) edge node {} (C);
+                \end{scope}
+            \end{tikzpicture}
+        \end{subfigure}
+    \end{figure}
+
+    \bigskip
+
+    \begin{multicols}{2}
+        \begin{itemize}
+            \item Ricerca di nodi equivalenti;
+            \item Minimizzazione;
+            \item Concurrency theory;
+            \item XML indexing.
+        \end{itemize}
+    \end{multicols}
 \end{frame}
 
 \begin{frame}\frametitle{Algoritmi per il calcolo della massima bisimulazione}
