@@ -89,7 +89,7 @@ Concludiamo la sezione relativa ai risultati generali sulla bisimulazione con la
 \label{sec:bisi_max}
 Definiamo ora il concetto di \emph{massima bisimulazione}, che sarà l'argomento principale di questo elaborato:
 \begin{definition}
-    Una bisimulazione $\mathcal{R}_M$ su $G_1, G_2$ è la \emph{massima bisimulazione} della coppia di grafi $G_1, G_2$ se per ogni bisimulazione $\mathcal{R}$ su $G_1,G_2 \,\, u \mathcal{R} v \implies u \mathcal{R}_M v$, o equivalentemente $\mathcal{R}_M \supseteq \mathcal{R}$ per ogni bisimulazione $\mathcal{R}$ su $G_1, G_2$.
+    Una bisimulazione $\mathcal{R}_M$ su $G_1, G_2$ è la \emph{massima bisimulazione} della coppia di grafi $G_1, G_2$ se per ogni bisimulazione $\mathcal{R}$ su $G_1,G_2$ si ha $u \mathcal{R} v \implies u \mathcal{R}_M v$, o equivalentemente $\mathcal{R}_M \supseteq \mathcal{R}$ per ogni bisimulazione $\mathcal{R}$ su $G_1, G_2$.
 \end{definition}
 
 \begin{observation}
@@ -114,6 +114,7 @@ Naturalmente la massima bisimulazione dipende dai due grafi presi in esame. Dedu
     \end{enumerate}
     \vspace*{-0.7cm}
 \end{proof2}
+
 Naturalmente il concetto di \emph{massima bisimulazione} può essere definito anche su unico grafo diretto $G$. Questo caso si rivelerà di grande interesse nel seguito. Per ora dimostriamo il seguente risultato:
 \begin{theorem}
     Sia $G=(V,E)$ un grafo diretto finito. Allora esiste la massima bisimulazione su $G$.
@@ -123,6 +124,18 @@ Naturalmente il concetto di \emph{massima bisimulazione} può essere definito an
     Allora possiamo considerare l'unione di questo numero finito di bisimulazioni, che sarà chiaramente la massima bisimulazione.
 
     Abbiamo almeno una bisimulazione non banale (ovvero diversa da $\emptyset$) che possiamo ricavare dalla chiusura riflessiva di $\emptyset$ (Teorema \ref{theo:bisi_chiusura}), ovvero la relazione $\mathcal{R} = \{(u,u) \mid u \in V\}$.
+\end{proof2}
+
+Con queste premesse possiamo determinare in modo agevole la massima bisimulazione:
+\begin{theorem}
+    La massima bisimulazione coincide con la relazione binaria che mette in relazione tutte le coppie di nodi bisimili.
+\end{theorem}
+\begin{proof2}
+    Si osservi che la relazione considerata può essere scritta come segue:
+    \begin{gather*}
+        \mathcal{R} =  \bigcup_{\substack{\mathcal{B} \text{ è una}\\\text{bisimulazione}}} \mathcal{B}
+    \end{gather*}
+    Per l'Osservazione \ref{obs:bisimulation_union} la relazione $\mathcal{R}$ è ancora una bisimulazione, e chiaramente contiene tutte le possibili bisimulazioni del grafo. Ciò significa che è proprio la massima bisimulazione.
 \end{proof2}
 
 \subsubsection{Interpretazione insiemistica della bisimulazione}
