@@ -68,8 +68,7 @@
     \end{frame}
 }
 
-\begin{frame}\frametitle{Grafi orientati}
-    \vspace{-1cm}
+\begin{frame}\frametitle{Grafi orientati, terminologia}
     \begin{gather*}
         V = \{a,b,c,d,e\}\\
         E = \{\langle a,b\rangle, \langle b,c\rangle, \langle a,d\rangle, \langle c,e\rangle, \langle d,e\rangle\}
@@ -101,7 +100,8 @@
     \bigskip
 
     \begin{block}{Definizione}
-        Se $\langle a,b \rangle \in E \implies b$ è un nodo \emph{figlio} di $a$.
+        Se $\langle a,b \rangle \in E \implies b$ è un nodo \emph{figlio} di $a$.\\
+        Un nodo privo di figli è detto \emph{pozzo}.
     \end{block}
 \end{frame}
 
@@ -256,10 +256,10 @@
 
 \begin{frame}[fragile]\frametitle{BisPy}
     \begin{itemize}
-        \item Python 3
-        \item Open source (\url{https://github.com/fAndreuzzi/BisPy})
+        \item Python 3;
+        \item Open source (\url{https://github.com/fAndreuzzi/BisPy});
+        \item Testato su numerosi casi per cui si conosce la massima bisimulazione.
     \end{itemize}
-
 
     \begin{example}
         \begin{verbatim}
