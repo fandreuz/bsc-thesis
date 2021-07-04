@@ -154,7 +154,7 @@
 
 \begin{frame}\frametitle{Massima bisimulazione}
     \begin{block}{Definizione}
-        La \emph{massima bisimulazione} su $G = (V,E)$ è la relazione $\mathcal{B}_\mathcal{M}$ tale che:
+        La \emph{massima bisimulazione} su $G = (V,E)$ è la bisimulazione $\mathcal{B}_\mathcal{M}$ tale che:
         \begin{gather*}
             \mathcal{R} \subseteq \mathcal{B}_\mathcal{M} \quad \text{ per ogni bisimulazione } \mathcal{R} \text{ su } G.
         \end{gather*}
@@ -163,14 +163,14 @@
     \bigskip\bigskip
 
     Si può dimostrare che:
-    \begin{itemize}
-        \item $\displaystyle \mathcal{B}_\mathcal{M} \,\,\,\,\,= \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}$;
-        \item $\mathcal{B}_\mathcal{M}$ è ancora una \emph{bisimulazione};
+    \begin{enumerate}
         \item La \emph{massima bisimulazione} è \textbf{unica};
-        \item $\mathcal{B}_\mathcal{M}$ è una \emph{relazione di equivalenza}
+        \item La \emph{massima bisimulazione} è una \emph{relazione di equivalenza}
 
         $\implies$ induce un partizionamento su $V$.
-    \end{itemize}
+        \item $\mathcal{B}_\mathcal{M}(a,b) \iff a,b$ sono bisimili;
+        \item $\mathcal{B}_\mathcal{M}$ definita come nel punto 3. è una \emph{bisimulazione};
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}\frametitle{Massima bisimulazione -{}- {\normalsize Esempio e applicazioni pratiche}}
@@ -399,7 +399,7 @@
                 \addplot+[xshift=-0.1cm] table[x=x,y=y] {../experiments/time/saha/random/scatter_1_2.txt};
                 \addlegendentry{Saha}
                 \begin{scope}[on background layer]
-                    \fill[pattern color=green,opacity=0.8,pattern=north west lines] ({rel axis cs:0.0,0.0}) rectangle ({rel axis cs:1.0,1.0});
+                    \fill[pattern color=green,opacity=1,pattern=north west lines] ({rel axis cs:0.0,0.0}) rectangle ({rel axis cs:1.0,1.0});
                 \end{scope}
             \end{axis}
             \end{tikzpicture}
@@ -486,7 +486,7 @@
     \textbf{Sviluppi futuri}
     \begin{itemize}
         \item Ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
-        \item \emph{Labeled edges};
+        \item Calcolo della massima bisimulazione con \emph{labeled edges};
         \item Integrazione con altre librerie (\texttt{NetworkX});
         \item \texttt{Cython} per parti critiche del codice.
     \end{itemize}
