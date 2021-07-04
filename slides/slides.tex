@@ -167,9 +167,9 @@
         \item La \emph{massima bisimulazione} è \textbf{unica};
         \item La \emph{massima bisimulazione} è una \emph{relazione di equivalenza}
 
-        $\implies$ induce un partizionamento su $V$.
-        \item $\mathcal{B}_\mathcal{M}(a,b) \iff a,b$ sono bisimili;
-        \item $\mathcal{B}_\mathcal{M}$ definita come nel punto 3. è una \emph{bisimulazione};
+        $\implies$ induce un partizionamento su $V$;
+        \item $\displaystyle \mathcal{B}_\mathcal{M}(a,b) \equiv \bigcup_{\substack{\mathcal{R} \text{ è una}\\\text{bisimulazione}}} \mathcal{R}$;
+        \item $\mathcal{B}_\mathcal{M}$ definita come nel punto 3. è una \emph{bisimulazione}.
     \end{enumerate}
 \end{frame}
 
@@ -407,7 +407,26 @@
     \end{figure}
 \end{frame}
 
-\begin{frame}\frametitle{Risultati sperimentali IV -{}- {\normalsize Paige-Tarjan, Saha}}
+\begin{frame}\frametitle{Conclusione}
+    Il software sviluppato ha consentito di osservare ed analizzare il comportamento degli algoritmi per varie tipologie di grafi.
+
+    \bigskip\bigskip
+
+    \textbf{Sviluppi futuri}
+    \begin{itemize}
+        \item Ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
+        \item Calcolo della massima bisimulazione con \emph{labeled edges};
+        \item Integrazione con altre librerie (\texttt{NetworkX});
+        \item \texttt{Cython} per parti critiche del codice.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+    \centering \Large
+    \underline{\emph{Grazie per l'attenzione}}
+  \end{frame}
+
+  \begin{frame}\frametitle{Risultati sperimentali III -{}- {\normalsize Paige-Tarjan, Saha}}
     \centering
     \begin{figure}[b!]
         \centering
@@ -477,24 +496,5 @@
         \end{subfigure}
     \end{figure}
 \end{frame}
-
-\begin{frame}\frametitle{Conclusione}
-    Il software sviluppato ha consentito di osservare ed analizzare il comportamento degli algoritmi per varie tipologie di grafi.
-
-    \bigskip\bigskip
-
-    \textbf{Sviluppi futuri}
-    \begin{itemize}
-        \item Ricalcolo incrementale della massima bisimulazione dopo la \textbf{rimozione} di un arco;
-        \item Calcolo della massima bisimulazione con \emph{labeled edges};
-        \item Integrazione con altre librerie (\texttt{NetworkX});
-        \item \texttt{Cython} per parti critiche del codice.
-    \end{itemize}
-\end{frame}
-
-\begin{frame}{}
-    \centering \Large
-    \underline{\emph{Grazie per l'attenzione}}
-  \end{frame}
 
 \end{document}
