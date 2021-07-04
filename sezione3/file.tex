@@ -10,7 +10,7 @@ Abbiamo implementato gli algoritmi presentati nella Sezione \ref{sec:algs} nel p
     \caption{}
     \label{fig:api_img}
 \end{wrapfigure}
-Esaminiamo un brevissimo caso di utilizzo della libreria per la determinazione della bisimulazione massima. Creiamo il grafo rappresentato in Figura \ref{fig:api_img}, ovvero un albero bilanciato con \emph{branching factor} 2 e \emph{profondità} 3. Utilizzeremo \texttt{BisPy} per calcolarne la bisimulazione massima, utilizzando come partizione iniziale la partizione banale di $V$:
+Esaminiamo un brevissimo caso di utilizzo della libreria per la determinazione della massima bisimulazione. Creiamo il grafo rappresentato in Figura \ref{fig:api_img}, ovvero un albero bilanciato con \emph{branching factor} 2 e \emph{profondità} 3. Utilizzeremo \texttt{BisPy} per calcolarne la massima bisimulazione, utilizzando come partizione iniziale la partizione banale di $V$:
 \begin{verbatim}
 import networkx as nx
 from bispy import paige_tarjan
