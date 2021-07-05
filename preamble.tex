@@ -3,6 +3,7 @@
 \usepackage{amsmath}
 \usepackage{cite}
 \usepackage{hyperref}
+%\usepackage[hidelinks]{hyperref}
 \usepackage{mathtools}
 \usepackage{subcaption}
 \usepackage{tikz}
@@ -30,6 +31,13 @@
                     (0cm,0cm) rectangle (3pt,0.8em);},
                 },
 }
+
+\def\blankpage{%
+      \clearpage%
+      \thispagestyle{empty}%
+      \addtocounter{page}{-1}%
+      \null%
+      \clearpage}
 
 \numberwithin{equation}{section}
 
