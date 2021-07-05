@@ -32,18 +32,17 @@
                 },
 }
 
-\def\blankpage{%
-      \clearpage%
-      \thispagestyle{empty}%
-      \addtocounter{page}{-1}%
-      \null%
-      \clearpage}
-
 \numberwithin{equation}{section}
 
 \newsavebox{\largestimage}
 
 \newcommand{\accente}{\`E }
+
+\newcommand{\blankpage}{\newpage
+
+\ % The empty page
+
+\newpage}
 
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
