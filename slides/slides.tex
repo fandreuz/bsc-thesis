@@ -118,22 +118,14 @@
                     \node (a) at (0,6) {a};
                     \node[fill=green] (c) at (2,3) {c};
                     \node[fill=green] (b) at (-2,3) {b};
-                    \node[fill=yellow] (d) at (-4,0) {d};
-                    \node[fill=orange] (e) at (-2,0) {e};
-                    \node[fill=yellow] (f) at (2,0) {f};
-                    \node[fill=orange] (g) at (4,0) {g};
                 \end{scope}
 
                 \begin{scope}[>={Stealth[black]},
                     every edge/.style={draw=black,very thick}]
                     \path [->] (a) edge node {} (b);
-                    \path [->] (a) edge node {} (c);
 
-                    \path [->] (b) edge node {} (d);
-                    \path [->] (b) edge node {} (e);
-
-                    \path [->] (c) edge node {} (f);
-                    \path [->] (c) edge node {} (g);
+                    \path [->] (b) edge [bend left] node {} (c);
+                    \path [->] (c) edge [bend left] node {} (b);
                 \end{scope}
             \end{tikzpicture}
         \end{subfigure}
@@ -141,7 +133,7 @@
         \begin{subfigure}{0.44\textwidth}
             \Large
             \begin{gather*}
-                \mathcal{B} = \{(b,c), (e,g), (d,f)\}
+                \mathcal{B} = \{(b,c)\}
             \end{gather*}
         \end{subfigure}
     \end{figure}
