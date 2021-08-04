@@ -1,6 +1,7 @@
 *.pyc
 
-*.pdf
+/document.pdf
+slides/slides.pdf
 
 **/.ipynb_checkpoints/**
 
