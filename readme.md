@@ -11,7 +11,7 @@ In this thesis I analyse three algorithms for the computation of maximum
 bisimulation, which I also implemented in the Python package `BisPy` (available
 [here](https://github.com/fAndreuzzi/BisPy)).
 
-### PDF and slided
+### PDF and slides
 
 The PDF file is available [here](files/document.pdf) italian only. The slides
 which I used during the discussion of the thesis are [here](files/slides.pdf).
